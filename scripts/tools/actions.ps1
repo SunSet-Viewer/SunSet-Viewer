@@ -35,14 +35,14 @@ function Invoke-ReleaseViewer {
     Write-Color '  Built in RELEASE\; your local changes are not included.' muted
     & (Join-Path $Paths.Repo 'scripts\build-release.ps1')
     if ($LASTEXITCODE -eq 0 -and (Read-YesNo 'Start this viewer?')) {
-        Start-Viewer (Join-Path $Paths.Release 'SunSet-Viewer\aurora-viewer.exe') 'Release'
+        Start-Viewer (Join-Path $Paths.Release 'SunSet-Viewer\SunSet-Viewer.exe') 'Release'
     }
 }
 
 function Invoke-DevViewer {
     Write-Title 'Dev viewer: your local repository, default profile'
     if (Invoke-Cargo @('build', '-p', 'aurora-viewer')) {
-        if (Read-YesNo 'Start this viewer?') { Start-Viewer (Join-Path $Paths.Repo 'target\debug\aurora-viewer.exe') 'Dev' }
+        if (Read-YesNo 'Start this viewer?') { Start-Viewer (Join-Path $Paths.Repo 'target\debug\SunSet-Viewer.exe') 'Dev' }
     }
 }
 
@@ -51,7 +51,7 @@ function Invoke-DebugViewer {
     Write-Color '  Profile "debugging" (Cargo.toml): its own target\debugging folder, a few more GB.' muted
     if (Invoke-Cargo @('build', '--profile', 'debugging', '-p', 'aurora-viewer')) {
         if (Read-YesNo 'Start this viewer (with its console)?') {
-            Start-Viewer (Join-Path $Paths.Repo 'target\debugging\aurora-viewer.exe') 'Debug' @{ RUST_BACKTRACE = '1' }
+            Start-Viewer (Join-Path $Paths.Repo 'target\debugging\SunSet-Viewer.exe') 'Debug' @{ RUST_BACKTRACE = '1' }
         }
     }
 }
@@ -82,7 +82,7 @@ function Invoke-Demo {
     if (Invoke-Cargo @('build', '-p', 'aurora-viewer')) {
         $vars = @{ AURORA_DEMO = '1' }
         if ($pick.Var) { $vars[$pick.Var] = '1' }
-        Start-Viewer (Join-Path $Paths.Repo 'target\debug\aurora-viewer.exe') "Demo $($pick.Label)" $vars
+        Start-Viewer (Join-Path $Paths.Repo 'target\debug\SunSet-Viewer.exe') "Demo $($pick.Label)" $vars
     }
     $true
 }

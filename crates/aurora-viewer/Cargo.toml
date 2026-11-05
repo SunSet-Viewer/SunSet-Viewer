@@ -5,6 +5,11 @@ edition.workspace = true
 license.workspace = true
 repository.workspace = true
 publish.workspace = true
+autobins = false
+
+[[bin]]
+name = "SunSet-Viewer"
+path = "src/main.rs"
 
 [dependencies]
 aurora-updater = { version = "0.1.0", path = "../aurora-updater" }
@@ -159,7 +164,7 @@ xkbcommon-dl = { version = "0.4.2", features = ["x11"] }
 # in the tree through resvg's fontdb (MIT)
 fontconfig-parser = { version = "0.5.8", default-features = false }
 
-# icon and version block of aurora-viewer.exe (build.rs; runs rc.exe of the
+# icon and version block of SunSet-Viewer.exe (build.rs; runs rc.exe of the
 # Windows SDK). Without `toml`: nothing is read from Cargo.toml.
 [build-dependencies]
 # the bundled dictionaries, compressed into the exe (build.rs)

@@ -44,7 +44,7 @@ pub const KNOWN: &[Hook] = &[
     Hook {
         file: "RTSSHooks64.dll",
         program: "RivaTuner Statistics Server (MSI Afterburner's on-screen display)",
-        advice: "if the image is lost, add aurora-viewer.exe to RivaTuner with Application detection level None",
+        advice: "if the image is lost, add SunSet-Viewer.exe to RivaTuner with Application detection level None",
     },
     Hook {
         file: "we-graphics-hook64.dll",
@@ -175,7 +175,7 @@ mod tests {
     #[test]
     fn each_hook_is_reported_once_when_it_arrives() {
         let mut seen = Vec::new();
-        let before: Vec<String> = ["aurora-viewer.exe", "ntdll.dll"].map(String::from).into();
+        let before: Vec<String> = ["SunSet-Viewer.exe", "ntdll.dll"].map(String::from).into();
         assert!(arrived(&mut seen, &before).is_empty());
         let mut later = before.clone();
         later.push("DiscordHook64.dll".into());

@@ -22,7 +22,7 @@ try {
         cargo build --locked -p aurora-viewer
         if ($LASTEXITCODE -ne 0) { throw "Build $version failed." }
         $out = if ($version -eq '0.2.100') { Join-Path $taskRoot 'install' } else { Join-Path $taskFeed "SunSet-Viewer-v$version-windows-x64" }
-        & "$PSScriptRoot/package.ps1" -Exe (Join-Path $taskRepoRoot 'target/debug/aurora-viewer.exe') -Out $out
+        & "$PSScriptRoot/package.ps1" -Exe (Join-Path $taskRepoRoot 'target/debug/SunSet-Viewer.exe') -Out $out
     }
 } finally {
     if ($null -eq $taskPreviousVersion) { Remove-Item Env:AURORA_UPDATE_TEST_VERSION -ErrorAction SilentlyContinue } else { $env:AURORA_UPDATE_TEST_VERSION = $taskPreviousVersion }
@@ -62,7 +62,7 @@ try {
     Remove-Item Env:AURORA_DEMO -ErrorAction SilentlyContinue
     $arguments = @('--title', "`"$Title`"", '--language', $Language)
     if ($null -ne $FpsLimit) { $arguments += @('--fps-limit', $FpsLimit) }
-    $viewer = Start-Process -FilePath (Join-Path $taskRoot 'install/aurora-viewer.exe') -WorkingDirectory (Join-Path $taskRoot 'install') -ArgumentList $arguments -WindowStyle Hidden -PassThru -RedirectStandardOutput (Join-Path $taskRoot 'viewer.stdout.log') -RedirectStandardError (Join-Path $taskRoot 'viewer.stderr.log')
+    $viewer = Start-Process -FilePath (Join-Path $taskRoot 'install/SunSet-Viewer.exe') -WorkingDirectory (Join-Path $taskRoot 'install') -ArgumentList $arguments -WindowStyle Hidden -PassThru -RedirectStandardOutput (Join-Path $taskRoot 'viewer.stdout.log') -RedirectStandardError (Join-Path $taskRoot 'viewer.stderr.log')
 } finally {
     if ($null -eq $taskPreviousRoot) { Remove-Item Env:AURORA_UPDATE_TEST_ROOT -ErrorAction SilentlyContinue } else { $env:AURORA_UPDATE_TEST_ROOT = $taskPreviousRoot }
     if ($null -eq $taskPreviousDemo) { Remove-Item Env:AURORA_DEMO -ErrorAction SilentlyContinue } else { $env:AURORA_DEMO = $taskPreviousDemo }

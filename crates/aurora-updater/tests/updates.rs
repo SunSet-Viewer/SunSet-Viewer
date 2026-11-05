@@ -124,7 +124,7 @@ fn zip(entries: &[(&str, &[u8])]) -> Vec<u8> {
 }
 fn valid_zip() -> Vec<u8> {
     zip(&[
-        ("SunSet-Viewer-v0.3.0-windows-x64/aurora-viewer.exe", b"new viewer"),
+        ("SunSet-Viewer-v0.3.0-windows-x64/SunSet-Viewer.exe", b"new viewer"),
         ("SunSet-Viewer-v0.3.0-windows-x64/assets/character/avatar.llm", b"avatar"),
         ("SunSet-Viewer-v0.3.0-windows-x64/LICENSE", b"license"),
         (
@@ -176,7 +176,7 @@ fn verifies_and_extracts_real_download() {
         |_| {},
     ))
     .expect("verified download");
-    assert_eq!(fs::read(root.join("aurora-viewer.exe")).expect("viewer"), b"new viewer");
+    assert_eq!(fs::read(root.join("SunSet-Viewer.exe")).expect("viewer"), b"new viewer");
 }
 
 #[test]
@@ -243,7 +243,7 @@ fn invalid_zip_paths_and_case_aliases_do_not_escape_staging() {
 
 fn installation(path: &Path, version: &[u8]) {
     fs::create_dir_all(path.join("assets")).expect("assets");
-    fs::write(path.join("aurora-viewer.exe"), version).expect("viewer");
+    fs::write(path.join("SunSet-Viewer.exe"), version).expect("viewer");
     fs::write(path.join("LICENSE"), b"license").expect("license");
 }
 #[test]
@@ -256,15 +256,15 @@ fn new_viewer_failure_restores_old_files_and_preserves_profile() {
     installation(&work.root.join("prepared"), b"new");
     assert!(
         install::apply(&install, &work.root, || {
-            assert_eq!(fs::read(install.join("aurora-viewer.exe"))?, b"new");
-            assert_eq!(fs::read(work.root.join("backup/aurora-viewer.exe"))?, b"old");
+            assert_eq!(fs::read(install.join("SunSet-Viewer.exe"))?, b"new");
+            assert_eq!(fs::read(work.root.join("backup/SunSet-Viewer.exe"))?, b"old");
             anyhow::bail!("new process exited without a frame")
         })
         .is_err()
     );
-    assert_eq!(fs::read(install.join("aurora-viewer.exe")).expect("restored"), b"old");
+    assert_eq!(fs::read(install.join("SunSet-Viewer.exe")).expect("restored"), b"old");
     assert!(
-        work.root.join("failed/aurora-viewer.exe").is_file(),
+        work.root.join("failed/SunSet-Viewer.exe").is_file(),
         "the new package was actually launched then rolled back"
     );
     assert_eq!(fs::read(temp.0.join("settings.json")).expect("profile intact"), b"preferences");
@@ -282,11 +282,11 @@ fn success_removes_backup_only_after_launch_and_refuses_foreign_files_or_concurr
     assert!(install::Workspace::new(&path).is_err());
     installation(&work.root.join("prepared"), b"new");
     install::apply(&path, &work.root, || {
-        assert!(work.root.join("backup/aurora-viewer.exe").is_file());
+        assert!(work.root.join("backup/SunSet-Viewer.exe").is_file());
         Ok(())
     })
     .expect("swap committed");
-    assert_eq!(fs::read(path.join("aurora-viewer.exe")).expect("new viewer"), b"new");
+    assert_eq!(fs::read(path.join("SunSet-Viewer.exe")).expect("new viewer"), b"new");
     assert!(!work.root.join("backup").exists());
 }
 

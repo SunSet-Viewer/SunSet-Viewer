@@ -29,7 +29,7 @@ function Get-TaskSlug([string]$Name) {
 function Test-InUse([string]$Dir) {
     $full = [IO.Path]::GetFullPath($Dir).TrimEnd('\') + '\'
     $procs = Get-CimInstance Win32_Process -ErrorAction SilentlyContinue -Filter (
-        "Name='cargo.exe' OR Name='rustc.exe' OR Name='clippy-driver.exe' OR Name='aurora-viewer.exe'")
+        "Name='cargo.exe' OR Name='rustc.exe' OR Name='clippy-driver.exe' OR Name='SunSet-Viewer.exe'")
     [bool]($procs | Where-Object {
         ($_.ExecutablePath -and $_.ExecutablePath.StartsWith($full, [StringComparison]::OrdinalIgnoreCase)) -or
         ($_.CommandLine -and $_.CommandLine.IndexOf($full, [StringComparison]::OrdinalIgnoreCase) -ge 0)

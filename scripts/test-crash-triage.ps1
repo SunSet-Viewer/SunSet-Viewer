@@ -39,7 +39,7 @@ kernelbase id=0123456789ABCDEF0123456789ABCDEF1 code=6712ABCD3f0000
 # 3000: std::panicking frame; PUBLIC 5000: a function without FUNC record.
 $sym = @'
 MODULE windows x86_64 FEDCBA9876543210FEDCBA98765432101 aurora_viewer.pdb
-INFO CODE_ID 6700000Ac5e0000 aurora-viewer.exe
+INFO CODE_ID 6700000Ac5e0000 SunSet-Viewer.exe
 FILE 0 D:\a\Aurora-Viewer\Aurora-Viewer\crates\aurora-render\src\draw.rs
 FILE 1 D:\a\Aurora-Viewer\Aurora-Viewer\crates\aurora-render\src\cull.rs
 FILE 2 /rustc/0123abcd/library\std\src\panicking.rs

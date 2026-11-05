@@ -12,7 +12,7 @@
 	<key>CFBundleName</key>
 	<string>SunSet Viewer</string>
 	<key>CFBundleExecutable</key>
-	<string>aurora-viewer</string>
+	<string>SunSet-Viewer</string>
 	<key>CFBundleIconFile</key>
 	<string>SunSet</string>
 	<key>CFBundleIdentifier</key>

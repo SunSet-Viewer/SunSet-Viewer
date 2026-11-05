@@ -53,14 +53,14 @@ tar -xzf SunSet-Viewer-vX.Y.Z-linux-x64.tar.gz
 ```
 
 The archive holds one folder, `SunSet-Viewer-vX.Y.Z-linux-x64`, with the
-viewer (`aurora-viewer`), its desktop entry and icon, its licences and the
+viewer (`SunSet-Viewer`), its desktop entry and icon, its licences and the
 README. Move it where you like, for example `~/.local/opt/sunset-viewer`.
 
 ## 3. Start the viewer
 
 ```bash
 cd SunSet-Viewer-vX.Y.Z-linux-x64
-./aurora-viewer
+./SunSet-Viewer
 ```
 
 To start it from your desktop's menu, with its icon in the panel and the
@@ -72,7 +72,7 @@ works:
 ```bash
 install -Dm644 sunset-viewer.svg ~/.local/share/icons/hicolor/scalable/apps/sunset-viewer.svg
 mkdir -p ~/.local/share/applications
-exe=$(printf '%s' "$PWD/aurora-viewer" | sed -e 's/[\\"`$]/\\&/g' -e 's/\\/\\\\/g' -e 's/%/%%/g')
+exe=$(printf '%s' "$PWD/SunSet-Viewer" | sed -e 's/[\\"`$]/\\&/g' -e 's/\\/\\\\/g' -e 's/%/%%/g')
 EXEC="\"$exe\"" awk '/^Exec=/ { print "Exec=" ENVIRON["EXEC"]; next } 1' aurora-viewer.desktop > ~/.local/share/applications/aurora-viewer.desktop
 ```
 
@@ -155,7 +155,7 @@ rustup default stable
 git clone https://github.com/Adriano-Severino/second-life-projeto
 cd second-life-projeto/SunSet-Viewer
 cargo build --release -p aurora-viewer
-./target/release/aurora-viewer
+./target/release/SunSet-Viewer
 ```
 
 On Debian and Ubuntu, the build packages are `build-essential cmake clang

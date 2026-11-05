@@ -616,6 +616,15 @@ mod platform {
                 .unwrap_or_default()
         }
 
+        fn own_module_name() -> String {
+            std::env::current_exe()
+                .expect("test executable")
+                .file_stem()
+                .expect("test executable name")
+                .to_string_lossy()
+                .into_owned()
+        }
+
         #[test]
         fn stacks_are_written_as_module_offsets_with_symbol_identities() {
             let mut out = Vec::new();
@@ -632,7 +641,8 @@ mod platform {
             let modules = modules(&text);
             assert!(modules.iter().any(|line| line.starts_with("ntdll ")), "{text}");
             // This test binary has a PDB: GUID (32 hex digits) and age.
-            let own = modules.iter().find(|line| line.starts_with("aurora_viewer")).expect("own module");
+            let own_name = own_module_name();
+            let own = modules.iter().find(|line| line.starts_with(&own_name)).expect("own module");
             let id = own.split(' ').find_map(|part| part.strip_prefix("id=")).expect("debug id");
             assert!(id.len() >= 33 && id.chars().all(|c| c.is_ascii_hexdigit()), "{own}");
             assert!(own.contains(" code="), "{own}");
@@ -646,7 +656,10 @@ mod platform {
             let text = String::from_utf8(out).unwrap();
             let mut lines = text.lines();
             let fault = lines.next().unwrap();
-            assert!(fault.starts_with("Fault: aurora_viewer") && fault.contains("+0x"), "{text}");
+            assert!(
+                fault.starts_with(&format!("Fault: {}", own_module_name())) && fault.contains("+0x"),
+                "{text}"
+            );
             assert_eq!(lines.next(), Some("Native stack (modules):"));
             assert_eq!(lines.next(), Some(&*format!("00: {}", &fault["Fault: ".len()..])));
             assert_eq!(lines.next(), Some("01: ?"));
@@ -678,7 +691,7 @@ mod platform {
             // From the wait in the system down to the thread's start, through
             // this test binary's own code.
             assert!(frames.len() > 4, "{text}");
-            assert!(frames.iter().any(|f| f.contains("aurora_viewer")), "{text}");
+            assert!(frames.iter().any(|f| f.contains(&own_module_name())), "{text}");
             assert!(modules(&text).iter().any(|line| line.starts_with("ntdll ")), "{text}");
         }
     }

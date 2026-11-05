@@ -6,9 +6,9 @@
     runs it too (PowerShell 7), with the executable without extension.
 
 .EXAMPLE
-    ./scripts/package.ps1 -Exe target/release/aurora-viewer.exe -Out SunSet-Viewer
+    ./scripts/package.ps1 -Exe target/release/SunSet-Viewer.exe -Out SunSet-Viewer
 .EXAMPLE
-    ./scripts/package.ps1 -Exe target/release/aurora-viewer -Out SunSet-Viewer-v0.8.0-linux-x64
+    ./scripts/package.ps1 -Exe target/release/SunSet-Viewer -Out SunSet-Viewer-v0.8.0-linux-x64
 #>
 param(
     [Parameter(Mandatory)][string]$Exe,

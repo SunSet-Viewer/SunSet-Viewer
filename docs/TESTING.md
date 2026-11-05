@@ -54,7 +54,7 @@ outline. From the task's worktree, after the build:
 
 ```powershell
 $env:AURORA_DEMO = '1'
-$viewer = Start-Process -FilePath '.\target\debug\aurora-viewer.exe' -PassThru `
+$viewer = Start-Process -FilePath '.\target\debug\SunSet-Viewer.exe' -PassThru `
   -ArgumentList '--title "Test my-task [AUTOMATION - DO NOT TOUCH]"'
 $borderScript = (Resolve-Path '.\scripts\automation-window-border.ps1').Path
 $borderArgs = @(
@@ -9627,7 +9627,7 @@ What the inventory must show with these scenarios:
   shows, with its type, memory and whether it can present, then
   `GPU adapter <n> chosen:` and why. When only an integrated GPU is listed
   on a PC that has a dedicated one, the NVIDIA Control Panel's "Preferred
-  graphics processor" for `aurora-viewer.exe` hides it from Vulkan
+  graphics processor" for `SunSet-Viewer.exe` hides it from Vulkan
   (`VK_LAYER_NV_optimus`): the log says so, and Preferences › Graphics ›
   Smoothness › Graphics card shows a note under its title (the same for a
   dedicated card that cannot present). The list of that choice comes from

@@ -64,7 +64,7 @@ background work and lowers the latency of Bluetooth controllers and
 headphones.
 
 Game Mode belongs to the installed application: running a bare
-`aurora-viewer` executable from a terminal has no application bundle, so
+`SunSet-Viewer` executable from a terminal has no application bundle, so
 macOS cannot offer it there.
 
 ## Keyboard
@@ -130,12 +130,12 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 git clone https://github.com/Adriano-Severino/second-life-projeto
 cd second-life-projeto/SunSet-Viewer
 cargo build --release --locked -p aurora-viewer
-./target/release/aurora-viewer
+./target/release/SunSet-Viewer
 ```
 
-`AURORA_DEMO=1 ./target/release/aurora-viewer` starts the offline demo,
+`AURORA_DEMO=1 ./target/release/SunSet-Viewer` starts the offline demo,
 without the network. To build the application itself as the release does,
-run `pwsh ./scripts/package-macos.ps1 -Exe target/release/aurora-viewer -Out "SunSet Viewer.app"`
+run `pwsh ./scripts/package-macos.ps1 -Exe target/release/SunSet-Viewer -Out "SunSet Viewer.app"`
 (PowerShell 7: `brew install powershell`). The same PowerShell runs the local
 checks: `pwsh -File ./scripts/check.ps1` (formatting, clippy, tests).
 

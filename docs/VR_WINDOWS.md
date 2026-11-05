@@ -65,7 +65,7 @@ Windows path. Headset tests use a local dev build.
    ```
 
    With a downloaded binary, set the same environment variable and run
-   `./aurora-viewer.exe --title "Test vr-scene-view Windows"` instead.
+   `./SunSet-Viewer.exe --title "Test vr-scene-view Windows"` instead.
 3. Place/pitch the desktop camera downward. Click the headset button in the
    bottom toolbar. Confirm horizon-level entry, correct stereo/head tracking,
    scene materials/lighting/transparency and no interface/HUD/nameplate overlays.

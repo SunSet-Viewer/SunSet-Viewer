@@ -162,7 +162,7 @@ It is your testing ground: you can launch the viewer as often as needed.
 
 ```powershell
 $env:AURORA_DEMO = "1"
-cargo run -p aurora-viewer -- --title "Test avatar-gaze"
+cargo run -p aurora-viewer --bin SunSet-Viewer -- --title "Test avatar-gaze"
 ```
 
 - **Always `--title "Test <task>"`**: the window is named
@@ -367,7 +367,7 @@ change to the interface:
 4. **Test in demo mode**, `check.ps1` green.
 5. **Human validation (mandatory, before the PR)**:
    - build the viewer in your worktree and launch it for the human
-     (`cargo run -p aurora-viewer -- --title "Test <task>"`, in demo or
+     (`cargo run -p aurora-viewer --bin SunSet-Viewer -- --title "Test <task>"`, in demo or
      normal mode depending on what has to be tested);
    - tell them precisely what to test, where (demo or AGNI grid) and what
      they should see; if the grid is needed, they are the one who logs in;

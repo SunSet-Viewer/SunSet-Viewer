@@ -1082,7 +1082,7 @@ Or by hand, to build the viewer only:
 git clone https://github.com/Adriano-Severino/second-life-projeto
 cd second-life-projeto\SunSet-Viewer
 cargo build --release -p aurora-viewer
-./target/release/aurora-viewer.exe
+./target/release/SunSet-Viewer.exe
 ```
 
 Run the same checks as the CI with `./scripts/check.ps1` (rustfmt, clippy
