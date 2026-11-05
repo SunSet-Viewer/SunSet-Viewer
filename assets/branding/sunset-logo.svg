@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 720">
+  <defs>
+    <linearGradient id="sunset" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#ffe066"/>
+      <stop offset=".22" stop-color="#ff9e3b"/>
+      <stop offset=".48" stop-color="#ff5252"/>
+      <stop offset=".72" stop-color="#e02475"/>
+      <stop offset="1" stop-color="#6366f1"/>
+    </linearGradient>
+    <clipPath id="disc"><circle cx="360" cy="360" r="260"/></clipPath>
+  </defs>
+  <g clip-path="url(#disc)">
+    <circle cx="360" cy="360" r="260" fill="url(#sunset)"/>
+    <path d="M100 430 225 345l90 60 120-95 185 135v175H100z" fill="#181b2d"/>
+    <path d="m100 515 155-90 105 75 130-95 130 90v125H100z" fill="#0b0f20"/>
+  </g>
+</svg>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 720" width="720" height="720">
+  <defs>
+    <clipPath id="sunDisc">
+      <circle cx="360" cy="330" r="240" />
+    </clipPath>
+  </defs>
+  <g fill="#000000">
+    <g clip-path="url(#sunDisc)">
+      <rect x="120" y="90" width="480" height="160" />
+      <rect x="120" y="264" width="480" height="40" />
+      <rect x="120" y="322" width="480" height="34" />
+      <rect x="120" y="378" width="480" height="28" />
+      <rect x="120" y="432" width="480" height="22" />
+      <rect x="120" y="484" width="480" height="16" />
+    </g>
+    <rect x="140" y="524" width="440" height="16" rx="8.0" />
+    <rect x="180" y="556" width="360" height="14" rx="7.0" />
+    <rect x="220" y="586" width="280" height="12" rx="6.0" />
+    <rect x="260" y="614" width="200" height="10" rx="5.0" />
+    <rect x="300" y="640" width="120" height="8" rx="4.0" />
+  </g>
+</svg>
