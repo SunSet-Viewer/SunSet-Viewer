@@ -378,6 +378,22 @@ pub fn draw_directions(painter: &egui::Painter, rect: Rect, rot: f32) {
 }
 
 impl MiniMap {
+    /// The avatar marker colour shared by the map and its world-space debug box.
+    pub fn avatar_color(&self, world: &World, id: &Uuid) -> Color32 {
+        let name = avatar_name(world, id);
+        let base = self
+            .marks
+            .get(id)
+            .copied()
+            .unwrap_or_else(|| super::colors::map_color(world, id, &name));
+        world
+            .contact_sets
+            .appearance(id)
+            .minimap
+            .map(super::colors::set_color)
+            .unwrap_or(base)
+    }
+
     /// The floater (Ctrl+Shift+M).
     #[allow(clippy::too_many_arguments)]
     pub fn window(
@@ -622,18 +638,7 @@ impl MiniMap {
             if !rect.expand(dot_r).contains(sp) {
                 continue;
             }
-            let name = avatar_name(world, &id);
-            let col = self
-                .marks
-                .get(&id)
-                .copied()
-                .unwrap_or_else(|| super::colors::map_color(world, &id, &name));
-            let col = world
-                .contact_sets
-                .appearance(&id)
-                .minimap
-                .map(super::colors::set_color)
-                .unwrap_or(col);
+            let col = self.avatar_color(world, &id);
             // unknown height: shown above while the camera is under 1020 m
             let dz = if known {
                 Some(pos.z - cam.pos.z)

@@ -1,9 +1,10 @@
 //! Debug overlays drawn over the 3D view (Preferences › Debug): bounding
 //! boxes, culling decisions, lights, glowing objects, reflection probes,
-//! avatar skeletons and detail levels. Lines are projected on the CPU and
+//! avatar hitboxes and detail levels. Lines are projected on the CPU and
 //! painted by egui, on top of the scene (no depth test).
 
 use super::hud::Projector;
+use super::minimap::MiniMap;
 use crate::scene::{LodInfo, Scene};
 use crate::settings::{CombatSettings, DebugView};
 use crate::world::World;
@@ -34,19 +35,27 @@ struct Lines<'a> {
 
 impl Lines<'_> {
     fn seg(&self, a: Vec3, b: Vec3, color: Color32) {
+        self.seg_width(a, b, color, 1.0);
+    }
+
+    fn seg_width(&self, a: Vec3, b: Vec3, color: Color32, width: f32) {
         if let (Some((pa, _)), Some((pb, _))) = (self.proj.project(a), self.proj.project(b)) {
-            self.painter.line_segment([pa, pb], Stroke::new(1.0, color));
+            self.painter.line_segment([pa, pb], Stroke::new(width, color));
         }
     }
 
     /// Box from 8 corners in the (±x, ±y, ±z) order of `corner`.
     fn cube(&self, corner: impl Fn(f32, f32, f32) -> Vec3, color: Color32) {
+        self.cube_width(corner, color, 1.0);
+    }
+
+    fn cube_width(&self, corner: impl Fn(f32, f32, f32) -> Vec3, color: Color32, width: f32) {
         let s = [-1.0f32, 1.0];
         for &a in &s {
             for &b in &s {
-                self.seg(corner(-1.0, a, b), corner(1.0, a, b), color);
-                self.seg(corner(a, -1.0, b), corner(a, 1.0, b), color);
-                self.seg(corner(a, b, -1.0), corner(a, b, 1.0), color);
+                self.seg_width(corner(-1.0, a, b), corner(1.0, a, b), color, width);
+                self.seg_width(corner(a, -1.0, b), corner(a, 1.0, b), color, width);
+                self.seg_width(corner(a, b, -1.0), corner(a, b, 1.0), color, width);
             }
         }
     }
@@ -220,6 +229,7 @@ pub fn draw(
     eye: Vec3,
     dv: &DebugView,
     combat: &CombatSettings,
+    minimap: &MiniMap,
     probes: Option<ProbeList>,
     lod: &[LodInfo],
 ) {
@@ -234,9 +244,14 @@ pub fn draw(
 
     if combat.show_hitboxes {
         for hitbox in scene.avatar_hitboxes(world, now) {
-            lines.cube(
-                |x, y, z| hitbox.transform.transform_point3(Vec3::new(x, y, z)),
-                Color32::from_rgb(255, 190, 64),
+            let reach = scene.draw_distance + hitbox.size.length();
+            if hitbox.position.distance_squared(eye) > reach * reach {
+                continue;
+            }
+            lines.cube_width(
+                |x, y, z| hitbox.position + hitbox.rotation * (hitbox.size * 0.5 * Vec3::new(x, y, z)),
+                minimap.avatar_color(world, &hitbox.avatar),
+                2.0,
             );
         }
     }

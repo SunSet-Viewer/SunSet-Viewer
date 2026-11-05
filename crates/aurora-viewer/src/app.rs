@@ -15442,6 +15442,7 @@ impl App {
                     self.camera.position,
                     &self.settings.debug,
                     &self.settings.combat,
+                    &self.minimap_ui,
                     self.settings.debug.probes.then(|| self.probes.debug_list()),
                     &self.lod_infos,
                 );

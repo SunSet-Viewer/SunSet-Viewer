@@ -1,16 +1,18 @@
 use super::{Scene, anchors};
 use crate::settings::CombatSettings;
 use crate::world::World;
-use glam::{Mat4, Vec3};
+use glam::{Mat4, Quat, Vec3};
 use std::time::Instant;
 use uuid::Uuid;
 
 #[derive(Clone, Debug)]
-pub struct AvatarHitbox<'a> {
+pub struct AvatarHitbox {
     pub avatar: Uuid,
-    pub joint: &'a str,
-    /// Unit cube transformed to the collision volume's world-space bounds.
-    pub transform: Mat4,
+    /// Simulator-reported root position, before local avatar shape offsets.
+    pub position: Vec3,
+    pub rotation: Quat,
+    /// Simulator-reported collision dimensions, before viewer-side animation.
+    pub size: Vec3,
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -22,18 +24,27 @@ pub struct AvatarHit {
 }
 
 impl Scene {
-    /// Collision volumes from the avatar skeleton, posed in world space.
-    /// Avatars without an evaluated pose use their skeleton's rest pose.
-    pub fn avatar_hitboxes<'a>(&self, world: &'a World, now: Instant) -> Vec<AvatarHitbox<'a>> {
-        self.hitboxes(world, now, None)
+    /// Simulator-reported avatar bounds, matching DebugRenderHitboxes
+    /// (indra/newview/lldrawpoolavatar.cpp, originally LGPL 2.1). This box is
+    /// independent of viewer-side animation and is not a damage simulation.
+    pub fn avatar_hitboxes(&self, world: &World, now: Instant) -> Vec<AvatarHitbox> {
+        world
+            .objects
+            .avatars()
+            .filter_map(|(idx, object)| {
+                let (position, rotation, _) = Self::object_transform_unshifted(world, idx, now)?;
+                let size = object.scale;
+                (position.is_finite() && rotation.is_finite() && size.is_finite() && size.min_element() > 0.0).then_some(AvatarHitbox {
+                    avatar: object.full_id,
+                    position,
+                    rotation,
+                    size,
+                })
+            })
+            .collect()
     }
 
-    fn hitboxes<'a>(
-        &self,
-        world: &'a World,
-        now: Instant,
-        ray: Option<(Vec3, Vec3, f32)>,
-    ) -> Vec<AvatarHitbox<'a>> {
+    fn skeleton_hitboxes<'a>(&self, world: &'a World, now: Instant, ray: Option<(Vec3, Vec3, f32)>) -> Vec<(&'a str, Uuid, Mat4)> {
         let Some(skeleton) = world.avatar_lib.skeleton.as_ref() else {
             return Vec::new();
         };
@@ -51,10 +62,7 @@ impl Scene {
                 let to_avatar = position - origin;
                 let along = to_avatar.dot(direction);
                 let radius = anchors::skeleton_extent(object);
-                if along < -radius
-                    || along > max_distance + radius
-                    || to_avatar.length_squared() - along * along > radius * radius
-                {
+                if along < -radius || along > max_distance + radius || to_avatar.length_squared() - along * along > radius * radius {
                     continue;
                 }
             }
@@ -71,11 +79,7 @@ impl Scene {
                 let posed_delta = pose.and_then(|pose| pose.get(joint_idx)).copied().unwrap_or(Mat4::IDENTITY);
                 let transform = model * posed_delta * joint.world;
                 if transform.is_finite() && transform.determinant().abs() > 1e-8 {
-                    hitboxes.push(AvatarHitbox {
-                        avatar: object.full_id,
-                        joint: &joint.name,
-                        transform,
-                    });
+                    hitboxes.push((joint.name.as_str(), object.full_id, transform));
                 }
             }
         }
@@ -105,14 +109,14 @@ impl Scene {
         }
         let direction = direction.normalize();
 
-        self.hitboxes(world, now, Some((origin, direction, max_distance)))
+        self.skeleton_hitboxes(world, now, Some((origin, direction, max_distance)))
             .into_iter()
-            .filter(|hitbox| hitbox.avatar != world.agent_id)
-            .filter_map(|hitbox| {
-                let distance = hitbox_distance(origin, direction, max_distance, hitbox.transform)?;
+            .filter(|(_, avatar, _)| *avatar != world.agent_id)
+            .filter_map(|(joint, avatar, transform)| {
+                let distance = hitbox_distance(origin, direction, max_distance, transform)?;
                 Some(AvatarHit {
-                    avatar: hitbox.avatar,
-                    joint: hitbox.joint.to_owned(),
+                    avatar,
+                    joint: joint.to_owned(),
                     distance,
                     position: origin + direction * distance,
                 })
@@ -140,7 +144,6 @@ fn hitbox_distance(origin: Vec3, direction: Vec3, max_distance: f32, transform: 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use glam::Quat;
 
     #[test]
     fn ray_hits_scaled_rotated_collision_volume_at_world_distance() {

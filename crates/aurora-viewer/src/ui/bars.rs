@@ -83,7 +83,7 @@ pub enum BarAction {
     ToggleQuickjump,
     /// Advanced › Quiet snapshots (PlayModeUISndSnapshot).
     ToggleQuietSnapshots,
-    /// Advanced › Avatar hitboxes: local skeleton-volume visualization.
+    /// Advanced › Avatar hitboxes: simulator-reported avatar bounds.
     ToggleAvatarHitboxes,
     ToggleWaterWalk,
     ToggleSwimming,
@@ -259,7 +259,7 @@ pub struct StatusInfo<'a> {
     /// Photos are taken without the shutter sound nor the snapshot
     /// animation (Advanced › Quiet snapshots).
     pub quiet_snapshots: bool,
-    /// Local avatar collision-volume overlay (Preferences › Combat).
+    /// Simulator-reported avatar bounds (Preferences › Combat).
     pub show_hitboxes: bool,
     /// The grid has a Marketplace (World › SL Marketplace is shown only on
     /// the Second Life grids, GridCheck "secondlife").
