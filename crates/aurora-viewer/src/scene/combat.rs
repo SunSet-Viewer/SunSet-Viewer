@@ -28,7 +28,12 @@ impl Scene {
         self.hitboxes(world, now, None)
     }
 
-    fn hitboxes<'a>(&self, world: &'a World, now: Instant, ray: Option<(Vec3, Vec3, f32)>) -> Vec<AvatarHitbox<'a>> {
+    fn hitboxes<'a>(
+        &self,
+        world: &'a World,
+        now: Instant,
+        ray: Option<(Vec3, Vec3, f32)>,
+    ) -> Vec<AvatarHitbox<'a>> {
         let Some(skeleton) = world.avatar_lib.skeleton.as_ref() else {
             return Vec::new();
         };
@@ -46,7 +51,10 @@ impl Scene {
                 let to_avatar = position - origin;
                 let along = to_avatar.dot(direction);
                 let radius = anchors::skeleton_extent(object);
-                if along < -radius || along > max_distance + radius || to_avatar.length_squared() - along * along > radius * radius {
+                if along < -radius
+                    || along > max_distance + radius
+                    || to_avatar.length_squared() - along * along > radius * radius
+                {
                     continue;
                 }
             }

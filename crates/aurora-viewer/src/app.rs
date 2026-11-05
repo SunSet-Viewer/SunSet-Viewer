@@ -13365,6 +13365,10 @@ impl App {
                 self.settings.save();
                 log::info!("quiet snapshots: {}", !self.settings.snapshot.sound);
             }
+            BarAction::ToggleAvatarHitboxes => {
+                self.settings.combat.show_hitboxes = !self.settings.combat.show_hitboxes;
+                self.settings.save();
+            }
             BarAction::ToggleWaterWalk => self.toggle_water_walk(),
             BarAction::ToggleSwimming => self.toggle_swimming(),
             BarAction::MoveLockOptions => self.movelock_ui.open = true,
@@ -14889,6 +14893,7 @@ impl App {
                     },
                     show_huds: self.settings.show_huds,
                     hud_zoom: self.world.hud_zoom,
+                    show_hitboxes: self.settings.combat.show_hitboxes,
                     ban_lines: self.settings.maps.ban_lines,
                     world_overlays: self.settings.world_overlays,
                     show_transparency: self.settings.debug.show_alpha,

@@ -83,6 +83,8 @@ pub enum BarAction {
     ToggleQuickjump,
     /// Advanced › Quiet snapshots (PlayModeUISndSnapshot).
     ToggleQuietSnapshots,
+    /// Advanced › Avatar hitboxes: local skeleton-volume visualization.
+    ToggleAvatarHitboxes,
     ToggleWaterWalk,
     ToggleSwimming,
     MoveLockOptions,
@@ -257,6 +259,8 @@ pub struct StatusInfo<'a> {
     /// Photos are taken without the shutter sound nor the snapshot
     /// animation (Advanced › Quiet snapshots).
     pub quiet_snapshots: bool,
+    /// Local avatar collision-volume overlay (Preferences › Combat).
+    pub show_hitboxes: bool,
     /// The grid has a Marketplace (World › SL Marketplace is shown only on
     /// the Second Life grids, GridCheck "secondlife").
     pub marketplace: bool,
@@ -1214,6 +1218,10 @@ fn main_menus(ui: &mut egui::Ui, p: &Palette, panels: &mut Panels, st: &StatusIn
                 crate::ui::dev_toolbox::WINDOW,
                 &mut panels.dev_toolbox,
             );
+            let hitboxes = aurora_i18n::tr!("ui-options-combat-show-hitboxes");
+            if menu::check(ui, p, "box", hitboxes, st.show_hitboxes, true) {
+                *action = BarAction::ToggleAvatarHitboxes;
+            }
             // Develop › Consoles › Region Debug Console, for those the
             // region gives the console to
             if st.region_console {

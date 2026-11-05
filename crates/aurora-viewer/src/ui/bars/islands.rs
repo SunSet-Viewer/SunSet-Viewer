@@ -1118,6 +1118,7 @@ mod tests {
             show_bug_report: bug,
             show_huds: true,
             hud_zoom: 1.0,
+            show_hitboxes: false,
             region: "Aurora Demo",
             parcel: "Aurora Plaza",
             tp_back: None,
