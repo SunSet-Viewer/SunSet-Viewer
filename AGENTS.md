@@ -1,6 +1,6 @@
 # AGENTS.md — rules for AI agents
 
-This file is for the AI agents (Claude Code, Codex, etc.) working on Aurora
+This file is for the AI agents (Claude Code, Codex, etc.) working on SunSet
 Viewer. **Read it in full at the start of every session**, then
 [ARCHITECTURE.md](ARCHITECTURE.md) and [TASKS.md](TASKS.md). It overrides your
 default habits. Humans have their own guide: [HUMANS.md](HUMANS.md).
@@ -67,7 +67,7 @@ it is done:
   (side-by-side screenshots, same settings).
 - **We do not copy** its outdated techniques: constraints inherited from
   OpenGL, spaced-out updates that sacrifice smoothness, historical patches.
-  Aurora is written in Rust on Vulkan: we redo things cleanly and in a modern
+  SunSet is written in Rust on Vulkan: we redo things cleanly and in a modern
   way, using the GPU to the full (bindless, compute, GPU culling, parallel
   work…), for a smooth viewer, flawless rendering and a very high frame rate.
 - **The network and the protocol** (messages, capabilities, rates, order of
@@ -79,7 +79,7 @@ it is done:
 
 Before porting or changing a feature, **look at how Firestorm really does
 it**, to learn the expected behaviour and its edge cases, then choose the
-best implementation for Aurora.
+best implementation for SunSet.
 
 - The official sources must sit **next to the repository**:
   `../phoenix-firestorm` (read-only, never inside the repository).
@@ -166,7 +166,7 @@ cargo run -p aurora-viewer --bin SunSet-Viewer -- --title "Test avatar-gaze"
 ```
 
 - **Always `--title "Test <task>"`**: the window is named
-  "Aurora Viewer <version> - Test <task> (Dev)" (the build profile ends the
+  "SunSet Viewer <version> - Test <task> (Dev)" (the build profile ends the
   title: Dev, Release or Debug) and the log is
   `%LOCALAPPDATA%\Aurora\AuroraViewer\data\logs\aurora-demo-test-<task>.log`.
   The agents' windows and logs do not get mixed up.
@@ -290,7 +290,7 @@ progress, ⬜ to do. It is written in English.
 
 ## 7. Interface and branding
 
-The whole interface follows the Aurora theme: flat, clean, modern, almost
+The whole interface follows the SunSet theme: flat, clean, modern, almost
 square corners, discreet glass. A screen that does not look like the others
 is a defect, even if it works. The full rules are in
 [docs/BRANDING.md](docs/BRANDING.md); the points you must respect with every

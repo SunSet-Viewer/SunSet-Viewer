@@ -1,17 +1,31 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 720">
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 720" width="720" height="720">
   <defs>
-    <linearGradient id="sunset" x1="0" x2="0" y1="0" y2="1">
-      <stop offset="0" stop-color="#ffe066"/>
-      <stop offset=".22" stop-color="#ff9e3b"/>
-      <stop offset=".48" stop-color="#ff5252"/>
-      <stop offset=".72" stop-color="#e02475"/>
-      <stop offset="1" stop-color="#6366f1"/>
+    <linearGradient id="sunsetGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFE066" />
+      <stop offset="22%" stop-color="#FF9E3B" />
+      <stop offset="48%" stop-color="#FF5252" />
+      <stop offset="72%" stop-color="#E02475" />
+      <stop offset="90%" stop-color="#9333EA" />
+      <stop offset="100%" stop-color="#6366F1" />
     </linearGradient>
-    <clipPath id="disc"><circle cx="360" cy="360" r="260"/></clipPath>
+    <clipPath id="sunDisc">
+      <circle cx="360" cy="330" r="240" />
+    </clipPath>
   </defs>
-  <g clip-path="url(#disc)">
-    <circle cx="360" cy="360" r="260" fill="url(#sunset)"/>
-    <path d="M100 430 225 345l90 60 120-95 185 135v175H100z" fill="#181b2d"/>
-    <path d="m100 515 155-90 105 75 130-95 130 90v125H100z" fill="#0b0f20"/>
+  <g fill="url(#sunsetGrad)">
+    <g clip-path="url(#sunDisc)">
+      <rect x="120" y="90" width="480" height="160" />
+      <rect x="120" y="264" width="480" height="40" />
+      <rect x="120" y="322" width="480" height="34" />
+      <rect x="120" y="378" width="480" height="28" />
+      <rect x="120" y="432" width="480" height="22" />
+      <rect x="120" y="484" width="480" height="16" />
+    </g>
+    <rect x="140" y="524" width="440" height="16" rx="8.0" />
+    <rect x="180" y="556" width="360" height="14" rx="7.0" />
+    <rect x="220" y="586" width="280" height="12" rx="6.0" />
+    <rect x="260" y="614" width="200" height="10" rx="5.0" />
+    <rect x="300" y="640" width="120" height="8" rx="4.0" />
   </g>
 </svg>

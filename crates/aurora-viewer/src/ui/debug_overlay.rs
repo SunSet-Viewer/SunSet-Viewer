@@ -5,10 +5,10 @@
 
 use super::hud::Projector;
 use crate::scene::{LodInfo, Scene};
-use crate::settings::DebugView;
+use crate::settings::{CombatSettings, DebugView};
 use crate::world::World;
 use egui::{Color32, Stroke};
-use glam::{Mat4, Quat, Vec3};
+use glam::{Mat4, Quat, Vec3, Vec4};
 use std::time::Instant;
 
 /// Objects considered around the camera (nearest first).
@@ -199,6 +199,18 @@ fn lod_labels(
     out
 }
 
+fn view_center_ray(proj: &Projector, eye: Vec3) -> Option<Vec3> {
+    let inverse = proj.view_proj.inverse();
+    if !inverse.is_finite() {
+        return None;
+    }
+    let far = inverse * Vec4::new(0.0, 0.0, 0.001, 1.0);
+    if !far.is_finite() || far.w.abs() < 1e-8 {
+        return None;
+    }
+    (far.truncate() / far.w - eye).try_normalize()
+}
+
 #[allow(clippy::too_many_arguments)]
 pub fn draw(
     ctx: &egui::Context,
@@ -207,10 +219,11 @@ pub fn draw(
     proj: &Projector,
     eye: Vec3,
     dv: &DebugView,
+    combat: &CombatSettings,
     probes: Option<ProbeList>,
     lod: &[LodInfo],
 ) {
-    if !dv.any_overlay() {
+    if !dv.any_overlay() && !combat.show_hitboxes && !combat.local_hit_detection {
         return;
     }
     let lines = Lines {
@@ -218,6 +231,31 @@ pub fn draw(
         proj,
     };
     let now = Instant::now();
+
+    if combat.show_hitboxes {
+        for hitbox in scene.avatar_hitboxes(world, now) {
+            lines.cube(
+                |x, y, z| hitbox.transform.transform_point3(Vec3::new(x, y, z)),
+                Color32::from_rgb(255, 190, 64),
+            );
+        }
+    }
+    if combat.local_hit_detection
+        && let Some(direction) = view_center_ray(proj, eye)
+        && let Some(hit) = scene.avatar_hit_test(world, combat, eye, direction, scene.draw_distance, now)
+        && let Some((at, _)) = proj.project(hit.position)
+    {
+        let color = Color32::from_rgb(70, 220, 245);
+        lines.painter.circle_filled(at, 3.5, color);
+        lines.painter.circle_stroke(at, 6.0, Stroke::new(1.0, color));
+        lines.painter.text(
+            at + egui::vec2(8.0, -8.0),
+            egui::Align2::LEFT_CENTER,
+            format!("{} {:.1} m", hit.joint, hit.distance),
+            egui::FontId::proportional(11.0),
+            color,
+        );
+    }
 
     if dv.lod_info {
         let pointer = ctx.input(|i| i.pointer.latest_pos()).unwrap_or_else(|| ctx.content_rect().center());

@@ -13,6 +13,7 @@ pub mod blend_order;
 mod blender_live;
 pub mod body_physics;
 pub mod build_hologram;
+pub mod combat;
 pub mod complexity;
 pub mod creation_preview;
 pub(crate) mod default_motions;

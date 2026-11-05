@@ -7,6 +7,7 @@ pub mod aurora;
 pub mod avatars;
 pub mod camera;
 pub mod chat;
+pub mod combat;
 pub mod commands;
 pub mod confirmations;
 pub mod controls;
@@ -116,5 +117,6 @@ pub fn draw(cx: &mut Cx, page: Page, tab: usize) {
         Page::System => system::page(cx),
         Page::Network => network::page(cx),
         Page::Fun => fun::page(cx),
+        Page::Combat => combat::page(cx),
     }
 }

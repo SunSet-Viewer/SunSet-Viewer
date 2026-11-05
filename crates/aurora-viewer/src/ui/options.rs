@@ -66,10 +66,11 @@ pub enum Page {
     System,
     Network,
     Fun,
+    Combat,
 }
 
 impl Page {
-    pub const ALL: [Page; 21] = [
+    pub const ALL: [Page; 22] = [
         Page::Aurora,
         Page::Graphics,
         Page::Camera,
@@ -91,6 +92,7 @@ impl Page {
         Page::System,
         Page::Network,
         Page::Fun,
+        Page::Combat,
     ];
 
     /// Its name in `AURORA_DEMO_OPTIONS`.
@@ -117,6 +119,7 @@ impl Page {
             Page::System => "system",
             Page::Network => "network",
             Page::Fun => "fun",
+            Page::Combat => "combat",
         }
     }
 
@@ -143,6 +146,7 @@ impl Page {
             Page::System => aurora_i18n::tr!("ui-options-page-system"),
             Page::Network => aurora_i18n::tr!("ui-options-network-and-cache"),
             Page::Fun => aurora_i18n::tr!("ui-options-fun"),
+            Page::Combat => aurora_i18n::tr!("ui-options-combat"),
         }
     }
 
@@ -170,6 +174,7 @@ impl Page {
             Page::System => aurora_i18n::tr!("ui-options-about-system"),
             Page::Network => aurora_i18n::tr!("ui-options-about-network"),
             Page::Fun => aurora_i18n::tr!("ui-options-about-fun"),
+            Page::Combat => aurora_i18n::tr!("ui-options-about-combat"),
         }
     }
 
@@ -196,6 +201,7 @@ impl Page {
             Page::System => "world-filled",
             Page::Network => "cloud-data-connection-filled",
             Page::Fun => "confetti-filled",
+            Page::Combat => "swords-filled",
         }
     }
 
@@ -215,6 +221,7 @@ impl Page {
             Page::Controls => Some(aurora_i18n::tr!("ui-options-controls")),
             Page::System => Some(aurora_i18n::tr!("ui-options-section-system")),
             Page::Fun => Some(aurora_i18n::tr!("ui-options-section-extras")),
+            Page::Combat => Some(aurora_i18n::tr!("ui-options-combat")),
             _ => None,
         }
     }

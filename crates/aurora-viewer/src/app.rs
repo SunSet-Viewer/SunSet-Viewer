@@ -15436,6 +15436,7 @@ impl App {
                     projector,
                     self.camera.position,
                     &self.settings.debug,
+                    &self.settings.combat,
                     self.settings.debug.probes.then(|| self.probes.debug_list()),
                     &self.lod_infos,
                 );

@@ -382,6 +382,22 @@ pub struct DebugView {
     pub pass_view: bool,
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(default)]
+pub struct CombatSettings {
+    pub local_hit_detection: bool,
+    pub show_hitboxes: bool,
+}
+
+impl Default for CombatSettings {
+    fn default() -> Self {
+        Self {
+            local_hit_detection: false,
+            show_hitboxes: false,
+        }
+    }
+}
+
 impl DebugView {
     /// One view at a time replaces the image: the one just turned on
     /// (`before`: the state the interface started from) turns the others
@@ -448,6 +464,9 @@ pub struct Settings {
     /// Debug overlays (not saved).
     #[serde(skip)]
     pub debug: DebugView,
+    /// Local avatar ray hit detection and collision-volume visualization.
+    #[serde(default)]
+    pub combat: CombatSettings,
     /// The Dev Toolbox's arrangement (Customize); None: the default one.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub dev_toolbox: Option<crate::dev_toolbox::tools::Layout>,
@@ -1741,6 +1760,7 @@ impl Default for Settings {
             beacons: Default::default(),
             world_overlays: Default::default(),
             debug: DebugView::default(),
+            combat: CombatSettings::default(),
             dev_toolbox: None,
             build: Default::default(),
             camera: Default::default(),
