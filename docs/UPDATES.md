@@ -76,9 +76,11 @@ tried locally with `scripts/test-update.ps1 -Beta`
 
 ## Package and release policy
 
-Pushing a version tag on `main` starts the Release workflow. It builds the
-platform packages in parallel and publishes one GitHub release only after
-all builds and package checks succeed:
+Pushing a version tag on `main` starts the Release workflow. It creates a
+draft GitHub release, builds the platform packages in parallel, and uploads
+each package and checksum directly to that draft. The workflow verifies the
+complete set of remote assets before publishing; a failed or repeated run can
+reuse the draft and replace assets by name:
 
 - `SunSet-Viewer-vX.Y.Z-windows-x64.zip`, with a single root folder of that name;
 - its `.zip.sha256` file, in the format `hash  zip-name`;

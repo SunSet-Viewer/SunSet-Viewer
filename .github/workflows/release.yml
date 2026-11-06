@@ -7,7 +7,6 @@ on:
 
 permissions:
   contents: read
-  actions: read
 
 concurrency:
   group: release-${{ github.ref }}
@@ -21,6 +20,9 @@ jobs:
       tag: ${{ steps.tag.outputs.tag }}
       version: ${{ steps.tag.outputs.version }}
       prerelease: ${{ steps.tag.outputs.prerelease }}
+    permissions:
+      actions: read
+      contents: write
     steps:
       - uses: actions/checkout@v7
         with:
@@ -54,10 +56,32 @@ jobs:
           else
             echo "prerelease=false" >> "$GITHUB_OUTPUT"
           fi
+      - name: Create or reuse a draft release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          AURORA_VERSION_TAG: ${{ steps.tag.outputs.tag }}
+          IS_PRERELEASE: ${{ steps.tag.outputs.prerelease }}
+        run: |
+          set -euo pipefail
+          if release="$(gh release view "$AURORA_VERSION_TAG" --repo "$GITHUB_REPOSITORY" --json isDraft 2>/dev/null)"; then
+            if [[ "$(jq -r '.isDraft' <<< "$release")" != true ]]; then
+              echo "A published release already exists for $AURORA_VERSION_TAG." >&2
+              exit 1
+            fi
+            echo "Reusing the existing draft release for $AURORA_VERSION_TAG."
+          else
+            args=(--repo "$GITHUB_REPOSITORY" --title "SunSet Viewer $AURORA_VERSION_TAG" --generate-notes --verify-tag --draft)
+            if [[ "$IS_PRERELEASE" == true ]]; then args+=(--prerelease); fi
+            gh release create "$AURORA_VERSION_TAG" "${args[@]}"
+          fi
 
   windows:
     name: Windows ZIP, MSI and symbols
     needs: prepare
+    permissions:
+      actions: read
+      contents: write
     runs-on: windows-latest
     env:
       AURORA_VERSION_TAG: ${{ needs.prepare.outputs.tag }}
@@ -184,16 +208,22 @@ jobs:
               [IO.File]::WriteAllText("$($_.FullName).sha256", "$hash  $($_.Name)`n", [Text.UTF8Encoding]::new($false))
             }
           }
-      - uses: actions/upload-artifact@v7
-        with:
-          name: release-windows
-          path: release-output/*
-          if-no-files-found: error
-          retention-days: 7
+      - name: Upload Windows packages to the draft release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $files = @(Get-ChildItem -LiteralPath release-output -File | ForEach-Object { $_.FullName })
+          if ($files.Count -eq 0) { throw 'No Windows release files were produced.' }
+          & gh release upload $env:AURORA_VERSION_TAG @files --repo $env:GITHUB_REPOSITORY --clobber
+          if ($LASTEXITCODE -ne 0) { throw "Uploading Windows release files failed ($LASTEXITCODE)." }
 
   macos:
     name: macOS ARM64 DMG
     needs: prepare
+    permissions:
+      actions: read
+      contents: write
     runs-on: macos-15
     env:
       AURORA_VERSION_TAG: ${{ needs.prepare.outputs.tag }}
@@ -286,16 +316,17 @@ jobs:
           xcrun notarytool submit "$dmg" --key "$key" --key-id "$APPLE_API_KEY_ID" --issuer "$APPLE_API_ISSUER_ID" --wait
           xcrun stapler staple "$dmg"
           shasum -a 256 "$dmg" | awk '{print $1 "  " $2}' > "$dmg.sha256"
-      - uses: actions/upload-artifact@v7
-        with:
-          name: release-macos
-          path: release-output/*
-          if-no-files-found: error
-          retention-days: 7
+      - name: Upload macOS packages to the draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "$AURORA_VERSION_TAG" release-output/* --repo "$GITHUB_REPOSITORY" --clobber
 
   linux:
     name: Linux x64 archive
     needs: prepare
+    permissions:
+      actions: read
+      contents: write
     runs-on: ubuntu-24.04
     env:
       AURORA_VERSION_TAG: ${{ needs.prepare.outputs.tag }}
@@ -323,19 +354,16 @@ jobs:
           archive="release-output/${package}.tar.gz"
           tar -C "$RUNNER_TEMP" -czf "$archive" "$package"
           sha256sum "$archive" | awk '{print $1 "  " $2}' > "$archive.sha256"
-      - uses: actions/upload-artifact@v7
-        with:
-          name: release-linux
-          path: release-output/*
-          if-no-files-found: error
-          retention-days: 7
+      - name: Upload Linux packages to the draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "$AURORA_VERSION_TAG" release-output/* --repo "$GITHUB_REPOSITORY" --clobber
 
   publish:
     name: Publish GitHub release
     needs: [prepare, windows, macos, linux]
     runs-on: ubuntu-24.04
     permissions:
-      actions: read
       contents: write
     env:
       GH_TOKEN: ${{ github.token }}
@@ -345,11 +373,6 @@ jobs:
         with:
           ref: ${{ needs.prepare.outputs.tag }}
           fetch-depth: 0
-      - uses: actions/download-artifact@v8
-        with:
-          pattern: release-*
-          path: release-output
-          merge-multiple: true
       - name: Add update policy and verify release assets
         shell: pwsh
         run: |
@@ -362,26 +385,23 @@ jobs:
             "SunSet-Viewer-$env:AURORA_VERSION_TAG-macos-arm64.dmg",
             "SunSet-Viewer-$env:AURORA_VERSION_TAG-linux-x64.tar.gz"
           )
-          foreach ($file in $required) {
-            if (-not (Test-Path -LiteralPath (Join-Path 'release-output' $file))) { throw "Missing release asset: $file" }
-            if (-not (Test-Path -LiteralPath (Join-Path 'release-output' "$file.sha256"))) { throw "Missing checksum: $file.sha256" }
-          }
           if (-not $env:AURORA_VERSION_TAG.Contains('-')) {
             $msi = "SunSet-Viewer-$env:AURORA_VERSION_TAG-windows-x64.msi"
-            if (-not (Test-Path -LiteralPath (Join-Path 'release-output' $msi))) { throw "Missing stable Windows installer: $msi" }
-            if (-not (Test-Path -LiteralPath (Join-Path 'release-output' "$msi.sha256"))) { throw "Missing Windows installer checksum: $msi.sha256" }
+            $required += $msi
           }
-      - name: Publish all platform packages together
+          & gh release upload $env:AURORA_VERSION_TAG 'release-output/aurora-update-policy.json' --repo $env:GITHUB_REPOSITORY --clobber
+          if ($LASTEXITCODE -ne 0) { throw "Uploading the update policy failed ($LASTEXITCODE)." }
+          $release = & gh release view $env:AURORA_VERSION_TAG --repo $env:GITHUB_REPOSITORY --json assets | ConvertFrom-Json
+          if ($LASTEXITCODE -ne 0) { throw 'Could not verify uploaded release assets.' }
+          $assetNames = @($release.assets | ForEach-Object { $_.name })
+          foreach ($file in $required) {
+            foreach ($name in @($file, "$file.sha256")) {
+              if ($assetNames -notcontains $name) { throw "Missing uploaded release asset: $name" }
+            }
+          }
+          if ($assetNames -notcontains 'aurora-update-policy.json') { throw 'Missing uploaded release asset: aurora-update-policy.json' }
+      - name: Publish verified draft release
         shell: bash
         run: |
           set -euo pipefail
-          tag="$AURORA_VERSION_TAG"
-          if gh release view "$tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
-            gh release upload "$tag" release-output/* --repo "$GITHUB_REPOSITORY" --clobber
-          else
-            if [[ "$tag" == *-* ]]; then
-              gh release create "$tag" release-output/* --repo "$GITHUB_REPOSITORY" --title "SunSet Viewer $tag" --generate-notes --verify-tag --prerelease
-            else
-              gh release create "$tag" release-output/* --repo "$GITHUB_REPOSITORY" --title "SunSet Viewer $tag" --generate-notes --verify-tag
-            fi
-          fi
+          gh release edit "$AURORA_VERSION_TAG" --repo "$GITHUB_REPOSITORY" --draft=false --verify-tag
