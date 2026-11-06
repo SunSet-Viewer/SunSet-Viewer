@@ -61,6 +61,7 @@ jobs:
     runs-on: windows-latest
     env:
       AURORA_VERSION_TAG: ${{ needs.prepare.outputs.tag }}
+      CARGO_PROFILE_RELEASE_DEBUG: "2"
     steps:
       - uses: actions/checkout@v7
         with:
@@ -79,11 +80,14 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw "Installing dump_syms failed ($LASTEXITCODE)." }
           $pdb = Join-Path $env:GITHUB_WORKSPACE 'target/release/SunSet-Viewer.pdb'
           if (-not (Test-Path -LiteralPath $pdb)) {
-            # Cargo may leave the hashed binary's PDB beside it in deps/.
-            $pdb = Get-ChildItem -LiteralPath (Join-Path $env:GITHUB_WORKSPACE 'target/release/deps') -Filter 'SunSet-Viewer-*.pdb' -File -ErrorAction SilentlyContinue |
+            # Search the release tree in case Cargo places the linked PDB in deps/.
+            $pdb = Get-ChildItem -LiteralPath (Join-Path $env:GITHUB_WORKSPACE 'target/release') -Filter 'SunSet-Viewer*.pdb' -File -Recurse -ErrorAction SilentlyContinue |
               Sort-Object LastWriteTime -Descending | Select-Object -First 1 -ExpandProperty FullName
           }
-          if (-not $pdb -or -not (Test-Path -LiteralPath $pdb)) { throw 'Missing release symbols for SunSet-Viewer.exe.' }
+          if (-not $pdb -or -not (Test-Path -LiteralPath $pdb)) {
+            $found = Get-ChildItem -LiteralPath (Join-Path $env:GITHUB_WORKSPACE 'target/release') -Filter '*.pdb' -File -Recurse -ErrorAction SilentlyContinue | Select-Object -ExpandProperty FullName
+            throw "Missing release symbols for SunSet-Viewer.exe. Cargo profile debug is '$env:CARGO_PROFILE_RELEASE_DEBUG'. PDB files found: $($found -join ', ')"
+          }
           $lines = & dump_syms $pdb
           if ($LASTEXITCODE -ne 0 -or -not $lines) { throw 'dump_syms could not read the release PDB.' }
           $header = $lines[0] -split '\s+'
