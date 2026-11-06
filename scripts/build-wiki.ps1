@@ -19,7 +19,7 @@
 param(
     [Parameter(Mandatory)][string]$Out,
     # owner/name on GitHub, for the links back to the repository
-    [string]$Repository = $(if ($env:GITHUB_REPOSITORY) { $env:GITHUB_REPOSITORY } else { 'Adriano-Severino/second-life-projeto' }),
+    [string]$Repository = $(if ($env:GITHUB_REPOSITORY) { $env:GITHUB_REPOSITORY } else { 'Adriano-Severino/SunSet-Viewer' }),
     [string]$Branch = 'main'
 )
 $ErrorActionPreference = 'Stop'

@@ -929,7 +929,7 @@ notecard-markdown-demo =
 
     > 埋め込まれたアイテムはノートカードの一部のままです。
 
-    { "[" }SunSet Viewer](https://github.com/Adriano-Severino/second-life-projeto/tree/main/SunSet-Viewer)
+    { "[" }SunSet Viewer](https://github.com/Adriano-Severino/SunSet-Viewer)
 
     ```text
     プレーンなコードブロック

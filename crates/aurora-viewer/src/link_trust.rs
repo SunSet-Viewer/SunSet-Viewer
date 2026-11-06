@@ -117,7 +117,7 @@ const THROWAWAY_HOSTING: &[&str] = &[
 
 /// Names a fake site borrows to look official (compared without dots and
 /// dashes, so "second-life-login.example" is caught).
-const IMPERSONATED: &[&str] = &["secondlife", "lindenlab", "firestorm", "auroraviewer", "tiliainc"];
+const IMPERSONATED: &[&str] = &["secondlife", "lindenlab", "firestorm", "auroraviewer", "sunsetviewer", "tiliainc"];
 
 /// Verdict on a web link.
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -336,6 +336,7 @@ mod tests {
             "https://casperlet.com/",
             "https://aurora-viewer.org",
             "https://www.aurora-viewer.org/downloads",
+            "https://github.com/Adriano-Severino/SunSet-Viewer/pulls",
             "https://github.com/Aurora-Viewer/Aurora-Viewer/pulls",
             "https://gist.github.com/x",
             "https://secondlife.com./x",

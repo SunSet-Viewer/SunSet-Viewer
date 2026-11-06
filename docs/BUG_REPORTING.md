@@ -2,7 +2,7 @@
 
 "Report a bug", in the top bar, the Help menu and on the login screen, opens
 the project's
-[GitHub issue forms](https://github.com/Adriano-Severino/second-life-projeto/issues/new/choose)
+[GitHub issue forms](https://github.com/Adriano-Severino/SunSet-Viewer/issues/new/choose)
 in the browser. The tester needs a GitHub account, chooses the bug report
 template and fills it in on GitHub. "Copy trace" and "Open report folder",
 in the crash window, give the full technical details, to review before

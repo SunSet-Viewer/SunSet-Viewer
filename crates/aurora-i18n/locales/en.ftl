@@ -932,7 +932,7 @@ notecard-markdown-demo =
 
     > Embedded items remain part of the notecard.
 
-    { "[" }SunSet Viewer](https://github.com/Adriano-Severino/second-life-projeto/tree/main/SunSet-Viewer)
+    { "[" }SunSet Viewer](https://github.com/Adriano-Severino/SunSet-Viewer)
 
     ```text
     A plain code block

@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Entry point of the one-line installation command: downloads the SunSet
     tools (scripts/tools) from GitHub and runs the installation of the
@@ -8,7 +8,7 @@
 .DESCRIPTION
     The command, in a command prompt opened in the project folder:
 
-      powershell -NoProfile -ExecutionPolicy Bypass -Command "$f = Join-Path $env:TEMP 'sunset-setup.ps1'; irm https://raw.githubusercontent.com/Adriano-Severino/second-life-projeto/main/SunSet-Viewer/scripts/setup.ps1 -OutFile $f; & $f"
+      powershell -NoProfile -ExecutionPolicy Bypass -Command "$f = Join-Path $env:TEMP 'sunset-setup.ps1'; irm https://raw.githubusercontent.com/Adriano-Severino/SunSet-Viewer/main/scripts/setup.ps1 -OutFile $f; & $f"
 
 .EXAMPLE
     ./scripts/setup.ps1 -Path D:\Dev\SunSet-Viewer -Yes   # no questions
@@ -33,7 +33,7 @@ $dir = Join-Path $env:TEMP 'sunset-tools'
 if (Test-Path $dir) { Remove-Item -LiteralPath $dir -Recurse -Force }
 New-Item -ItemType Directory -Path $dir | Out-Null
 Write-Host 'Downloading the SunSet tools…'
-$files = Invoke-RestMethod 'https://api.github.com/repos/Adriano-Severino/second-life-projeto/contents/SunSet-Viewer/scripts/tools?ref=main'
+$files = Invoke-RestMethod 'https://api.github.com/repos/Adriano-Severino/SunSet-Viewer/contents/scripts/tools?ref=main'
 foreach ($f in $files | Where-Object { $_.type -eq 'file' }) {
     Invoke-WebRequest -Uri $f.download_url -OutFile (Join-Path $dir $f.name) -UseBasicParsing
 }

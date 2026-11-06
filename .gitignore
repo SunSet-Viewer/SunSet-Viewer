@@ -41,6 +41,7 @@
 
 # Editors and OS
 .vscode/
+.vs/
 .idea/
 *.swp
 .DS_Store
