@@ -936,6 +936,13 @@ mod tests {
                 _ => None,
             }
         }
+        fn button_center(shape: &egui::Shape) -> Option<egui::Pos2> {
+            match shape {
+                egui::Shape::Rect(rect) if (rect.rect.height() - 38.0).abs() < 0.5 => Some(rect.rect.center()),
+                egui::Shape::Vec(shapes) => shapes.iter().find_map(button_center),
+                _ => None,
+            }
+        }
         let ctx = egui::Context::default();
         let mut settings = Settings {
             username: "Demo Resident".into(),
@@ -1035,11 +1042,7 @@ mod tests {
         form.block_reason = None;
         draw(vec![], &mut form, &mut settings);
         let (_, output) = draw(vec![], &mut form, &mut settings);
-        let pos = output
-            .shapes
-            .iter()
-            .find_map(|s| position(&s.shape, aurora_i18n::tr!("ui-login-log-in")))
-            .expect("enabled button");
+        let pos = output.shapes.iter().find_map(|s| button_center(&s.shape)).expect("enabled button");
         draw(
             vec![
                 egui::Event::PointerMoved(pos),
@@ -1054,12 +1057,15 @@ mod tests {
             &mut settings,
         );
         let (action, _) = draw(
-            vec![egui::Event::PointerButton {
-                pos,
-                button: egui::PointerButton::Primary,
-                pressed: false,
-                modifiers: Default::default(),
-            }],
+            vec![
+                egui::Event::PointerMoved(pos),
+                egui::Event::PointerButton {
+                    pos,
+                    button: egui::PointerButton::Primary,
+                    pressed: false,
+                    modifiers: Default::default(),
+                },
+            ],
             &mut form,
             &mut settings,
         );

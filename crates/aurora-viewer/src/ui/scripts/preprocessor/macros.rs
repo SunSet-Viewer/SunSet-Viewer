@@ -341,7 +341,7 @@ pub(super) fn condition(text: &str, defs: &Definitions, line: usize) -> Result<b
             output.extend(lex::code(if defs.contains_key(&name.text) { "1" } else { "0" }));
             at += 1;
             if parens {
-                if !tokens.get(at).is_some_and(|t| t.text == ")") {
+                if tokens.get(at).is_none_or(|t| t.text != ")") {
                     return Err(error());
                 }
                 at += 1;

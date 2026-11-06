@@ -458,7 +458,7 @@ pub fn land_query(inc: Ratings, filter: LandFilter, access: AgentAccess) -> Resu
 /// limit_area"): with the price box ticked and its field empty, only rows
 /// priced 0 stay, which is what auctions are listed at.
 pub fn land_row_kept(filter: &LandFilter, price: i32, area: i32) -> bool {
-    !(filter.limit_price && price > filter.price) && !(filter.limit_area && area < filter.area)
+    !(filter.limit_price && price > filter.price || filter.limit_area && area < filter.area)
 }
 
 /// "events_search_mode": events going on and to come, or those of a day
@@ -499,7 +499,7 @@ pub fn event_row_kept(inc: Ratings, owner: Uuid, flags: u32) -> bool {
     if flags & event_flags::MATURE != 0 && !inc.mature {
         return false;
     }
-    !(flags & event_flags::ADULT != 0 && !inc.adult)
+    flags & event_flags::ADULT == 0 || inc.adult
 }
 
 /// pack_classified_flags_request (llclassifiedflags.cpp), without auto-renew.

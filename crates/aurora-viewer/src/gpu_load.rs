@@ -94,12 +94,14 @@ impl GpuLoad {
 }
 
 /// The name Windows gives the card in its counters' instances.
+#[cfg(any(windows, test))]
 pub fn luid_text(luid: u64) -> String {
     format!("luid_0x{:08x}_0x{:08x}", luid >> 32, luid & 0xffff_ffff)
 }
 
 /// Bytes of dedicated memory in use on the card `luid` (`GPU Adapter Memory`
 /// instances are named `luid_0x<high>_0x<low>_phys_<n>`).
+#[cfg(any(windows, test))]
 pub fn adapter_used(memory: &[(String, f64)], luid: &str) -> Option<u64> {
     memory
         .iter()

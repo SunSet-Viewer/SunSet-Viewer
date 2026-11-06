@@ -231,7 +231,7 @@ impl Session<'_> {
         if pkt.id == ReplyTaskInventory::ID {
             let m: ReplyTaskInventory = pkt.decode()?;
             let object = m.inventory_data.task_id;
-            if !self.tasks.pending.get(&object).is_some_and(|(addr, _)| *addr == from) {
+            if self.tasks.pending.get(&object).is_none_or(|(addr, _)| *addr != from) {
                 return Ok(true);
             }
             self.tasks.pending.remove(&object);

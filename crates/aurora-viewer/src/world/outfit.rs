@@ -472,10 +472,9 @@ impl OutfitRestore {
             .iter()
             .filter(|id| !w.worn.contains(id) && !self.user_removed.contains(id))
             .filter(|id| {
-                !self
-                    .requested
+                self.requested
                     .get(id)
-                    .is_some_and(|at| now.saturating_duration_since(*at) < MIN_RETRY)
+                    .is_none_or(|at| now.saturating_duration_since(*at) >= MIN_RETRY)
             })
             .filter_map(|id| w.inventory.items.get(id))
             .map(|it| attach_request(it, w.agent))

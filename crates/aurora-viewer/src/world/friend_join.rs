@@ -286,8 +286,8 @@ impl World {
     }
 
     pub(super) fn note_friend_join_animations(&mut self, avatar: Uuid) {
-        if !self.map.friend_join.as_ref().is_some_and(|j| j.avatar == avatar)
-            && !self.map.friend_join_flight.as_ref().is_some_and(|f| f.avatar == avatar)
+        if self.map.friend_join.as_ref().is_none_or(|j| j.avatar != avatar)
+            && self.map.friend_join_flight.as_ref().is_none_or(|f| f.avatar != avatar)
         {
             return;
         }

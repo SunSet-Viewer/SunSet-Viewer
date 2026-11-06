@@ -1181,8 +1181,8 @@ impl World {
                 .filter(|(i, _)| match mode {
                     "getoutfitnames" => worn(*i),
                     "getaddoutfitnames" => {
-                        !self.rlva_layer_locked("addoutfit", *i as u8, Uuid::nil())
-                            && !(*i < 4 && worn(*i) && self.rlva_layer_locked("remoutfit", *i as u8, Uuid::nil()))
+                        !(self.rlva_layer_locked("addoutfit", *i as u8, Uuid::nil())
+                            || *i < 4 && worn(*i) && self.rlva_layer_locked("remoutfit", *i as u8, Uuid::nil()))
                     }
                     _ => cof
                         .iter()

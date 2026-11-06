@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Package
+    Name="SunSet Viewer"
+    Manufacturer="SunSet Viewer"
+    Version="$(var.PackageVersion)"
+    UpgradeCode="C4F14E9A-5BB2-4C6D-8F82-612C7528A18D"
+    Scope="perMachine">
+    <MajorUpgrade
+      AllowSameVersionUpgrades="yes"
+      DowngradeErrorMessage="A newer version of SunSet Viewer is already installed." />
+    <MediaTemplate EmbedCab="yes" />
+
+    <StandardDirectory Id="ProgramFiles64Folder">
+      <Directory Id="INSTALLFOLDER" Name="SunSet Viewer" />
+    </StandardDirectory>
+    <StandardDirectory Id="ProgramMenuFolder">
+      <Directory Id="ApplicationProgramsFolder" Name="SunSet Viewer">
+        <Component Id="ApplicationShortcut" Guid="*">
+          <Shortcut
+            Id="ApplicationStartMenuShortcut"
+            Name="SunSet Viewer"
+            Description="Second Life and OpenSim viewer"
+            Target="[INSTALLFOLDER]SunSet-Viewer.exe"
+            WorkingDirectory="INSTALLFOLDER" />
+          <RemoveFolder Id="RemoveApplicationProgramsFolder" On="uninstall" />
+          <RegistryValue
+            Root="HKLM"
+            Key="Software\SunSet Viewer"
+            Name="Installed"
+            Type="integer"
+            Value="1"
+            KeyPath="yes" />
+        </Component>
+      </Directory>
+    </StandardDirectory>
+
+    <Files Include="$(var.PackageRoot)\**" Directory="INSTALLFOLDER" />
+  </Package>
+</Wix>

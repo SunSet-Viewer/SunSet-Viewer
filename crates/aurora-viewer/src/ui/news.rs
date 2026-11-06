@@ -469,15 +469,12 @@ mod tests {
 
     #[test]
     fn test_sources_stay_on_this_machine_or_in_the_repository() {
+        let repository_news = crate::links::NEWS_FEED.trim_end_matches('/');
         for (address, base, loopback) in [
             ("http://127.0.0.1:8123", "http://127.0.0.1:8123/", true),
             ("http://localhost:8123/news/", "http://localhost:8123/news/", true),
             ("http://[::1]:8123/news", "http://[::1]:8123/news/", true),
-            (
-                " https://raw.githubusercontent.com/Aurora-Viewer/Aurora-Viewer/feat/actualites-md/news ",
-                "https://raw.githubusercontent.com/Aurora-Viewer/Aurora-Viewer/feat/actualites-md/news/",
-                false,
-            ),
+            (repository_news, crate::links::NEWS_FEED, false),
         ] {
             let source = Source::test(address).unwrap_or_else(|| panic!("{address}"));
             assert_eq!((source.base.as_str(), source.loopback), (base, loopback));

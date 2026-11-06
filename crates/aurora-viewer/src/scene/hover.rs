@@ -869,7 +869,7 @@ impl super::Scene {
         // are such meshes (hair, clothes): about 2,900 of them went through
         // `transparent_action_point` at each search, 0.3-0.6 ms, and, worn,
         // their sway disturbed a kept answer (`PickIndex::left_out`).
-        if !(g.rigged && !g.hud) {
+        if !g.rigged || g.hud {
             if o.click_action == crate::interaction::code::IGNORE {
                 c |= class::IGNORE;
             }

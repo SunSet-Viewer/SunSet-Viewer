@@ -333,9 +333,9 @@ impl TexturePicker {
         let lookup = (world.inventory.generation, self.selected);
         if self.selected_lookup != Some(lookup) {
             self.selected_lookup = Some(lookup);
-            if !self
+            if self
                 .selected_item
-                .is_some_and(|id| inventory_asset(&world.inventory, id, self.materials) == self.selected)
+                .is_none_or(|id| inventory_asset(&world.inventory, id, self.materials) != self.selected)
             {
                 self.selected_item = self.selected.and_then(|asset| {
                     world

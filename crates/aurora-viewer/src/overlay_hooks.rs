@@ -14,11 +14,13 @@
 //! crash report names the hooks too ("Overlay hooks"), from this fixed list
 //! only.
 
+#[cfg(windows)]
 use std::time::Duration;
 
 /// How often the process's modules are listed: the hooks arrive late and
 /// at any time. A list of a few hundred modules takes well under a
 /// millisecond on a background thread.
+#[cfg(windows)]
 const EVERY: Duration = Duration::from_secs(10);
 
 /// One known hook DLL, what it belongs to and what to do if the image is
@@ -65,6 +67,7 @@ pub fn known(file: &str) -> Option<&'static Hook> {
 
 /// The hooks among `loaded` (module file names) that are not in `seen` yet,
 /// once each; `seen` is updated.
+#[cfg(any(windows, test))]
 pub fn arrived(seen: &mut Vec<&'static str>, loaded: &[String]) -> Vec<&'static Hook> {
     let mut new = Vec::new();
     for name in loaded {

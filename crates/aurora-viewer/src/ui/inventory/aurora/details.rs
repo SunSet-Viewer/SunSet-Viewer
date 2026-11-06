@@ -97,14 +97,17 @@ impl Main {
 /// "Add": an object or clothing not worn, kept with what is worn.
 fn can_add(inv: &Inventory, id: Uuid, facts: &Facts, st: &InventoryUi) -> bool {
     rules::original(inv, id).and_then(|id| inv.items.get(&id)).is_some_and(|it| {
-        matches!(it.asset_type, 5 | 6)
-            && !(it.asset_type == 5 && it.flags & 0xff == 15)
-            && !facts.worn.contains(&it.id)
-            && !rules::library(inv, it.id)
-            && !rules::in_type(inv, it.id, 14)
-            && !facts.appearance_busy
-            && st.pending.is_none()
-            && facts.rlva_allows(inv, it.id, true)
+        if !matches!(it.asset_type, 5 | 6)
+            || it.asset_type == 5 && it.flags & 0xff == 15
+            || facts.worn.contains(&it.id)
+            || rules::library(inv, it.id)
+            || rules::in_type(inv, it.id, 14)
+            || facts.appearance_busy
+            || st.pending.is_some()
+        {
+            return false;
+        }
+        facts.rlva_allows(inv, it.id, true)
     })
 }
 

@@ -14,26 +14,35 @@ use std::path::Path;
 use std::sync::Mutex;
 #[cfg(target_os = "linux")]
 use std::sync::atomic::AtomicU64;
+#[cfg(any(windows, target_os = "linux"))]
 use std::sync::atomic::AtomicUsize;
 #[cfg(any(windows, target_os = "linux"))]
 use std::sync::atomic::Ordering;
 #[cfg(any(windows, target_os = "linux"))]
+use std::time::Duration;
+#[cfg(any(windows, target_os = "linux"))]
 use std::time::Instant;
-use std::time::{Duration, SystemTime, UNIX_EPOCH};
+#[cfg(any(windows, target_os = "linux"))]
+use std::time::{SystemTime, UNIX_EPOCH};
 
 /// How often the window is tested.
+#[cfg(any(windows, target_os = "linux"))]
 const TICK: Duration = Duration::from_secs(1);
 /// How often `alive.txt` is written.
+#[cfg(any(windows, target_os = "linux"))]
 const ALIVE_EVERY: Duration = Duration::from_secs(5);
 /// While the window stays frozen, the stacks are read again this often: the
 /// last ones show where it stays.
+#[cfg(any(windows, target_os = "linux"))]
 const RECAPTURE: Duration = Duration::from_secs(15);
 /// `IsHungAppWindow` answers after this long without a message taken; on
 /// Linux the main loop is taken for frozen after as long without a pass.
 pub const HUNG_AFTER: u64 = 5;
 /// The threads whose stacks a freeze report shows, after the main one.
+#[cfg(any(windows, target_os = "linux"))]
 const THREADS: &[&str] = &["aurora-render"];
 
+#[cfg(any(windows, target_os = "linux"))]
 static WINDOW: AtomicUsize = AtomicUsize::new(0);
 /// Linux: the main loop's last pass, in milliseconds since [`EPOCH`].
 #[cfg(target_os = "linux")]
@@ -139,6 +148,7 @@ pub const EFFECT_WORDS: &[&str] = &[
 pub const WINDOW_STATES: &[&str] = &["focused", "background", "minimized", "occluded"];
 
 impl State {
+    #[cfg(any(windows, target_os = "linux"))]
     fn lines(&self, out: &mut String) {
         use std::fmt::Write;
         let _ = writeln!(out, "screen={}", self.screen);
@@ -277,6 +287,7 @@ pub fn start(dir: &Path) {
     let _ = dir;
 }
 
+#[cfg(any(windows, target_os = "linux"))]
 fn unix() -> u64 {
     SystemTime::now().duration_since(UNIX_EPOCH).unwrap_or_default().as_secs()
 }
@@ -319,6 +330,7 @@ fn run(dir: &Path, main: Option<&super::native::Thread>) {
 
 /// Written apart then renamed: a session stopped midway leaves the last
 /// complete one.
+#[cfg(any(windows, target_os = "linux"))]
 fn write_alive(dir: &Path, responsive: Option<u64>) {
     use std::fmt::Write;
     let mut text = format!("tick={}\n", unix());

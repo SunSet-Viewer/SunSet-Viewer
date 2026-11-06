@@ -2486,7 +2486,7 @@ impl TextureStreamer {
                 // (not over a file that already holds this level)
                 cache: e
                     .info
-                    .filter(|_| bc7_cache && !e.keep_rgba && !e.transcoded.is_some_and(|finest| finest <= discard))
+                    .filter(|_| bc7_cache && !e.keep_rgba && e.transcoded.is_none_or(|finest| finest > discard))
                     .zip(cache_writer.clone())
                     .map(|(info, writer)| (Self::transcoded_path(cache_dir, &id), info, writer)),
             };

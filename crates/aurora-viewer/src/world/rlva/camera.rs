@@ -268,7 +268,7 @@ impl super::super::World {
                 if point.is_some_and(|p| p.hud) {
                     return true;
                 }
-                return !self.rlva.has("showself") && !(self.rlva.has("showselfhead") && point.is_some_and(|p| p.group == 2));
+                return !(self.rlva.has("showself") || self.rlva.has("showselfhead") && point.is_some_and(|p| p.group == 2));
             }
             root = parent.0;
         }
@@ -276,7 +276,8 @@ impl super::super::World {
     }
 
     pub fn rlva_body_part_visible(&self, own: bool, part: &str) -> bool {
-        !own || (!self.rlva.has("showself")
-            && !(self.rlva.has("showselfhead") && matches!(part, "head" | "hair" | "eyelashes" | "eye_left" | "eye_right")))
+        !(own
+            && (self.rlva.has("showself")
+                || self.rlva.has("showselfhead") && matches!(part, "head" | "hair" | "eyelashes" | "eye_left" | "eye_right")))
     }
 }

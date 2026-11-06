@@ -1,0 +1,378 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    name: Validate release tag
+    runs-on: ubuntu-24.04
+    outputs:
+      tag: ${{ steps.tag.outputs.tag }}
+      version: ${{ steps.tag.outputs.version }}
+      prerelease: ${{ steps.tag.outputs.prerelease }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Require a version tag on main
+        id: tag
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          tag="$GITHUB_REF_NAME"
+          if [[ ! "$tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]]; then
+            echo "Unsupported release tag: $tag" >&2
+            exit 1
+          fi
+          git fetch origin main --quiet
+          if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
+            echo "Release tags must point to a commit on main." >&2
+            exit 1
+          fi
+          ci_run="$(gh run list --repo "$GITHUB_REPOSITORY" --workflow CI --branch main --commit "$GITHUB_SHA" --json status,conclusion --limit 1)"
+          if [[ "$(jq -r '.[0].status // empty' <<< "$ci_run")" != completed || "$(jq -r '.[0].conclusion // empty' <<< "$ci_run")" != success ]]; then
+            echo "The tagged commit must have a successful CI run before release." >&2
+            exit 1
+          fi
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          echo "version=${tag#v}" >> "$GITHUB_OUTPUT"
+          if [[ "$tag" == *-* ]]; then
+            echo "prerelease=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "prerelease=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  windows:
+    name: Windows ZIP, MSI and symbols
+    needs: prepare
+    runs-on: windows-latest
+    env:
+      AURORA_VERSION_TAG: ${{ needs.prepare.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.prepare.outputs.tag }}
+          persist-credentials: false
+      - uses: actions-rust-lang/setup-rust-toolchain@v2
+      - name: Build release viewer
+        run: cargo build --release --locked -p aurora-viewer --features xr-static-loader
+      - name: Verify release version
+        shell: pwsh
+        run: ./scripts/verify-version.ps1 -Exe target/release/SunSet-Viewer.exe -Tag $env:AURORA_VERSION_TAG
+      - name: Build crash symbols
+        shell: pwsh
+        run: |
+          cargo install dump_syms --version 2.3.9 --locked
+          if ($LASTEXITCODE -ne 0) { throw "Installing dump_syms failed ($LASTEXITCODE)." }
+          $pdb = Join-Path $env:GITHUB_WORKSPACE 'target/release/SunSet-Viewer.pdb'
+          if (-not (Test-Path -LiteralPath $pdb)) { throw "Missing release symbols: $pdb" }
+          $lines = & dump_syms $pdb
+          if ($LASTEXITCODE -ne 0 -or -not $lines) { throw 'dump_syms could not read the release PDB.' }
+          $header = $lines[0] -split '\s+'
+          if ($header.Count -lt 5 -or $header[0] -ne 'MODULE') { throw "Invalid symbol header: $($lines[0])" }
+          $module = $header[4]
+          $debugId = $header[3]
+          $symbolName = [IO.Path]::GetFileNameWithoutExtension($module) + '.sym'
+          $symbolDir = Join-Path (Join-Path (Join-Path $env:RUNNER_TEMP 'symbols') $module) $debugId
+          New-Item -ItemType Directory -Force -Path $symbolDir | Out-Null
+          $symbolPath = Join-Path $symbolDir $symbolName
+          $lines | Out-File -LiteralPath $symbolPath -Encoding ascii
+          $output = Join-Path $env:GITHUB_WORKSPACE 'release-output'
+          New-Item -ItemType Directory -Force -Path $output | Out-Null
+          $symbolsZip = Join-Path $output "SunSet-Viewer-${env:AURORA_VERSION_TAG}-windows-x64-symbols.zip"
+          $moduleDir = Join-Path (Join-Path $env:RUNNER_TEMP 'symbols') $module
+          Compress-Archive -Path $moduleDir -DestinationPath $symbolsZip -CompressionLevel Optimal
+          $hash = (Get-FileHash -LiteralPath $symbolsZip -Algorithm SHA256).Hash.ToLowerInvariant()
+          [IO.File]::WriteAllText("${symbolsZip}.sha256", "$hash  $(Split-Path -Leaf $symbolsZip)`n", [Text.UTF8Encoding]::new($false))
+      - name: Sign the Windows executable when a certificate is configured
+        if: needs.prepare.outputs.prerelease == 'false'
+        shell: pwsh
+        env:
+          WINDOWS_CERTIFICATE_PFX: ${{ secrets.WINDOWS_CERTIFICATE_PFX }}
+          WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
+        run: |
+          if (-not $env:WINDOWS_CERTIFICATE_PFX -and -not $env:WINDOWS_CERTIFICATE_PASSWORD) {
+            Write-Warning 'Windows signing secrets are not configured; this release will be unsigned.'
+            exit 0
+          }
+          if (-not $env:WINDOWS_CERTIFICATE_PFX -or -not $env:WINDOWS_CERTIFICATE_PASSWORD) {
+            throw 'Set both WINDOWS_CERTIFICATE_PFX and WINDOWS_CERTIFICATE_PASSWORD.'
+          }
+          $pfx = Join-Path $env:RUNNER_TEMP 'sunset-code-signing.pfx'
+          [IO.File]::WriteAllBytes($pfx, [Convert]::FromBase64String($env:WINDOWS_CERTIFICATE_PFX))
+          $password = ConvertTo-SecureString $env:WINDOWS_CERTIFICATE_PASSWORD -AsPlainText -Force
+          $certs = Import-PfxCertificate -FilePath $pfx -CertStoreLocation Cert:\CurrentUser\My -Password $password
+          $cert = $certs | Where-Object { $_.EnhancedKeyUsageList.ObjectId.Value -contains '1.3.6.1.5.5.7.3.3' } | Select-Object -First 1
+          if (-not $cert) { throw 'The configured PFX has no Code Signing certificate.' }
+          $signtool = Get-ChildItem -Path "${env:ProgramFiles(x86)}\Windows Kits\10\bin\*\x64\signtool.exe" | Sort-Object FullName | Select-Object -Last 1
+          if (-not $signtool) { throw 'Could not locate signtool.exe.' }
+          & $signtool.FullName sign /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 /sha1 $cert.Thumbprint target/release/SunSet-Viewer.exe
+          if ($LASTEXITCODE -ne 0) { throw "Signing the viewer failed ($LASTEXITCODE)." }
+      - name: Package portable ZIP
+        shell: pwsh
+        run: |
+          $name = "SunSet-Viewer-${env:AURORA_VERSION_TAG}-windows-x64"
+          $package = Join-Path $env:RUNNER_TEMP $name
+          & ./scripts/package.ps1 -Exe target/release/SunSet-Viewer.exe -Out $package -Source $env:GITHUB_WORKSPACE
+          if ($LASTEXITCODE -ne 0) { throw "Packaging the Windows folder failed ($LASTEXITCODE)." }
+          New-Item -ItemType Directory -Force -Path release-output | Out-Null
+          $zip = Join-Path release-output "$name.zip"
+          Compress-Archive -Path $package -DestinationPath $zip -CompressionLevel Optimal
+          $hash = (Get-FileHash -LiteralPath $zip -Algorithm SHA256).Hash.ToLowerInvariant()
+          [IO.File]::WriteAllText("${zip}.sha256", "$hash  $(Split-Path -Leaf $zip)`n", [Text.UTF8Encoding]::new($false))
+          "PACKAGE_ROOT=$package" >> $env:GITHUB_ENV
+      - name: Install the pinned WiX toolset
+        if: needs.prepare.outputs.prerelease == 'false'
+        shell: pwsh
+        run: |
+          dotnet tool install --tool-path "$env:RUNNER_TEMP\wix" wix --version 5.0.2
+          if ($LASTEXITCODE -ne 0) { throw "Installing WiX failed ($LASTEXITCODE)." }
+          "$env:RUNNER_TEMP\wix" >> $env:GITHUB_PATH
+      - name: Build MSI installer
+        if: needs.prepare.outputs.prerelease == 'false'
+        shell: pwsh
+        run: ./scripts/package-msi.ps1 -Package $env:PACKAGE_ROOT -Out "release-output/SunSet-Viewer-${env:AURORA_VERSION_TAG}-windows-x64.msi"
+      - name: Sign MSI when a certificate is configured
+        if: needs.prepare.outputs.prerelease == 'false'
+        shell: pwsh
+        env:
+          WINDOWS_CERTIFICATE_PFX: ${{ secrets.WINDOWS_CERTIFICATE_PFX }}
+          WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
+        run: |
+          if (-not $env:WINDOWS_CERTIFICATE_PFX -and -not $env:WINDOWS_CERTIFICATE_PASSWORD) { exit 0 }
+          $pfx = Join-Path $env:RUNNER_TEMP 'sunset-code-signing.pfx'
+          if (-not (Test-Path -LiteralPath $pfx)) {
+            [IO.File]::WriteAllBytes($pfx, [Convert]::FromBase64String($env:WINDOWS_CERTIFICATE_PFX))
+          }
+          $password = ConvertTo-SecureString $env:WINDOWS_CERTIFICATE_PASSWORD -AsPlainText -Force
+          $certs = Import-PfxCertificate -FilePath $pfx -CertStoreLocation Cert:\CurrentUser\My -Password $password
+          $cert = $certs | Where-Object { $_.EnhancedKeyUsageList.ObjectId.Value -contains '1.3.6.1.5.5.7.3.3' } | Select-Object -First 1
+          if (-not $cert) { throw 'The configured PFX has no Code Signing certificate.' }
+          $signtool = Get-ChildItem -Path "${env:ProgramFiles(x86)}\Windows Kits\10\bin\*\x64\signtool.exe" | Sort-Object FullName | Select-Object -Last 1
+          if (-not $signtool) { throw 'Could not locate signtool.exe.' }
+          $msi = "release-output/SunSet-Viewer-${env:AURORA_VERSION_TAG}-windows-x64.msi"
+          & $signtool.FullName sign /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 /sha1 $cert.Thumbprint $msi
+          if ($LASTEXITCODE -ne 0) { throw "Signing the MSI failed ($LASTEXITCODE)." }
+      - name: Create missing checksums
+        shell: pwsh
+        run: |
+          Get-ChildItem release-output -File | Where-Object { $_.Extension -ne '.sha256' } | ForEach-Object {
+            if (-not (Test-Path -LiteralPath "$($_.FullName).sha256")) {
+              $hash = (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
+              [IO.File]::WriteAllText("$($_.FullName).sha256", "$hash  $($_.Name)`n", [Text.UTF8Encoding]::new($false))
+            }
+          }
+      - uses: actions/upload-artifact@v7
+        with:
+          name: release-windows
+          path: release-output/*
+          if-no-files-found: error
+          retention-days: 7
+
+  macos:
+    name: macOS ARM64 DMG
+    needs: prepare
+    runs-on: macos-15
+    env:
+      AURORA_VERSION_TAG: ${{ needs.prepare.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.prepare.outputs.tag }}
+          persist-credentials: false
+      - uses: actions-rust-lang/setup-rust-toolchain@v2
+      - name: Build release viewer
+        run: cargo build --release --locked -p aurora-viewer
+      - name: Verify release version
+        run: pwsh ./scripts/verify-version.ps1 -Exe target/release/SunSet-Viewer -Tag "$AURORA_VERSION_TAG"
+      - name: Package the macOS application
+        run: pwsh ./scripts/package-macos.ps1 -Exe target/release/SunSet-Viewer -Out "$RUNNER_TEMP/SunSet Viewer.app"
+      - name: Sign the application
+        id: sign
+        shell: bash
+        env:
+          IS_PRERELEASE: ${{ needs.prepare.outputs.prerelease }}
+          MACOS_CERTIFICATE_P12: ${{ secrets.MACOS_CERTIFICATE_P12 }}
+          MACOS_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          APPLE_API_KEY_ID: ${{ secrets.APPLE_API_KEY_ID }}
+          APPLE_API_ISSUER_ID: ${{ secrets.APPLE_API_ISSUER_ID }}
+          APPLE_API_KEY_P8: ${{ secrets.APPLE_API_KEY_P8 }}
+        run: |
+          set -euo pipefail
+          app="$RUNNER_TEMP/SunSet Viewer.app"
+          values=("${MACOS_CERTIFICATE_P12:-}" "${MACOS_CERTIFICATE_PASSWORD:-}" "${APPLE_TEAM_ID:-}" "${APPLE_API_KEY_ID:-}" "${APPLE_API_ISSUER_ID:-}" "${APPLE_API_KEY_P8:-}")
+          present=0
+          for value in "${values[@]}"; do [[ -n "$value" ]] && present=$((present + 1)); done
+          if [[ "$present" -ne 0 && "$present" -ne 6 ]]; then
+            echo 'Configure all six Apple signing and notarization secrets, or none of them.' >&2
+            exit 1
+          fi
+          if [[ "$IS_PRERELEASE" == true ]]; then
+            codesign --force --deep --sign - "$app"
+            codesign --verify --deep --strict "$app"
+            echo 'mode=adhoc' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if [[ "$present" -eq 0 ]]; then
+            codesign --force --deep --sign - "$app"
+            codesign --verify --deep --strict "$app"
+            echo 'mode=adhoc' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          keychain="$RUNNER_TEMP/sunset-release.keychain-db"
+          keychain_password="$(openssl rand -hex 24)"
+          printf '%s' "$MACOS_CERTIFICATE_P12" | base64 --decode > "$RUNNER_TEMP/certificate.p12"
+          security create-keychain -p "$keychain_password" "$keychain"
+          security set-keychain-settings -lut 21600 "$keychain"
+          security unlock-keychain -p "$keychain_password" "$keychain"
+          security import "$RUNNER_TEMP/certificate.p12" -P "$MACOS_CERTIFICATE_PASSWORD" -A -t cert -f pkcs12 -k "$keychain"
+          security set-keychain-settings -lut 21600 "$keychain"
+          security list-keychain -d user -s "$keychain"
+          security set-key-partition-list -S apple-tool:,apple: -s -k "$keychain_password" "$keychain"
+          identity="$(security find-identity -v -p codesigning "$keychain" | awk '/Developer ID Application/ {print $2; exit}')"
+          if [[ -z "$identity" ]]; then echo 'No Developer ID Application identity was imported.' >&2; exit 1; fi
+          codesign --force --deep --options runtime --timestamp --entitlements packaging/macos/aurora-viewer.entitlements --sign "$identity" "$app"
+          codesign --verify --deep --strict --verbose=2 "$app"
+          echo "mode=developer" >> "$GITHUB_OUTPUT"
+          security delete-keychain "$keychain"
+      - name: Create macOS disk image
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p release-output
+          dmg="release-output/SunSet-Viewer-${AURORA_VERSION_TAG}-macos-arm64.dmg"
+          staging="$RUNNER_TEMP/dmg-root"
+          mkdir -p "$staging"
+          ditto "$RUNNER_TEMP/SunSet Viewer.app" "$staging/SunSet Viewer.app"
+          ln -s /Applications "$staging/Applications"
+          hdiutil create -volname 'SunSet Viewer' -srcfolder "$staging" -ov -format UDZO "$dmg"
+          shasum -a 256 "$dmg" | awk '{print $1 "  " $2}' > "$dmg.sha256"
+      - name: Notarize and staple the disk image
+        if: steps.sign.outputs.mode == 'developer' && needs.prepare.outputs.prerelease == 'false'
+        shell: bash
+        env:
+          APPLE_API_KEY_ID: ${{ secrets.APPLE_API_KEY_ID }}
+          APPLE_API_ISSUER_ID: ${{ secrets.APPLE_API_ISSUER_ID }}
+          APPLE_API_KEY_P8: ${{ secrets.APPLE_API_KEY_P8 }}
+        run: |
+          set -euo pipefail
+          key="$RUNNER_TEMP/AuthKey_${APPLE_API_KEY_ID}.p8"
+          printf '%s' "$APPLE_API_KEY_P8" > "$key"
+          chmod 600 "$key"
+          dmg="release-output/SunSet-Viewer-${AURORA_VERSION_TAG}-macos-arm64.dmg"
+          xcrun notarytool submit "$dmg" --key "$key" --key-id "$APPLE_API_KEY_ID" --issuer "$APPLE_API_ISSUER_ID" --wait
+          xcrun stapler staple "$dmg"
+          shasum -a 256 "$dmg" | awk '{print $1 "  " $2}' > "$dmg.sha256"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: release-macos
+          path: release-output/*
+          if-no-files-found: error
+          retention-days: 7
+
+  linux:
+    name: Linux x64 archive
+    needs: prepare
+    runs-on: ubuntu-24.04
+    env:
+      AURORA_VERSION_TAG: ${{ needs.prepare.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.prepare.outputs.tag }}
+          persist-credentials: false
+      - uses: actions-rust-lang/setup-rust-toolchain@v2
+      - name: Install native build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential clang cmake libasound2-dev libudev-dev libvulkan-dev libwayland-dev libx11-dev libxcursor-dev libxi-dev libxkbcommon-dev libxrandr-dev pkg-config
+      - name: Build release viewer
+        run: cargo build --release --locked -p aurora-viewer
+      - name: Verify release version
+        run: pwsh ./scripts/verify-version.ps1 -Exe target/release/SunSet-Viewer -Tag "$AURORA_VERSION_TAG"
+      - name: Create portable archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          package="SunSet-Viewer-${AURORA_VERSION_TAG}-linux-x64"
+          pwsh ./scripts/package.ps1 -Exe target/release/SunSet-Viewer -Out "$RUNNER_TEMP/$package" -Source "$GITHUB_WORKSPACE"
+          mkdir -p release-output
+          archive="release-output/${package}.tar.gz"
+          tar -C "$RUNNER_TEMP" -czf "$archive" "$package"
+          sha256sum "$archive" | awk '{print $1 "  " $2}' > "$archive.sha256"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: release-linux
+          path: release-output/*
+          if-no-files-found: error
+          retention-days: 7
+
+  publish:
+    name: Publish GitHub release
+    needs: [prepare, windows, macos, linux]
+    runs-on: ubuntu-24.04
+    permissions:
+      actions: read
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      AURORA_VERSION_TAG: ${{ needs.prepare.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.prepare.outputs.tag }}
+          fetch-depth: 0
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: release-*
+          path: release-output
+          merge-multiple: true
+      - name: Add update policy and verify release assets
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path release-output | Out-Null
+          ./scripts/write-update-policy.ps1 -Tag $env:AURORA_VERSION_TAG -Out release-output/aurora-update-policy.json
+          if (-not (Test-Path -LiteralPath 'release-output/aurora-update-policy.json')) { throw 'Missing update policy.' }
+          $required = @(
+            "SunSet-Viewer-$env:AURORA_VERSION_TAG-windows-x64.zip",
+            "SunSet-Viewer-$env:AURORA_VERSION_TAG-windows-x64-symbols.zip",
+            "SunSet-Viewer-$env:AURORA_VERSION_TAG-macos-arm64.dmg",
+            "SunSet-Viewer-$env:AURORA_VERSION_TAG-linux-x64.tar.gz"
+          )
+          foreach ($file in $required) {
+            if (-not (Test-Path -LiteralPath (Join-Path 'release-output' $file))) { throw "Missing release asset: $file" }
+            if (-not (Test-Path -LiteralPath (Join-Path 'release-output' "$file.sha256"))) { throw "Missing checksum: $file.sha256" }
+          }
+          if (-not $env:AURORA_VERSION_TAG.Contains('-')) {
+            $msi = "SunSet-Viewer-$env:AURORA_VERSION_TAG-windows-x64.msi"
+            if (-not (Test-Path -LiteralPath (Join-Path 'release-output' $msi))) { throw "Missing stable Windows installer: $msi" }
+            if (-not (Test-Path -LiteralPath (Join-Path 'release-output' "$msi.sha256"))) { throw "Missing Windows installer checksum: $msi.sha256" }
+          }
+      - name: Publish all platform packages together
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag="$AURORA_VERSION_TAG"
+          if gh release view "$tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release upload "$tag" release-output/* --repo "$GITHUB_REPOSITORY" --clobber
+          else
+            if [[ "$tag" == *-* ]]; then
+              gh release create "$tag" release-output/* --repo "$GITHUB_REPOSITORY" --title "SunSet Viewer $tag" --generate-notes --verify-tag --prerelease
+            else
+              gh release create "$tag" release-output/* --repo "$GITHUB_REPOSITORY" --title "SunSet Viewer $tag" --generate-notes --verify-tag
+            fi
+          fi

@@ -92,7 +92,7 @@ pub(super) fn show(ui: &mut egui::Ui, p: &Palette, s: &mut LandUi, v: &View, wor
         {
             let before = streams.len();
             let no_http = current.strip_prefix("http://").unwrap_or("").to_owned();
-            streams.retain(|x| *x != current && !(!x.contains("://") && *x == no_http));
+            streams.retain(|x| (*x != no_http || x.contains("://")) && *x != current);
             streams_changed |= streams.len() != before;
         }
         if super::icon_button(ui, p, "copy-filled", true)

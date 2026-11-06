@@ -146,7 +146,7 @@ function New-AuroraRelease($Repo) {
     $policy = Read-ReleaseMaintenance $policy
     if (-not $policy) { return }
     Show-Logo 'Confirmation of the release'
-    Write-Color "  $tag, on the latest main$(if ($pre) { ', as a pre-release' }): the Release workflow builds the viewer and publishes the Windows zip with the notes, then adds the Linux archive." ink
+    Write-Color "  $tag, on the latest main$(if ($pre) { ', as a pre-release' }): the Release workflow builds the Windows ZIP, macOS DMG and Linux archive together$(if (-not $pre) { ', plus the Windows MSI' }), then publishes them with symbols, policy and release notes." ink
     Write-Color "  Cache: $(if ($policy.cache_invalidation_before) { 'cleared for versions before ' + $policy.cache_invalidation_before } else { 'kept' })." ink
     Write-Color "  Settings: $(if ($policy.settings_reset_before) { 'reset for versions before ' + $policy.settings_reset_before } else { 'kept and migrated automatically if needed' })." ink
     if (-not (Read-YesNo "Create the release ${tag}?")) { return }
@@ -188,11 +188,10 @@ function New-AuroraRelease($Repo) {
         } else {
             $url = gh release view $tag -R $Repo.Slug --json url --jq .url 2>$null
             if ($url) {
-                # the Windows release is out: only the Linux archive is missing
-                Write-Color "  Release published for Windows: $url" success
-                Write-Color "  The Linux build failed: gh run view $id --log-failed (a passing failure: gh run rerun $id --failed)." warn
+                Write-Color "  An existing release remains at $url, but this run failed." warn
+                Write-Color "  Inspect it with gh run view $id --log-failed before rerunning." warn
             } else {
-                Write-Color "  The Release workflow failed: gh run view $id --log-failed (the tag $tag exists; delete it here to start again)." danger
+                Write-Color "  The packages were not published: gh run view $id --log-failed (the tag $tag remains and can be retried)." danger
             }
         }
     } else {

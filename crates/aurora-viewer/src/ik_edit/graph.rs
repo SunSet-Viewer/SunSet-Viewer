@@ -1122,10 +1122,7 @@ impl Editor {
                     }
                 }
             }
-            if (self.picking && !self.links.bone_pick)
-                || (self.prims.object_handles && !self.links.bone_pick)
-                || ctx.input(|i| i.modifiers.alt)
-            {
+            if (self.picking || self.prims.object_handles) && !self.links.bone_pick || ctx.input(|i| i.modifiers.alt) {
                 continue;
             }
             let response = egui::Area::new(egui::Id::unique(("ik-virtual", node.id)))

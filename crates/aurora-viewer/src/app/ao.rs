@@ -182,8 +182,7 @@ impl App {
             .get(&self.world.agent_id)
             .map_or(Uuid::nil(), |a| a.selected);
         let writable = crate::ao::bootstrap::Bootstrap::writable(&self.world);
-        if !self.ao_ui.busy()
-            && !(self.demo && crate::ao::water_demo::mode().is_some())
+        if !(self.ao_ui.busy() || self.demo && crate::ao::water_demo::mode().is_some())
             && let Some(result) = self
                 .ao_bootstrap
                 .poll(&mut self.world.inventory, &self.ao_catalog, selected, writable)

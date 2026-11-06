@@ -57,7 +57,7 @@ pub struct Physics {
 pub fn degenerate([a, b, c]: [Vec3; 3]) -> bool {
     let (ab, ac, cb) = (a - b, a - c, c - b);
     let (x, y, z) = (ab.length_squared(), ac.length_squared(), cb.length_squared());
-    let balanced = x <= 100.0 * y && x <= 100.0 * z && y <= 100.0 * x && x <= 100.0 * z && z <= 100.0 * x && x <= 100.0 * y;
+    let balanced = x <= 100.0 * y && x <= 100.0 * z && y <= 100.0 * x && z <= 100.0 * x;
     let tolerance = if balanced { 1e-11 } else { 1e-7 };
     ab.cross(ac).length_squared() < tolerance || (b - a).cross(b - c).length_squared() < tolerance || x * z - ab.dot(cb).powi(2) == 0.0
 }

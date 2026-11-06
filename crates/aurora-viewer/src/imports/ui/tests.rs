@@ -1200,7 +1200,6 @@ fn clicking_an_animation_selects_and_restarts_its_preview() {
         assert_eq!(imports.active, Some(target));
         assert!(matches!(actions.as_slice(), [Action::Play(id, true)] if *id == target));
     }
-    drop(frame);
     assert!(prefs.preview_on_avatar, "selecting another animation keeps the common preference");
 }
 

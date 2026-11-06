@@ -384,18 +384,10 @@ pub struct DebugView {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(default)]
+#[derive(Default)]
 pub struct CombatSettings {
     pub local_hit_detection: bool,
     pub show_hitboxes: bool,
-}
-
-impl Default for CombatSettings {
-    fn default() -> Self {
-        Self {
-            local_hit_detection: false,
-            show_hitboxes: false,
-        }
-    }
 }
 
 impl DebugView {

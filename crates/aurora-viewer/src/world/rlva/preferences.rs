@@ -72,7 +72,7 @@ impl Preferences {
         } else {
             &self.wear_replace_prefix
         };
-        if !prefix.is_empty() && !(prefix.len() > 1 && prefix.starts_with('.')) && name.starts_with(prefix) {
+        if !(prefix.is_empty() || prefix.len() > 1 && prefix.starts_with('.')) && name.starts_with(prefix) {
             !replace
         } else {
             replace

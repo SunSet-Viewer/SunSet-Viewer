@@ -5,11 +5,11 @@ use super::*;
 
 impl BuildTool {
     pub(crate) fn prim_properties_query(&self, world: &World, key: ObjKey) -> Vec<NetCommand> {
-        if !world
+        if world
             .objects
             .index_of(&key)
             .and_then(|i| world.objects.get(i))
-            .is_some_and(|o| !o.is_avatar())
+            .is_none_or(|o| o.is_avatar())
         {
             return Vec::new();
         }

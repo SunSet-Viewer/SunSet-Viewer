@@ -1164,7 +1164,7 @@ impl MaterialStreamer {
                 continue;
             };
             e.queued = false;
-            if !e.retry_at.is_some_and(|t| now < t) {
+            if e.retry_at.is_none_or(|t| now >= t) {
                 match e.state {
                     MatState::New => {
                         e.state = MatState::Cache;

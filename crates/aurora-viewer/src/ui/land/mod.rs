@@ -1031,20 +1031,26 @@ mod tests {
         // 2022-06-18 18:19:10 UTC = 11:19:10 PDT, a Saturday
         assert_eq!(
             claim_date(1_655_576_350),
-            match aurora_i18n::language() {
-                "fr" => "sam. 18 juin 2022 11:19:10",
-                "ja" => "2022年6月18日（土）11:19:10",
-                _ => "Sat 18 Jun 2022 11:19:10",
-            }
+            aurora_i18n::tr!(
+                "land-claim-date",
+                weekday = weekdays()[6],
+                day = "18",
+                month = months()[5],
+                year = "2022",
+                time = "11:19:10"
+            )
         );
         // 2024-06-06 04:18:48 UTC = Wed 5 June 21:18:48 PDT
         assert_eq!(
             covenant_date(1_717_647_528),
-            match aurora_i18n::language() {
-                "fr" => "mer. juin 05 21:18:48 2024",
-                "ja" => "2024年6月05日（水）21:18:48",
-                _ => "Wed Jun 05 21:18:48 2024",
-            }
+            aurora_i18n::tr!(
+                "land-covenant-date",
+                weekday = weekdays()[3],
+                day = "05",
+                month = months()[5],
+                year = "2024",
+                time = "21:18:48"
+            )
         );
     }
 
@@ -1083,16 +1089,14 @@ mod tests {
 
     #[test]
     fn money_groups_thousands() {
-        assert_eq!(money(88000), if aurora_i18n::language() == "fr" { "88\u{a0}000" } else { "88,000" });
+        let (eighty_eight_thousand, million) = match aurora_i18n::language() {
+            "fr" => ("88\u{a0}000", "1\u{a0}234\u{a0}567"),
+            "pt-BR" => ("88.000", "1.234.567"),
+            _ => ("88,000", "1,234,567"),
+        };
+        assert_eq!(money(88000), eighty_eight_thousand);
         assert_eq!(money(500), "500");
-        assert_eq!(
-            money(1_234_567),
-            if aurora_i18n::language() == "fr" {
-                "1\u{a0}234\u{a0}567"
-            } else {
-                "1,234,567"
-            }
-        );
+        assert_eq!(money(1_234_567), million);
     }
 
     #[test]

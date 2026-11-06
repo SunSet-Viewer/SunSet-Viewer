@@ -740,7 +740,9 @@ impl World {
             // Communicate > Online status > Ad hoc conferences (FS:PP)
             let c = &self.status.cfg;
             let friend = self.social.friends.iter().any(|f| f.id == inv.from);
-            if !in_group && c.ignore_adhoc && !(c.adhoc_from_friends && friend) && !crate::world::mutes::is_linden(&inv.from_name) {
+            let should_ignore_adhoc = !in_group && c.ignore_adhoc;
+            let from_allowed_friend = c.adhoc_from_friends && friend;
+            if should_ignore_adhoc && !from_allowed_friend && !crate::world::mutes::is_linden(&inv.from_name) {
                 let report = c.report_ignored_adhoc;
                 log::info!("ignoring conference (ad-hoc) chat from {}", inv.from_name);
                 self.groups.im(inv.from, dialog::SESSION_LEAVE, session, String::new());

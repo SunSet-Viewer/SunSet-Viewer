@@ -14,7 +14,7 @@ nothing else to install. macOS support is new: tell us what does not work
 ## 1. Download and install
 
 1. On the [latest release](https://github.com/Adriano-Severino/second-life-projeto/releases/latest),
-   download `SunSet-Viewer-<version>-macos-arm64.dmg`.
+   download `SunSet-Viewer-vX.Y.Z-macos-arm64.dmg`.
 2. Open it (a double click in the Finder): a window shows **SunSet Viewer**
    next to your **Applications** folder.
 3. Drag **SunSet Viewer** onto **Applications**, then eject the disk image
@@ -141,10 +141,9 @@ checks: `pwsh -File ./scripts/check.ps1` (formatting, clippy, tests).
 
 ## Signing (for the maintainers)
 
-The macOS job of the release workflow signs the application with the
-project's Developer ID, then has Apple notarize it, when the repository has
-these Actions secrets; without them it is signed ad hoc and opens as in
-step 2:
+The macOS release job signs and notarizes stable releases when all six
+secrets below are configured. Without them, the app is signed ad hoc and
+opens as described in step 2. Beta releases stay ad hoc signed.
 
 | Secret | Value |
 |---|---|

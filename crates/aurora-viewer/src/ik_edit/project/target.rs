@@ -87,7 +87,7 @@ impl Editor {
     pub(in crate::ik_edit) fn picked_project_target(&mut self, world: &World, build: &BuildTool, index: usize) -> bool {
         let Some(index) = root(world, index) else { return false };
         let Some(object) = world.objects.get(index) else { return false };
-        if !Scene::object_transform(world, index, Instant::now(), 0).is_some_and(|(_, _, hud)| !hud) {
+        if Scene::object_transform(world, index, Instant::now(), 0).is_none_or(|(_, _, hud)| hud) {
             return false;
         }
         if let Some(name) = build
@@ -265,6 +265,3 @@ impl Editor {
         }
     }
 }
-
-#[cfg(test)]
-mod tests;

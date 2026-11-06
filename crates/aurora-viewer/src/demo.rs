@@ -5162,7 +5162,12 @@ pub fn events() -> Vec<NetEvent> {
             (true, 126.0, aurora_i18n::tr!("common-wind")),
             (false, 130.0, aurora_i18n::tr!("demo-smoke")),
         ] {
-            if (mode == "wind" && !wind) || (mode == "smoke" && wind) || (mode == "legacy" && !wind) || mode == "leash" {
+            if match mode {
+                "wind" | "legacy" => !wind,
+                "smoke" => wind,
+                "leash" => true,
+                _ => false,
+            } {
                 continue;
             }
             let mut o = prim(

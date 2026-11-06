@@ -131,7 +131,7 @@ fn show_impl(ctx: &Context, p: &Palette, icons: &Icons, settings: &mut Settings,
             ui.add_space(4.0);
             let pending = form.manager.pending.is_some();
             ui.add_enabled_ui(
-                !pending && !(form.manager.drag.is_dragging() && ctx.input(|i| i.pointer.primary_down())),
+                !(pending || form.manager.drag.is_dragging() && ctx.input(|i| i.pointer.primary_down())),
                 |ui| {
                     field(
                         ui,

@@ -18,16 +18,21 @@
 //! corner of the screen, the first position of a device moves nothing.
 
 /// The packet gives a position (`MOUSE_MOVE_ABSOLUTE`).
+#[cfg(any(windows, test))]
 const ABSOLUTE: u16 = 0x01;
 /// The position spans the whole virtual desktop (`MOUSE_VIRTUAL_DESKTOP`).
+#[cfg(any(windows, test))]
 const VIRTUAL_DESKTOP: u16 = 0x02;
 /// Not in the SDK headers: the Legacy Viewer reads the position of such a
 /// packet (touch screens) in pixels, not in 0 to 65535.
+#[cfg(any(windows, test))]
 const PIXELS: u16 = 0x10;
 /// The end of the normalised range of an absolute position.
+#[cfg(any(windows, test))]
 const RANGE: f64 = 65535.0;
 
 /// One raw mouse packet.
+#[cfg(any(windows, test))]
 #[derive(Debug, Clone, Copy)]
 pub struct Packet {
     /// The device that sent it (`RAWINPUTHEADER::hDevice`).
@@ -38,11 +43,13 @@ pub struct Packet {
 }
 
 /// The last position of the absolute device that moved last.
+#[cfg(any(windows, test))]
 #[derive(Debug, Default)]
 pub struct Absolute {
     last: Option<(isize, f64, f64)>,
 }
 
+#[cfg(any(windows, test))]
 impl Absolute {
     /// The motion of `packet` in pixels, when it gives a position; None for
     /// a relative packet, whose motion is winit's. `screen(virtual_desktop)`:

@@ -47,7 +47,7 @@ fn section(matrix: Mat4, water: f32) -> Option<Section> {
     let center = matrix.w_axis.truncate();
     let normal = a.transpose() * Vec3::Z;
     let extent = normal.length();
-    if extent < 0.005 || extent > 3.0 {
+    if !(0.005..=3.0).contains(&extent) {
         return None;
     }
     let distance = water - center.z;

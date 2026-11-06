@@ -7974,7 +7974,7 @@ impl App {
     /// The file of our login portrait, from our profile picture's pixels.
     fn save_login_portrait(&mut self, image: uuid::Uuid, w: u32, h: u32, rgba: Vec<u8>) {
         let agent = self.world.agent_id;
-        if self.demo || !self.world.profiles.get(&agent).is_some_and(|p| p.sl_image == image) {
+        if self.demo || self.world.profiles.get(&agent).is_none_or(|p| p.sl_image != image) {
             return;
         }
         self.login_portrait_source = Some((agent, image));
@@ -14328,8 +14328,7 @@ impl App {
         self.options_ui.maturity = self.world.login.is_some().then(|| self.world.agent_access());
         // the account settings the grid keeps, asked at each opening
         // (AURORA_DEMO_USERINFO=opensim: another grid's)
-        let second_life =
-            !matches!(self.settings.grid, crate::settings::GridChoice::Custom) && !(self.demo && crate::demo::home::opensim());
+        let second_life = !(matches!(self.settings.grid, crate::settings::GridChoice::Custom) || self.demo && crate::demo::home::opensim());
         self.world.follow_preferences(self.panels.settings, second_life);
         self.options_ui.account = self.world.login.is_some().then(|| ui::options::privacy::Account {
             info: self.world.user_info.info.clone(),
@@ -15768,7 +15767,7 @@ impl App {
                 }
                 // Conversations › Contacts in Aurora's look of People: its
                 // friends tab
-                let people_aurora = !self.settings.classic_people && !(self.demo && crate::demo::people::legacy());
+                let people_aurora = !(self.settings.classic_people || self.demo && crate::demo::people::legacy());
                 let friends_before = self.settings.friends_list.clone();
                 let contacts_radar = ui::people::RadarData {
                     radar: &self.radar,
@@ -16022,7 +16021,7 @@ impl App {
                         images: &self.ui_images,
                     },
                     &mut people_map,
-                    !self.settings.classic_people && !(self.demo && crate::demo::people::legacy()),
+                    !(self.settings.classic_people || self.demo && crate::demo::people::legacy()),
                 );
                 if self.settings.radar.alert_sounds != people_before.0.alert_sounds {
                     self.settings.audio.ui.set_radar_sounds(self.settings.radar.alert_sounds);

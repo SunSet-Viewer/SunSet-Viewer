@@ -43,6 +43,7 @@ pub fn write(path: impl AsRef<Path>, data: &[u8]) -> std::io::Result<()> {
 
 /// Write a cache file as it is: for what leaves the viewer as a file (the
 /// pictures copied from the chat, pasted as files elsewhere).
+#[cfg(windows)]
 pub fn write_plain(path: impl AsRef<Path>, data: &[u8]) -> std::io::Result<()> {
     publish(path.as_ref(), data)
 }

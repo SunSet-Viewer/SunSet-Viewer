@@ -1208,7 +1208,6 @@ mod tests {
         // too large for the freed room, then one that fits it
         assert_eq!(range(&mut boxes, key(2), &bounds(4)), Some((8, 4)));
         assert_eq!(range(&mut boxes, key(3), &bounds(2)), Some((0, 2)));
-        drop(range);
         assert_eq!(written, 3 + 5 + 4 + 2);
         assert_eq!((table[3].joint, table[7].joint, table[1].joint), (0, 4, 1));
         assert_eq!(table[8].max, [1.0; 3]);

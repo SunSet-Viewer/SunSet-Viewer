@@ -76,19 +76,35 @@ tried locally with `scripts/test-update.ps1 -Beta`
 
 ## Package and release policy
 
-The Release workflow publishes together:
+Pushing a version tag on `main` starts the Release workflow. It builds the
+platform packages in parallel and publishes one GitHub release only after
+all builds and package checks succeed:
 
 - `SunSet-Viewer-vX.Y.Z-windows-x64.zip`, with a single root folder of that name;
 - its `.zip.sha256` file, in the format `hash  zip-name`;
+- stable releases also include `SunSet-Viewer-vX.Y.Z-windows-x64.msi` and its
+  `.msi.sha256`; the MSI installs under Program Files and adds a Start menu
+  shortcut. Beta releases do not include an MSI;
 - `aurora-update-policy.json`: `schema: 1`, `version: X.Y.Z`,
   `minimum_supported_version`, `cache_invalidation_before` and
   `settings_reset_before`: `null` or a stable SemVer version ≤ X.Y.Z;
 - `SunSet-Viewer-vX.Y.Z-windows-x64-symbols.zip` and its `.zip.sha256`: the
   exe's crash symbols ([crash reports](BUG_REPORTING.md#crash-symbols)),
   never downloaded by the viewer, which looks for the package's exact name;
-- then `SunSet-Viewer-vX.Y.Z-linux-x64.tar.gz` and its `.tar.gz.sha256`,
-  built on Ubuntu 24.04 by a second job once the release exists: a failed
-  Linux build leaves the Windows release published.
+- `SunSet-Viewer-vX.Y.Z-macos-arm64.dmg` and its `.dmg.sha256`, containing
+  the application and an Applications shortcut;
+- `SunSet-Viewer-vX.Y.Z-linux-x64.tar.gz` and its `.tar.gz.sha256`, built on
+  Ubuntu 24.04;
+- beta tags are published as GitHub pre-releases with the portable ZIP, macOS
+  DMG, Linux archive, symbols and update policy.
+
+The Windows MSI is built with WiX Toolset 5.0.2. Stable Windows executables
+and MSIs are Authenticode-signed when `WINDOWS_CERTIFICATE_PFX` and
+`WINDOWS_CERTIFICATE_PASSWORD` are configured as Actions secrets. The macOS
+bundle is Developer ID-signed and notarized when all Apple secrets below
+[Installing on macOS](MACOS.md#signing-for-the-maintainers) are configured;
+otherwise it is ad hoc signed. Release artifacts include SHA-256 files for
+each installer/archive and the Windows symbols archive.
 
 On Linux the viewer checks the releases the same way, with the same policy
 (a required update still blocks the login), but does not install them: its

@@ -606,7 +606,7 @@ impl Editor {
     }
 
     pub fn request(&self) -> ik::EditRequest {
-        if !self.open && !(self.poser.active && !self.poser.stop_on_close) {
+        if !(self.open || self.poser.active && !self.poser.stop_on_close) {
             return ik::EditRequest::default();
         }
         if self.poser.active {
@@ -979,10 +979,7 @@ impl Editor {
         } else {
             Vec::new()
         };
-        if (!self.picking || self.links.bone_pick)
-            && (!self.prims.object_handles || self.links.bone_pick)
-            && !ctx.input(|i| i.modifiers.alt)
-        {
+        if self.links.bone_pick || !self.picking && !self.prims.object_handles && !ctx.input(|i| i.modifiers.alt) {
             let chosen = self.selected;
             let handles = names
                 .iter()

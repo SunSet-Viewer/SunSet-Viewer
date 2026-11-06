@@ -207,14 +207,14 @@ impl World {
             NetCommand::GroupTitleUpdate { .. } => !blocked("setgroup"),
             // LLAgent::teleportViaLandmark: home stays allowed unless both
             // @tplm and @tploc restrict it
-            NetCommand::TeleportHome => !(blocked("tplm") && blocked("tploc")) && !(self.agent.is_sitting() && blocked("unsit")),
-            NetCommand::TeleportLandmark(_) => !blocked("tplm") && !(self.agent.is_sitting() && blocked("unsit")),
+            NetCommand::TeleportHome => !(blocked("tplm") && blocked("tploc") || self.agent.is_sitting() && blocked("unsit")),
+            NetCommand::TeleportLandmark(_) => !(blocked("tplm") || self.agent.is_sitting() && blocked("unsit")),
             NetCommand::TeleportTo { handle, position, .. } => {
                 if r.stand_return == Some((*handle, *position)) {
                     return true;
                 }
                 let Some(main) = self.main_region else {
-                    return !blocked("tploc") && !(self.agent.is_sitting() && blocked("unsit"));
+                    return !(blocked("tploc") || self.agent.is_sitting() && blocked("unsit"));
                 };
                 let (x, y) = aurora_net::handle_to_origin(*handle);
                 let (ox, oy) = aurora_net::handle_to_origin(main);
@@ -244,7 +244,7 @@ impl World {
                         actor,
                     )
                 } else {
-                    !blocked("tploc") && !(self.agent.is_sitting() && blocked("unsit"))
+                    !(blocked("tploc") || self.agent.is_sitting() && blocked("unsit"))
                 }
             }
             NetCommand::RequestSit { target, offset, .. } => {
@@ -255,8 +255,7 @@ impl World {
                         .index_of_uuid(target)
                         .and_then(|i| self.objects.get(i))
                         .is_some_and(|o| o.pcode == aurora_prim::params::LL_PCODE_VOLUME)
-                    && !(self.agent.is_sitting() && r.has("standtp"))
-                    && !(self.agent.is_sitting() && r.has("unsit"))
+                    && !(self.agent.is_sitting() && (r.has("standtp") || r.has("unsit")))
                     && (!actor.is_nil()
                         || !limit.is_finite()
                         || self
@@ -267,7 +266,7 @@ impl World {
             }
             NetCommand::OneShotControl(flags) => {
                 (flags & control::STAND_UP == 0 || !blocked("unsit"))
-                    && (flags & control::SIT_ON_GROUND == 0 || (!blocked("sit") && !(self.agent.is_sitting() && blocked("unsit"))))
+                    && (flags & control::SIT_ON_GROUND == 0 || !(blocked("sit") || self.agent.is_sitting() && blocked("unsit")))
             }
             NetCommand::SetAlwaysRun(true) => !blocked("alwaysrun"),
             NetCommand::BuyObject { .. } => !blocked("buy"),

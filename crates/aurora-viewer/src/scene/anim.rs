@@ -770,7 +770,7 @@ impl Controller {
     pub fn set_synchronized(&mut self, synchronized: bool) {
         if synchronized && !self.synchronized {
             for m in &mut self.motions {
-                if m.stop.is_none() && !m.internal && !self.preview_start.is_some_and(|(target, _)| target.is_none_or(|id| id == m.id)) {
+                if m.stop.is_none() && !m.internal && self.preview_start.is_none_or(|(target, _)| target.is_some_and(|id| id != m.id)) {
                     m.activation = m.signal.sequence_start;
                     m.continuous_activation = m.signal.continuous_start;
                 }
@@ -805,7 +805,7 @@ impl Controller {
         for motion in self
             .motions
             .iter_mut()
-            .filter(|m| !m.internal && m.stop.is_none() && !preview.is_some_and(|(target, _)| target.is_none_or(|id| id == m.id)))
+            .filter(|m| !m.internal && m.stop.is_none() && preview.is_none_or(|(target, _)| target.is_some_and(|id| id != m.id)))
         {
             motion.activation = now;
             motion.continuous_activation = now;
@@ -1166,7 +1166,7 @@ impl Controller {
                 let end = m.activation + Duration::from_secs_f64(finish);
                 if now >= end {
                     m.stop_at(end);
-                    if !m.internal && !preview.is_some_and(|(target, _)| target.is_none_or(|id| id == m.id)) {
+                    if !m.internal && preview.is_none_or(|(target, _)| target.is_some_and(|id| id != m.id)) {
                         completed.push(m.id);
                     }
                 }

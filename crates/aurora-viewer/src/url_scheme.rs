@@ -21,6 +21,7 @@ pub enum Handler {
     /// This viewer's executable.
     This,
     /// Another program, by its file name.
+    #[cfg_attr(not(any(windows, target_os = "linux")), allow(dead_code))]
     Other(String),
     None,
 }

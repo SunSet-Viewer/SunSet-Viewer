@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  pull_request:
+  merge_group:
+    types: [checks_requested]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  windows:
+    name: Windows checks
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions-rust-lang/setup-rust-toolchain@v2
+      - name: Format, lint and test the workspace
+        shell: powershell
+        run: ./scripts/check.ps1
+
+  linux:
+    name: Linux build
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions-rust-lang/setup-rust-toolchain@v2
+      - name: Install native build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential clang cmake libasound2-dev libudev-dev libvulkan-dev libwayland-dev libx11-dev libxcursor-dev libxi-dev libxkbcommon-dev libxrandr-dev pkg-config
+      - name: Build the viewer
+        run: cargo check --locked -p aurora-viewer
+
+  macos:
+    name: macOS ARM64 build
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions-rust-lang/setup-rust-toolchain@v2
+      - name: Build the viewer
+        run: cargo check --locked -p aurora-viewer

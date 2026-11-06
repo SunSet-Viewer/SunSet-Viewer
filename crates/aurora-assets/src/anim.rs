@@ -208,7 +208,7 @@ fn parse(data: &[u8], upload: bool) -> Result<(Animation, usize), AssetError> {
     }
     let base_priority = priority.clamp(-1, 6);
     let duration = r.f32("duration")?;
-    if !duration.is_finite() || duration > MAX_ANIM_DURATION || duration < 0.0 {
+    if !(0.0..=MAX_ANIM_DURATION).contains(&duration) {
         return Err(AssetError::invalid("bad duration"));
     }
     let emote_name = cstring(&mut r)?;

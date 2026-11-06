@@ -909,7 +909,7 @@ impl SyncSets {
             let wearer = o.is_avatar();
             for &c in objects.children_of(&o.key) {
                 // a subtree already listed (another moving object)
-                if !state.anchored(c) && !(wearer && state.hud(c)) && !self.expanded_whole.is_marked(c) && self.expanded.mark(c) {
+                if !(state.anchored(c) || wearer && state.hud(c) || self.expanded_whole.is_marked(c)) && self.expanded.mark(c) {
                     stack.push((c, d + 1));
                 }
             }

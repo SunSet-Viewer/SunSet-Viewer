@@ -461,7 +461,7 @@ impl LabelDepth {
             _pad: 0,
         };
         queue.write_buffer(&self.locals, 0, bytemuck::bytes_of(&locals));
-        if !self.bind_group.as_ref().is_some_and(|(of, _)| of == depth) {
+        if self.bind_group.as_ref().is_none_or(|(of, _)| of != depth) {
             let bind_group = device.create_bind_group(&wgpu::BindGroupDescriptor {
                 label: Some("labels"),
                 layout: &self.layout,

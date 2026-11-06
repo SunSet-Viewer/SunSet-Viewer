@@ -695,16 +695,18 @@ impl Runtime {
                 // A replaced jump hides too: LLVOAvatar::startMotion never
                 // starts an overridden motion locally, so a low priority AO
                 // jump is not masked by the stock one (#1284).
-                !state.is_some_and(|s| {
+                let replaced_state = state.is_some_and(|s| {
                     !s.transient()
                         && ((holding && previous_state == Some(s))
                             || remap
                                 .iter()
                                 .any(|(base, assets)| *base == s && loaded.iter().any(|a| assets.contains(&a.id))))
-                }) && !(a.id == SIT_FEMALE
+                });
+                let replaced_sit = a.id == SIT_FEMALE
                     && remap
                         .iter()
-                        .any(|(base, assets)| *base == State::Sitting && loaded.iter().any(|a| assets.contains(&a.id))))
+                        .any(|(base, assets)| *base == State::Sitting && loaded.iter().any(|a| assets.contains(&a.id)));
+                !(replaced_state || replaced_sit)
             })
             .collect();
         pose.extend(loaded);

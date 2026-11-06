@@ -147,7 +147,7 @@ impl Source {
                 let v = version(&r.tag_name)?;
                 // GitHub's pre-release flag must agree with the version: a
                 // stable number marked pre-release (or the reverse) is skipped.
-                (r.tag_name.starts_with('v') && !r.draft && r.prerelease == !v.pre.is_empty() && channel.accepts(&v)).then_some((v, r))
+                (r.tag_name.starts_with('v') && !r.draft && r.prerelease != v.pre.is_empty() && channel.accepts(&v)).then_some((v, r))
             })
             .max_by(|a, b| a.0.cmp_precedence(&b.0))
         else {
