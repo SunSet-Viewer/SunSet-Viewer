@@ -17,5 +17,15 @@ pub fn page(cx: &mut Cx) {
             tr!("ui-options-combat-local-detection-help"),
             &field!(combat.local_hit_detection),
         );
+        cx.toggle(
+            tr!("ui-options-combat-scene-blocks"),
+            tr!("ui-options-combat-scene-blocks-help"),
+            &field!(combat.scene_objects_block_rays),
+        );
+        cx.toggle(
+            tr!("ui-options-combat-show-raycast"),
+            tr!("ui-options-combat-show-raycast-help"),
+            &field!(combat.show_raycast),
+        );
     });
 }

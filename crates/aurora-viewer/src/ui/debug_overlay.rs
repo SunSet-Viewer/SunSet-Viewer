@@ -5,6 +5,7 @@
 
 use super::hud::Projector;
 use super::minimap::MiniMap;
+use crate::scene::combat::CombatRayHit;
 use crate::scene::{LodInfo, Scene};
 use crate::settings::{CombatSettings, DebugView};
 use crate::world::World;
@@ -233,7 +234,7 @@ pub fn draw(
     probes: Option<ProbeList>,
     lod: &[LodInfo],
 ) {
-    if !dv.any_overlay() && !combat.show_hitboxes && !combat.local_hit_detection {
+    if !dv.any_overlay() && !combat.show_hitboxes && !combat.local_hit_detection && !combat.show_raycast {
         return;
     }
     let lines = Lines {
@@ -270,6 +271,39 @@ pub fn draw(
             egui::FontId::proportional(11.0),
             color,
         );
+    }
+    if combat.show_raycast
+        && let Some(direction) = view_center_ray(proj, eye)
+        && let Some(ray) = scene.combat_ray(world, combat, eye, direction, scene.draw_distance, now)
+    {
+        let end = ray.point();
+        lines.seg_width(ray.origin, end, Color32::from_rgb(120, 220, 255), 2.0);
+        let (color, label) = match &ray.hit {
+            CombatRayHit::Avatar(hit) => (Color32::from_rgb(70, 220, 245), format!("{} {:.1} m", hit.joint, hit.distance)),
+            CombatRayHit::Scene(hit) if hit.terrain => (
+                ORANGE,
+                format!("{} {:.1} m", aurora_i18n::tr!("ui-debug-overlay-terrain"), hit.distance),
+            ),
+            CombatRayHit::Scene(hit) => (
+                RED,
+                format!("{} {:.1} m", aurora_i18n::tr!("ui-debug-overlay-object"), hit.distance),
+            ),
+            CombatRayHit::Miss { .. } => (
+                GREY,
+                format!("{} {:.0} m", aurora_i18n::tr!("ui-debug-overlay-miss"), ray.distance()),
+            ),
+        };
+        if let Some((at, _)) = proj.project(end) {
+            lines.painter.circle_filled(at, 4.0, color);
+            lines.painter.circle_stroke(at, 7.0, Stroke::new(1.5, color));
+            lines.painter.text(
+                at + egui::vec2(8.0, -8.0),
+                egui::Align2::LEFT_CENTER,
+                label,
+                egui::FontId::proportional(11.0),
+                color,
+            );
+        }
     }
 
     if dv.lod_info {

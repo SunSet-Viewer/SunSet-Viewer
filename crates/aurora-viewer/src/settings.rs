@@ -388,6 +388,10 @@ pub struct DebugView {
 pub struct CombatSettings {
     pub local_hit_detection: bool,
     pub show_hitboxes: bool,
+    /// Scene geometry and terrain may stop the local combat rays.
+    pub scene_objects_block_rays: bool,
+    /// Draw the screen-center combat ray and its nearest hit.
+    pub show_raycast: bool,
 }
 
 impl DebugView {

@@ -5421,6 +5421,24 @@ pub fn events() -> Vec<NetEvent> {
             id += 1;
         }
     }
+    // AURORA_DEMO_RAYCAST=1: a wall on the start view between our avatar and
+    // Violet Wolf, for the Combat page's local raycast diagnostics.
+    if std::env::var_os("AURORA_DEMO_RAYCAST").is_some() {
+        let look = Vec3::new(0.8, 0.4, 0.0).normalize();
+        let side = Vec3::new(-look.y, look.x, 0.0);
+        let p = Vec3::new(132.0, 126.0, 0.0) + look * 3.0;
+        add(prim(
+            id,
+            Vec3::new(p.x, p.y, height(p.x, p.y) + 2.5),
+            Quat::from_rotation_z(side.y.atan2(side.x)),
+            Vec3::new(9.0, 0.25, 5.0),
+            boxp,
+            te([0.85, 0.86, 0.9, 1.0], 0, false, 0.0),
+            ExtraParams::default(),
+            "",
+        ));
+        id += 1;
+    }
     let _ = id;
     if let Ok(spec) = std::env::var("AURORA_DEMO_FLEXIBLE") {
         objs.clear();

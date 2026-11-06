@@ -133,6 +133,14 @@ pub fn ray_box(origin: Vec3, dir: Vec3, min: Vec3, max: Vec3) -> Option<f32> {
     Some(near)
 }
 
+#[derive(Clone, Copy, Debug)]
+pub(super) struct SceneRayHit {
+    pub distance: f32,
+    pub point: Vec3,
+    pub object: Option<usize>,
+    pub terrain: bool,
+}
+
 impl Scene {
     fn movement_solid(&self, world: &World, idx: usize) -> bool {
         let Some(o) = world.objects.get(idx) else { return false };
@@ -740,6 +748,57 @@ impl Scene {
             .chain(all)
             .filter_map(|idx| Some((idx, self.gpu.get(idx)?)))
             .filter(|(idx, gpu)| self.first_person_object_visible(*idx, gpu))
+    }
+
+    /// Nearest world surface or terrain along `ray`, for the combat raycast
+    /// diagnostic. Avatars, HUDs, rigged meshes and avatar-owned attachments
+    /// are left to the skeleton hit test; click/build/media rules are not used.
+    pub(super) fn scene_ray_hit(&self, world: &World, ray: (Vec3, Vec3), far: f32, now: Instant) -> Option<SceneRayHit> {
+        let mut candidates = Vec::new();
+        self.pick.ray_candidates(ray, &mut candidates);
+        let mut nearest = far;
+        let mut object = None;
+        for (idx, g) in self.pick_objects(Some(&candidates)) {
+            if g.faces.is_empty()
+                || g.hud
+                || g.is_avatar
+                || g.rigged
+                || g.owner_avatar.is_some()
+                || world.objects.get(idx).is_none_or(|o| o.extra.reflection_probe.is_some())
+                || !ray_may_hit(g, ray)
+            {
+                continue;
+            }
+            let Some(t) = self.hit_distance(world, idx, ray, now, false, Some(&candidates)) else {
+                continue;
+            };
+            if t > 0.0 && t < nearest {
+                nearest = t;
+                object = Some(idx);
+            }
+        }
+        let mut terrain = None;
+        if let Some(point) = Self::inventory_ground(world, ray, nearest) {
+            let distance = (point - ray.0).length();
+            if distance < nearest {
+                nearest = distance;
+                terrain = Some(point);
+            }
+        }
+        if let Some(point) = terrain {
+            return Some(SceneRayHit {
+                distance: nearest,
+                point,
+                object: None,
+                terrain: true,
+            });
+        }
+        object.map(|idx| SceneRayHit {
+            distance: nearest,
+            point: ray.0 + ray.1 * nearest,
+            object: Some(idx),
+            terrain: false,
+        })
     }
 
     pub fn click_bounds(&self, world: &World, idx: usize) -> Option<(Vec3, Vec3)> {

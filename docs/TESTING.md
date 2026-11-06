@@ -82,6 +82,7 @@ viewer's process closes. For a test with human intervention, keep the title
 | `AURORA_DEMO=1` | Offline demo mode |
 | `AURORA_DEMO_AVATAR_RENDER_SETTINGS=1\|empty` | Open the avatar display-exceptions editor |
 | `AURORA_DEMO_POS="x,y"` | Start position |
+| `AURORA_DEMO_RAYCAST=1` | A wall on the start view, for the Combat page's raycast options |
 | `AURORA_DEMO_PORTALS=1\|near\|friends` | Open the portal creator and a shared-portal preview |
 | `AURORA_PORTAL_CLIP=0` | Disable avatar portal clipping for before/after comparison |
 | `AURORA_DEMO_TOD=0..5` | Time of day (5: the legacy midday) |
@@ -135,6 +136,12 @@ the lighting and the shadows (azimuth 0 east, 90 north), the sky keeping
 its own sun. The demo camera looks east, so `0,12` puts a low sun in front
 of it, which the times of day never do: the shadows come towards the
 camera (the contact shadows of issue 988, see `AURORA_DEMO_FEET`).
+
+`AURORA_DEMO_RAYCAST=1` puts a wall across the start view between the demo
+avatar and Violet Wolf. Open Preferences › Combat, turn on "Show raycast"
+and compare "Scene objects block combat rays" off (the ray reaches the
+avatar through the wall) and on (the wall stops it first). The diagnostics
+are local only and never send hits to a simulator.
 
 The demo shows no sample offer or dialog by default. The fountain menu,
 gift and teleport offer are restricted to `AURORA_DEMO_NOTIF=1`.
