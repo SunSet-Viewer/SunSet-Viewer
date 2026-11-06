@@ -78,7 +78,12 @@ jobs:
           cargo install dump_syms --version 2.3.9 --locked
           if ($LASTEXITCODE -ne 0) { throw "Installing dump_syms failed ($LASTEXITCODE)." }
           $pdb = Join-Path $env:GITHUB_WORKSPACE 'target/release/SunSet-Viewer.pdb'
-          if (-not (Test-Path -LiteralPath $pdb)) { throw "Missing release symbols: $pdb" }
+          if (-not (Test-Path -LiteralPath $pdb)) {
+            # Cargo may leave the hashed binary's PDB beside it in deps/.
+            $pdb = Get-ChildItem -LiteralPath (Join-Path $env:GITHUB_WORKSPACE 'target/release/deps') -Filter 'SunSet-Viewer-*.pdb' -File -ErrorAction SilentlyContinue |
+              Sort-Object LastWriteTime -Descending | Select-Object -First 1 -ExpandProperty FullName
+          }
+          if (-not $pdb -or -not (Test-Path -LiteralPath $pdb)) { throw 'Missing release symbols for SunSet-Viewer.exe.' }
           $lines = & dump_syms $pdb
           if ($LASTEXITCODE -ne 0 -or -not $lines) { throw 'dump_syms could not read the release PDB.' }
           $header = $lines[0] -split '\s+'

@@ -1,5 +1,9 @@
 //! Aurora Viewer — a Second Life client in Rust (wgpu / Vulkan).
 
+// The macOS linker warns about the bundled ISPC object in intel_tex_2 lacking
+// an explicit platform load command; ld assumes macOS and links it correctly.
+// Do not let this external linker diagnostic fail the release build.
+#![cfg_attr(target_os = "macos", allow(linker_messages))]
 #![cfg_attr(all(windows, not(debug_assertions)), windows_subsystem = "windows")]
 
 mod agent;

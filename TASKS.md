@@ -1,5 +1,7 @@
 # Aurora Viewer — task tracking
 
+- 🔧 Cross-platform release blockers (human request, 2026-11-06; task `release-macos-warning`; no matching open issue): allow the macOS linker diagnostic for the bundled `intel_tex_2` ISPC object, which Apple's linker accepts, so `CARGO_BUILD_WARNINGS=deny` does not block release packaging; find the Windows executable's PDB in Cargo's hashed `deps/` output when it is not at the profile root. Validate through PR CI, then rebuild and publish release `v0.9.1` (the GitHub Actions artifact quota must also be freed).
+
 - 🔧 Local avatar hitboxes (human request, 2026-11-05; task `avatar-hitboxes`; open issue search unavailable because `gh` is not installed): port `DebugRenderHitboxes` (`indra/newview/lldrawpoolavatar.cpp`) as one oriented box per avatar from simulator-reported position, rotation and size, colored like the minimap marker and unaffected by viewer-side animation. Combat preferences and Advanced share the saved toggle. Standard LSL weapons retain simulator-side projectile collisions and the existing mouselook script-control path, which works across viewers. The local skeleton-ray display is an aiming diagnostic only; no client-side damage or body-part hit protocol is added. Needs human visual validation against the Legacy Viewer in demo and standard weapon validation on a damage-enabled region.
   - ⬜ Later: articulated damage (head/body/feet) needs a shared simulator, weapon and target-HUD protocol; viewer-local hit results cannot authoritatively report damage.
 
