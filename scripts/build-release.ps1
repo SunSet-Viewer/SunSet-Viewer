@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Builds the latest main of GitHub (or a PR) in --release, next to the
     repository: ..\RELEASE\SunSet-Viewer\SunSet-Viewer.exe, ready to launch.
@@ -16,7 +16,7 @@
     ./scripts/build-release.ps1          # latest main of GitHub
     ./scripts/build-release.ps1 -Pr 42   # PR 42
 #>
-param([int]$Pr)
+param([int]$Pr, [switch]$Local)
 . "$PSScriptRoot\common.ps1"
 
 $p = Get-AuroraPaths
@@ -46,8 +46,11 @@ if (-not (Test-Path -LiteralPath $bat)) {
 
 if (Test-InUse $out) { throw "The viewer in $out is open: close it, then run again." }
 
-# the commit to build, straight from GitHub
-if ($Pr) {
+# the commit to build
+if ($Local) {
+    $sha = (git -C $p.Main rev-parse HEAD).Trim()
+    $what = 'local HEAD'
+} elseif ($Pr) {
     Invoke-Checked 'git fetch' { git -C $p.Main fetch origin "pull/$Pr/head" --tags --quiet }
     $sha = (git -C $p.Main rev-parse FETCH_HEAD).Trim()
     $what = "PR #$Pr"
@@ -96,7 +99,7 @@ Push-Location $src
 $previousVersionTag = [Environment]::GetEnvironmentVariable('AURORA_VERSION_TAG', 'Process')
 try {
     [Environment]::SetEnvironmentVariable('AURORA_VERSION_TAG', $null, 'Process')
-    Invoke-Checked 'cargo build' { cargo build --release --locked -p aurora-viewer }
+    Invoke-Checked 'cargo build' { cargo build --release --locked -j 2 -p aurora-viewer }
 } finally {
     [Environment]::SetEnvironmentVariable('AURORA_VERSION_TAG', $previousVersionTag, 'Process')
     Pop-Location

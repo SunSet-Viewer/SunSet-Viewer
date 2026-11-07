@@ -7,7 +7,10 @@ param(
 $ErrorActionPreference = 'Stop'
 
 $packageRoot = (Resolve-Path -LiteralPath $Package -ErrorAction Stop).Path
-$metadataPath = Join-Path $packageRoot 'aurora-install.json'
+$metadataPath = Join-Path $packageRoot 'sunset-install.json'
+if (-not (Test-Path -LiteralPath $metadataPath)) {
+    $metadataPath = Join-Path $packageRoot 'aurora-install.json'
+}
 if (-not (Test-Path -LiteralPath $metadataPath)) { throw "Missing package metadata: $metadataPath" }
 $version = (Get-Content -LiteralPath $metadataPath -Raw | ConvertFrom-Json).version
 if ($version -notmatch '^(\d+)\.(\d+)\.(\d+)$') {
