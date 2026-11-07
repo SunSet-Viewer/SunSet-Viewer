@@ -16,8 +16,8 @@ use aurora_audio::{AudioEngine, Channel, SoundClip};
 use aurora_net::fetch::{FetchRequest, FetchResult, Fetcher, Lane};
 use aurora_net::objects::AttachedSound;
 use glam::Vec3;
-use std::collections::HashMap;
-use std::path::PathBuf;
+use std::collections::{HashMap, HashSet};
+use std::path::{Path, PathBuf};
 use std::sync::Arc;
 use std::time::{Duration, Instant};
 use uuid::Uuid;
@@ -259,6 +259,11 @@ pub struct SoundManager {
     radius: HashMap<Uuid, f32>,
     /// The world sounds playing at a place, from the last update.
     audible: Vec<Audible>,
+}
+
+/// The disk cache file of sound `id` in the store `cache_dir`.
+pub fn cache_file(cache_dir: &Path, id: &Uuid) -> PathBuf {
+    crate::cache::path(cache_dir, "sound", id, "ogg")
 }
 
 impl SoundManager {
@@ -503,7 +508,7 @@ impl SoundManager {
             }
             if c.state == 0 {
                 c.state = 1;
-                let path = self.cache_dir.join("sound").join(format!("{id}.ogg"));
+                let path = cache_file(&self.cache_dir, id);
                 let tx = self.tx.clone();
                 let id = *id;
                 jobs.spawn(move || {
@@ -541,7 +546,7 @@ impl SoundManager {
         };
         match r.data {
             Ok(d) => {
-                let path = self.cache_dir.join("sound").join(format!("{id}.ogg"));
+                let path = cache_file(&self.cache_dir, &id);
                 let tx = self.tx.clone();
                 jobs.spawn(move || {
                     let clip = match SoundClip::decode(&d) {

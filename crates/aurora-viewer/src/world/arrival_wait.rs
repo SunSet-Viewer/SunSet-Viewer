@@ -32,7 +32,7 @@ impl super::World {
     /// way into a teleport is covered, the region's own included. The login has
     /// its own time-out in the session.
     pub fn arrival_overdue(&mut self, now: Instant, attachments: usize) -> bool {
-        if !self.arrived_once || !self.teleporting && self.movement_complete {
+        if !self.arrived_once || !(self.teleporting || !self.movement_complete) {
             self.arrival_wait_since = None;
             return false;
         }

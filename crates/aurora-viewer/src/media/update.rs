@@ -878,10 +878,15 @@ fn forget_slot(slot_ids: &mut HashMap<usize, Uuid>, idx: usize, id: &Uuid) {
     }
 }
 
-/// Whether the media filter loads a media without asking: on our own worn
-/// items (attachments and HUDs) when the option is on. Another avatar's
-/// attachments, objects in the world, the parcel media, and an item whose
-/// avatar has not arrived yet are asked about.
+/// Whether the media filter loads a media without asking: on items we wear
+/// (attachments and HUDs), whoever made them, when the option is on.
+/// Another avatar's attachments, objects in the world, the parcel media,
+/// and an item whose avatar has not arrived yet are asked about. The Legacy
+/// Viewer filters only the parcel media and music (filterMediaUrl,
+/// indra/newview/llviewerparcelmedia.cpp), never prim media: asking about
+/// the world's objects is already stricter, and asking about the HUDs one
+/// bought too would question every worn item, with nothing playing until
+/// answered.
 fn trusted_by_filter(objects: &HashMap<Uuid, ObjMedia>, key: MediaKey, settings: &MediaSettings) -> bool {
     settings.filter_trust_own_worn
         && match key {
@@ -1273,9 +1278,39 @@ mod tests {
         // in the world
         track(&mut m, &mut w);
         assert!(!trusted_by_filter(&m.objects, key, &on));
-        // worn by us, as an attachment or a HUD
+        // worn by us, its item not known yet (or a temporary attachment,
+        // worn from no item): trusted
         parent_to(&mut w, own);
+        let item = Uuid::from_u128(0x17e3);
+        if let Some(o) = w.objects.get_mut(idx) {
+            o.name_values = format!("AttachItemID STRING RW SV {item}");
+        }
         track(&mut m, &mut w);
+        assert!(m.objects.get(&screen).is_some_and(|e| e.on_own_avatar));
+        assert!(trusted_by_filter(&m.objects, key, &on), "creator unknown");
+        // whoever made the item: a HUD bought from someone else is trusted
+        // as one we made
+        let made_by = |w: &mut World, creator: Uuid| {
+            w.inventory.add_items(vec![aurora_net::inventory::InvItem {
+                id: item,
+                name: "Screen".into(),
+                creator,
+                owner: w.agent_id,
+                ..Default::default()
+            }]);
+        };
+        // the item arrives later: seen at the next refresh
+        let refresh = |m: &mut MediaManager, w: &mut World| {
+            let later = m.last_refresh + Duration::from_millis(600);
+            m.track_objects(w, &|_| false, later);
+        };
+        made_by(&mut w, Uuid::from_u128(0x5747));
+        refresh(&mut m, &mut w);
+        assert!(trusted_by_filter(&m.objects, key, &on), "made by someone else");
+        assert!(!trusted_by_filter(&m.objects, key, &off), "the option off asks");
+        // made by us, as an attachment or a HUD
+        made_by(&mut w, crate::demo::DEMO_AGENT);
+        refresh(&mut m, &mut w);
         assert!(trusted_by_filter(&m.objects, key, &on));
         assert!(!trusted_by_filter(&m.objects, key, &off), "the option off asks again");
         m.track_objects(&mut w, &|_| true, m.last_refresh);

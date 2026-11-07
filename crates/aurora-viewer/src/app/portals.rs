@@ -78,8 +78,10 @@ impl App {
             && let Some(region) = self.world.main_region
         {
             journey.portal.region = region;
+            // announced only where we may build; elsewhere it is ours alone
             if journey.source.region == region {
-                state.share_return(journey.source, journey.creator, self.world.agent.position, now, unix);
+                let build = self.build_right_at(Vec3::from(journey.source.center));
+                state.share_return(journey.source, journey.creator, build, self.world.agent.position, now, unix);
             }
             // Landing points can redirect a request within the same region.
             // The first shared aperture wins when other travelers arrive.
@@ -90,8 +92,14 @@ impl App {
             if self.world.main().is_some_and(|r| {
                 crate::world::portals::fits_region(Vec3::from(journey.portal.center), [r.heightmap.size_x, r.heightmap.size_y])
             }) {
-                state.share_return(journey.portal, journey.creator, self.world.agent.position, now, unix);
+                let build = self.build_right_at(Vec3::from(journey.portal.center));
+                state.share_return(journey.portal, journey.creator, build, self.world.agent.position, now, unix);
             }
+        }
+        // a return kept ours while its land was unknown: asked again until known
+        for (creator, id, center) in state.awaiting_land() {
+            let build = self.build_right_at(center);
+            state.land_known(creator, id, build, unix);
         }
         if let Some(group) = state.take_group_refresh() {
             self.world.group_data.request_members(group);
@@ -189,6 +197,10 @@ impl App {
                 },
                 expires: unix + LIFETIME,
             };
+            if mode.ends_with("no-build") {
+                self.demo_close_land();
+            }
+            let build = self.build_right_at(center);
             let mut state = std::mem::take(&mut self.world.portals);
             if mode.starts_with("return") {
                 let creator = uuid::Uuid::from_u128(0xA770);
@@ -201,7 +213,7 @@ impl App {
                     &mut self.world.agent,
                     &self.settings.camera,
                 );
-                state.share_return(portal.clone(), creator, position, now, unix);
+                state.share_return(portal.clone(), creator, build, position, now, unix);
                 let mut announcement = portal.announcement();
                 announcement.creator = Some(creator);
                 for peer in [0xA771, 0xA772] {
@@ -220,8 +232,37 @@ impl App {
                 if let Some(wire) = aurora_net::bridge::portal::Message::Open(portal.announcement()).encode() {
                     state.receive(&self.world, &format!("<auroraPortal>{owner}|{wire}</auroraPortal>"), now, unix);
                 }
-            } else {
-                state.create(portal, position, now, unix);
+            } else if mode.starts_with("stranger") {
+                // A public portal from a resident who is not our friend; the
+                // walk of `portal_demo_input` crosses it from frame 600.
+                self.portal_ui.open = false;
+                self.portal_ui.destination.clear();
+                let owner = uuid::Uuid::from_u128(0xA770);
+                if mode == "stranger-groups" {
+                    let group = uuid::Uuid::from_u128(0xA770_6000);
+                    self.world.groups.groups.push(aurora_net::GroupMembership {
+                        id: group,
+                        name: "Demo group".into(),
+                        insignia: uuid::Uuid::nil(),
+                        powers: 0,
+                        accept_notices: true,
+                        list_in_profile: true,
+                        contribution: 0,
+                    });
+                    self.world.profiles.merge_groups(
+                        owner,
+                        vec![aurora_net::profile::ProfileGroup {
+                            id: group,
+                            name: "Demo group".into(),
+                            insignia: uuid::Uuid::nil(),
+                        }],
+                    );
+                }
+                if let Some(wire) = aurora_net::bridge::portal::Message::Open(portal.announcement()).encode() {
+                    state.receive(&self.world, &format!("<auroraPortal>{owner}|{wire}</auroraPortal>"), now, unix);
+                }
+            } else if let Err(refusal) = state.create(portal, build, position, now, unix) {
+                self.portal_ui.notice = Some(refusal.message().into());
             }
             self.world.portals = state;
         }
@@ -359,6 +400,7 @@ impl App {
         if let Some(floor) = self.scene.preview_floor(&self.world, center, self.world.agent.position.z + 1.0) {
             center.z = floor + crate::world::portals::HEIGHT;
         }
+        let build = self.build_right_at(center);
         let portal = Portal {
             id: uuid::Uuid::new_v4(),
             region,
@@ -369,12 +411,12 @@ impl App {
             access: self.portal_ui.access,
             expires: unix_time() + LIFETIME,
         };
-        if !self
+        if let Err(refusal) = self
             .world
             .portals
-            .create(portal, self.world.agent.position, Instant::now(), unix_time())
+            .create(portal, build, self.world.agent.position, Instant::now(), unix_time())
         {
-            self.portal_ui.notice = Some(aurora_i18n::tr!("portal-invalid").into());
+            self.portal_ui.notice = Some(refusal.message().into());
         }
     }
 
@@ -389,6 +431,7 @@ impl App {
         } else {
             crate::slurl::make(&destination, position)
         };
+        let build = self.build_right_at(center);
         let portal = Portal {
             id: uuid::Uuid::new_v4(),
             region,
@@ -399,13 +442,15 @@ impl App {
             access,
             expires: unix_time() + LIFETIME,
         };
-        if !valid
-            || !self
-                .world
+        let created = if valid {
+            self.world
                 .portals
-                .create(portal, self.world.agent.position, Instant::now(), unix_time())
-        {
-            self.portal_drop_notice("portal-invalid");
+                .create(portal, build, self.world.agent.position, Instant::now(), unix_time())
+        } else {
+            Err(crate::world::portals::Refusal::Invalid)
+        };
+        if let Err(refusal) = created {
+            self.portal_notice(refusal.message());
         } else {
             self.portal_ui.destination = destination_text;
             self.portal_ui.access = access;

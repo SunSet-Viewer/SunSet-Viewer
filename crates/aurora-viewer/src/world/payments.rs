@@ -177,7 +177,7 @@ impl World {
         } else {
             self.payments.open_for_friends && self.social.is_friend(&other)
         };
-        if !(open || opens && self.rlva_can_start_im(other)) {
+        if !open && !(opens && self.rlva_can_start_im(other)) {
             return;
         }
         self.social.session_mut(other);

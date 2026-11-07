@@ -21,6 +21,9 @@ const CLIENT_ID: &str = match option_env!("SUNSET_GITHUB_APP_CLIENT_ID") {
 };
 const SERVICE: &str = "SunSet Viewer GitHub";
 const ACCOUNT: &str = "crash-reports";
+/// The credential store's entry of the authorization (service, account),
+/// for the removal from this computer (`uninstall.rs`).
+pub const STORE_ENTRY: (&str, &str) = (SERVICE, ACCOUNT);
 
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub enum Failure {

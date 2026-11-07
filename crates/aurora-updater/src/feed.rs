@@ -12,6 +12,7 @@ pub const RELEASES: &str = "https://api.github.com/repos/Adriano-Severino/SunSet
 pub const RELEASE_PAGE: &str = "https://github.com/Adriano-Severino/SunSet-Viewer/releases";
 const DOWNLOADS: &str = "https://github.com/Adriano-Severino/SunSet-Viewer/releases/download";
 pub const POLICY: &str = "aurora-update-policy.json";
+pub const SUNSET_POLICY: &str = "sunset-update-policy.json";
 pub const MAX_ARCHIVE: u64 = 2 * 1024 * 1024 * 1024;
 
 /// Which releases a viewer follows. Beta also takes the stable versions: a
@@ -45,6 +46,13 @@ pub fn is_beta(v: &Version) -> bool {
 pub struct Source {
     url: String,
     loopback: bool,
+    /// The release list last read and its ETag, shared by the clones: the
+    /// next check asks GitHub whether it changed (`If-None-Match`). A "304
+    /// Not Modified" answer is a few bytes and does not count against the 60
+    /// requests an hour GitHub allows an address without an account, so a
+    /// viewer can check every few minutes, even with others behind the same
+    /// address (a household, a mobile network, a VPN).
+    list: std::sync::Arc<std::sync::Mutex<Option<(String, Vec<u8>)>>>,
 }
 
 impl Default for Source {
@@ -52,6 +60,7 @@ impl Default for Source {
         Self {
             url: RELEASES.into(),
             loopback: false,
+            list: Default::default(),
         }
     }
 }
@@ -68,6 +77,7 @@ impl Source {
         Ok(Self {
             url: url.into(),
             loopback: true,
+            list: Default::default(),
         })
     }
 
@@ -138,9 +148,42 @@ impl Source {
         Ok(bytes)
     }
 
+    /// The release list: the one kept when GitHub says it has not changed
+    /// since (`list`), else the new one, kept with its ETag.
+    async fn releases(&self, client: &Client) -> Result<Vec<u8>> {
+        const LIMIT: usize = 4 * 1024 * 1024;
+        self.validate_url(&self.url)?;
+        let kept = self.list.lock().map_err(|_| anyhow::anyhow!("release list lock"))?.clone();
+        let mut request = client.get(&self.url).header("Accept", "application/vnd.github+json");
+        if let Some((etag, _)) = &kept {
+            request = request.header(reqwest::header::IF_NONE_MATCH, etag);
+        }
+        let mut response = request.send().await?;
+        if response.status() == reqwest::StatusCode::NOT_MODIFIED
+            && let Some((_, bytes)) = kept
+        {
+            return Ok(bytes);
+        }
+        response = response.error_for_status()?;
+        let etag = response
+            .headers()
+            .get(reqwest::header::ETAG)
+            .and_then(|v| v.to_str().ok())
+            .map(str::to_owned);
+        let mut bytes = Vec::new();
+        while let Some(chunk) = response.chunk().await? {
+            ensure!(bytes.len().saturating_add(chunk.len()) <= LIMIT, "update metadata too large");
+            bytes.extend_from_slice(&chunk);
+        }
+        if let Ok(mut list) = self.list.lock() {
+            *list = etag.map(|e| (e, bytes.clone()));
+        }
+        Ok(bytes)
+    }
+
     pub async fn check(&self, current: &str, channel: Channel) -> Result<Option<Release>> {
         let client = self.client()?;
-        let releases: Vec<GithubRelease> = serde_json::from_slice(&self.bytes(&client, &self.url, 4 * 1024 * 1024).await?)?;
+        let releases: Vec<GithubRelease> = serde_json::from_slice(&self.releases(&client).await?)?;
         let Some((v, r)) = releases
             .into_iter()
             .filter_map(|r| {
@@ -166,7 +209,7 @@ impl Source {
         let checksum = r.assets.iter().find(|a| a.name == format!("{expected}.sha256")).cloned();
         let mut required = false;
         let mut maintenance = super::Maintenance::default();
-        if let Some(asset) = r.assets.iter().find(|a| a.name == POLICY) {
+        if let Some(asset) = r.assets.iter().find(|a| a.name == POLICY || a.name == SUNSET_POLICY) {
             let policy: Policy = serde_json::from_slice(&self.bytes(&client, &asset.browser_download_url, 16 * 1024).await?)?;
             ensure!(policy.schema == 1 && policy.version == v.to_string(), "incompatible update policy");
             maintenance.clear_cache = threshold_applies(policy.cache_invalidation_before.as_deref(), current, &v)?;

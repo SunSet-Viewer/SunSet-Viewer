@@ -20,6 +20,7 @@ const ALLOWED: &[&str] = &[
     "README.md",
     "version.txt",
     "aurora-install.json",
+    "sunset-install.json",
 ];
 
 pub struct Workspace {
@@ -146,7 +147,7 @@ impl Workspace {
         file.sync_all()?;
         drop(file);
         let mut command = Command::new(self.root.join("helper.exe"));
-        command.arg("--aurora-update-helper").arg(&self.root).current_dir(&self.root);
+        command.arg("--sunset-update-helper").arg(&self.root).current_dir(&self.root);
         hidden(&mut command);
         let mut child = command.spawn().context("cannot start update helper")?;
         let start = Instant::now();
@@ -240,7 +241,8 @@ fn hidden(command: &mut Command) {
 /// The private helper route runs before CLI parsing, logging, GPU or settings.
 pub fn run_helper() -> Result<bool> {
     let mut args = std::env::args_os().skip(1);
-    if args.next().is_none_or(|a| a != "--aurora-update-helper") {
+    let first = args.next();
+    if !first.as_ref().is_some_and(|a| a == "--aurora-update-helper" || a == "--sunset-update-helper") {
         return Ok(false);
     }
     let work = PathBuf::from(args.next().context("missing update transaction")?);
