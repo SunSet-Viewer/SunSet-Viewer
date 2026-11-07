@@ -47,6 +47,10 @@ resident-online = { $name } est en ligne.
 # ja.ftl
 inventory-empty = インベントリは空です。
 resident-online = { $name }さんがオンラインになりました。
+
+# pt-BR.ftl
+inventory-empty = O inventário está vazio.
+resident-online = { $name } está online.
 ```
 
 Variable names must be identical in every language.
@@ -67,6 +71,12 @@ inventory-count = { $count ->
 inventory-count = { $count ->
     [one] { $count } élément
    *[other] { $count } éléments
+    }
+
+# pt-BR.ftl: 1 is singular, others plural
+inventory-count = { $count ->
+    [one] { $count } item
+   *[other] { $count } itens
     }
 
 # ja.ftl: no plural, plain text
