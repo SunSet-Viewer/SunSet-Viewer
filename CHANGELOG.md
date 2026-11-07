@@ -99,3 +99,4 @@ Esta versão marca a consolidação do **SunSet Viewer** como um projeto indepen
 - **Pacote Portátil**: `RELEASE/SunSet-Viewer-v0.9.3-windows-x64.zip` (73.7 MB, pronto para distribuição).
 - **Símbolos de Depuração**: `RELEASE/src/target/release/SunSet_Viewer.pdb` (411 MB, para triagem de crashes).
 - **Metadados de Instalação**: `sunset-install.json` e `version.txt` gerados e validados.
+
