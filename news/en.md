@@ -1,4 +1,4 @@
-﻿<!--
+<!--
 News of the Aurora Viewer login screen, in English.
 
 The viewer reads this file from the main branch at every start: once the

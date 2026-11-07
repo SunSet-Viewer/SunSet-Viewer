@@ -35,3 +35,4 @@ Com o TAA, avatares em movimento, animesh e objetos não sofrem mais borrões: o
 ## 2026-11-04 — Sistema de Combate e Ajustes Gráficos
 O módulo de combate do SunSet permite selecionar raycast local na tela ou na ponta da arma, com caixas de colisão detalhadas e opções de diagnóstico em Preferências. Lanternas de papel e esferas torturadas mantêm sua forma original, com melhorias em sombras de projetores e relatórios de travamento.
 [Saiba mais](https://github.com/Adriano-Severino/SunSet-Viewer/releases/tag/v0.9.3)
+

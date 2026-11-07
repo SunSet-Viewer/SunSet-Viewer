@@ -149,3 +149,4 @@ Version vX.Y.Z introduces major stability and rendering performance updates for 
 
 [Read more](https://github.com/Adriano-Severino/SunSet-Viewer/releases/tag/vX.Y.Z)
 ```
+
