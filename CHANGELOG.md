@@ -4,6 +4,23 @@ Todas as mudanças notáveis, novidades e correções de bugs do projeto **SunSe
 
 ---
 
+## [0.9.4] — 2026-11-07
+
+### 🌐 Melhorias e Correções na Localização em Português do Brasil (pt-BR)
+- **Menu de Anexos**: Corrigida a tradução de `Detach from yourself` de "Desapegue-se de você mesmo" para **"Desanexar de você"**.
+- **Itens em Uso**: Corrigida a tradução de `Worn` de "Desgastado" para **"Em uso"** (aba do inventário, etiquetas e filtros) e botão `Take off` para **"Tirar"**.
+- **Alternância de Corrida e Atalhos**: Corrigido `Always run` de "Always run: Ativado / Desativado" para **"Sempre correr: Ativado / Desativado"**.
+- **Correções de Tradução Literal**:
+  - Tecla Esc: Corrigido de "A fuga é cancelada" / "Fuga" para **"Pressione Esc para cancelar."** e **"Esc"**.
+  - Contatos: Corrigido `Calling card` de "Cartão telefônico" para **"Cartão de visita"**.
+  - Região/Terreno: Corrigido `Bake the terrain` de "Assar o terreno" para **"Fixar o terreno"**.
+  - Contexto de Inventário: `Find all links` corrigido de "Find Todos links" para **"Localizar todos os links"**.
+  - Mover pastas: Corrigido `Move to…` de "Mude para…" para **"Mover para…"**.
+  - Câmera: `Cannot focus: too close` corrigido de "Cannot focus: too Fechar" para **"Não é possível focar: muito próximo"**.
+- **Mensagens do Sistema e Chat**: Traduzidas notificações de transações L$, alertas de amigos online/offline, diálogos de terreno e mensagens de sistema que estavam em inglês.
+
+---
+
 ## [0.9.3] — 2026-11-06
 
 Esta versão marca a consolidação do **SunSet Viewer** como um projeto independente derivado do Aurora Viewer, incorporando as novidades do Aurora v0.9.3 (incluindo FSR 3.1), preservando o sistema proprietário de combate, introduzindo o novo sistema autônomo de auto-atualização e entregando 100% de suporte nativo ao Português do Brasil (pt-BR).
