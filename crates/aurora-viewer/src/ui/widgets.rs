@@ -2431,7 +2431,7 @@ pub fn action_button_keyed(
     // height shares a baseline
     let text = row_text_origin(ui.painter(), &galley, left + lead, rect.center().y);
     let text_w = galley.size().x;
-    ui.painter().galley(text, galley, ink);
+    ui.painter().with_clip_rect(rect).galley(text, galley, ink);
     if let Some(b) = key {
         let behind = fill.gamma_multiply(fade);
         let caps = keycap::caps(ui, b, behind);
