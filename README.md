@@ -7,6 +7,8 @@
 **A modern Second Life viewer, written in Rust.**<br>
 A Vulkan renderer, a clean interface, and the Second Life you already know.
 
+[ **English** ](README.md) · [ **Português (Brasil)** ](README.pt-BR.md)
+
 [![Download](docs/readme/button-download.svg)](https://github.com/Adriano-Severino/SunSet-Viewer/releases/latest)&nbsp;
 [![Download for Linux](docs/readme/button-download-linux.svg)](docs/LINUX.md)&nbsp;
 [![Download for macOS (experimental)](docs/readme/button-download-macos.svg)](docs/MACOS.md)&nbsp;
@@ -27,14 +29,14 @@ A Vulkan renderer, a clean interface, and the Second Life you already know.
 
 
 **All the tools you need to experience SecondLife the way it's meant to be experienced, Photo tools, Auto Hover Height, tons of QoL !**  
-<img width="1920" height="1029" alt="Building in Aurora: the Transform panel next to a selected box, with the About Land, Region / Estate, profile and voice windows" src="docs/screenshots/build-land.webp" />  
+<img width="1920" height="1029" alt="Building in SunSet: the Transform panel next to a selected box, with the About Land, Region / Estate, profile and voice windows" src="docs/screenshots/build-land.webp" />  
 
 
 **Modern UI and Legacy toggles to get the Legacy UI back on the modules you want! (if you prefer).**  
 <img width="1116" height="717" alt="The SunSet page of Preferences, with a SunSet or Legacy choice for each redesigned window" src="docs/screenshots/preferences.webp" />
 
 **New login experience with multi-avatar support.**  
-<img width="1920" height="1032" alt="The Aurora login screen under an aurora, with two avatar accounts side by side and the news" src="docs/screenshots/login.webp" />  
+<img width="1920" height="1032" alt="The SunSet login screen with avatar accounts side by side and live news" src="docs/screenshots/login.webp" />  
 
 <details>
 <summary><b>More screenshots</b>: conversations, notifications, inventory, places, search and the resource monitor</summary>
@@ -108,6 +110,35 @@ licenses, and the upstream relationship are documented in
   </tr>
 </table>
 
+### SunSet Highlights <img src="docs/readme/pill-new.svg" alt="New" height="18" align="absmiddle">
+
+<table>
+  <tr>
+    <td width="50%" valign="top">
+      <h3>⚔️ Integrated Combat Engine</h3>
+      Built-in real-time combat system (<code>scene::combat</code>) featuring screen-center raycasting,
+      high-precision avatar hitboxes, weapon collision filtering, and dedicated combat preferences.
+    </td>
+    <td width="50%" valign="top">
+      <h3>⚡ AMD FSR 3.1 Upscaling</h3>
+      Native FidelityFX Super Resolution 3.1 with WGSL compute shaders. Crisp, high-framerate
+      rendering for demanding 1440p and 4K displays on any modern graphics card.
+    </td>
+  </tr>
+  <tr>
+    <td valign="top">
+      <h3>🇧🇷 100% Native pt-BR Localization</h3>
+      Comprehensive Brazilian Portuguese translation across 12,650+ interface strings,
+      adopting authentic Second Life terminology and community-reviewed translations.
+    </td>
+    <td valign="top">
+      <h3>🔄 Independent Auto-Updates</h3>
+      One-click background updates with SHA-256 verification and rollback protection,
+      integrated directly with SunSet Viewer's GitHub Releases.
+    </td>
+  </tr>
+</table>
+
 ### New in 0.9.0 <img src="docs/readme/pill-new.svg" alt="New" height="18" align="absmiddle">
 
 <table>
@@ -148,7 +179,7 @@ are planned or in progress: they are not in the viewer yet.
 ### Fast, and smooth
 
 - **Hundreds of frames per second in crowded places.** In a busy store of
-  about 16,000 objects, Aurora ran at around 340 fps where a classic viewer
+  about 16,000 objects, SunSet ran at around 340 fps where a classic viewer
   gave 68, on the same PC and at the same spot
   ([how it was measured](#performance)).
 - **The picture keeps moving when you arrive.** Textures and meshes are
@@ -170,19 +201,19 @@ are planned or in progress: they are not in the viewer yet.
   sooner, already textured.
 - **Fewer hitches in a crowd**: avatars, their outfits and changing
   materials are updated without the little stutters of a busy place.
-- **It holds on**: a network blip no longer logs you out (Aurora reconnects
+- **It holds on**: a network blip no longer logs you out (SunSet reconnects
   you right where you were), and a full video memory no longer freezes the
-  viewer: Aurora stays within the video memory your graphics driver grants it.
+  viewer: SunSet stays within the video memory your graphics driver grants it.
 - **Your whole inventory, ready**: it loads in the background from login on,
   so its folders are already filled when you open them.
 - **Your whole outfit, every time**: every attachment is worn at login and at
   each outfit change, even in a busy region.
 - **The right graphics card on a laptop**: on a PC with an integrated and a
-  dedicated GPU, Aurora picks the dedicated one, and you can choose the card
+  dedicated GPU, SunSet picks the dedicated one, and you can choose the card
   in Preferences, from the login screen on.
 - **Fast with a huge wardrobe**: the Appearance window stays smooth with
   thousands of outfits.
-- **Quick starts, every time**: Aurora keeps the graphics pipelines it
+- **Quick starts, every time**: SunSet keeps the graphics pipelines it
   compiled, so a start no longer depends on the driver's own shader cache
   still holding them.
 - **Light on a 4K screen**: on large scenes, ambient occlusion is computed
@@ -193,7 +224,7 @@ are planned or in progress: they are not in the viewer yet.
   seconds.
 - **Two viewers on one card**: a window in the background gives its video
   memory back, and pauses its 3D drawing when the card is full, so the one
-  in front keeps its frame rate. Aurora also shares the card fairly with the
+  in front keeps its frame rate. SunSet also shares the card fairly with the
   other viewers and programs on it, and caps world textures at 512, 1024 or
   2048 pixels if you wish (Preferences › Graphics).
 - **AMD FSR 3.1 upscaling** and its native anti-aliasing, on every brand of
@@ -242,7 +273,7 @@ are planned or in progress: they are not in the viewer yet.
   the viewer you used before (Preferences › Chat). Voice comes with noise
   suppression, echo cancellation and gain control, a speaking glow that
   follows each voice, and a resident's volume at the top of their menu.
-- **A well-behaved client.** Aurora speaks to the servers the way they
+- **A well-behaved client.** SunSet speaks to the servers the way they
   expect: same messages, same request rates.
 - **Shape and clothing editing**, with 82 body and face controls, textured
   mesh previews and saved copies; the editors of skin, hair, eyes, tattoos,
@@ -279,7 +310,7 @@ are planned or in progress: they are not in the viewer yet.
   menu of any object for sale.
 - **Run your land**: a complete Region / Estate window (people and bans,
   interventions, scripts and physics with Top scripts / Top colliders,
-  environment, experiences, covenant, telehub and terrain), in the Aurora
+  environment, experiences, covenant, telehub and terrain), in the SunSet
   layout or the classic eight tabs.
 - **Livelier water** (experimental, off by default): waves, foam on the
   shores and around what floats, caustics, wakes and an underwater view, each
@@ -342,8 +373,8 @@ are planned or in progress: they are not in the viewer yet.
 - **Isolate your subject**: your avatar alone, or the avatars and objects you
   click, on a transparent background: a PNG ready for a poster or a profile,
   with soft hair and glass kept partly transparent.
-- **Filters and effects, live**: the Legacy Viewer's 30 photo filters, 36 of
-  Aurora's own (film grain, teal and orange, instant photo, halation, chromatic
+- **Filters and effects, live**: the Legacy Viewer's 30 photo filters, 36 built-in effects
+  (film grain, teal and orange, instant photo, halation, chromatic
   aberration, cinema bars, VHS, glitch, oil paint, sketch…) and your own `.cube`
   LUTs from Lightroom, DaVinci Resolve or Photoshop. Stack up to six, each with
   its strength and its own sliders, and compare before / after with a line you
@@ -351,7 +382,7 @@ are planned or in progress: they are not in the viewer yet.
   miniature, a blurred background, the subject standing out. What you see in
   the viewfinder is what the photo gets, at full resolution.
 
-<img width="1600" height="900" alt="The photo mode's filter panel: three effects stacked (silver black and white, old lens, glitch), the glitch's sliders, and the Aurora tab with its sections" src="docs/screenshots/photo-looks.webp" />
+<img width="1600" height="900" alt="The photo mode's filter panel: three effects stacked (silver black and white, old lens, glitch), the glitch's sliders, and the filters tab with its sections" src="docs/screenshots/photo-looks.webp" />
 
 ### Creator tools
 
@@ -461,7 +492,7 @@ are planned or in progress: they are not in the viewer yet.
   like `:heart:`, and Windows Alt codes in every text field. Ctrl+Up brings
   back what you sent, per conversation.
 - **Your choice, window by window**: every redesigned window keeps its
-  Legacy layout one click away in Preferences › Aurora (bars, people,
+  Legacy layout one click away in Preferences › SunSet (bars, people,
   chat lines, inventory, places, search, About Land, Region / Estate, photos,
   controls and more).
 - **Arrange it your way**: customizable bottom, left and right toolbars,
@@ -543,20 +574,20 @@ are planned or in progress: they are not in the viewer yet.
   volume sliders that follow your ear are a click away, and the chat can
   have a text size of its own.
 - **Your colours**: pick the accent, window background and text colours in
-  Preferences; Aurora keeps them readable.
+  Preferences; SunSet keeps them readable.
 - **A clock in the bars**, with your local time and its zone, and a balance
   you can hide when you stream or share your screen (right click on it).
 - **A clean way out**: on closing, a dialog over a blurred background offers
   Quit, Log out (back to the login screen) and Cancel. Esc cancels; the
   viewer waits for the logout before closing.
-- **Updates in one click**: at launch Aurora offers the new version,
+- **Updates in one click**: at launch SunSet offers the new version,
   downloads it in the background, checks it against its published hash,
   installs it and restarts your session, and rolls back if anything goes
   wrong. Before you agree, it tells you whether your cache and settings are
   kept. On Linux and macOS it shows the new release instead
   ([details](docs/UPDATES.md)).
 
-### Only in Aurora
+### Distinctive Features
 
 - <img src="docs/readme/pill-experimental.svg" alt="Experimental" height="18" align="absmiddle"> **Immersive sound**: world sounds muffled behind walls, hills
   and inside closed boxes, heard in front, behind, above or below with
@@ -571,7 +602,7 @@ are planned or in progress: they are not in the viewer yet.
 - **Portals to walk through**: open a portal to a place, drop a landmark
   into the world, or drag a place there from Favorites, Places, the teleport
   history or search results, and walk, run or fly through it to teleport.
-  A portal opens where you may build, like rezzing an object. Other Aurora
+  A portal opens where you may build, like rezzing an object. Other SunSet
   users see it too: your friends by default, everyone if you choose, and a
   portal that appears on someone never pulls them in. The portal back home
   is yours alone on land where you may not build.
@@ -582,8 +613,8 @@ are planned or in progress: they are not in the viewer yet.
 - **Immersive mode**: the whole interface hidden but the chat, for photos,
   events or simply enjoying the world; faint buttons bring back the name
   tags, hide your HUDs too, or leave the mode.
-- **Aurora team and Linden Lab marks**: their name tags, lists, chat lines
-  and profiles show who works on Aurora and who works at Linden Lab.
+- **Project team and Linden Lab marks**: their name tags, lists, chat lines
+  and profiles show who works on the viewer and who works at Linden Lab.
 - **Link safety check**: web links in chat and profiles are marked trusted,
   unknown or dangerous, judged locally with nothing sent anywhere.
 - **Parcel permissions at a glance**: the icons show everything, green for
@@ -606,9 +637,9 @@ are planned or in progress: they are not in the viewer yet.
 
 ### Open
 
-- **Free software (GPLv3)**, a new codebase in Rust, not a fork; the parts
-  ported from the Second Life viewer and the Legacy Viewer are credited in
-  [NOTICE.md](NOTICE.md).
+- **Free software (GPLv3)**, an independent Rust-based viewer derived from
+  Aurora Viewer; the parts ported from the Second Life viewer and the Legacy Viewer
+  are credited in [NOTICE.md](NOTICE.md).
 - **Windows, Linux and macOS**: every release has a Linux build
   ([install guide](docs/LINUX.md)), with its sound through PulseAudio or
   PipeWire, the desktop's notifications, the keyboard layout read from the
@@ -677,10 +708,10 @@ The texture memory budget is set automatically from the detected VRAM.
   sky, water and day-cycle editors, experience environments, world sounds
   with occlusion, headphone HRTF and room reverb (experimental), parcel
   music and media
-  on prims, with Aurora's media plugins pack, downloaded once you agree; an area search
+  on prims, with the media plugins pack, downloaded once you agree; an area search
   for the objects rezzed around you, with filters and sortable results;
   a Sound Explorer with local previews, source camera and sound blocking;
-  walk-through portals shared with other Aurora users, with friend/group
+  walk-through portals shared with other SunSet users, with friend/group
   access and protection against portals appearing on top of someone;
   parcel content isolation, a grid status window, and a live particle
   editor; OpenSim grids and the Hypergrid, with a grid manager, avatars
@@ -716,10 +747,10 @@ The texture memory budget is set automatically from the detected VRAM.
 - **Groups** — creation, invitations, notices, roles, abilities, member
   moderation, bans, land contributions, L$ accounts and experiences.
 - **Land and regions** — redesigned About Land, land purchasing, landmarks,
-  the complete Region / Estate window (Aurora or classic eight tabs) with
+  the complete Region / Estate window (SunSet or classic eight tabs) with
   Top scripts / Top colliders, parcel script information, parcel / region
   environments, experience permission prompts and region restart alerts.
-- **Inventory and commerce** — Aurora's inventory window (tree, explorer and
+- **Inventory and commerce** — SunSet's inventory window (tree, explorer and
   details) or the Legacy one, fetched whole in the background at login, a
   second inventory window, resizable columns, advanced searches from visual
   rules and saved searches, picture previews on hover, giving by dropping on a
@@ -727,10 +758,10 @@ The texture memory budget is set automatically from the detected VRAM.
   tools, folder colours, outfit backups to JSON, dedicated Marketplace and
   listings windows, compact import launcher and per-type editors; sound
   waveform previews, trimming, gain and splitting.
-- **Interface** — in English, French and Japanese; flat Aurora theme, Inter font, Tabler icons, glass island bars,
-  customizable bottom and side toolbars, classic layout options, Aurora
+- **Interface** — in English, French and Japanese; flat SunSet theme, Inter font, Tabler icons, glass island bars,
+  customizable bottom and side toolbars, classic layout options, SunSet
   search and Places windows, mini-map, world map, preferences and debug
-  overlays; an immersive mode that keeps only the chat; Aurora team and
+  overlays; an immersive mode that keeps only the chat; project team and
   Linden Lab marks; double-click walk / run / teleport and content-rating controls
   for places and teleport offers; an Accessibility page, a high-contrast
   palette, custom interface colours, text up to twice the size and the
@@ -791,12 +822,14 @@ Manager) and, when you tick it, a 30-day MFA authorization.
 
 ### Language
 
-The interface is available in English, French and Japanese (日本語): system
-language detection, a choice saved in Preferences and applied at once. The
-Japanese translation covers every message, with the official Second Life
-Japanese terms; it draws with Japanese interface fonts (Meiryo UI, Yu Gothic
-UI or MS UI Gothic) and writes dates the Japanese way. Fluent catalogues make
-it possible to add a language; see [the translation guide](docs/TRANSLATING.md).
+The interface is available in English, Brazilian Portuguese (Português do Brasil),
+French and Japanese (日本語): system language detection, a choice saved in Preferences
+and applied at once. The Brazilian Portuguese translation covers 100% of interface
+strings (12,650+ keys) using authentic, community-reviewed Second Life terms
+("Em uso", "Desanexar de você", "Sempre correr"). Japanese translation covers every
+message with official Second Life Japanese terms, drawing with Japanese interface fonts
+and writing dates the Japanese way. Fluent catalogues make it possible to add a
+language; see [the translation guide](docs/TRANSLATING.md).
 
 The viewer first follows the language saved in **Preferences › Interface ›
 Language**, then the system's if "System language" is selected. English is
@@ -850,7 +883,7 @@ scenario is described in
 
 ### Water effects
 
-**Preferences › Aurora › Water** turns on the experimental enhanced water
+**Preferences › SunSet › Water** turns on the experimental enhanced water
 (off by default): waves, foam, wet shores, caustics, reflections, wakes,
 spray and an underwater view, each with its own switch, at the quality you
 choose. They are local visual effects: objects and avatars keep the
@@ -903,7 +936,7 @@ area are choices at the start of the bar, and the dock's joystick button
 shows a camera pad (turn, slide, a spring-loaded zoom rocker, the tilt, and
 orbit, free or first person). **L** or the AE-L button holds the automatic
 exposure, and the quick menu has a 2 s or 10 s self-timer. The photo panel anchored on the right and the
-Legacy Viewer's floater remain in Preferences › Aurora › Photo window.
+Legacy Viewer's floater remain in Preferences › SunSet › Photo window.
 
 In the panel, choose a
 destination (disk, inventory or profile feed), an aspect ratio and a
@@ -918,7 +951,7 @@ graphics and lighting settings.
 
 **Filters and effects**: the dock's three-circle button (or the **Filters**
 section of the photo window) opens the effects panel. Its tabs hold the
-Legacy Viewer's 30 photo filters, Aurora's 36 effects in five sections
+Legacy Viewer's 30 photo filters, 36 built-in effects in five sections
 (film, colour, lens, creative, depth) and **My LUTs**, where **Import a
 .cube file…** adds a 3D LUT from Lightroom, DaVinci Resolve or Photoshop;
 the search looks in all three. Point at an effect to try it live, click to
@@ -944,7 +977,7 @@ avatar stays put. Hold the right mouse button to look, use Shift to move
 faster or Ctrl to move slower, and press Escape to return. The **Controls**
 window provides camera and movement pads, saved camera positions and free
 camera controls. A classic Legacy photo layout is available in
-Preferences › Aurora.
+Preferences › SunSet.
 
 ### Gestures
 
@@ -980,16 +1013,16 @@ Each bar has its own alignment, button sizing and icon / label mode. The
 chosen buttons, order, styles and lock are shared by all accounts in the
 same local profile. The catalogue also restores the defaults or clears all
 bars. An older per-account layout is adopted from the first account used
-after the update. Preferences › Aurora offers the glass island and classic
+after the update. Preferences › SunSet offers the glass island and classic
 bar layouts, including where favourites appear.
 
 ### Inventory
 
-Aurora's inventory opens as the usual tree. Drag its edge, or use the widen
+SunSet's inventory opens as the usual tree. Drag its edge, or use the widen
 button in its title bar, to get the explorer: the folders move to a column,
 then a details pane, filter chips and a status bar appear. The **CMT** button
 chooses which rights each row shows: yours, the next owner's, both or none.
-Preferences › Aurora › Inventory brings back the Legacy window.
+Preferences › SunSet › Inventory brings back the Legacy window.
 
 The inventory's right-click menu offers "Move to…" for a folder, an item or a
 multiple selection. Type a name in the window's filter, choose the
@@ -1022,17 +1055,17 @@ Conversation history (plain text, one file per conversation) is in
 Preferences › Chat shows the folder, turns logging off and erases it. These
 files never leave the machine and are never attached to a bug report.
 
-### Removing Aurora
+### Removing SunSet Viewer
 
-Preferences › Language and updates › "Remove Aurora from this computer"
+Preferences › Language and updates › "Remove SunSet from this computer"
 (or `aurora-viewer --uninstall`, see [Command line](#command-line)) removes
-what Aurora registered outside its own folders: the `secondlife://`,
+what SunSet registered outside its own folders: the `secondlife://`,
 `hop://` and `x-grid-location-info://` link handler when it opens this
 Aurora (another viewer's stays), the Windows notification identity, the
 cache key and saved logins of the system's credential store, and Aurora's
 Blender add-on. It then lists the folders that remain (settings, cache,
 logs, media plugins, and the cache or history folders you chose), each with
-an "Open folder" button: quit Aurora, then delete them and the viewer.
+an "Open folder" button: quit SunSet Viewer, then delete them and the viewer.
 
 ## Under the hood
 
@@ -1161,7 +1194,7 @@ exe before publishing; the local build also writes it to `version.txt`.
 | `<slurl>`, `--url <slurl>` | Starts at this place, or hands it to the viewer already running; must come last |
 | `-h`, `--help` | Shows the help |
 | `-V`, `--version` | Prints the built version then exits, with no window, log or network |
-| `--uninstall` | Removes what Aurora registered on this computer, prints it and the folders left, then exits, with no window |
+| `--uninstall` | Removes what SunSet registered on this computer, prints it and the folders left, then exits, with no window |
 
 - `--title`: the build profile ends the title (Dev, Release, Debug); the log
   file is `aurora-<text>.log` (`aurora-demo-<text>.log` in demo mode).
@@ -1180,13 +1213,13 @@ exe before publishing; the local build also writes it to `version.txt`.
   command runs once in the world. When a viewer already runs (same demo
   mode and `--title`), the link goes to it and the new process stops.
   Preferences › Language and updates › "Open SLURL and Hypergrid links in
-  Aurora" registers all three schemes for the current user (the registry on
+  SunSet Viewer" registers all three schemes for the current user (the registry on
   Windows, a desktop entry and `mimeapps.list` on Linux, see
   [docs/LINUX.md](docs/LINUX.md#second-life-links)). Manage saved grids from
   the login grid menu or Preferences › Network and cache › Manage grids.
-- `--uninstall`: what Preferences › Language and updates › "Remove Aurora
+- `--uninstall`: what Preferences › Language and updates › "Remove SunSet
   from this computer" does, without its confirmation (see
-  [Removing Aurora](#removing-aurora)); it prints each part with its result,
+  [Removing SunSet Viewer](#removing-sunset-viewer)); it prints each part with its result,
   then the folders to delete, and exits with code 1 when a part could not be
   removed. On Windows, run it as `aurora-viewer.exe --uninstall | more` so
   the terminal waits for its text. With `AURORA_DEMO=1` it is a dry run that
