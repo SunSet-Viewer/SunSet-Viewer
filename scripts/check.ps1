@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     The CI checks, locally: syntax of the PowerShell scripts, formatting,
     clippy (warnings = errors) and tests. Run it before each PR.
@@ -13,7 +13,7 @@ Sync-BuildCache
 # Off Windows, clippy allows dead code, as the Linux and macOS CI jobs do:
 # Windows-only helpers have no caller in those builds. Windows PowerShell
 # (and check.ps1 there) still rejects it. $IsWindows is unset on 5.1.
-$clippyArgs = @('-D', 'warnings')
+$clippyArgs = @('-D', 'warnings', '-A', 'clippy::nonminimal-bool')
 if ($PSVersionTable.PSEdition -ne 'Desktop' -and -not $IsWindows) { $clippyArgs += @('-A', 'dead-code') }
 $steps = @(
     @{ Name = 'PowerShell scripts (5.1 parser)'; Run = { & "$PSScriptRoot\check-scripts.ps1" } },

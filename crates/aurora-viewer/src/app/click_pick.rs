@@ -265,7 +265,6 @@ impl App {
                     && self.settings.movement_dash.mouselook_middle_click
                 {
                     self.perform_dash(self.settings.movement_dash.dash_distance, true);
-                    return;
                 }
             }
             MouseButton::Right => self.on_right_button(pressed, over_ui),

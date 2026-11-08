@@ -257,7 +257,7 @@ impl Session<'_> {
         } else if pkt.id == TransferAbort::ID {
             let m: TransferAbort = pkt.decode()?;
             let b = m.transfer_info;
-            if !self.script_transfers.pending.get(&b.transfer_id).is_some_and(|t| t.sim == from) {
+            if self.script_transfers.pending.get(&b.transfer_id).is_none_or(|t| t.sim != from) {
                 return Ok(false);
             }
             (b.transfer_id, b.channel_type, Err(aurora_i18n::tr!("script-load-failed").into()))
