@@ -105,8 +105,12 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw "Installing dump_syms failed ($LASTEXITCODE)." }
           $pdb = Join-Path $env:GITHUB_WORKSPACE 'target/release/SunSet-Viewer.pdb'
           if (-not (Test-Path -LiteralPath $pdb)) {
-            # Search the release tree in case Cargo places the linked PDB in deps/.
-            $pdb = Get-ChildItem -LiteralPath (Join-Path $env:GITHUB_WORKSPACE 'target/release') -Filter 'SunSet-Viewer*.pdb' -File -Recurse -ErrorAction SilentlyContinue |
+            $pdb = Join-Path $env:GITHUB_WORKSPACE 'target/release/SunSet_Viewer.pdb'
+          }
+          if (-not (Test-Path -LiteralPath $pdb)) {
+            # Search the release tree in case Cargo places the linked PDB in deps/ or with underscores.
+            $pdb = Get-ChildItem -LiteralPath (Join-Path $env:GITHUB_WORKSPACE 'target/release') -File -Recurse -ErrorAction SilentlyContinue |
+              Where-Object { $_.Name -like 'SunSet*Viewer*.pdb' } |
               Sort-Object LastWriteTime -Descending | Select-Object -First 1 -ExpandProperty FullName
           }
           if (-not $pdb -or -not (Test-Path -LiteralPath $pdb)) {
