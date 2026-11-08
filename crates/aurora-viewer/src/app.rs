@@ -1450,6 +1450,15 @@ impl App {
         scene.draw_distance = settings.draw_distance;
         scene.lod_factor = settings.lod_factor;
         let update_demo = ui::update::UpdateDemo::from_env(&settings);
+        let world = {
+            let mut w = World::new(lib);
+            w.cache_dir = Some(cache_root);
+            for (&id, &rgba) in &settings.avatar_marks {
+                w.avatar_marks
+                    .insert(id, egui::Color32::from_rgba_unmultiplied(rgba[0], rgba[1], rgba[2], rgba[3]));
+            }
+            w
+        };
         Ok(Box::new(App {
             area_search_ui: ui::area_search::AreaSearchUi::from_saved(&settings.area_search),
             settings,
@@ -1466,11 +1475,7 @@ impl App {
             logo: None,
             logo_rx: Some(rx),
             window_icon: None,
-            world: {
-                let mut w = World::new(lib);
-                w.cache_dir = Some(cache_root);
-                w
-            },
+            world,
             bridge_runtime: Default::default(),
             native_anchor: Default::default(),
             anchor_stands: Default::default(),

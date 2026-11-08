@@ -13369,3 +13369,16 @@ world-notifications-caution-unknown-position = （不明な位置）
 world-notifications-caution-unknown-region = （不明なリージョン）
 
 world-notifications-group-fee = 参加費：L$ { $fee }
+
+ui-context-marker-color = マーカーの色
+
+ui-context-custom-color = カスタム色…
+
+ui-color-orange = オレンジ
+
+ui-color-cyan = シアン
+
+ui-color-pink = ピンク
+
+ui-color-white = 白
+

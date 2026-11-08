@@ -378,20 +378,29 @@ pub fn draw_directions(painter: &egui::Painter, rect: Rect, rot: f32) {
 }
 
 impl MiniMap {
+    pub fn set_mark(&mut self, id: Uuid, color: Color32) {
+        self.marks.insert(id, color);
+    }
+
+    pub fn remove_mark(&mut self, id: &Uuid) {
+        self.marks.remove(id);
+    }
+
+    pub fn clear_marks(&mut self) {
+        self.marks.clear();
+    }
+
     /// The avatar marker colour shared by the map and its world-space debug box.
+    /// Overrides contact set presets when explicitly marked by the user.
     pub fn avatar_color(&self, world: &World, id: &Uuid) -> Color32 {
+        if let Some(mark) = world.avatar_marks.get(id).copied().or_else(|| self.marks.get(id).copied()) {
+            return mark;
+        }
+        if let Some(set_col) = world.contact_sets.appearance(id).minimap.map(super::colors::set_color) {
+            return set_col;
+        }
         let name = avatar_name(world, id);
-        let base = self
-            .marks
-            .get(id)
-            .copied()
-            .unwrap_or_else(|| super::colors::map_color(world, id, &name));
-        world
-            .contact_sets
-            .appearance(id)
-            .minimap
-            .map(super::colors::set_color)
-            .unwrap_or(base)
+        super::colors::map_color(world, id, &name)
     }
 
     /// The floater (Ctrl+Shift+M).
@@ -818,6 +827,13 @@ impl MiniMap {
                             for id in &avs {
                                 self.marks.insert(*id, col);
                             }
+                            context::request(
+                                ui.ctx(),
+                                CtxAction::SetAvatarMark {
+                                    ids: avs.clone(),
+                                    color: col,
+                                },
+                            );
                         }
                     }
                     menu::separator(ui, p);
@@ -825,10 +841,12 @@ impl MiniMap {
                         for id in &avs {
                             self.marks.remove(id);
                         }
+                        context::request(ui.ctx(), CtxAction::ClearAvatarMark(avs.clone()));
                     }
                     menu::separator(ui, p);
                     if menu::item(ui, p, "backspace-filled", aurora_i18n::tr!("ui-minimap-clear-all-markers")) {
                         self.marks.clear();
+                        context::request(ui.ctx(), CtxAction::ClearAllAvatarMarks);
                     }
                 });
                 // "More…": the radar menu of the nearest avatar
@@ -1548,5 +1566,34 @@ mod beacon_tests {
         track.pending = false;
         track.invalid = true;
         assert!(!hit.contains(hit.rect.center(), &track));
+    }
+
+    #[test]
+    fn avatar_mark_color_overrides_contact_set_and_clearing_reverts_to_preset() {
+        let mut world = World::new(std::sync::Arc::new(crate::scene::avatar::AvatarLibrary::load()));
+        let id = Uuid::new_v4();
+        let map = MiniMap::default();
+
+        let default_color = map.avatar_color(&world, &id);
+
+        world.contact_sets.add_to_set(&[id], "PresetSet", |_| true);
+        world.contact_sets.set_visuals(
+            "PresetSet",
+            crate::world::contact_sets::Visuals {
+                minimap: true,
+                ..Default::default()
+            },
+        );
+        let preset_color = map.avatar_color(&world, &id);
+
+        let custom_mark = Color32::from_rgb(180, 50, 240);
+        world.avatar_marks.insert(id, custom_mark);
+        assert_eq!(map.avatar_color(&world, &id), custom_mark);
+
+        world.avatar_marks.remove(&id);
+        assert_eq!(map.avatar_color(&world, &id), preset_color);
+
+        world.contact_sets.remove_from_set(&[id], "PresetSet", |_| true);
+        assert_eq!(map.avatar_color(&world, &id), default_color);
     }
 }

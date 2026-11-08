@@ -894,6 +894,28 @@ impl App {
             CtxAction::GroupChatBlocked(id, on) => self.world.set_group_chat_blocked(id, on),
             CtxAction::ContactSet(edit) => crate::ui::contacts::apply_set_edit(&mut self.world, edit),
             CtxAction::NewContactSet(ids) => self.contacts_ui.ask_new_set_for(ids),
+            CtxAction::SetAvatarMark { ids, color } => {
+                for id in ids {
+                    self.world.avatar_marks.insert(id, color);
+                    self.settings.avatar_marks.insert(id, [color.r(), color.g(), color.b(), color.a()]);
+                    self.minimap_ui.set_mark(id, color);
+                    self.people_map_ui.set_mark(id, color);
+                }
+            }
+            CtxAction::ClearAvatarMark(ids) => {
+                for id in ids {
+                    self.world.avatar_marks.remove(&id);
+                    self.settings.avatar_marks.remove(&id);
+                    self.minimap_ui.remove_mark(&id);
+                    self.people_map_ui.remove_mark(&id);
+                }
+            }
+            CtxAction::ClearAllAvatarMarks => {
+                self.world.avatar_marks.clear();
+                self.settings.avatar_marks.clear();
+                self.minimap_ui.clear_marks();
+                self.people_map_ui.clear_marks();
+            }
             CtxAction::ShowHistory(conversation) => {
                 let (title, file) = self.world.transcript_of(conversation);
                 self.history_ui.show_file(title, file);

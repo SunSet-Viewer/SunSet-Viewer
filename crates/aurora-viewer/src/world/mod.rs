@@ -507,6 +507,8 @@ pub struct World {
     /// their line, or their leaving.
     nearby_typing: HashSet<Uuid>,
     pub social: social::Social,
+    /// Custom color markers per resident (Firestorm mark avatar), overriding contact set presets.
+    pub avatar_marks: HashMap<Uuid, egui::Color32>,
     /// Contact sets and aliases (LGGContactSets), per account.
     pub contact_sets: contact_sets::ContactSets,
     /// The residents we dealt with lately (People › Recent).
@@ -826,6 +828,7 @@ impl World {
             frozen: false,
             held_kills: Vec::new(),
             social: social::Social::default(),
+            avatar_marks: HashMap::new(),
             contact_sets: Default::default(),
             recent: Default::default(),
             aliases_synced: 0,
