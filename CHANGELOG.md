@@ -4,6 +4,17 @@ Todas as mudanças notáveis, novidades e correções de bugs do projeto **SunSe
 
 ---
 
+## [0.9.6] — 2026-11-08
+
+### 🎨 Marcador de Cores Individual para Contatos (Estilo Firestorm)
+- **Menu de Contexto de Avatar**: Adicionado o submenu `Marcar cor` com paleta rápida de cores e seletor personalizado RGB/HSV completo para destacar qualquer avatar individualmente pelo botão direito.
+- **Sobreposição e Precedência de Cores**: A cor individual marcada tem prioridade sobre as cores de predefinição herdadas de conjuntos de contatos (Contact Sets), aplicando-se aos hitboxes de combate 3D, pontos do minimapa e listas de pessoas/nomes.
+- **Restauração Dinâmica**: Opção `Limpar cor` para restaurar imediatamente o avatar à cor predefinida do seu conjunto de contatos (ou padrão do sistema).
+- **Persistência Entre Sessões**: As marcações individuais de cor de avatares são salvas automaticamente em `settings.json` e restauradas em cada inicialização.
+- **Localização Multilíngue**: Suporte completo às novas opções nos idiomas Português do Brasil (`pt-BR`), Inglês (`en`), Francês (`fr`) e Japonês (`ja`).
+
+---
+
 ## [0.9.5] — 2026-11-08
 
 ### ⚡ Novo Sistema Nativo de Movimento & Dash Instantâneo
