@@ -13344,3 +13344,53 @@ picker-pipette-no-texture = Nenhuma textura copiável encontrada em seu inventá
 picker-pipette-no-material = Nenhum material copiável encontrado em seu inventário.
 
 local-texture-preview-hint = Textura local — visualização de um arquivo neste computador.
+
+demo-notifs-fee-group-invitation = Tess Touch convidou você para entrar no Lagoon Sailing Club.
+
+demo-notifs-fee-object = Tip jar
+
+link-trust-the-link-leads-to-this-computer-or-local-network = O link leva a este computador ou à rede local, não a um site na internet.
+
+portal-cross-go = Ir
+
+portal-cross-text = { $name } abriu este portal. Ele leva para { $destination }.
+
+portal-cross-title = Atravessar este portal?
+
+shape-t-pose = Pose T
+
+ui-notifications-allow-access = Permitir acesso
+
+ui-notifications-deny = Recusar
+
+ui-options-aurora-portal-sources = Mostrar portais de
+
+ui-options-aurora-portal-sources-everyone = Todos
+
+ui-options-aurora-portal-sources-friends = Amigos
+
+ui-options-aurora-portal-sources-groups = Amigos e meus grupos
+
+ui-options-aurora-portal-sources-help = Portais que outros residentes abrem perto de você com o bridge. Seus próprios portais e o caminho de volta de suas viagens sempre aparecem. Na primeira vez que você atravessar o portal de alguém que não é seu amigo, será solicitada confirmação. Com grupos, um residente conta assim que a grade o listar em um dos seus grupos.
+
+ui-options-aurora-portal-sources-nobody = Ninguém
+
+world-notifications-caution-advice = Não permita o acesso se não entender totalmente por que ele quer acessar sua conta.
+
+world-notifications-caution-also = Se permitir o acesso à sua conta, também permitirá que o objeto execute:
+
+world-notifications-caution-debit = O objeto “{ $object_name }” de { $owner_name } quer acesso total à sua conta em L$. Se você permitir, ele poderá debitar valores da sua conta a qualquer momento ou esvaziar sua conta completamente sem avisos adicionais.
+
+world-notifications-caution-denied = Foi negada permissão para “{ $object_name }”, um objeto de { $owner_name } localizado em { $region } em { $position }, para: { $permissions }.
+
+world-notifications-caution-granted = Foi concedida permissão para “{ $object_name }”, um objeto de { $owner_name } localizado em { $region } em { $position }, para: { $permissions }.
+
+world-notifications-caution-land = O objeto “{ $object_name }” de { $owner_name } quer acesso privilegiado aos seus terrenos. Se você permitir, ele poderá vender seus terrenos sem avisos adicionais.
+
+world-notifications-caution-title = Aviso: acesso à sua conta
+
+world-notifications-caution-unknown-position = (posição desconhecida)
+
+world-notifications-caution-unknown-region = (região desconhecida)
+
+world-notifications-group-fee = Taxa de adesão: L$ { $fee }

@@ -13344,3 +13344,53 @@ picker-pipette-no-texture = No copyable texture found in your inventory.
 picker-pipette-no-material = No copyable material found in your inventory.
 
 local-texture-preview-hint = Local texture — preview from a file on this computer.
+
+demo-notifs-fee-group-invitation = Tess Touch has invited you to join Lagoon Sailing Club.
+
+demo-notifs-fee-object = Tip jar
+
+link-trust-the-link-leads-to-this-computer-or-local-network = The link leads to this computer or to your local network, not to a site on the internet.
+
+portal-cross-go = Go
+
+portal-cross-text = { $name } opened this portal. It leads to { $destination }.
+
+portal-cross-title = Go through this portal?
+
+shape-t-pose = T-pose
+
+ui-notifications-allow-access = Allow access
+
+ui-notifications-deny = Deny
+
+ui-options-aurora-portal-sources = Show portals from
+
+ui-options-aurora-portal-sources-everyone = Everyone
+
+ui-options-aurora-portal-sources-friends = Friends
+
+ui-options-aurora-portal-sources-groups = Friends and my groups
+
+ui-options-aurora-portal-sources-help = Portals that other residents open near you with their Aurora bridge. Your own portals and the way back from your trips always show. The first time you walk through a portal from someone who is not your friend, Aurora asks before you go. With groups, a resident counts once the grid lists them in one of your groups (their profile or a loaded member list).
+
+ui-options-aurora-portal-sources-nobody = Nobody
+
+world-notifications-caution-advice = Do not allow access if you do not fully understand why it wants access to your account.
+
+world-notifications-caution-also = If you allow access to your account, you will also be allowing the object to:
+
+world-notifications-caution-debit = The object “{ $object_name }” owned by { $owner_name } wants total access to your L$ account. If you allow access, it can remove funds from your account at any time, or empty your account completely, on an ongoing basis with no additional warnings.
+
+world-notifications-caution-denied = “{ $object_name }”, an object owned by { $owner_name }, located in { $region } at { $position }, has been denied permission to: { $permissions }.
+
+world-notifications-caution-granted = “{ $object_name }”, an object owned by { $owner_name }, located in { $region } at { $position }, has been granted permission to: { $permissions }.
+
+world-notifications-caution-land = The object “{ $object_name }” owned by { $owner_name } wants privileged access to your land. If you allow access, it may sell your land with no additional warnings.
+
+world-notifications-caution-title = Warning: access to your account
+
+world-notifications-caution-unknown-position = (unknown position)
+
+world-notifications-caution-unknown-region = (unknown region)
+
+world-notifications-group-fee = Membership fee: L$ { $fee }

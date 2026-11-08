@@ -2365,7 +2365,7 @@ pub(crate) mod tests {
     fn invisible_worn_mesh_without_a_skin_takes_the_touch() {
         // #488: a clicker worn by another avatar, a mesh without a skin
         // whose faces are all at alpha 0. The GPU never draws it.
-        let (mut world, mut scene, front, _) = scene_with_two_objects();
+        let (mut world, mut scene, front, _) = indexed_scene_with_two_objects();
         let ray = (Vec3::new(0.0, 0.0, 50.0), Vec3::X);
         let front_point = Vec3::new(2.5, 0.0, 50.0);
         let behind = Vec3::new(6.5, 0.0, 50.0);
@@ -2414,7 +2414,7 @@ pub(crate) mod tests {
         // A slapper's mesh worn by another avatar, hidden by the transparent
         // texture with its alpha left at 1: built (Pass::Hidden) but never
         // drawn, so only the CPU can find it.
-        let (mut world, mut scene, front, _) = scene_with_two_objects();
+        let (mut world, mut scene, front, _) = indexed_scene_with_two_objects();
         let ray = (Vec3::new(0.0, 0.0, 50.0), Vec3::X);
         let front_point = Vec3::new(2.5, 0.0, 50.0);
         let behind = Vec3::new(6.5, 0.0, 50.0);
@@ -4388,7 +4388,7 @@ pub(crate) mod tests {
 
     #[test]
     fn ignore_picks_through_disabled_occludes_and_build_includes_both() {
-        let (mut world, mut scene, front, back) = scene_with_two_objects();
+        let (mut world, mut scene, front, back) = indexed_scene_with_two_objects();
         let ray = (Vec3::new(0.0, 0.0, 50.0), Vec3::X);
         let depth = Vec3::new(2.5, 0.0, 50.0);
         world.objects.get_mut(front).unwrap().click_action = crate::interaction::code::IGNORE;
@@ -4431,7 +4431,7 @@ pub(crate) mod tests {
 
     #[test]
     fn linked_chair_surface_wins_over_touch_root_with_overlapping_bounds() {
-        let (mut world, mut scene, front, back) = scene_with_two_objects();
+        let (mut world, mut scene, front, back) = indexed_scene_with_two_objects();
         let ray = (Vec3::new(0.0, 0.0, 50.0), Vec3::X);
         let depth = Vec3::new(2.5, 0.0, 50.0);
         // A hollow table's smaller box contains the chair's surface, but its
@@ -4500,7 +4500,7 @@ pub(crate) mod tests {
 
     #[test]
     fn ray_pick_uses_real_geometry_bounds_and_preserves_hidden_face_rules() {
-        let (mut world, mut scene, front, _) = scene_with_two_objects();
+        let (mut world, mut scene, front, _) = indexed_scene_with_two_objects();
         for key in [
             GeomKey::Prim { hash: 2, lod: 0 },
             GeomKey::Sculpt { hash: 2, lod: 0 },
