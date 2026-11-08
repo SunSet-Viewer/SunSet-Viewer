@@ -13319,3 +13319,53 @@ movement-dash-mouselook-section = マウスルックのショートカット
 movement-dash-mouselook-key-e = 「E」キーで照準方向へ跳躍
 movement-dash-mouselook-middle-click = マウス中クリックで照準方向へ跳躍
 movement-dash-executed-toast = { $dist } m の跳躍を実行しました！
+
+demo-notifs-fee-group-invitation = Tess TouchさんがLagoon Sailing Clubへの参加にあなたを招待しています。
+
+demo-notifs-fee-object = チップ箱
+
+link-trust-the-link-leads-to-this-computer-or-local-network = このリンクはインターネット上のサイトではなく、このコンピューターまたはローカルネットワークにつながっています。
+
+portal-cross-go = 移動
+
+portal-cross-text = { $name }がこのポータルを開きました。行き先は{ $destination }です。
+
+portal-cross-title = このポータルを通り抜けますか？
+
+shape-t-pose = Ｔポーズ
+
+ui-notifications-allow-access = アクセスを許可
+
+ui-notifications-deny = 拒否
+
+ui-options-aurora-portal-sources = ポータルを表示する相手
+
+ui-options-aurora-portal-sources-everyone = 全員
+
+ui-options-aurora-portal-sources-friends = フレンド
+
+ui-options-aurora-portal-sources-groups = フレンドと自分のグループ
+
+ui-options-aurora-portal-sources-help = 他の住人がAuroraブリッジで近くに開いたポータルです。自分のポータルと、移動先からの帰り道は常に表示されます。フレンドではない人のポータルを初めて通り抜けるときは、移動する前に確認します。グループの場合、グリッドがその住人を自分のグループのいずれかに載せていれば（プロフィールまたは読み込まれたメンバー一覧）、対象になります。
+
+ui-options-aurora-portal-sources-nobody = なし
+
+world-notifications-caution-advice = アクセスを求める理由を十分に理解していない場合は、許可しないでください。
+
+world-notifications-caution-also = アカウントへのアクセスを許可すると、このオブジェクトに次のことも許可することになります：
+
+world-notifications-caution-debit = { $owner_name }が所有するオブジェクト「{ $object_name }」が、あなたのL$アカウントへの完全なアクセスを求めています。アクセスを許可すると、このオブジェクトは今後いつでも追加の警告なしに、アカウントから資金を引き出したり、アカウントを空にしたりできるようになります。
+
+world-notifications-caution-denied = { $owner_name }が所有するオブジェクト「{ $object_name }」（{ $region }の{ $position }）への次の権限が拒否されました：{ $permissions }。
+
+world-notifications-caution-granted = { $owner_name }が所有するオブジェクト「{ $object_name }」（{ $region }の{ $position }）に次の権限が許可されました：{ $permissions }。
+
+world-notifications-caution-land = { $owner_name }が所有するオブジェクト「{ $object_name }」が、あなたの土地への特権アクセスを求めています。アクセスを許可すると、追加の警告なしに土地を売却される可能性があります。
+
+world-notifications-caution-title = 警告：アカウントへのアクセス
+
+world-notifications-caution-unknown-position = （不明な位置）
+
+world-notifications-caution-unknown-region = （不明なリージョン）
+
+world-notifications-group-fee = 参加費：L$ { $fee }

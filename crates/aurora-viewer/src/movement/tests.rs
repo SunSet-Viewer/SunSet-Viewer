@@ -1044,7 +1044,7 @@ fn running_at_x1_is_native_and_the_multiplier_cannot_request_a_slowdown() {
         forward: true,
         ..Default::default()
     };
-    for (value, expected) in [(-1.0, 1.0), (1.0, 1.0), (3.0, 3.0), (5.0, 5.0), (9.0, 5.0), (f32::NAN, 1.0)] {
+    for (value, expected) in [(-1.0, 1.0), (1.0, 1.0), (3.0, 3.0), (5.0, 5.0), (25.0, 20.0), (f32::NAN, 1.0)] {
         prefs.run_multiplier = value;
         prefs.sanitize();
         assert_eq!(prefs.run_multiplier, expected);

@@ -13342,3 +13342,53 @@ movement-dash-mouselook-section = Raccourcis en vue subjective
 movement-dash-mouselook-key-e = La touche « E » saute vers le réticule
 movement-dash-mouselook-middle-click = Le clic du milieu de la souris saute vers le réticule
 movement-dash-executed-toast = Saut de { $dist } m exécuté !
+
+demo-notifs-fee-group-invitation = Tess Touch vous invite à rejoindre Lagoon Sailing Club.
+
+demo-notifs-fee-object = Boîte à pourboires
+
+link-trust-the-link-leads-to-this-computer-or-local-network = Le lien mène à cet ordinateur ou à votre réseau local, pas à un site sur internet.
+
+portal-cross-go = Y aller
+
+portal-cross-text = { $name } a ouvert ce portail. Il mène à { $destination }.
+
+portal-cross-title = Traverser ce portail ?
+
+shape-t-pose = T-pose
+
+ui-notifications-allow-access = Autoriser l'accès
+
+ui-notifications-deny = Refuser
+
+ui-options-aurora-portal-sources = Afficher les portails de
+
+ui-options-aurora-portal-sources-everyone = Tout le monde
+
+ui-options-aurora-portal-sources-friends = Amis
+
+ui-options-aurora-portal-sources-groups = Amis et mes groupes
+
+ui-options-aurora-portal-sources-help = Les portails que d’autres résidents ouvrent près de vous avec leur bridge Aurora. Vos propres portails et le chemin du retour de vos voyages s’affichent toujours. La première fois que vous traversez le portail de quelqu’un qui n’est pas votre ami, Aurora vous demande avant de partir. Avec les groupes, un résident compte dès que la grille l’indique dans l’un de vos groupes (son profil ou une liste de membres chargée).
+
+ui-options-aurora-portal-sources-nobody = Personne
+
+world-notifications-caution-advice = N'autorisez pas cet accès si vous ne comprenez pas parfaitement pourquoi il veut accéder à votre compte.
+
+world-notifications-caution-also = Si vous autorisez l'accès à votre compte, vous autoriserez aussi l'objet à :
+
+world-notifications-caution-debit = L'objet « { $object_name } » de { $owner_name } demande un accès total à votre compte L$. Si vous l'autorisez, il pourra retirer des fonds de votre compte à tout moment, ou le vider entièrement, de façon continue et sans autre avertissement.
+
+world-notifications-caution-denied = « { $object_name } », un objet de { $owner_name } situé dans { $region } en { $position }, s'est vu refuser l'autorisation de : { $permissions }.
+
+world-notifications-caution-granted = « { $object_name } », un objet de { $owner_name } situé dans { $region } en { $position }, a reçu l'autorisation de : { $permissions }.
+
+world-notifications-caution-land = L'objet « { $object_name } » de { $owner_name } demande un accès privilégié à votre terrain. Si vous l'autorisez, il pourra vendre votre terrain sans autre avertissement.
+
+world-notifications-caution-title = Attention : accès à votre compte
+
+world-notifications-caution-unknown-position = (position inconnue)
+
+world-notifications-caution-unknown-region = (région inconnue)
+
+world-notifications-group-fee = Frais d'inscription : L$ { $fee }

@@ -31,9 +31,9 @@ pub fn show(ctx: &egui::Context, p: &Palette, settings: &mut MovementDashSetting
             } else {
                 aurora_i18n::tr!("movement-dash-disabled")
             };
-            ui.checkbox(&mut settings.enabled, RichText::new(label).strong());
+            super::widgets::checkbox(ui, p, &mut settings.enabled, RichText::new(label).strong());
         });
-        ui.separator();
+        super::widgets::divider(ui, p);
 
         // Seção: Velocidade do Avatar
         ui.label(RichText::new(aurora_i18n::tr!("movement-dash-speed-section")).strong());
@@ -56,7 +56,7 @@ pub fn show(ctx: &egui::Context, p: &Palette, settings: &mut MovementDashSetting
         });
 
         ui.add_space(6.0);
-        ui.separator();
+        super::widgets::divider(ui, p);
 
         // Seção: Salto / Dash
         ui.label(RichText::new(aurora_i18n::tr!("movement-dash-distance-section")).strong());
@@ -89,12 +89,19 @@ pub fn show(ctx: &egui::Context, p: &Palette, settings: &mut MovementDashSetting
         }
 
         ui.add_space(6.0);
-        ui.separator();
+        super::widgets::divider(ui, p);
 
         // Seção: Atalhos em Mouselook
         ui.label(RichText::new(aurora_i18n::tr!("movement-dash-mouselook-section")).strong());
-        ui.checkbox(&mut settings.mouselook_key_e, aurora_i18n::tr!("movement-dash-mouselook-key-e"));
-        ui.checkbox(
+        super::widgets::checkbox(
+            ui,
+            p,
+            &mut settings.mouselook_key_e,
+            aurora_i18n::tr!("movement-dash-mouselook-key-e"),
+        );
+        super::widgets::checkbox(
+            ui,
+            p,
             &mut settings.mouselook_middle_click,
             aurora_i18n::tr!("movement-dash-mouselook-middle-click"),
         );

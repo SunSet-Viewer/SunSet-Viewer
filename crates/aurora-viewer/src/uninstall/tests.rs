@@ -114,11 +114,11 @@ fn the_store_entries_are_the_ones_the_viewer_writes() {
     let [password, mfa] = crate::credentials::store_entries(AGNI, "Jane Resident");
     assert_eq!(Secret::Password(jane.clone()).entry(), password);
     assert_eq!(Secret::SecondFactor(jane).entry(), mfa);
-    assert_eq!(password.0, "Aurora Viewer");
-    assert_eq!(mfa.0, "Aurora Viewer MFA");
+    assert_eq!(password.0, "SunSet Viewer");
+    assert_eq!(mfa.0, "SunSet Viewer MFA");
     assert_eq!(password.1, format!("{AGNI}|jane resident"));
-    assert_eq!(Secret::CacheKey.entry(), ("Aurora Viewer cache", "disk cache key v1".to_owned()));
-    assert_eq!(Secret::CrashReports.entry(), ("Aurora Viewer GitHub", "crash-reports".to_owned()));
+    assert_eq!(Secret::CacheKey.entry(), ("SunSet Viewer cache", "disk cache key v1".to_owned()));
+    assert_eq!(Secret::CrashReports.entry(), ("SunSet Viewer GitHub", "crash-reports".to_owned()));
 }
 
 #[test]
