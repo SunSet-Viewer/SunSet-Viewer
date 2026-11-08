@@ -160,6 +160,7 @@ impl Entry {
 
     /// Someone who is not our friend opened or relays it: the first crossing
     /// asks first. Ours, or a friend's relayed by a friend, does not.
+    #[allow(dead_code)]
     pub fn opened_by_non_friend(&self, world: &World) -> bool {
         !self.own()
             && !((self.owner == world.agent_id || friend(world, self.owner))
@@ -397,17 +398,20 @@ impl State {
     }
 
     /// The entries the setting shows, photo isolation aside (body cuts).
+    #[allow(dead_code)]
     pub fn shown<'a>(&'a self, world: &'a World) -> impl Iterator<Item = &'a Entry> {
         self.entries.iter().filter(move |entry| entry.shown(world))
     }
 
     /// A profile to request, to learn whether a resident shares a group.
+    #[allow(dead_code)]
     pub fn take_profile_want(&mut self) -> Option<Uuid> {
         self.profile_wants.pop_front()
     }
 
     /// A crossing of this portal waits for the user's answer first: opened
     /// or relayed by a non-friend, and not confirmed yet.
+    #[allow(dead_code)]
     pub fn ask_before_crossing(&self, world: &World, owner: Uuid, id: Uuid) -> bool {
         !self.confirmed.contains(&(owner, id))
             && self
@@ -418,6 +422,7 @@ impl State {
     }
 
     /// The portal a question is about, while it can still be crossed.
+    #[allow(dead_code)]
     pub fn crossable(&self, world: &World, owner: Uuid, id: Uuid) -> Option<&Entry> {
         self.entries
             .iter()
@@ -425,6 +430,7 @@ impl State {
     }
 
     /// The user said Go: later crossings of this portal ask no more.
+    #[allow(dead_code)]
     pub fn confirm(&mut self, owner: Uuid, id: Uuid) {
         if self.confirmed.len() < LIMIT * 2 {
             self.confirmed.insert((owner, id));

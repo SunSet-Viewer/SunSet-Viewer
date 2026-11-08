@@ -11,12 +11,7 @@ pub enum Action {
     PerformDash { distance: f32 },
 }
 
-pub fn show(
-    ctx: &egui::Context,
-    p: &Palette,
-    settings: &mut MovementDashSettings,
-    open: &mut bool,
-) -> Option<Action> {
+pub fn show(ctx: &egui::Context, p: &Palette, settings: &mut MovementDashSettings, open: &mut bool) -> Option<Action> {
     if !*open {
         return None;
     }
@@ -84,8 +79,13 @@ pub fn show(
         });
 
         ui.add_space(4.0);
-        if ui.button(RichText::new(aurora_i18n::tr!("movement-dash-trigger-btn")).strong()).clicked() {
-            action = Some(Action::PerformDash { distance: settings.dash_distance });
+        if ui
+            .button(RichText::new(aurora_i18n::tr!("movement-dash-trigger-btn")).strong())
+            .clicked()
+        {
+            action = Some(Action::PerformDash {
+                distance: settings.dash_distance,
+            });
         }
 
         ui.add_space(6.0);
@@ -94,8 +94,10 @@ pub fn show(
         // Seção: Atalhos em Mouselook
         ui.label(RichText::new(aurora_i18n::tr!("movement-dash-mouselook-section")).strong());
         ui.checkbox(&mut settings.mouselook_key_e, aurora_i18n::tr!("movement-dash-mouselook-key-e"));
-        ui.checkbox(&mut settings.mouselook_middle_click, aurora_i18n::tr!("movement-dash-mouselook-middle-click"));
+        ui.checkbox(
+            &mut settings.mouselook_middle_click,
+            aurora_i18n::tr!("movement-dash-mouselook-middle-click"),
+        );
     });
     action
 }
-

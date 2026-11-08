@@ -337,10 +337,8 @@ impl App {
         let current_pos = self.world.agent.position;
         let target_pos = current_pos + dir * distance;
         self.teleport_render_pos(target_pos);
-        self.world.system_message(aurora_i18n::tr!(
-            "movement-dash-executed-toast",
-            dist = format!("{:.0}", distance)
-        ));
+        self.world
+            .system_message(aurora_i18n::tr!("movement-dash-executed-toast", dist = format!("{:.0}", distance)));
     }
 
     /// cmdline_rezplat: a flat metal box 2.5 m under the avatar (where it

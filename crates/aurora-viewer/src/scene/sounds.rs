@@ -16,7 +16,7 @@ use aurora_audio::{AudioEngine, Channel, SoundClip};
 use aurora_net::fetch::{FetchRequest, FetchResult, Fetcher, Lane};
 use aurora_net::objects::AttachedSound;
 use glam::Vec3;
-use std::collections::{HashMap, HashSet};
+use std::collections::HashMap;
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
 use std::time::{Duration, Instant};

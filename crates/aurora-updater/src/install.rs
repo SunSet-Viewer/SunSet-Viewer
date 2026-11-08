@@ -242,7 +242,10 @@ fn hidden(command: &mut Command) {
 pub fn run_helper() -> Result<bool> {
     let mut args = std::env::args_os().skip(1);
     let first = args.next();
-    if !first.as_ref().is_some_and(|a| a == "--aurora-update-helper" || a == "--sunset-update-helper") {
+    if !first
+        .as_ref()
+        .is_some_and(|a| a == "--aurora-update-helper" || a == "--sunset-update-helper")
+    {
         return Ok(false);
     }
     let work = PathBuf::from(args.next().context("missing update transaction")?);
