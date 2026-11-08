@@ -13305,3 +13305,17 @@ picker-pipette-no-texture = コピー可能なテクスチャがインベント�
 picker-pipette-no-material = コピー可能なマテリアルがインベントリにありません。
 
 local-texture-preview-hint = ローカルテクスチャ — このコンピューターのファイルのプレビュー。
+
+
+movement-dash-title = 移動 & ダッシュ
+movement-dash-enabled = システム有効
+movement-dash-disabled = システム無効
+movement-dash-speed-section = アバター速度
+movement-dash-speed-custom = 微調整:
+movement-dash-distance-section = インスタントリープ (ダッシュ)
+movement-dash-distance-custom = 跳躍距離:
+movement-dash-trigger-btn = ⚡ 今すぐ跳躍を実行
+movement-dash-mouselook-section = マウスルックのショートカット
+movement-dash-mouselook-key-e = 「E」キーで照準方向へ跳躍
+movement-dash-mouselook-middle-click = マウス中クリックで照準方向へ跳躍
+movement-dash-executed-toast = { $dist } m の跳躍を実行しました！

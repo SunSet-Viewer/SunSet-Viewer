@@ -13328,3 +13328,17 @@ picker-pipette-no-texture = Aucune texture copiable trouvée dans votre inventai
 picker-pipette-no-material = Aucun matériau copiable trouvé dans votre inventaire.
 
 local-texture-preview-hint = Texture locale — aperçu d’un fichier de cet ordinateur.
+
+
+movement-dash-title = Mouvement & Dash
+movement-dash-enabled = Système activé
+movement-dash-disabled = Système désactivé
+movement-dash-speed-section = Vitesse de l'avatar
+movement-dash-speed-custom = Réglage fin :
+movement-dash-distance-section = Saut instantané (Dash)
+movement-dash-distance-custom = Distance du saut :
+movement-dash-trigger-btn = ⚡ Exécuter le saut maintenant
+movement-dash-mouselook-section = Raccourcis en vue subjective
+movement-dash-mouselook-key-e = La touche « E » saute vers le réticule
+movement-dash-mouselook-middle-click = Le clic du milieu de la souris saute vers le réticule
+movement-dash-executed-toast = Saut de { $dist } m exécuté !
