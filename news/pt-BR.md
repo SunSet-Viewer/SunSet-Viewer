@@ -20,6 +20,10 @@ Regras:
 
 # Notícias do SunSet Viewer
 
+## 2026-11-08 — SunSet Viewer v0.9.6: Marcador de Cores Individual para Contatos
+A versão v0.9.6 introduz o sistema de marcação de cor individual para avatares e contatos. Ao clicar com o botão direito em qualquer residente (na lista de Pessoas, no minimapa ou no mundo), escolha uma cor rápida ou selecione qualquer tom personalizado para destacá-lo imediatamente. A cor individual tem prioridade sobre os conjuntos de contatos nos hitboxes de combate 3D, no minimapa e nas listas de nomes. Ao limpar a marcação, o contato retorna instantaneamente à cor herdada do conjunto de predefinições. As preferências de cores são salvas entre sessões.
+[Saiba mais](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.6)
+
 ## 2026-11-08 — SunSet Viewer v0.9.5: Controle de Movimento & Dash e Correções
 A versão v0.9.5 traz o novo sistema nativo de Movimento & Dash: salte distâncias configuráveis instantaneamente com a tecla E ou clique do meio em Mouselook, multiplique sua velocidade de locomoção com reset instantâneo ao desligar, e aproveite o novo alcance de visão de até 8192m e correções de termos de Mouse em Português.
 [Saiba mais](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.5)
