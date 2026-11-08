@@ -373,6 +373,9 @@ fn action_key(action: &CtxAction) -> String {
         CtxAction::GroupChatBlocked(..) => "GroupChatBlocked",
         CtxAction::ContactSet(..) => "ContactSet",
         CtxAction::NewContactSet(..) => "NewContactSet",
+        CtxAction::SetAvatarMark { .. } => "SetAvatarMark",
+        CtxAction::ClearAvatarMark(..) => "ClearAvatarMark",
+        CtxAction::ClearAllAvatarMarks => "ClearAllAvatarMarks",
     };
     match action {
         CtxAction::TakeOffClothing(kind) | CtxAction::DetachAt(kind) => format!("{base}:{kind}"),

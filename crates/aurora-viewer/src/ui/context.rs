@@ -318,6 +318,12 @@ pub enum CtxAction {
     SitGround,
     ToggleFly,
     ResetCamera,
+    SetAvatarMark {
+        ids: Vec<Uuid>,
+        color: egui::Color32,
+    },
+    ClearAvatarMark(Vec<Uuid>),
+    ClearAllAvatarMarks,
     Im(Uuid),
     /// Call a resident or a group (LLAvatarActions::startCall,
     /// LLGroupActions::startCall).
@@ -546,6 +552,66 @@ pub fn contact_set_submenu(ui: &mut egui::Ui, p: &Palette, world: &World, ids: &
         menu::separator(ui, p);
         if menu::item(ui, p, "plus", aurora_i18n::tr!("ui-context-new-contact-set")) {
             request(ui.ctx(), CtxAction::NewContactSet(ids.to_vec()));
+        }
+    });
+}
+
+/// "Marker color": palette of quick colors, custom color selector, and "Clear marker".
+pub fn avatar_marker_submenu(ui: &mut egui::Ui, p: &Palette, world: &World, ids: &[Uuid]) {
+    if ids.is_empty() {
+        return;
+    }
+    let any_marked = ids.iter().any(|id| world.avatar_marks.contains_key(id));
+    menu::submenu(ui, p, "tag-filled", aurora_i18n::tr!("ui-context-marker-color"), true, |ui| {
+        for (name, col) in [
+            (aurora_i18n::tr!("ui-minimap-red"), egui::Color32::from_rgb(230, 40, 40)), // theme-guard: content — swatch color choices
+            (aurora_i18n::tr!("ui-minimap-green"), egui::Color32::from_rgb(40, 220, 60)), // theme-guard: content — swatch color choices
+            (aurora_i18n::tr!("ui-minimap-blue"), egui::Color32::from_rgb(40, 130, 255)), // theme-guard: content — swatch color choices
+            (aurora_i18n::tr!("ui-minimap-purple"), egui::Color32::from_rgb(180, 50, 240)), // theme-guard: content — swatch color choices
+            (aurora_i18n::tr!("ui-minimap-yellow"), egui::Color32::from_rgb(255, 220, 40)), // theme-guard: content — swatch color choices
+            (aurora_i18n::tr!("ui-color-orange"), egui::Color32::from_rgb(255, 140, 20)), // theme-guard: content — swatch color choices
+            (aurora_i18n::tr!("ui-color-cyan"), egui::Color32::from_rgb(30, 220, 220)), // theme-guard: content — swatch color choices
+            (aurora_i18n::tr!("ui-color-pink"), egui::Color32::from_rgb(255, 105, 180)), // theme-guard: content — swatch color choices
+            (aurora_i18n::tr!("ui-color-white"), egui::Color32::from_rgb(255, 255, 255)), // theme-guard: content — swatch color choices
+        ] {
+            if menu::swatch(ui, p, col, name) {
+                request(
+                    ui.ctx(),
+                    CtxAction::SetAvatarMark {
+                        ids: ids.to_vec(),
+                        color: col,
+                    },
+                );
+            }
+        }
+        menu::separator(ui, p);
+        let id_salt = ui.scope_id().with("avatar_custom_marker");
+        let mut custom = ui.data(|d| d.get_temp::<[u8; 4]>(id_salt)).unwrap_or([255, 100, 100, 255]);
+        ui.horizontal(|ui| {
+            ui.add_space(8.0);
+            ui.label(aurora_i18n::tr!("ui-context-custom-color"));
+            if super::widgets::color_button(ui, p, id_salt, &mut custom, false).changed() {
+                ui.data_mut(|d| d.insert_temp(id_salt, custom));
+                request(
+                    ui.ctx(),
+                    CtxAction::SetAvatarMark {
+                        ids: ids.to_vec(),
+                        color: egui::Color32::from_rgba_unmultiplied(custom[0], custom[1], custom[2], custom[3]),
+                    },
+                );
+            }
+        });
+        if any_marked {
+            menu::separator(ui, p);
+            if menu::item(ui, p, "backspace-filled", aurora_i18n::tr!("ui-minimap-clear-marker")) {
+                request(ui.ctx(), CtxAction::ClearAvatarMark(ids.to_vec()));
+            }
+        }
+        if !world.avatar_marks.is_empty() {
+            menu::separator(ui, p);
+            if menu::item(ui, p, "trash", aurora_i18n::tr!("ui-minimap-clear-all-markers")) {
+                request(ui.ctx(), CtxAction::ClearAllAvatarMarks);
+            }
         }
     });
 }
@@ -905,6 +971,7 @@ fn avatar_menu_reporting(
             add_friend(ui);
             remove_friend(ui);
             contact_set_submenu(ui, p, world, &[id], aurora_i18n::tr!("ui-context-add-to-contact-set"));
+            avatar_marker_submenu(ui, p, world, &[id]);
             // Avatar.InviteToGroup (can_invite: always)
             if menu::item(ui, p, "users-plus", aurora_i18n::tr!("ui-context-invite-to-group")) {
                 act(CtxAction::InviteToGroup(id));
@@ -935,6 +1002,7 @@ fn avatar_menu_reporting(
             im(ui);
             history(ui);
             contact_set_submenu(ui, p, world, &[id], aurora_i18n::tr!("common-add-to-contact-set"));
+            avatar_marker_submenu(ui, p, world, &[id]);
             zoom(ui);
             tp_to(ui);
             if menu::item_if(ui, p, "map", aurora_i18n::tr!("common-show-on-map-2"), mappable) {
@@ -974,6 +1042,7 @@ fn avatar_menu_reporting(
             history(ui);
             add_friend(ui);
             contact_set_submenu(ui, p, world, &[id], aurora_i18n::tr!("ui-context-add-to-contact-set"));
+            avatar_marker_submenu(ui, p, world, &[id]);
             zoom(ui);
             tp_to(ui);
             offer_tp(ui);

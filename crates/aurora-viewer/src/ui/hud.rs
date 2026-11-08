@@ -310,8 +310,21 @@ fn plate_content(
             alert: !own && tc.max > 0 && (c > tc.max || over_area),
         })
     });
+    let appearance = if let Some(&mark) = world.avatar_marks.get(&id) {
+        let rgba = [
+            mark.r() as f32 / 255.0,
+            mark.g() as f32 / 255.0,
+            mark.b() as f32 / 255.0,
+            mark.a() as f32 / 255.0,
+        ];
+        let mut app = (**world.contact_sets.appearance(&id)).clone();
+        app.nameplate_name = Some(rgba);
+        std::sync::Arc::new(app)
+    } else {
+        world.contact_sets.appearance(&id).clone()
+    };
     Content {
-        appearance: world.contact_sets.appearance(&id).clone(),
+        appearance,
         name,
         username,
         title: o.group_title().filter(|_| world.group_titles.shows(own)),

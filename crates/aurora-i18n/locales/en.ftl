@@ -13394,3 +13394,16 @@ world-notifications-caution-unknown-position = (unknown position)
 world-notifications-caution-unknown-region = (unknown region)
 
 world-notifications-group-fee = Membership fee: L$ { $fee }
+
+ui-context-marker-color = Marker color
+
+ui-context-custom-color = Custom color…
+
+ui-color-orange = Orange
+
+ui-color-cyan = Cyan
+
+ui-color-pink = Pink
+
+ui-color-white = White
+

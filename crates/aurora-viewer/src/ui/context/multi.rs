@@ -57,6 +57,7 @@ pub fn avatars_menu(ui: &mut egui::Ui, p: &Palette, world: &World, ids: &[Uuid])
         act(CtxAction::AddFriend(*id));
     }
     super::contact_set_submenu(ui, p, world, ids, aurora_i18n::tr!("ui-context-add-to-contact-set"));
+    super::avatar_marker_submenu(ui, p, world, ids);
     if menu::item_if(
         ui,
         p,

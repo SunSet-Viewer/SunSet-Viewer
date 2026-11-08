@@ -49,6 +49,9 @@ pub fn set_color(v: [f32; 4]) -> Color32 {
 }
 
 pub fn resident_name(world: &World, id: &Uuid, fallback: Color32) -> Color32 {
+    if let Some(&mark) = world.avatar_marks.get(id) {
+        return crate::interface_colors::on_panel(mark);
+    }
     world
         .contact_sets
         .appearance(id)

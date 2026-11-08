@@ -542,6 +542,9 @@ pub struct Settings {
     pub movements: std::collections::HashMap<uuid::Uuid, crate::movement::Preferences>,
     /// Movement speed multiplier and instant dash controls.
     pub movement_dash: MovementDashSettings,
+    /// Custom color markers per resident (Firestorm mark avatar): RGBA bytes [r, g, b, a].
+    #[serde(default)]
+    pub avatar_marks: std::collections::HashMap<uuid::Uuid, [u8; 4]>,
     /// Show Friends Only and keeping it after a teleport, for each account
     /// (FSRenderFriendsOnly, FSRenderFriendsOnlyPersistsTP: per-account settings).
     pub friends_only: std::collections::HashMap<uuid::Uuid, crate::world::friends_only::Preferences>,
@@ -1838,6 +1841,7 @@ impl Default for Settings {
             texture_library: Default::default(),
             gestures: Default::default(),
             movement_dash: Default::default(),
+            avatar_marks: Default::default(),
             shape_show_hints: true,
             shape_height_feet: false,
             customize_animation: true,
