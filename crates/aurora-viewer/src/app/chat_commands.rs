@@ -94,8 +94,8 @@ impl App {
             }
             Command::DrawDistance(amount) => {
                 let d = amount.apply(self.settings.draw_distance);
-                // Aurora's draw distance range (Firestorm does not clamp here).
-                self.settings.draw_distance = d.clamp(32.0, 512.0);
+                // Draw distance range: clamped between 32 m and 8192 m (allowing high vista/photography distances).
+                self.settings.draw_distance = d.clamp(32.0, 8192.0);
                 self.net.send(NetCommand::SetDrawDistance(self.settings.draw_distance));
                 self.report_command(aurora_i18n::tr!(
                     "app-chat-commands-draw-distance-set-to-m",

@@ -1743,7 +1743,7 @@ impl Session<'_> {
                 m.name_data.name = str_field(name.trim());
                 self.send_main(&m, true);
             }
-            NetCommand::SetDrawDistance(d) => self.far = d.clamp(32.0, 1024.0),
+            NetCommand::SetDrawDistance(d) => self.far = d.clamp(32.0, 8192.0),
             NetCommand::RefuseNeighbourRegions(on) => self.refuse_neighbours = on,
             NetCommand::SetFov(angle) => {
                 if angle.is_finite() && angle > 0.0 && angle != self.fov {
