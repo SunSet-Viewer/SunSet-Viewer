@@ -9,11 +9,11 @@ Renderizador Vulkan, interface limpa e o Second Life que você já conhece.
 
 [ **English** ](README.md) · [ **Português (Brasil)** ](README.pt-BR.md)
 
-[![Download](docs/readme/button-download.svg)](https://github.com/Adriano-Severino/SunSet-Viewer/releases/latest)&nbsp;
+[![Download](docs/readme/button-download.svg)](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/latest)&nbsp;
 [![Download para Linux](docs/readme/button-download-linux.svg)](docs/LINUX.md)&nbsp;
 [![Download para macOS (experimental)](docs/readme/button-download-macos.svg)](docs/MACOS.md)&nbsp;
 
-[![Release](https://img.shields.io/github/v/release/Adriano-Severino/SunSet-Viewer?include_prereleases&color=8B5CF6)](https://github.com/Adriano-Severino/SunSet-Viewer/releases)
+[![Release](https://img.shields.io/github/v/release/SunSet-Viewer/SunSet-Viewer?include_prereleases&color=8B5CF6)](https://github.com/SunSet-Viewer/SunSet-Viewer/releases)
 [![Licença: GPLv3](https://img.shields.io/badge/license-GPLv3-4F46E5)](LICENSE)
 [![Rust](https://img.shields.io/badge/rust-stable-5EEAD4?logo=rust&logoColor=white)](https://www.rust-lang.org)
 [![Plataforma](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-070B1F)](#compilação)
@@ -247,7 +247,7 @@ O painel lateral de notícias traz os anúncios e notas de lançamento oficiais 
 ### Compilando no Windows:
 
 ```powershell
-git clone https://github.com/Adriano-Severino/SunSet-Viewer
+git clone https://github.com/SunSet-Viewer/SunSet-Viewer
 cd SunSet-Viewer
 cargo build --release -p aurora-viewer
 .\target\release\SunSet-Viewer.exe
@@ -264,7 +264,7 @@ powershell -ExecutionPolicy Bypass -File "scripts\package.ps1" -Exe "target\rele
 
 ## Contribuindo
 
-Ideias, sugestões e relatórios de problemas são muito bem-vindos na nossa página de [Issues no GitHub](https://github.com/Adriano-Severino/SunSet-Viewer/issues).
+Ideias, sugestões e relatórios de problemas são muito bem-vindos na nossa página de [Issues no GitHub](https://github.com/SunSet-Viewer/SunSet-Viewer/issues).
 
 Documentação técnica complementar:
 - [GUIA_DE_LANCAMENTO_E_NOTICIAS.md](docs/GUIA_DE_LANCAMENTO_E_NOTICIAS.md) — Regras de publicação de releases e notícias da tela de login.

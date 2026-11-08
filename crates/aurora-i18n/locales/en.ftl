@@ -932,7 +932,7 @@ notecard-markdown-demo =
 
     > Embedded items remain part of the notecard.
 
-    { "[" }SunSet Viewer](https://github.com/Adriano-Severino/SunSet-Viewer)
+    { "[" }SunSet Viewer](https://github.com/SunSet-Viewer/SunSet-Viewer)
 
     ```text
     A plain code block
@@ -2636,6 +2636,18 @@ uninstall-open-folder = Open folder
 uninstall-quit = Quit Aurora
 common-distance = Distance
 common-draw-distance = Draw distance
+movement-dash-title = Movement & Dash
+movement-dash-enabled = System Enabled
+movement-dash-disabled = System Disabled
+movement-dash-speed-section = Avatar Speed
+movement-dash-speed-custom = Custom speed:
+movement-dash-distance-section = Instant Leap (Dash)
+movement-dash-distance-custom = Leap distance:
+movement-dash-trigger-btn = ⚡ Perform Leap Now
+movement-dash-mouselook-section = Mouselook Shortcuts
+movement-dash-mouselook-key-e = Key 'E' leaps towards crosshair
+movement-dash-mouselook-middle-click = Middle mouse button leaps towards crosshair
+movement-dash-executed-toast = Leap of { $dist } m executed!
 app-chat-commands-draw-distance-set-to-m = { "Draw distance set to " }{ $value0 }{ " m." }
 app-stream-title-now-playing = Now playing: { $title }
 app-stream-title-toast = ♫ Now playing ♫

@@ -932,7 +932,7 @@ notecard-markdown-demo =
 
     > Os itens incorporados permanecem como parte do notecard.
 
-    { "[" }Visualizador SunSet](https://github.com/Adriano-Severino/SunSet-Viewer)
+    { "[" }Visualizador SunSet](https://github.com/SunSet-Viewer/SunSet-Viewer)
 
     ```text
     Um bloco de código simples
@@ -2636,6 +2636,18 @@ uninstall-open-folder = Abrir pasta
 uninstall-quit = Saia da SunSet
 common-distance = Distância
 common-draw-distance = Distância de visão
+movement-dash-title = Movimento & Dash
+movement-dash-enabled = Sistema Ativado
+movement-dash-disabled = Sistema Desativado
+movement-dash-speed-section = Velocidade do Avatar
+movement-dash-speed-custom = Ajuste fino:
+movement-dash-distance-section = Salto Instantâneo (Dash)
+movement-dash-distance-custom = Distância do salto:
+movement-dash-trigger-btn = ⚡ Executar Salto Agora
+movement-dash-mouselook-section = Atalhos em Mouselook
+movement-dash-mouselook-key-e = Tecla 'E' dispara salto na mira
+movement-dash-mouselook-middle-click = Botão do meio do mouse dispara salto
+movement-dash-executed-toast = Salto de { $dist } m executado!
 app-chat-commands-draw-distance-set-to-m = { "Distância de visão definida como " }{ $value0 }{ " m." }
 app-stream-title-now-playing = Tocando agora: { $title }
 app-stream-title-toast = ♫ Agora jogando ♫
@@ -5598,8 +5610,8 @@ ui-options-commands-output-to-a-channel = Saída para um canal
 ui-places-do-you-really-want-to-teleport-to = { "Você realmente quer se teletransportar para" }{ $name }?
 build-ui-tools-lift-ctrl = Levantar (Ctrl)
 build-ui-features-softness = Suavidade
-ui-options-mouse = Rato
-keybinds-mouse-back = Rato de volta
+ui-options-mouse = Mouse
+keybinds-mouse-back = Mouse para trás
 keybinds-mouse-forward = Mouse para frente
 keybinds-mouse = { "Mouse " }{ $value0 }
 ui-options-below-the-name-in-name-tags-beside-it-in = Abaixo do nome nas tags de nome, ao lado dele no chat
@@ -5968,7 +5980,7 @@ ui-options-section-system = Sistema
 ui-options-page-media = Mídia
 ui-options-page-appearance = Aparência
 ui-options-page-confirmations = Confirmações
-ui-options-page-controls = Rato e teclado
+ui-options-page-controls = Mouse e teclado
 ui-options-page-system = Idioma e atualizações
 ui-options-about-graphics = Qualidade de imagem, luz, reflexos, água e suavidade.
 ui-options-about-camera = Ponto de vista, movimentos, comportamento e mouselook.

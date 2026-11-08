@@ -81,6 +81,7 @@ pub mod money_tracker;
 pub mod monitor;
 pub mod movelock;
 pub mod movement;
+pub mod movement_dash;
 pub mod nameplate;
 pub mod news;
 pub mod notification_center;
@@ -219,6 +220,8 @@ pub struct Panels {
     /// window).
     pub camera_controls: bool,
     pub movement_controls: bool,
+    /// Movement speed multiplier and instant dash floater.
+    pub movement_dash: bool,
     /// Navigation bar location being edited (text) and "just opened" (select all).
     pub nav_edit: Option<String>,
     pub nav_edit_new: bool,
@@ -275,6 +278,7 @@ impl Panels {
             stream_title_history: false,
             camera_controls: settings.show_camera_controls,
             movement_controls: settings.show_movement_controls,
+            movement_dash: false,
             nav_edit: None,
             nav_edit_new: false,
         }

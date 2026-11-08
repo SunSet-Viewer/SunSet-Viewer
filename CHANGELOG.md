@@ -28,7 +28,7 @@ Esta versão marca a consolidação do **SunSet Viewer** como um projeto indepen
 ### 🚀 Principais Novidades (Features)
 
 #### 1. Desvinculação e Nova Identidade (SunSet Viewer)
-- **Repositório Independente**: Todas as URLs, feeds de atualização, issue trackers e links de documentação foram remapeados para `https://github.com/Adriano-Severino/SunSet-Viewer`.
+- **Repositório Independente**: Todas as URLs, feeds de atualização, issue trackers e links de documentação foram remapeados para `https://github.com/SunSet-Viewer/SunSet-Viewer`.
 - **Ferramentas de Desenvolvimento**: Criado o script mestre `sunset-tools.cmd` no root do projeto (removido `aurora-tools.cmd`).
 - **Conformidade de Licença**: Preservadas todas as licenças de código aberto (GPLv3) e atribuições de direitos autorais a Linden Lab e autores do Aurora em `NOTICE.md` e `LICENSE`.
 
@@ -51,7 +51,7 @@ Esta versão marca a consolidação do **SunSet Viewer** como um projeto indepen
 
 #### 4. Auto-Update Nativo e Resiliente
 - **Feed do GitHub Releases**:
-  - Configurado para consultar diretamente a API de releases de `Adriano-Severino/SunSet-Viewer` (`crates/aurora-updater/src/feed.rs`).
+  - Configurado para consultar diretamente a API de releases de `SunSet-Viewer/SunSet-Viewer` (`crates/aurora-updater/src/feed.rs`).
 - **Políticas e Metadados**:
   - Suporte a `sunset-update-policy.json` e `aurora-update-policy.json`.
   - Suporte a `sunset-install.json` e argumentos `--sunset-update-helper`.

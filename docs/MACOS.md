@@ -16,7 +16,7 @@ nothing else to install. macOS support is new: tell us what does not work
 
 ## 1. Download and install
 
-1. On the [latest release](https://github.com/Adriano-Severino/SunSet-Viewer/releases/latest),
+1. On the [latest release](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/latest),
    download `SunSet-Viewer-vX.Y.Z-macos-arm64.dmg`.
 2. Open it (a double click in the Finder): a window shows **SunSet Viewer**
    next to your **Applications** folder.
@@ -132,7 +132,7 @@ Install Apple's command line tools and Rust, then build:
 ```bash
 xcode-select --install
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-git clone https://github.com/Adriano-Severino/SunSet-Viewer
+git clone https://github.com/SunSet-Viewer/SunSet-Viewer
 cd SunSet-Viewer
 cargo build --release --locked -p aurora-viewer
 ./target/release/SunSet-Viewer

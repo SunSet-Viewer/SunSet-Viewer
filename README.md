@@ -9,11 +9,11 @@ A Vulkan renderer, a clean interface, and the Second Life you already know.
 
 [ **English** ](README.md) · [ **Português (Brasil)** ](README.pt-BR.md)
 
-[![Download](docs/readme/button-download.svg)](https://github.com/Adriano-Severino/SunSet-Viewer/releases/latest)&nbsp;
+[![Download](docs/readme/button-download.svg)](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/latest)&nbsp;
 [![Download for Linux](docs/readme/button-download-linux.svg)](docs/LINUX.md)&nbsp;
 [![Download for macOS (experimental)](docs/readme/button-download-macos.svg)](docs/MACOS.md)&nbsp;
 
-[![Release](https://img.shields.io/github/v/release/Adriano-Severino/SunSet-Viewer?include_prereleases&color=8B5CF6)](https://github.com/Adriano-Severino/SunSet-Viewer/releases)
+[![Release](https://img.shields.io/github/v/release/SunSet-Viewer/SunSet-Viewer?include_prereleases&color=8B5CF6)](https://github.com/SunSet-Viewer/SunSet-Viewer/releases)
 [![License: GPLv3](https://img.shields.io/badge/license-GPLv3-4F46E5)](LICENSE)
 [![Rust](https://img.shields.io/badge/rust-stable-5EEAD4?logo=rust&logoColor=white)](https://www.rust-lang.org)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-070B1F)](#build)
@@ -1032,7 +1032,7 @@ destination folder then confirm with Move.
 
 The bug icon in the top bar, the Help menu, the login screen and the "Send a
 crash report" button after a crash open the project's
-[GitHub issue tracker](https://github.com/Adriano-Severino/SunSet-Viewer/issues/new)
+[GitHub issue tracker](https://github.com/SunSet-Viewer/SunSet-Viewer/issues/new)
 in your browser; a GitHub account is needed. Choose the bug report template
 and describe what you were doing and what happened. After a crash, "Copy
 trace" and "Open report folder" in the same window give the technical
@@ -1040,7 +1040,7 @@ details: the full trace may contain personal paths, review it before sharing.
 The bar button can be hidden in Preferences › Interface.
 
 Ideas and feature requests go to the
-[issue tracker](https://github.com/Adriano-Severino/SunSet-Viewer/issues)
+[issue tracker](https://github.com/SunSet-Viewer/SunSet-Viewer/issues)
 for ideas and feature requests.
 
 ### Where your files are
@@ -1115,7 +1115,7 @@ see [Installing on Linux](docs/LINUX.md#building-from-source); on macOS,
 then double-click **`sunset-tools.cmd`**:
 
 ```bat
-git clone https://github.com/Adriano-Severino/SunSet-Viewer
+git clone https://github.com/SunSet-Viewer/SunSet-Viewer
 cd SunSet-Viewer
 ```
 
@@ -1131,13 +1131,13 @@ Without Git yet, this command (in a command prompt, in the project folder)
 installs everything, Git included:
 
 ```bat
-powershell -NoProfile -ExecutionPolicy Bypass -Command "$f = Join-Path $env:TEMP 'sunset-setup.ps1'; irm https://raw.githubusercontent.com/Adriano-Severino/SunSet-Viewer/main/scripts/setup.ps1 -OutFile $f; & $f"
+powershell -NoProfile -ExecutionPolicy Bypass -Command "$f = Join-Path $env:TEMP 'sunset-setup.ps1'; irm https://raw.githubusercontent.com/SunSet-Viewer/SunSet-Viewer/main/scripts/setup.ps1 -OutFile $f; & $f"
 ```
 
 Or by hand, to build the viewer only:
 
 ```powershell
-git clone https://github.com/Adriano-Severino/SunSet-Viewer
+git clone https://github.com/SunSet-Viewer/SunSet-Viewer
 cd SunSet-Viewer
 cargo build --release -p aurora-viewer
 ./target/release/SunSet-Viewer.exe
@@ -1289,7 +1289,7 @@ Behaviour follows the Legacy Viewer: its sources are expected next to the reposi
 [FirestormViewer/phoenix-firestorm](https://github.com/FirestormViewer/phoenix-firestorm)).
 
 Questions and ideas are welcome in the
-[GitHub issue tracker](https://github.com/Adriano-Severino/SunSet-Viewer/issues).
+[GitHub issue tracker](https://github.com/SunSet-Viewer/SunSet-Viewer/issues).
 
 ## Privacy
 

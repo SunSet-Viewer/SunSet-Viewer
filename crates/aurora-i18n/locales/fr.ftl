@@ -935,7 +935,7 @@ notecard-markdown-demo =
 
     > Les pièces jointes font toujours partie de la note.
 
-    { "[" }SunSet Viewer](https://github.com/Adriano-Severino/SunSet-Viewer)
+    { "[" }SunSet Viewer](https://github.com/SunSet-Viewer/SunSet-Viewer)
 
     ```text
     Un bloc de code brut

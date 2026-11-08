@@ -66,6 +66,13 @@ impl App {
                 );
             }
         }
+        if self.settings.movement_dash.enabled && self.settings.movement_dash.speed_multiplier > 1.05 {
+            let prefs = self.settings.movements.entry(self.world.agent_id).or_default();
+            prefs.running = true;
+            prefs.run_multiplier = self.settings.movement_dash.speed_multiplier.clamp(1.0, 5.0);
+            prefs.fly_assist = true;
+            prefs.fly_multiplier = self.settings.movement_dash.speed_multiplier.clamp(1.0, 5.0);
+        }
         if self.demo && self.frame_count == 360 && std::env::var_os("AURORA_DEMO_MOVEMENT").is_some() {
             let prefs = self.settings.movements.entry(self.world.agent_id).or_default();
             prefs.running = true;

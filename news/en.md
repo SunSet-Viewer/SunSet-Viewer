@@ -28,15 +28,15 @@ An empty line starts a new paragraph.
 
 ## 2026-11-07 — SunSet Viewer v0.9.4: Brazilian Portuguese localization fixes
 Version v0.9.4 refines the Brazilian Portuguese experience with more than 114 corrected UI strings and Second Life terms. Attachment menus now accurately say "Desanexar de você", worn inventory items and badges are standardized to "Em uso" with the "Tirar" action, movement toggle now says "Sempre correr", and Escape hints properly display "Pressione Esc para cancelar". Terrain baking, calling cards, and system transaction messages have also been updated.
-[Read more](https://github.com/Adriano-Severino/SunSet-Viewer/releases/tag/v0.9.4)
+[Read more](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.4)
 
 ## 2026-11-06 — SunSet Viewer v0.9.3: AMD FSR 3.1, SunSet Combat and 100% pt-BR
 SunSet Viewer consolidates its independent release featuring native AMD FSR 3.1 upscaling for smooth performance on any graphics card, full preservation of the custom combat module with raycasts and dedicated hitboxes, autonomous background update checks directly against GitHub Releases, and complete Brazilian Portuguese translation parity.
-[Read more](https://github.com/Adriano-Severino/SunSet-Viewer/releases/tag/v0.9.3)
+[Read more](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.3)
 
 ## 2026-11-05 — Aurora 0.9.2: your chat history comes along, and a fullscreen mode
 Preferences › Chat › History imports your conversations from the Legacy Viewer and the other approved viewers that write the same files. The messages join your Aurora history in time order, each login adds only what is new, and the other viewer's files are only read. Preferences › Graphics gets a borderless fullscreen mode, and Alt+Enter turns it on or off at once, without a restart: a clean frame for videos, and the window comes back exactly as it was.
-[Read more](https://github.com/Adriano-Severino/SunSet-Viewer/releases/tag/v0.9.2)
+[Read more](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.2)
 
 ## 2026-11-05 — Smoother motion, lighter clicks
 With TAA, moving avatars, animesh and objects no longer smear: the anti-aliasing follows each pixel's own motion. Ambient occlusion now runs at half resolution in a 1440p window too, for about 14 % more frames per second in a crowd with the same image. In busy regions a click on the world costs a tenth of what it did, and the hover cursor skips the worn rigged meshes it can never land on. Escalators and other looping keyframed objects loop without sliding back.
@@ -46,7 +46,7 @@ The texture eyedropper and local textures are back in the build and appearance e
 
 ## 2026-11-04 — Aurora 0.9.1: steadier logins, teleports and outfits
 A region slow to confirm your arrival no longer ends the session, and a refused two-factor code no longer locks the login out of the code field. Outfit changes send one appearance request at a time, for the newest version, so products and RLVa that change the outfit quickly no longer drown your appearance in failed updates. A key the viewer never saw pressed no longer makes your avatar jump or fly up after you switch windows. Imported Windlight skies save to the inventory.
-[Read more](https://github.com/Adriano-Severino/SunSet-Viewer/releases/tag/v0.9.1)
+[Read more](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.1)
 
 ## 2026-11-04 — Photo roll, projector shadows, smoother busy places
 Photo mode keeps the session's last 10 photos in a small stack in the viewfinder: look through them, then upload, e-mail or delete one. Choose how many projectors cast shadows, from 1 to 16, in Preferences › Graphics › Light (2 by default). In busy regions, objects that spin or move by themselves are placed by the graphics card, flexible prims out of view hold their mesh, and the frame's buffer writes go out together: more frames per second, the same image.
@@ -56,7 +56,7 @@ Paper lanterns and other tortured spheres keep their shape, Legacy construction 
 
 ## 2026-11-04 — Aurora 0.9.0: OpenSim and Hypergrid, for real
 On OpenSim grids your avatar now bakes and is seen as you dress it, the land of large regions goes past 256 m, and the inventory, outfits and profiles save on grids without AIS. Buy and prices use the grid's own currency and money symbol. After a Hypergrid teleport Aurora follows the grid you are on, asks before a trip that would leave worn items behind, and offers to add an unknown grid from a link.
-[Read more](https://github.com/Adriano-Severino/SunSet-Viewer/releases/tag/v0.9.0)
+[Read more](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.0)
 
 ## 2026-11-04 — Snap to objects, place on surface, holograms
 Building gets three placement aids. Set Snap to Objects and the selection goes flush against nearby objects, purple guides on the faces that meet, never pushing through them. Press P to place it on any surface or on the ground, previewed as a hologram. A hologram can also show the object you move, or where it started (Preferences › Aurora › Behavior › Building). Stretch Textures holds while resizing, and the camera controls roll the view.
@@ -72,7 +72,7 @@ Intel Iris Xe starts again, and Aurora shares the graphics card fairly with othe
 
 ## 2026-11-02 — Aurora 0.8.5: immersive sound and VR, both experimental
 World sounds now go dull behind a wall or inside a closed box, pass behind your head with headphones (HRTF), and ring like the place you stand in: dry in the open air, a long soft tail in a large hall. Three switches in Preferences › Sound; HRTF and reverb are off by default. With an OpenXR headset, the headset button of the bottom toolbar shows the world in stereo, from your avatar's eyes or the camera. Viewing only for now: Esc brings the desktop back.
-[Read more](https://github.com/Adriano-Severino/SunSet-Viewer/releases/tag/v0.8.5)
+[Read more](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.8.5)
 
 ## 2026-11-02 — Quicker starts, smoother busy places
 Aurora keeps its own cache of compiled graphics pipelines, so a start no longer waits twenty seconds on a black window when the driver emptied its own. On 4K screens ambient occlusion costs about a third of what it did, textures stay sharp after a teleport into a busy region, a viewer window behind gives its video memory back to the one in front, and fast cards get back the frame rates of 0.8.3 in busy places.
@@ -88,7 +88,7 @@ Your logs and settings survive a hard reset of the PC, About Land saves its Allo
 
 ## 2026-10-31 — Aurora 0.8.4: copy anything, build in a crowd
 Click a name in a profile to copy it, and select the text of a greyed-out field to copy it too: a no-modify object's name, a parcel's media address. Outfits copy their item names and creator credits. In a busy sandbox, the build tools can select only your own objects, or only the ones you may move, and the editor has a Legacy layout. Ctrl+Shift+H takes you home.
-[Read more](https://github.com/Adriano-Severino/SunSet-Viewer/releases/tag/v0.8.4)
+[Read more](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.8.4)
 
 ## 2026-10-31 — Light for photos, LiveMesh for Blender 3
 A light button above the viewfinder's shutter opens personal lighting, and the sky, water and day cycle can change for the photo only, or stay after it. LiveMesh syncs textures in Blender 3.x colour spaces, and accessories rigged to an Avastar body dev kit sit where an upload puts them.
@@ -101,7 +101,7 @@ A graphics card reset closes the viewer cleanly, photos no longer freeze it when
 
 ## 2026-10-29 — Aurora 0.8.3 runs natively on the Mac
 Aurora now runs natively on Apple Silicon Macs, drawn through Metal: every release carries a macOS application to drag into Applications. Web pages and video in the world work there too: the first time they are needed, the viewer downloads its media plugins by itself. The install guide is in docs/MACOS.md.
-[Read more](https://github.com/Adriano-Severino/SunSet-Viewer/releases/tag/v0.8.3)
+[Read more](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.8.3)
 
 ## 2026-10-29 — Messages that matter, in front of you
 A message an estate manager sends to the region now shows as a card in the middle of the screen, like a friendship offer, and is kept under the bell and in nearby chat. A group notice shows its group, its insignia and its attachment, ready to save. The L$ you pay a resident now appear in your conversation with them, like the L$ they pay you, and stay there when you open it again.
@@ -118,7 +118,7 @@ Feature requests now live on our feedback board: suggest an idea, vote for the o
 
 ## 2026-10-29 — Aurora 0.8.2 now speaks Japanese, æ—¥æœ¬èªž
 Aurora is now available in Japanese: choose æ—¥æœ¬èªž in Preferences › Interface › Language, or let the system language pick it on a Japanese Windows. Every message is translated with Second Life's official Japanese terms, the interface draws with Japanese fonts, and dates read the Japanese way.
-[Read more](https://github.com/Adriano-Severino/SunSet-Viewer/releases/tag/v0.8.2)
+[Read more](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.8.2)
 
 ## 2026-10-29 — PBR terrain, and the HDR switch
 Regions whose ground uses PBR materials now render with them instead of a flat grey, as in the Legacy Viewer, and estate managers see a ground-cover change on the terrain before they apply it. Preferences › Graphics › Image also gets the Legacy Viewer's HDR and Emissive switch, on by default, for those who prefer the older look.
@@ -134,7 +134,7 @@ Text can now grow to twice its size, in Preferences › Appearance. Hold the bac
 
 ## 2026-10-27 — Aurora 0.8.1: avatars out of the cloud sooner
 Downloads now keep pace with your connection: in a busy region, avatars come out of the cloud about three times sooner, already textured, and the region loads about twice as fast with an empty cache. Your own outfit arrives whole: every attachment is worn at login and at each outfit change.
-[Read more](https://github.com/Adriano-Severino/SunSet-Viewer/releases/tag/v0.8.1)
+[Read more](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.8.1)
 
 ## 2026-10-27 — Freeze the world, save your shots
 In the photo mode, freeze the world: every avatar, animation and moving thing holds still while your camera stays free. Save a whole shot as a camera preset (where the camera stands, the lens, the filters and the light) and bring it back in one click. The shutter is now heard around you, as in the Legacy Viewer, unless you choose quiet snapshots.
@@ -147,7 +147,7 @@ Hold Alt in mouselook to free the cursor, and pick your crosshair. Arabic and He
 
 ## 2026-10-26 — Aurora 0.8.0: filters and effects for your photos
 The photo mode gets 66 filters and effects that show live in the viewfinder: the Legacy Viewer's 30 filters and 36 of Aurora's own, from film grain to VHS, plus your own .cube LUTs. Stack up to six, each with its own sliders, and compare before and after. Isolate your avatar, or the avatars and objects you click, on a transparent background: a PNG ready to use.
-[Read more](https://github.com/Adriano-Severino/SunSet-Viewer/releases/tag/v0.8.0)
+[Read more](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.8.0)
 
 ## 2026-10-26 — Portals, and only your parcel
 Open a portal to a place, or drop a landmark into the world, and walk through it to teleport. Other Aurora users see it too: your friends by default. You can also hide what stands outside the current parcel, and immersive mode hides the whole interface but the chat, for photos and events.

@@ -16975,6 +16975,14 @@ impl App {
                 self.sound_explorer_window(&ctx, &p);
                 self.animation_explorer_window(&ctx, &p);
                 self.avatar_render_settings_window(&ctx, &p);
+                if let Some(ui::movement_dash::Action::PerformDash { distance }) = ui::movement_dash::show(
+                    &ctx,
+                    &p,
+                    &mut self.settings.movement_dash,
+                    &mut self.panels.movement_dash,
+                ) {
+                    self.perform_dash(distance, false);
+                }
                 self.bumps_ui.show(&ctx, &p, &self.world, &mut self.panels.bumps);
                 self.grid_status_window(&ctx, &p);
                 if let Some(ui::voice_controls::Action::LeaveCall) = self.voice_controls_ui.show(
@@ -20653,6 +20661,18 @@ impl ApplicationHandler for App {
                         && !self.alt
                         && matches!(&ke.logical_key, winit::keyboard::Key::Character(c) if c.eq_ignore_ascii_case("s"))
                         && ui::inventory::document_save_focused(&self.egui_ctx);
+                    if pressed
+                        && !ke.repeat
+                        && !typing
+                        && self.in_world()
+                        && self.camera.mouselook()
+                        && self.settings.movement_dash.enabled
+                        && self.settings.movement_dash.mouselook_key_e
+                        && code == winit::keyboard::KeyCode::KeyE
+                    {
+                        self.perform_dash(self.settings.movement_dash.dash_distance, true);
+                        return;
+                    }
                     if pressed
                         && ((!resp.consumed && !typing) || shortcut || chat_pass)
                         && !ke.repeat

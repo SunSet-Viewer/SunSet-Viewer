@@ -25,7 +25,18 @@ impl App {
     /// as a command when it is one (cmd_line_chat). `true` = handled, the
     /// line must not be sent.
     pub(super) fn chat_command(&mut self, text: &str) -> bool {
-        let Some(cmd) = cmdline::parse(text.trim(), &self.settings.chat_commands, random_below) else {
+        let trimmed = text.trim();
+        if trimmed == "dash" || trimmed.starts_with("dash ") {
+            let arg = trimmed.strip_prefix("dash").unwrap_or("").trim();
+            if arg.eq_ignore_ascii_case("menu") || arg.eq_ignore_ascii_case("ui") {
+                self.panels.movement_dash = !self.panels.movement_dash;
+            } else {
+                let dist = arg.parse::<f32>().ok().unwrap_or(self.settings.movement_dash.dash_distance);
+                self.perform_dash(dist, true);
+            }
+            return true;
+        }
+        let Some(cmd) = cmdline::parse(trimmed, &self.settings.chat_commands, random_below) else {
             return false;
         };
         log::info!("chat command: {}", text.split_whitespace().next().unwrap_or_default());
@@ -310,6 +321,26 @@ impl App {
                 true,
             );
         }
+    }
+
+    /// Performs an instant dash/teleport in the forward or mouselook direction.
+    pub(crate) fn perform_dash(&mut self, distance: f32, use_mouselook_direction: bool) {
+        if distance <= 0.0 || !self.in_world() || self.world.agent.is_sitting() {
+            return;
+        }
+        let dir = if use_mouselook_direction && self.camera.mouselook() {
+            self.camera.forward()
+        } else {
+            let yaw = self.world.agent.yaw;
+            glam::Vec3::new(yaw.cos(), yaw.sin(), 0.0)
+        };
+        let current_pos = self.world.agent.position;
+        let target_pos = current_pos + dir * distance;
+        self.teleport_render_pos(target_pos);
+        self.world.system_message(aurora_i18n::tr!(
+            "movement-dash-executed-toast",
+            dist = format!("{:.0}", distance)
+        ));
     }
 
     /// cmdline_rezplat: a flat metal box 2.5 m under the avatar (where it

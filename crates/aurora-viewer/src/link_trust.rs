@@ -443,7 +443,7 @@ mod tests {
             "https://casperlet.com/",
             "https://aurora-viewer.org",
             "https://www.aurora-viewer.org/downloads",
-            "https://github.com/Adriano-Severino/SunSet-Viewer/pulls",
+            "https://github.com/SunSet-Viewer/SunSet-Viewer/pulls",
             "https://github.com/Aurora-Viewer/Aurora-Viewer/pulls",
             "https://gist.github.com/x",
             "https://secondlife.com./x",

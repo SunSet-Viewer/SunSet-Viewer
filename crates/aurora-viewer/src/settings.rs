@@ -430,6 +430,44 @@ impl DebugView {
 /// The former look-at range slider's maximum, which meant no limit.
 const FORMER_LOOK_AT_UNLIMITED: f32 = 64.0;
 
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct MovementDashSettings {
+    #[serde(default)]
+    pub enabled: bool,
+    #[serde(default = "default_speed_multiplier")]
+    pub speed_multiplier: f32,
+    #[serde(default = "default_dash_distance")]
+    pub dash_distance: f32,
+    #[serde(default = "default_true")]
+    pub mouselook_key_e: bool,
+    #[serde(default = "default_true")]
+    pub mouselook_middle_click: bool,
+}
+
+fn default_speed_multiplier() -> f32 {
+    1.0
+}
+
+fn default_dash_distance() -> f32 {
+    100.0
+}
+
+fn default_true() -> bool {
+    true
+}
+
+impl Default for MovementDashSettings {
+    fn default() -> Self {
+        Self {
+            enabled: false,
+            speed_multiplier: 1.0,
+            dash_distance: 100.0,
+            mouselook_key_e: true,
+            mouselook_middle_click: true,
+        }
+    }
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(default)]
 pub struct Settings {
@@ -502,6 +540,8 @@ pub struct Settings {
     /// Requested position lock and options, independent for each avatar.
     pub bridge: std::collections::HashMap<uuid::Uuid, crate::world::bridge::Preferences>,
     pub movements: std::collections::HashMap<uuid::Uuid, crate::movement::Preferences>,
+    /// Movement speed multiplier and instant dash controls.
+    pub movement_dash: MovementDashSettings,
     /// Show Friends Only and keeping it after a teleport, for each account
     /// (FSRenderFriendsOnly, FSRenderFriendsOnlyPersistsTP: per-account settings).
     pub friends_only: std::collections::HashMap<uuid::Uuid, crate::world::friends_only::Preferences>,
@@ -1797,6 +1837,7 @@ impl Default for Settings {
             inventory: Default::default(),
             texture_library: Default::default(),
             gestures: Default::default(),
+            movement_dash: Default::default(),
             shape_show_hints: true,
             shape_height_feet: false,
             customize_animation: true,

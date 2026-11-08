@@ -1186,6 +1186,14 @@ fn main_menus(ui: &mut egui::Ui, p: &Palette, panels: &mut Panels, st: &StatusIn
                 toggle: false,
             };
         }
+        flip_window(
+            ui,
+            p,
+            "bolt",
+            aurora_i18n::tr!("movement-dash-title"),
+            super::movement_dash::WINDOW,
+            &mut panels.movement_dash,
+        );
         if menu::item(ui, p, "eye-filled", aurora_i18n::tr!("common-mouselook-m")) {
             *action = BarAction::ToggleMouselook;
         }

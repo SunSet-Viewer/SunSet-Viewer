@@ -1,7 +1,7 @@
 # Aurora Tools: what the development environment needs, what is missing or
 # out of date, and how to fix it (dot-sourced by aurora-tools.ps1).
 
-$RepoUrl = 'https://github.com/Adriano-Severino/SunSet-Viewer'
+$RepoUrl = 'https://github.com/SunSet-Viewer/SunSet-Viewer'
 $FirestormUrl = 'https://github.com/FirestormViewer/phoenix-firestorm'
 
 function Get-Paths([string]$Root) {

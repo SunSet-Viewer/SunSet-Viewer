@@ -2,7 +2,7 @@
 
 > [!IMPORTANT]
 > **Leitura Obrigatória para Lançamento de Versões do SunSet Viewer**  
-> Sempre que uma nova versão (Release) for lançada ou anunciada, é **obrigatório** criar uma publicação profissional e atraente no quadro de notícias da tela de login, garantindo que o link de redirecionamento aponte exclusivamente para o repositório oficial do **SunSet Viewer** (`https://github.com/Adriano-Severino/SunSet-Viewer/releases/...`).
+> Sempre que uma nova versão (Release) for lançada ou anunciada, é **obrigatório** criar uma publicação profissional e atraente no quadro de notícias da tela de login, garantindo que o link de redirecionamento aponte exclusivamente para o repositório oficial do **SunSet Viewer** (`https://github.com/SunSet-Viewer/SunSet-Viewer/releases/...`).
 
 ---
 
@@ -19,7 +19,7 @@ flowchart TD
     C --> F[Renderiza os cards com título, data, resumo e link clicável]
 ```
 
-- **Sem necessidade de recompilar:** As notícias são lidas diretamente da branch `main` do GitHub via `https://raw.githubusercontent.com/Adriano-Severino/SunSet-Viewer/main/news/`.
+- **Sem necessidade de recompilar:** As notícias são lidas diretamente da branch `main` do GitHub via `https://raw.githubusercontent.com/SunSet-Viewer/SunSet-Viewer/main/news/`.
 - **Efeito imediato:** Assim que o arquivo for atualizado e enviado para o GitHub (`git push origin main`), em poucos minutos todos os usuários que abrirem o visualizador verão o anúncio na tela de login, mesmo antes de atualizarem o executável.
 - **Cache local:** Se o usuário estiver sem internet no momento da abertura, o SunSet Viewer exibe as últimas notícias salvas em cache local ou os arquivos compilados embutidos.
 
@@ -45,12 +45,12 @@ Parágrafo descritivo destacando os principais benefícios, correções de bugs,
 novas funcionalidades e melhorias de desempenho. Texto limpo e direto,
 sem listas com marcadores (* ou -), sem negrito excessivo e sem imagens.
 
-[Saiba mais](https://github.com/Adriano-Severino/SunSet-Viewer/releases/tag/vX.Y.Z)
+[Saiba mais](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/vX.Y.Z)
 ```
 
 > [!WARNING]
 > - O separador após a data deve ser um travessão `—`, hífen `-` ou dois-pontos `:`.
-> - O link **deve ficar sozinho na linha** e começar obrigatoriamente com `https://github.com/Adriano-Severino/SunSet-Viewer/releases/tag/...`.
+> - O link **deve ficar sozinho na linha** e começar obrigatoriamente com `https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/...`.
 > - Nunca utilize links do repositório legado do Aurora Viewer (`Aurora-Viewer/Aurora-Viewer/releases/...`).
 
 ---
@@ -87,7 +87,7 @@ Ao preparar e lançar uma nova versão do SunSet Viewer:
 1. Abra `news/pt-BR.md` e adicione a nova notícia no topo (abaixo do comentário HTML).
 2. Replique a notícia em `news/pt.md`.
 3. Escreva a versão em inglês no topo de `news/en.md`.
-4. Garanta que o link seja: `https://github.com/Adriano-Severino/SunSet-Viewer/releases/tag/vX.Y.Z`.
+4. Garanta que o link seja: `https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/vX.Y.Z`.
 
 ### Etapa 3: Criar a Tag e Enviar para o GitHub
 ```powershell
@@ -127,7 +127,7 @@ gh release create vX.Y.Z `
   "RELEASE\SunSet-Viewer-vX.Y.Z-windows-x64.zip.sha256" `
   --title "SunSet Viewer vX.Y.Z" `
   --notes-file "RELEASE_NOTES_vX.Y.Z.md" `
-  -R Adriano-Severino/SunSet-Viewer
+  -R SunSet-Viewer/SunSet-Viewer
 ```
 
 ---
@@ -139,7 +139,7 @@ gh release create vX.Y.Z `
 ## AAAA-MM-DD — SunSet Viewer vX.Y.Z: Destaque Principal da Versão
 A versão vX.Y.Z traz melhorias significativas de desempenho e estabilidade para sua exploração no Second Life. Esta atualização inclui aprimoramentos no sistema de renderização gráfica, ajustes no módulo de combate com detecção de precisão, correções no inventário e refinamentos nas traduções em Português do Brasil para tornar a navegação ainda mais intuitiva.
 
-[Saiba mais](https://github.com/Adriano-Severino/SunSet-Viewer/releases/tag/vX.Y.Z)
+[Saiba mais](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/vX.Y.Z)
 ```
 
 ### Modelo Inglês (`news/en.md`)
@@ -147,6 +147,6 @@ A versão vX.Y.Z traz melhorias significativas de desempenho e estabilidade para
 ## AAAA-MM-DD — SunSet Viewer vX.Y.Z: Core Highlight of the Release
 Version vX.Y.Z introduces major stability and rendering performance updates for Second Life. Highlights include enhanced graphic scaling, refined combat hitboxes and raycasting precision, inventory attachment optimizations, and comprehensive localization updates.
 
-[Read more](https://github.com/Adriano-Severino/SunSet-Viewer/releases/tag/vX.Y.Z)
+[Read more](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/vX.Y.Z)
 ```
 

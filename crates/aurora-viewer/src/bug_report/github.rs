@@ -6,8 +6,8 @@ use crossbeam_channel::{Receiver, Sender};
 use serde_json::Value;
 use std::time::{Duration, Instant};
 
-pub const ISSUES: &str = "https://github.com/Adriano-Severino/SunSet-Viewer/issues";
-const API: &str = "https://api.github.com/repos/Adriano-Severino/SunSet-Viewer/issues";
+pub const ISSUES: &str = "https://github.com/SunSet-Viewer/SunSet-Viewer/issues";
+const API: &str = "https://api.github.com/repos/SunSet-Viewer/SunSet-Viewer/issues";
 pub const VERIFY: &str = "https://github.com/login/device";
 // Public identifier, supplied by the project's GitHub App registration.
 pub const CLIENT_ID: &str = match option_env!("SUNSET_GITHUB_APP_CLIENT_ID") {
