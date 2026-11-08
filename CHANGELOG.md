@@ -4,6 +4,22 @@ Todas as mudanças notáveis, novidades e correções de bugs do projeto **SunSe
 
 ---
 
+## [0.9.5] — 2026-11-08
+
+### ⚡ Novo Sistema Nativo de Movimento & Dash Instantâneo
+- **Painel Flutuante Dedicado**: Adicionada a janela `Controle de Movimento & Dash`, acessível via menu superior (`Mundo` -> `Controle de Movimento & Dash`) ou pelo chat (`/dash menu`).
+- **Salto Instantâneo (Dash)**: Permite saltar distâncias predefinidas (25m, 50m, 100m, 200m, 500m) ou qualquer metragem personalizada instantaneamente via comando `/dash <metros>` ou botão no painel.
+- **Atalhos no Mouselook**: Pressione a tecla **`E`** ou dê um **clique com o botão do meio do mouse** na visão em primeira pessoa para disparar um dash em direção à mira.
+- **Multiplicador de Velocidade de Movimento**: Controle preciso da velocidade de corrida e voo (1x até 20x), com ativação automática ao se mover e reset seguro instantâneo ao desligar o sistema ou retornar para 1x.
+
+### 🌐 Correções de Localização (pt-BR)
+- **Mouse**: Substituídas as ocorrências de "Rato" por **"Mouse"** em toda a interface de preferências, atalhos de controle e cabeçalhos de configuração ("Mouse e teclado", "Mouse para trás", seção "MOUSE").
+
+### 👁️ Alcance Visual Desbloqueado (Draw Distance)
+- **Extensão de Draw Distance**: Desbloqueado o limite máximo de alcance de renderização de até **8.192 metros** via comando `dd` no chat e no protocolo de rede `AgentUpdate`.
+
+---
+
 ## [0.9.4] — 2026-11-07
 
 ### 🌐 Melhorias e Correções na Localização em Português do Brasil (pt-BR)

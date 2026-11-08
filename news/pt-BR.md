@@ -20,6 +20,10 @@ Regras:
 
 # Notícias do SunSet Viewer
 
+## 2026-11-08 — SunSet Viewer v0.9.5: Controle de Movimento & Dash e Correções
+A versão v0.9.5 traz o novo sistema nativo de Movimento & Dash: salte distâncias configuráveis instantaneamente com a tecla E ou clique do meio em Mouselook, multiplique sua velocidade de locomoção com reset instantâneo ao desligar, e aproveite o novo alcance de visão de até 8192m e correções de termos de Mouse em Português.
+[Saiba mais](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.5)
+
 ## 2026-11-07 — SunSet Viewer v0.9.4: Correções completas de localização em Português
 A versão v0.9.4 aprimora a experiência no Brasil com mais de 114 termos corrigidos. A opção de anexos agora exibe corretamente "Desanexar de você", o inventário padroniza itens vestidos como "Em uso" com a ação "Tirar", o modo de corrida foi traduzido para "Sempre correr" e a tecla Esc agora indica "Pressione Esc para cancelar". Também foram corrigidos jargões de terrenos, cartões de visita e notificações de transações L$.
 [Saiba mais](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.4)

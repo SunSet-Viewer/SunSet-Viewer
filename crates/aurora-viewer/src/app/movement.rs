@@ -66,12 +66,20 @@ impl App {
                 );
             }
         }
+        let prefs = self.settings.movements.entry(self.world.agent_id).or_default();
         if self.settings.movement_dash.enabled && self.settings.movement_dash.speed_multiplier > 1.05 {
-            let prefs = self.settings.movements.entry(self.world.agent_id).or_default();
             prefs.running = true;
-            prefs.run_multiplier = self.settings.movement_dash.speed_multiplier.clamp(1.0, 5.0);
+            prefs.run_multiplier = self.settings.movement_dash.speed_multiplier.clamp(1.0, 20.0);
             prefs.fly_assist = true;
-            prefs.fly_multiplier = self.settings.movement_dash.speed_multiplier.clamp(1.0, 5.0);
+            prefs.fly_multiplier = self.settings.movement_dash.speed_multiplier.clamp(1.0, 20.0);
+        } else {
+            prefs.running = false;
+            prefs.run_multiplier = 1.0;
+            prefs.fly_assist = false;
+            prefs.fly_multiplier = 1.0;
+            if self.bridge_runtime.motion.mode == 1 || self.bridge_runtime.motion.mode == 2 {
+                self.bridge_runtime.motion = aurora_net::bridge::Motion::default();
+            }
         }
         if self.demo && self.frame_count == 360 && std::env::var_os("AURORA_DEMO_MOVEMENT").is_some() {
             let prefs = self.settings.movements.entry(self.world.agent_id).or_default();
@@ -303,7 +311,9 @@ impl App {
                     || self.input.down
                     || (self.camera.mouselook() && (self.input.turn_left || self.input.turn_right))),
             bridge_ready: self.bridge_runtime.available(),
-            running: self.always_run || self.input.run,
+            running: self.always_run
+                || self.input.run
+                || (self.settings.movement_dash.enabled && self.settings.movement_dash.speed_multiplier > 1.05),
             obstacle: self.movement_probe.1,
             landing: self.movement_probe.2,
             on_ground: crate::movement::run::on_ground(

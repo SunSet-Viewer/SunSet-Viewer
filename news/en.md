@@ -26,6 +26,10 @@ An empty line starts a new paragraph.
 
 # SunSet Viewer news
 
+## 2026-11-08 — SunSet Viewer v0.9.5: Movement & Dash System, 8192m Draw Distance
+Version v0.9.5 introduces the native Movement & Dash floater: leap instant distances with key E or middle mouse click in Mouselook, customize speed multipliers up to 20x with instant safe motor release upon disabling, unlock maximum draw distance up to 8192 meters, and enjoy refined Portuguese localization terms.
+[Read more](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.5)
+
 ## 2026-11-07 — SunSet Viewer v0.9.4: Brazilian Portuguese localization fixes
 Version v0.9.4 refines the Brazilian Portuguese experience with more than 114 corrected UI strings and Second Life terms. Attachment menus now accurately say "Desanexar de você", worn inventory items and badges are standardized to "Em uso" with the "Tirar" action, movement toggle now says "Sempre correr", and Escape hints properly display "Pressione Esc para cancelar". Terrain baking, calling cards, and system transaction messages have also been updated.
 [Read more](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.4)

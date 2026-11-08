@@ -387,7 +387,7 @@ applyMotion() {
         // nominal level-terrain speed, never the previously boosted velocity.
         // wiki.secondlife.com/wiki/Default_Avatar_Movement_Speeds
         if (speed <= 1.0) { clearRun(0); llStopMoveToTarget(); return; }
-        if (speed > 5.0) speed = 5.0;
+        if (speed > 20.0) speed = 20.0;
         speed *= 5.13;
     }
     vector direction = <((gLevel & CONTROL_FWD) != 0) - ((gLevel & CONTROL_BACK) != 0),

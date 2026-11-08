@@ -16975,6 +16975,8 @@ impl App {
                 self.sound_explorer_window(&ctx, &p);
                 self.animation_explorer_window(&ctx, &p);
                 self.avatar_render_settings_window(&ctx, &p);
+                let prev_enabled = self.settings.movement_dash.enabled;
+                let prev_speed = self.settings.movement_dash.speed_multiplier;
                 if let Some(ui::movement_dash::Action::PerformDash { distance }) = ui::movement_dash::show(
                     &ctx,
                     &p,
@@ -16982,6 +16984,11 @@ impl App {
                     &mut self.panels.movement_dash,
                 ) {
                     self.perform_dash(distance, false);
+                }
+                if prev_enabled != self.settings.movement_dash.enabled
+                    || (prev_speed - self.settings.movement_dash.speed_multiplier).abs() > 0.01
+                {
+                    self.settings.save();
                 }
                 self.bumps_ui.show(&ctx, &p, &self.world, &mut self.panels.bumps);
                 self.grid_status_window(&ctx, &p);

@@ -131,7 +131,7 @@ impl Motion {
             }
             1 | 2 | 3 | 4 | 6 | 7 | 8 | 10 => {
                 let range = match self.mode {
-                    1 => 1.0..=5.0,
+                    1 => 1.0..=20.0,
                     // x5 downward flight is 114.35 m/s; leave rounding headroom.
                     2 => 1.0..=120.0,
                     _ => 0.5..=8.0,
@@ -587,7 +587,7 @@ mod tests {
         for mode in [2, 3, 6, 13] {
             assert!(Motion::motor(mode, 8.0, 1.7).valid());
         }
-        for factor in [1.0, 2.0, 5.0] {
+        for factor in [1.0, 2.0, 5.0, 20.0] {
             assert!(Motion::motor(1, factor, 1.7).valid());
         }
         for speed in [16.0 * 5.0, 22.87 * 5.0] {
@@ -639,7 +639,7 @@ mod tests {
             Motion::motor(11, 2.0, 1.7),
             Motion::motor(1, f32::NAN, 1.7),
             Motion::motor(1, 0.9, 1.7),
-            Motion::motor(1, 5.1, 1.7),
+            Motion::motor(1, 20.1, 1.7),
             Motion::motor(2, 121.0, 1.7),
             Motion::motor(3, 9.0, 1.7),
         ] {
