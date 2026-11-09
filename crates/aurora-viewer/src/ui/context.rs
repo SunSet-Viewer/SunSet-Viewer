@@ -837,7 +837,7 @@ fn avatar_menu_reporting(
         ) {
             act(CtxAction::OfferTeleport(id));
         }
-        if menu::item_if(ui, p, "plane-arrival-filled", aurora_i18n::tr!("common-request-teleport"), online) {
+        if menu::item_if(ui, p, "car-filled", aurora_i18n::tr!("common-request-teleport"), online) {
             act(CtxAction::RequestTeleport(id));
         }
         if menu::item_if(ui, p, "zoom-in-filled", aurora_i18n::tr!("common-zoom-2"), here) {
@@ -931,7 +931,7 @@ fn avatar_menu_reporting(
         }
     };
     let request_tp = |ui: &mut egui::Ui| {
-        if menu::item_if(ui, p, "plane-arrival-filled", aurora_i18n::tr!("common-request-teleport"), online) {
+        if menu::item_if(ui, p, "car-filled", aurora_i18n::tr!("common-request-teleport"), online) {
             act(CtxAction::RequestTeleport(id));
         }
     };
@@ -1071,7 +1071,7 @@ pub fn group_menu(ui: &mut egui::Ui, p: &Palette, world: &World, id: Uuid) {
         ui,
         p,
         "circle-check-filled",
-        aurora_i18n::tr!("common-enable"),
+        aurora_i18n::tr!("common-activate"),
         world.groups.active != id,
     ) {
         act(CtxAction::ActivateGroup(id));

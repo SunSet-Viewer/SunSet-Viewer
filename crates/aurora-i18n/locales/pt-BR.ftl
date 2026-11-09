@@ -13407,3 +13407,162 @@ ui-color-pink = Rosa
 
 ui-color-white = Branco
 
+
+
+# Novas traduções adicionadas na sincronização com Aurora v0.9.4
+
+# Vinculação de objetos: LLSelectMgr::linkObjects
+build-link-error-title = Impossível vincular objetos
+build-link-downloading = As informações do objeto ainda estão sendo baixadas. Aguarde e tente vincular novamente.
+build-link-too-many = Não é possível vincular { $count } prims. O limite máximo é { $max }.
+build-link-modify = Você precisa de permissão de modificação em todos os objetos que deseja vincular.
+build-link-permanent = Um objeto permanente nesta seleção não pode ser vinculado a partir de outra região.
+build-link-owners = Os objetos devem ter o mesmo proprietário para serem vinculados.
+build-link-regions = Os objetos devem estar na mesma região para serem vinculados.
+build-link-animesh = A seleção excede o limite de triângulos de objetos animados.
+build-link-restricted = Uma restrição impede vincular esta seleção.
+
+common-activate = Ativar
+contents-copy-selection-tip = Copia os itens selecionados para uma nova pasta com o nome do objeto.
+
+controls-view-not-saved = { $view } não foi salva: afaste a câmera do avatar primeiro.
+controls-view-restore = Restaurar para o padrão ({ $view })
+controls-view-save = Salvar a câmera nesta posição como { $view }
+controls-view-tip = { $view }. Clique com o botão direito: salvar a câmera nesta posição como esta vista, ou restaurá-la.
+
+# Janela de Configurações de Depuração (LLFloaterSettingsDebug)
+debug-settings-search = Pesquisar configurações
+debug-settings-changed-only = Mostrar apenas configurações alteradas
+debug-settings-none-selected = Selecione uma configuração na lista.
+debug-settings-not-in-preferences = Não há opção correspondente nas Preferências para esta configuração.
+debug-settings-rlva-locked = Bloqueado por uma restrição RLVa.
+debug-settings-refused = Este valor foi recusado:
+debug-settings-default = Padrão: { $value }
+debug-settings-copy-name = Copiar nome
+debug-settings-copied = Copiado
+debug-settings-reset = Restaurar ao padrão
+debug-settings-type-bool = Ligado ou desligado
+debug-settings-type-int = Número inteiro
+debug-settings-type-float = Número decimal
+debug-settings-type-text = Texto
+debug-settings-type-vector = Múltiplos números
+debug-settings-warning-title = Aviso
+debug-settings-warning-text = O uso da janela de Configurações de Depuração não possui suporte oficial. Alterar configurações avançadas pode afetar severamente sua experiência e levar à perda de dados, funcionalidades ou até mesmo ao acesso ao serviço. Não altere valores a menos que saiba exatamente o que está fazendo.
+debug-settings-warning-ignore = Não exibir este aviso novamente
+debug-settings-type-color = Cor
+
+# Preferências › Proteções: proteção de grandes superfícies (RenderVolumeSAProtection)
+large-surface-title = Superfícies Gigantes
+large-surface-enable = Ocultar objetos com superfície gigante
+large-surface-enable-hint = Protege sua placa de vídeo contra objetos criados para sobrecarregá-la: acima do total abaixo, os prims e sculpts com as maiores superfícies não são desenhados. Pode ocultar alguns objetos legítimos.
+large-surface-frame-max = Superfície total renderizada
+large-surface-frame-max-hint = A superfície de grandes objetos renderizada antes que os maiores sejam ocultados (5.000 por padrão).
+
+# Modificadores RLVa
+rlva-modifier-avatar-max = Câmera - Distância do avatar (máx)
+rlva-modifier-avatar-min = Câmera - Distância do avatar (mín)
+rlva-modifier-eye-offset = Câmera - Deslocamento dos olhos
+rlva-modifier-eye-scale = Câmera - Escala do deslocamento dos olhos
+rlva-modifier-fartouch = Distância de toque à distância (Fartouch)
+rlva-modifier-focus-max = Câmera - Distância de foco (máx)
+rlva-modifier-focus-min = Câmera - Distância de foco (mín)
+rlva-modifier-focus-offset = Câmera - Deslocamento de foco
+rlva-modifier-fov-max = Câmera - Campo de visão (FOV máx)
+rlva-modifier-fov-min = Câmera - Campo de visão (FOV mín)
+rlva-modifier-nametags = Etiquetas de nome - Distância visível
+rlva-modifier-recvim-max = Distância para receber IM (máx)
+rlva-modifier-recvim-min = Distância para receber IM (mín)
+rlva-modifier-sendim-max = Distância para enviar IM (máx)
+rlva-modifier-sendim-min = Distância para enviar IM (mín)
+rlva-modifier-silhouette = Câmera - Distância da silhueta
+rlva-modifier-sittp = Distância de SitTp
+rlva-modifier-startim-max = Distância para iniciar IM (máx)
+rlva-modifier-startim-min = Distância para iniciar IM (mín)
+rlva-modifier-texture = Câmera - Textura forçada
+rlva-modifier-tplocal = Distância de teleporte local
+
+# Ferramentas RLVa
+rlva-tools-col-exception = Exceção
+rlva-tools-col-modifier = Modificador
+rlva-tools-col-object = Nome do objeto
+rlva-tools-col-restriction = Restrição
+rlva-tools-col-source = Origem
+rlva-tools-col-value = Valor
+rlva-tools-default = (padrão)
+rlva-tools-exceptions = Exceções
+rlva-tools-no-exceptions = Nenhuma exceção ativa
+rlva-tools-restrictions = Restrições
+
+ui-contacts-none-no-group-tag = Nenhum (sem tag de grupo)
+
+# Notificações e status de rádio do parcel
+ui-music-blocked = bloqueado pelo filtro
+ui-music-connecting = conectando…
+ui-music-disabled = canal desligado
+ui-music-error = erro de reprodução
+ui-music-muted = silenciado
+ui-music-no-device = nenhum dispositivo de áudio
+ui-music-waiting = permissão necessária
+
+# Preferências › Construção
+ui-options-about-build = Características iniciais de um prim criado com a ferramenta Criar.
+ui-options-build-new-objects = Novos objetos
+ui-options-build-new-objects-note = Um prim feito com a ferramenta Criar assume estas configurações ao ser gerado.
+ui-options-build-size-hint = Largura, profundidade e altura em metros (0,01 a 10)
+ui-options-build-material = Material
+ui-options-build-flesh = Carne
+ui-options-build-physical = Físico
+ui-options-build-temporary = Temporário
+ui-options-build-new-faces = Aparência de novos objetos
+
+# Preferências › Gráficos e Câmera
+ui-options-attached-particles = Partículas de objetos vestidos
+ui-options-attached-particles-hint = Exibe as partículas emitidas por anexos dos avatares: brilhos, fumaça, fogo.
+
+ui-options-camera-after-a-teleport-in-the-region-the-camera-returns = Após um teleporte dentro da região, a câmera retorna para trás do seu avatar. Desligado, ela permanece onde está.
+ui-options-camera-return-after-a-teleport-in-the-region = Retornar câmera após teleporte na região
+
+ui-options-chat-console-max-lines = Limite de linhas de chat acima da barra
+ui-options-chat-console-max-lines-hint = Conta linhas de texto com quebra; cabeçalhos de cards não contam. Mantém as mensagens completas mais recentes. 0 oculta esta exibição.
+
+ui-options-double-click-scripted = Permitir ação de duplo clique em objetos com scripts
+ui-options-double-click-scripted-help = Permite que a ação configurada de duplo clique seja executada em objetos com ação de clique ou scripts de toque, exceto Sentar
+
+ui-options-draw-distance-stepping = Distância de visão progressiva
+ui-options-draw-distance-stepping-hint = Após o login e após um teleporte para outra região, a distância de visão inicia em 32 m e vai dobrando gradualmente até o seu valor configurado, carregando primeiro o que estiver próximo.
+
+ui-options-friends-only-show-help = Apenas você e seus amigos são exibidos: os outros avatares desaparecem e retornam imediatamente quando desativado. Mesmo interruptor do botão da barra de ferramentas e do menu Mundo. Um teleporte desativa a opção a menos que a linha seguinte seja mantida. Salvo para cada conta.
+
+ui-options-hover-tips-avatars = Em avatares mesmo desativado
+ui-options-hover-tips-avatars-help = Dicas flutuantes de avatar (nome, título de grupo) também aparecem quando as dicas de mundo estão desligadas; objetos e terrenos não mostram nada. Com dicas ativadas, avatares sempre as exibem. Ctrl+Shift+T alterna apenas as dicas do mundo.
+
+ui-options-listing-devices = Listando dispositivos…
+ui-options-local-lights = Luzes locais
+
+ui-options-modified-reset-text = Todas as configurações alteradas voltarão aos seus padrões. Você ainda pode desfazer por alguns segundos.
+ui-options-modified-reset-title = Redefinir as configurações modificadas?
+
+ui-options-others-attached-lights = Luzes vestidas por outros avatares (face lights)
+ui-options-others-attached-lights-help = Mostra ou oculta luzes anexadas aos avatares de terceiros. As suas próprias luzes anexadas permanecem visíveis.
+
+ui-options-payment-opens-anyone = Qualquer pessoa
+ui-options-payment-opens-friends = Apenas amigos
+ui-options-payment-opens-never = Nunca
+
+ui-options-probe-range = Alcance das sondas de reflexão
+ui-options-probe-range-help = Distância ao redor do avatar em que o cenário recebe sondas de reflexão, dentro da distância de visão (maior distância não consome mais memória de vídeo)
+
+ui-options-reset-confirm = Redefinir
+ui-options-reset-everything-text = Todas as configurações voltarão aos seus padrões e as janelas retornarão às posições originais. Sua conta, suas grids e suas configurações gráficas salvas serão mantidas. Você ainda pode desfazer por alguns segundos.
+
+ui-options-trees = Árvores
+ui-options-trees-hint = Nível de detalhe das árvores Linden à distância (0,5 por padrão). Em 0, árvores e grama não são desenhadas.
+
+# Atualizações e período de cortesia
+update-grace = Esta versão não é mais suportada. Você ainda pode se conectar por { $hours } h, após as quais a atualização será obrigatória.
+update-grace-later = Conectar mesmo assim ({ $hours } h restantes)
+update-grace-later-hint = Fecha esta janela e entra no mundo. A atualização será oferecida novamente no próximo lançamento.
+
+# Memória de vídeo cheia
+video-memory-full-notice = A memória de vídeo está cheia e o mundo não pôde ser desenhado. Feche programas que utilizem a placa gráfica: o mundo voltará automaticamente.
+video-memory-full-window-title = { $title } — Memória de vídeo cheia
