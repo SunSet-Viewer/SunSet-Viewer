@@ -43,19 +43,34 @@ No **SunSet Viewer**, o pipeline de renderização foi construído em **Rust e V
 
 ---
 
-## 🛠️ 3. Outras Formas de Alterar a Distância de Visão
+## 🛠️ 3. SpeedRez (Distância de Visão Progressiva — Novo na v0.9.7)
 
-Além do comando `/dd` no chat, você pode ajustar o alcance de visão visualmente:
+A partir da versão **v0.9.7** (integração com Aurora v0.9.4), o **SunSet Viewer** conta com o sistema **SpeedRez** (*Progressive Draw Distance / `FSRenderFarClipStepping`*), totalmente harmonizado com o teto estendido de **8.192 metros**:
 
-1. **Preferências Rápidas (*Quick Prefs*)**:
-   - Abra o menu de Preferências Rápidas na barra lateral ou inferior.
-   - Utilize o controle deslizante **Distância de visão** (*Draw distance*) para ajustar em tempo real com pré-visualização imediata.
-2. **Janela de Preferências**:
-   - Pressione `Ctrl + P` › **Gráficos** › seção **Qualidade de renderização**.
+1. **Como funciona**:
+   - No login ou ao se teletransportar entre regiões, o visualizador inicia o alcance de visão em **32 metros** para carregar imediatamente os objetos e avatares ao seu redor sem travamentos.
+   - Em seguida, a distância de visão **dobra progressivamente** (`32m → 64m → 128m → 256m → 512m...`) a cada intervalo de tempo até atingir exatamente a sua distância alvo configurada — inclusive alvos de **5.000m** (`dd 5000`) ou **8.192m** (`dd 8192`).
+2. **Onde configurar**:
+   - **Ativar/Desativar**: `Preferências (Ctrl+P)` › `Gráficos` › seção `Distância e detalhe` › **`Distância de visão progressiva`**.
+   - **Intervalo por passo**: Nas **Configurações de Depuração** (`Ctrl+Alt+Shift+S`), procure por `draw_distance_step_interval` (padrão: `20` segundos por passo, ajustável de `1` a `60` segundos).
+3. **Descoberta Dinâmica de Regiões Vizinhas**:
+   - O visualizador descobre e mantém conectadas até **3 anéis de regiões vizinhas** de acordo com o seu alcance de visão (`draw_distance`), garantindo que horizontes distantes apareçam completos.
 
 ---
 
-## 💡 4. Dicas Táticas e Boas Práticas
+## 🎚️ 4. Outras Formas de Alterar a Distância de Visão
+
+Além do comando `dd` no chat, você pode ajustar o alcance de visão visualmente até **8.192 metros** sem que o valor seja truncado para 512m:
+
+1. **Preferências Rápidas (*Quick Prefs*)**:
+   - Abra o menu de Preferências Rápidas na barra de ferramentas.
+   - Utilize o controle deslizante **Distância de visão** (*Draw distance*, de `32 m` a `8.192 m`) para ajustar em tempo real.
+2. **Janela de Preferências**:
+   - Pressione `Ctrl + P` › **Gráficos** › seção **Distância e detalhe** (`32 m` a `8.192 m`).
+
+---
+
+## 💡 5. Dicas Táticas e Boas Práticas
 
 - **Para Combate e PVP**: Mantenha entre `96m` e `192m` (`dd 128`). Isso foca a placa de vídeo em renderizar os hitboxes e avatares próximos com máxima fluidez e latência mínima.
 - **Para Fotografia de Paisagens**: Use `dd 3000` ou `dd 5000` para capturar cordilheiras, mares e cidades distantes sem o efeito de névoa de corte artificial.

@@ -115,31 +115,29 @@ licenses, and the upstream relationship are documented in
 <table>
   <tr>
     <td width="50%" valign="top">
-      <h3>⚔️ Integrated Combat Engine</h3>
+      <h3>⚔️ Integrated 3D Combat & Custom Hitbox Colors</h3>
       Built-in real-time combat system (<code>scene::combat</code>) featuring screen-center raycasting,
-      high-precision avatar hitboxes, weapon collision filtering, and dedicated combat preferences.
+      high-precision avatar hitboxes, scene occlusion filtering, and individual avatar marker colors (<a href="docs/HITBOX_E_CORES.md">guide</a>).
     </td>
     <td width="50%" valign="top">
-      <h3>⚡ AMD FSR 3.1 Upscaling</h3>
-      Native FidelityFX Super Resolution 3.1 with WGSL compute shaders. Crisp, high-framerate
-      rendering for demanding 1440p and 4K displays on any modern graphics card.
+      <h3>🚀 100x Movement, Instant Dash & 8,192m Draw Distance</h3>
+      Up to <b>100x</b> avatar speed multiplier (Bridge v1.42), Instant Dash with Mouselook shortcuts (<a href="docs/MOVEMENT_DASH.md">guide</a>), and extended draw distance up to <b>8,192m</b> (<code>dd 5000+</code>) with SpeedRez (<a href="docs/DRAW_DISTANCE.md">guide</a>).
     </td>
   </tr>
   <tr>
     <td valign="top">
       <h3>🇧🇷 100% Native pt-BR Localization</h3>
-      Comprehensive Brazilian Portuguese translation across 12,650+ interface strings,
+      Comprehensive Brazilian Portuguese translation across 12,770+ interface strings,
       adopting authentic Second Life terminology and community-reviewed translations.
     </td>
     <td valign="top">
-      <h3>🔄 Independent Auto-Updates</h3>
-      One-click background updates with SHA-256 verification and rollback protection,
-      integrated directly with SunSet Viewer's GitHub Releases.
+      <h3>⚡ AMD FSR 3.1 & Independent Auto-Updates</h3>
+      Native FidelityFX Super Resolution 3.1 with WGSL compute shaders, plus one-click background updates with SHA-256 verification and rollback protection.
     </td>
   </tr>
 </table>
 
-### New in 0.9.4 <img src="docs/readme/pill-new.svg" alt="New" height="18" align="absmiddle">
+### New in 0.9.7 (Aurora 0.9.4 Base + SunSet Exclusive Features) <img src="docs/readme/pill-new.svg" alt="New" height="18" align="absmiddle">
 
 <table>
   <tr>
@@ -1277,9 +1275,11 @@ its own task in its own git worktree:
 - [ARCHITECTURE.md](ARCHITECTURE.md) — scope, crates and file layout
 - [TASKS.md](TASKS.md) — what is in progress and to do; finished work is in
   [docs/TASKS_ARCHIVE.md](docs/TASKS_ARCHIVE.md)
+- [docs/ATUALIZACAO_V0.9.7.md](docs/ATUALIZACAO_V0.9.7.md) — full v0.9.7 release & non-regression architecture guide
 - [docs/MOVEMENT_DASH.md](docs/MOVEMENT_DASH.md) — movement speed control & instant dash (up to 100x speed)
-- [docs/DRAW_DISTANCE.md](docs/DRAW_DISTANCE.md) — extended draw distance & chat command (`dd 5000` up to 8192m)
+- [docs/DRAW_DISTANCE.md](docs/DRAW_DISTANCE.md) — extended draw distance, SpeedRez & chat command (`dd 5000` up to 8192m)
 - [docs/HITBOX_E_CORES.md](docs/HITBOX_E_CORES.md) — 3D combat hitboxes & individual avatar marker colors
+- [docs/CHECKLIST_RELEASE.md](docs/CHECKLIST_RELEASE.md) — step-by-step release checklist
 - [docs/BRANDING.md](docs/BRANDING.md) — palette, logos, icons and UI rules
 - [docs/TESTING.md](docs/TESTING.md) — test switches (demo scenarios,
   captures, diagnostics) and profiling

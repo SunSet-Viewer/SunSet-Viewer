@@ -107,22 +107,47 @@ O SunSet Viewer é um cliente modificado para Second Life baseado no [Aurora Vie
 <table>
   <tr>
     <td width="50%" valign="top">
-      <h3>⚔️ Módulo de Combate Integrado</h3>
-      Sistema completo de combate em tempo real (<code>scene::combat</code>) com raycasting a partir do centro da tela, hitboxes detalhadas por articulação do avatar, filtragem de colisões de armas e preferências exclusivas de combate.
+      <h3>⚔️ Combate 3D & Cores Individuais</h3>
+      Sistema completo de combate em tempo real (<code>scene::combat</code>) com raycasting do centro da tela, hitboxes 3D por avatar/articulação, oclusão por paredes e <b>marcação individual de cores</b> no Hitbox e Minimapa (<a href="docs/HITBOX_E_CORES.md">guia</a>).
     </td>
     <td width="50%" valign="top">
-      <h3>⚡ Upscaling AMD FSR 3.1</h3>
-      AMD FidelityFX Super Resolution 3.1 nativo utilizando compute shaders WGSL. Renderização nítida com alta taxa de quadros para telas exigentes em 1440p e 4K em qualquer placa de vídeo moderna.
+      <h3>🚀 Movimento 100x, Dash & Alcance 8.192m</h3>
+      Multiplicador de velocidade até <b>100x</b> (Bridge v1.42), Salto Instantâneo (<b>Dash</b>) com atalhos em Mouselook (<a href="docs/MOVEMENT_DASH.md">guia</a>) e distância de visão desbloqueada até <b>8.192 metros</b> (<code>dd 5000</code>) com SpeedRez (<a href="docs/DRAW_DISTANCE.md">guia</a>).
     </td>
   </tr>
   <tr>
     <td valign="top">
       <h3>🇧🇷 Localização 100% Nativa em Português (pt-BR)</h3>
-      Tradução integral e criteriosa de mais de 12.650 termos de interface, menus e mensagens de sistema, adotando o jargão consagrado do Second Life no Brasil (ex: <i>"Em uso"</i>, <i>"Desanexar de você"</i>, <i>"Sempre correr"</i>).
+      Tradução integral e criteriosa de mais de 12.770 termos de interface, menus e mensagens de sistema, adotando o jargão consagrado do Second Life no Brasil (ex: <i>"Em uso"</i>, <i>"Desanexar de você"</i>, <i>"Sempre correr"</i>).
     </td>
     <td valign="top">
-      <h3>🔄 Atualizações Automáticas em Um Clique</h3>
-      Verificação e download atômico em segundo plano com verificação criptográfica SHA-256 e proteção de restauração, integrado diretamente aos lançamentos do repositório no GitHub.
+      <h3>⚡ Upscaling AMD FSR 3.1 & Auto-Updates</h3>
+      AMD FidelityFX Super Resolution 3.1 nativo em WGSL para alto FPS em 1440p/4K e atualizador automático em segundo plano com verificação SHA-256 integrado ao GitHub Releases.
+    </td>
+  </tr>
+</table>
+
+### Novidades da v0.9.7 (Base Aurora 0.9.4 + SunSet) <img src="docs/readme/pill-new.svg" alt="Novo" height="18" align="absmiddle">
+
+<table>
+  <tr>
+    <td width="50%" valign="top">
+      <h3>🔧 Configurações de Depuração (Ctrl+Alt+Shift+S)</h3>
+      Todas as configurações por nome técnico em uma única janela: pesquise nomes e descrições, filtre o que foi alterado e restaure qualquer item ao padrão com um clique.
+    </td>
+    <td width="50%" valign="top">
+      <h3>🏗️ Preferências de Construção & SpeedRez 8.192m</h3>
+      Nova aba de Construção para novos prims, <b>Distância de Visão Progressiva (SpeedRez)</b> harmonizada até 8.192m (<code>dd 5000+</code>), detalhe de árvores, proteção contra superfícies gigantes e suavização de câmera até 300.
+    </td>
+  </tr>
+  <tr>
+    <td valign="top">
+      <h3>🌍 Mundo Mais Completo e Resiliente</h3>
+      Regiões vizinhas carregam dinamicamente conforme sua distância de visão, objetos não somem mais em certos ângulos de câmera e a cena se recupera sozinha caso a VRAM encha no login.
+    </td>
+    <td valign="top">
+      <h3>🔊 Chamadas, Música e Conversas</h3>
+      Chamadas de voz privadas continuam conectadas durante teletransportes, a música do terreno não corta mais ao mover a câmera livremente e <code>Ctrl+Tab</code> alterna entre conversas.
     </td>
   </tr>
 </table>
@@ -209,14 +234,16 @@ Medição realizada em loja movimentada com cerca de 16.000 objetos no mesmo com
 
 ### O que Funciona Hoje
 
-- **Módulo de Combate (Exclusivo SunSet)** — combate em tempo real (`scene::combat`), raycasting a partir da mira da tela, hitboxes detalhadas por articulação, testes locais de colisão e tela dedicada em Preferências.
+- **Módulo de Combate & Cores Individuais (Exclusivo SunSet)** — combate em tempo real (`scene::combat`), raycasting a partir da mira da tela, hitboxes 3D por avatar/articulação, oclusão por objetos/terreno e cores individuais (`Marcar cor`) compartilhadas entre Hitbox 3D e Minimapa ([guia](docs/HITBOX_E_CORES.md)).
+- **Controle de Movimento 100x & Salto Instantâneo / Dash (Exclusivo SunSet)** — velocidade de solo e voo até `100x` via Bridge LSL v1.42, salto instantâneo (`/dash <metros>`) e atalhos em Mouselook (`Tecla E` e `Botão do Meio do Mouse`) ([guia](docs/MOVEMENT_DASH.md)).
+- **Distância de Visão até 8.192m (`dd 5000+`) & SpeedRez (Exclusivo SunSet)** — alcance visual estendido de `32m` a `8.192m` via comando de chat `dd`, Preferências Rápidas e Gráficos, harmonizado com a Distância de Visão Progressiva (SpeedRez) ([guia](docs/DRAW_DISTANCE.md)).
 - **Upscaling AMD FSR 3.1** — renderização de alta resolução com excelente desempenho utilizando compute shaders WGSL.
-- **Localização 100% pt-BR** — tradução nativa em Português do Brasil com termos autênticos da comunidade Second Life.
+- **Localização 100% pt-BR** — tradução nativa em Português do Brasil com mais de 12.770 termos autênticos da comunidade Second Life.
 - **Atualizador Automático** — verificação e instalação atômica diretamente dos lançamentos no GitHub.
 - **Renderização Vulkan** — pipeline bindless, multi-draw indirect, GTAO, sombras de contato, materiais PBR e legados.
 - **Avatares e Bento** — animações suaves, bakes de servidor, roupas em camadas, Quickjump e reset de esqueleto.
 - **Modo Foto** — visor de alta precisão, foco automático nos olhos, profundidade de campo, exportação até 8K e suporte a LUTs.
-- **Áudio e Voz WebRTC** — voz espacial próxima, cancelamento de ruído, equalização e chamadas de conferência.
+- **Áudio e Voz WebRTC** — voz espacial próxima, cancelamento de ruído, equalização e chamadas de conferência contínuas mesmo durante teletransportes.
 - **Inventário em Explorador** — exibição em árvore ou explorador amplo com detalhes, direitos de permissão CMT e filtros rápidos.
 
 ---
@@ -255,7 +282,7 @@ cargo build --release -p aurora-viewer
 
 Para gerar pacotes portáteis oficiais prontos para distribuição com metadados de instalação e versionamento:
 ```powershell
-$env:AURORA_VERSION_TAG = "v0.9.4"
+$env:AURORA_VERSION_TAG = "v0.9.7"
 cargo build --release -p aurora-viewer
 powershell -ExecutionPolicy Bypass -File "scripts\package.ps1" -Exe "target\release\SunSet-Viewer.exe" -Out "RELEASE\SunSet-Viewer" -Source "."
 ```
@@ -267,9 +294,11 @@ powershell -ExecutionPolicy Bypass -File "scripts\package.ps1" -Exe "target\rele
 Ideias, sugestões e relatórios de problemas são muito bem-vindos na nossa página de [Issues no GitHub](https://github.com/SunSet-Viewer/SunSet-Viewer/issues).
 
 Documentação técnica complementar:
+- [ATUALIZACAO_V0.9.7.md](docs/ATUALIZACAO_V0.9.7.md) — Guia completo de recursos, integração Aurora v0.9.4 e auditoria da versão v0.9.7.
 - [MOVEMENT_DASH.md](docs/MOVEMENT_DASH.md) — Controle de Movimento e Dash Instantâneo (velocidades até 100x e atalhos).
-- [DRAW_DISTANCE.md](docs/DRAW_DISTANCE.md) — Distância de Visão estendida (comando `dd 5000` até 8.192m, estilo Firestorm).
+- [DRAW_DISTANCE.md](docs/DRAW_DISTANCE.md) — Distância de Visão estendida (comando `dd 5000` até 8.192m + SpeedRez, estilo Firestorm).
 - [HITBOX_E_CORES.md](docs/HITBOX_E_CORES.md) — Caixas de colisão 3D (Hitboxes) e marcação de cores individuais para avatares.
+- [CHECKLIST_RELEASE.md](docs/CHECKLIST_RELEASE.md) — Checklist passo a passo para validação e publicação de releases.
 - [GUIA_DE_LANCAMENTO_E_NOTICIAS.md](docs/GUIA_DE_LANCAMENTO_E_NOTICIAS.md) — Regras de publicação de releases e notícias da tela de login.
 - [BRANDING.md](docs/BRANDING.md) — Paleta de cores, ícones e regras de interface.
 - [BLENDER_LIVE.md](docs/BLENDER_LIVE.md) — Integração em tempo real com o Blender.
