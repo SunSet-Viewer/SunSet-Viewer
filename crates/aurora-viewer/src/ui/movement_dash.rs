@@ -38,7 +38,7 @@ pub fn show(ctx: &egui::Context, p: &Palette, settings: &mut MovementDashSetting
         // Seção: Velocidade do Avatar
         ui.label(RichText::new(aurora_i18n::tr!("movement-dash-speed-section")).strong());
         ui.horizontal(|ui| {
-            for &s in &[1.0, 2.0, 5.0, 10.0, 20.0] {
+            for &s in &[1.0, 2.0, 5.0, 10.0, 20.0, 50.0, 100.0] {
                 let is_selected = (settings.speed_multiplier - s).abs() < 0.05;
                 if ui.selectable_label(is_selected, format!("{s:.0}x")).clicked() {
                     settings.speed_multiplier = s;

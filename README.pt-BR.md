@@ -267,6 +267,9 @@ powershell -ExecutionPolicy Bypass -File "scripts\package.ps1" -Exe "target\rele
 Ideias, sugestões e relatórios de problemas são muito bem-vindos na nossa página de [Issues no GitHub](https://github.com/SunSet-Viewer/SunSet-Viewer/issues).
 
 Documentação técnica complementar:
+- [MOVEMENT_DASH.md](docs/MOVEMENT_DASH.md) — Controle de Movimento e Dash Instantâneo (velocidades até 100x e atalhos).
+- [DRAW_DISTANCE.md](docs/DRAW_DISTANCE.md) — Distância de Visão estendida (comando `dd 5000` até 8.192m, estilo Firestorm).
+- [HITBOX_E_CORES.md](docs/HITBOX_E_CORES.md) — Caixas de colisão 3D (Hitboxes) e marcação de cores individuais para avatares.
 - [GUIA_DE_LANCAMENTO_E_NOTICIAS.md](docs/GUIA_DE_LANCAMENTO_E_NOTICIAS.md) — Regras de publicação de releases e notícias da tela de login.
 - [BRANDING.md](docs/BRANDING.md) — Paleta de cores, ícones e regras de interface.
 - [BLENDER_LIVE.md](docs/BLENDER_LIVE.md) — Integração em tempo real com o Blender.

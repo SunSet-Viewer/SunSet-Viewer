@@ -1,10 +1,10 @@
-// Aurora LSL Bridge v1.41. Movelock physics follow the Legacy Viewer's movelockMe
+// Aurora LSL Bridge v1.42. Movelock physics follow the Legacy Viewer's movelockMe
 // (EBEDD1D2-A320-43f5-88CF-DD47BBCA5DFB.lsltxt, originally LGPL 2.1).
 // Mono's 64 KB holds this compiled controller too, with little to spare: the
 // read-only queries run in query.lsl, so a busy region cannot halt Movelock
 // with a Stack-Heap Collision. Keep new services out of this script.
 string FOLDER = "__FOLDER__";
-string VERSION = "1.41";
+string VERSION = "1.42";
 string gURL;
 key gToken;
 key gURLRequest;
@@ -366,8 +366,11 @@ applyMotion() {
     if (gMode == 1) velocity = llGetVel();
     // Key release/jump must clear the persistent force before the tick-rate
     // limit. It must never survive a jump or native flight transition.
-    if (gMode == 1 && ((agentInfo & (AGENT_IN_AIR | AGENT_FLYING))
-        || (gLevel & (CONTROL_UP | CONTROL_DOWN)) || llFabs(velocity.z) > 1.5)) {
+    float maxZ = 3.0 + gRunSpeed * 0.2;
+    if (gMode == 1 && ((agentInfo & AGENT_FLYING)
+        || (gLevel & (CONTROL_UP | CONTROL_DOWN))
+        || ((agentInfo & AGENT_IN_AIR) && velocity.z < -maxZ)
+        || llFabs(velocity.z) > maxZ)) {
         if (gLevel & (CONTROL_UP | CONTROL_DOWN)) clearRun(8);
         else clearRun(2);
         llStopMoveToTarget(); return;
@@ -387,7 +390,7 @@ applyMotion() {
         // nominal level-terrain speed, never the previously boosted velocity.
         // wiki.secondlife.com/wiki/Default_Avatar_Movement_Speeds
         if (speed <= 1.0) { clearRun(0); llStopMoveToTarget(); return; }
-        if (speed > 20.0) speed = 20.0;
+        if (speed > 100.0) speed = 100.0;
         speed *= 5.13;
     }
     vector direction = <((gLevel & CONTROL_FWD) != 0) - ((gLevel & CONTROL_BACK) != 0),
@@ -406,7 +409,7 @@ applyMotion() {
         if (direction == ZERO_VECTOR) { clearRun(1); return; }
         float mass = llGetMassMKS();
         if (mass <= 0.0 || mass > 10000.0) { clearRun(6); return; }
-        if (gRunDirection * direction < 0.95) clearRun(0);
+        if (gRunDirection * direction < 0.707) clearRun(0);
         gRunDirection = direction;
         float forward = velocity * direction;
         if (gRunSpeed <= 0.0) {
@@ -414,19 +417,25 @@ applyMotion() {
             if (gRunSpeed < 5.13) gRunSpeed = 5.13;
             if (gRunSpeed > speed) gRunSpeed = speed;
         }
-        // Raise the target by at most 4 m/s each second, including slider
-        // changes. Lower targets take effect immediately; never wind up from
-        // a large x1 -> x5 speed error in a single script tick.
-        gRunSpeed += 4.0 * dt;
+        // Raise the target proportionally to the desired speed so high speeds
+        // ramp up responsively within ~0.5s instead of taking dozens of seconds.
+        float speedRamp = speed * 2.0;
+        if (speedRamp < 20.0) speedRamp = 20.0;
+        gRunSpeed += speedRamp * dt;
         if (gRunSpeed > speed) gRunSpeed = speed;
         float delta = gRunSpeed - forward;
         // Never accumulate thrust against a wall or across a sharp turn.
         if (forward < 0.2) gRunIntegral = 0.0;
+        float maxAccel = speed * 12.0;
+        if (maxAccel < 600.0) maxAccel = 600.0;
+        if (maxAccel > 6000.0) maxAccel = 6000.0;
         float integral = gRunIntegral + delta * dt * 5.0;
         if (integral < 0.0) integral = 0.0;
-        if (integral > 400.0) integral = 400.0;
+        if (integral > maxAccel) integral = maxAccel;
         float previous = llVecMag(gRunForce) / mass;
-        float upward = previous + 20.0 * dt;
+        float forceRamp = maxAccel * 2.0;
+        if (forceRamp < 200.0) forceRamp = 200.0;
+        float upward = previous + forceRamp * dt;
         // Back-calculate only the compensation the force ramp can deliver.
         // Freezing all positive integration here would permanently stall the
         // speed below target when native drag needs a larger compensation.
@@ -437,13 +446,13 @@ applyMotion() {
         }
         gRunIntegral = integral;
         if (gRunIntegral < 0.0) gRunIntegral = 0.0;
-        if (gRunIntegral > 400.0) gRunIntegral = 400.0;
+        if (gRunIntegral > maxAccel) gRunIntegral = maxAccel;
         // Keep the learned compensation for native braking near the target;
         // cutting all force at that boundary produces a repeated speed sawtooth.
         // Excess speed unwinds compensation; never apply a reverse brake.
         float acceleration = delta * 4.0 + gRunIntegral;
         if (acceleration < 0.0) acceleration = 0.0;
-        if (acceleration > 400.0) acceleration = 400.0;
+        if (acceleration > maxAccel) acceleration = maxAccel;
         if (acceleration > upward) acceleration = upward;
         // Overspeed never gets extra thrust. Clear it immediately instead of
         // holding the previous positive force until another feedback tick.
@@ -458,7 +467,7 @@ applyMotion() {
         gRunState = 4;
         if (forward < speed - 0.1) gRunState = 5;
         if (gRunSpeed < speed - 0.05) gRunState = 10;
-        else if (acceleration >= 399.9 && forward < speed - 0.1) gRunState = 11;
+        else if (acceleration >= maxAccel - 0.1 && forward < speed - 0.1) gRunState = 11;
         if (acceleration > 0.0 && gRunPushes < 2147483647) ++gRunPushes;
         return;
     }

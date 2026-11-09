@@ -131,9 +131,8 @@ impl Motion {
             }
             1 | 2 | 3 | 4 | 6 | 7 | 8 | 10 => {
                 let range = match self.mode {
-                    1 => 1.0..=20.0,
-                    // x5 downward flight is 114.35 m/s; leave rounding headroom.
-                    2 => 1.0..=120.0,
+                    1 => 1.0..=100.0,
+                    2 => 1.0..=5000.0,
                     _ => 0.5..=8.0,
                 };
                 self.action == 0
@@ -236,12 +235,12 @@ impl Ack {
                     mode: fields[5].parse::<u8>().ok().filter(|mode| *mode <= 13)?,
                     run_state: fields[6].parse::<u8>().ok().filter(|state| *state <= 14)?,
                     speed_cm: fields[7].parse::<u32>().ok().filter(|speed| *speed <= 1_000_000)?,
-                    target_cm: fields[8].parse::<u32>().ok().filter(|target| *target <= 2_565)?,
+                    target_cm: fields[8].parse::<u32>().ok().filter(|target| *target <= 1_000_000)?,
                     pushes: fields[9].parse::<u32>().ok().filter(|count| *count <= i32::MAX as u32)?,
                     regulation: if fields.len() >= 13 {
                         Some(RunRegulation {
-                            power_milli: fields[10].parse::<u32>().ok().filter(|power| *power <= 400_000)?,
-                            ramp_cm: fields[11].parse::<u32>().ok().filter(|speed| *speed <= 2_565)?,
+                            power_milli: fields[10].parse::<u32>().ok().filter(|power| *power <= 50_000_000)?,
+                            ramp_cm: fields[11].parse::<u32>().ok().filter(|speed| *speed <= 1_000_000)?,
                             restarts: fields[12].parse::<u32>().ok().filter(|count| *count <= i32::MAX as u32)?,
                         })
                     } else {
@@ -587,13 +586,13 @@ mod tests {
         for mode in [2, 3, 6, 13] {
             assert!(Motion::motor(mode, 8.0, 1.7).valid());
         }
-        for factor in [1.0, 2.0, 5.0, 20.0] {
+        for factor in [1.0, 2.0, 5.0, 20.0, 100.0] {
             assert!(Motion::motor(1, factor, 1.7).valid());
         }
-        for speed in [16.0 * 5.0, 22.87 * 5.0] {
+        for speed in [16.0 * 5.0, 22.87 * 5.0, 22.87 * 100.0] {
             assert!(Motion::motor(2, speed, 1.7).valid());
         }
-        for speed in [0.9, 120.1, f32::NAN, f32::INFINITY] {
+        for speed in [0.9, 5000.1, f32::NAN, f32::INFINITY] {
             assert!(!Motion::motor(2, speed, 1.7).valid());
         }
         for mode in [3, 6] {
@@ -639,8 +638,8 @@ mod tests {
             Motion::motor(11, 2.0, 1.7),
             Motion::motor(1, f32::NAN, 1.7),
             Motion::motor(1, 0.9, 1.7),
-            Motion::motor(1, 20.1, 1.7),
-            Motion::motor(2, 121.0, 1.7),
+            Motion::motor(1, 100.1, 1.7),
+            Motion::motor(2, 5001.0, 1.7),
             Motion::motor(3, 9.0, 1.7),
         ] {
             assert!(!motion.valid());
@@ -669,7 +668,7 @@ mod tests {
             "42|0|0|1|0|1|5|-1|2565|17",
             "42|0|0|1|0|14|5|540|2565|17",
             "42|0|0|1|0|1|15|540|2565|17",
-            "42|0|0|1|0|1|5|540|2566|17",
+            "42|0|0|1|0|1|5|540|1000001|17",
             "42|0|0|1|0|1|5|540|2565|2147483648",
             "42|0|0|1|0|1|5|540|2565",
         ] {
@@ -693,9 +692,9 @@ mod tests {
             })
         );
         for invalid in [
-            "42|0|0|1|0|1|5|700|2565|17|400001|2565|3",
+            "42|0|0|1|0|1|5|700|2565|17|50000001|2565|3",
             "42|0|0|1|0|1|5|700|2565|17|NaN|2565|3",
-            "42|0|0|1|0|1|5|700|2565|17|0|2566|3",
+            "42|0|0|1|0|1|5|700|2565|17|0|1000001|3",
             "42|0|0|1|0|1|5|700|2565|17|0|2565|-1",
             "42|0|0|1|0|1|5|700|2565|17|0|2565|2147483648",
             "42|0|0|1|0|1|5|700|2565|17|0|2565",

@@ -69,9 +69,9 @@ impl App {
         let prefs = self.settings.movements.entry(self.world.agent_id).or_default();
         if self.settings.movement_dash.enabled && self.settings.movement_dash.speed_multiplier > 1.05 {
             prefs.running = true;
-            prefs.run_multiplier = self.settings.movement_dash.speed_multiplier.clamp(1.0, 20.0);
+            prefs.run_multiplier = self.settings.movement_dash.speed_multiplier.clamp(1.0, 100.0);
             prefs.fly_assist = true;
-            prefs.fly_multiplier = self.settings.movement_dash.speed_multiplier.clamp(1.0, 20.0);
+            prefs.fly_multiplier = self.settings.movement_dash.speed_multiplier.clamp(1.0, 100.0);
         } else {
             prefs.running = false;
             prefs.run_multiplier = 1.0;

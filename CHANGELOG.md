@@ -4,6 +4,25 @@ Todas as mudanças notáveis, novidades e correções de bugs do projeto **SunSe
 
 ---
 
+## [0.9.7] — 2026-11-09
+
+### 🚀 Desbloqueio e Aceleração do Multiplicador de Velocidade (até 100x)
+- **Correção da Barreira de 5x**: Resolvida a falha onde a velocidade do avatar não aumentava acima de 5x. O parser de telemetria do bridge (`Ack::parse`) rejeitava respostas com velocidade alvo superior a 2.565 cm/s (`5.13 m/s * 5`), o que causava perda de pacotes e desativação do motor pelo watchdog. O limite foi ampliado para suportar velocidades de até 1.000.000 cm/s.
+- **Ampliação do Limite de 20x para 100x**: O multiplicador de velocidade agora permite valores de **1.0x até 100.0x**, com a adição dos botões de predefinição rápida **`50x`** e **`100x`** no painel `Movimento & Dash` e ajuste fino via slider/drag.
+- **Atualização do Script Aurora LSL Bridge para v1.42**:
+  - Rampa de aceleração dinâmica proporcional à velocidade solicitada, eliminando a lentidão para atingir altas velocidades.
+  - Aumento da força máxima de empuxo (até 6.000 m/s²) para superar a resistência do arrasto físico imposta pelo Havok em solo.
+  - Tolerância adaptativa a desníveis e relevo do terreno no eixo Z, evitando cancelamentos indevidos de corrida ao cruzar pequenas inclinações.
+  - Suporte a curvas suaves com ângulo de até 45° sem zerar bruscamente a velocidade acumulada.
+- **Paridade em Voo Assistido**: O multiplicador de velocidade de voo assistido (`fly_multiplier`) agora também escala até 100x tanto no painel `Movimento & Dash` quanto no floater de movimento nativo.
+
+### 📚 Documentação Técnica Criada e Atualizada
+- **Controle de Movimento e Dash**: Novo guia em [`docs/MOVEMENT_DASH.md`](docs/MOVEMENT_DASH.md) cobrindo velocidades até 100x, atalhos de Mouselook e física LSL v1.42.
+- **Distância de Visão Estendida**: Novo guia em [`docs/DRAW_DISTANCE.md`](docs/DRAW_DISTANCE.md) detalhando o uso do comando `dd <metros>` (ex: `dd 5000` até 8.192m estilo Firestorm).
+- **Hitboxes 3D e Cores Individuais**: Novo guia em [`docs/HITBOX_E_CORES.md`](docs/HITBOX_E_CORES.md) documentando a ativação de hitboxes, detecção de tiros e marcação individual de cores com precedência sobre Contact Sets.
+
+---
+
 ## [0.9.6] — 2026-11-08
 
 ### 🎨 Marcador de Cores Individual para Contatos (Estilo Firestorm)

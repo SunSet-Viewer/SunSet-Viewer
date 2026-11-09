@@ -1276,6 +1276,9 @@ its own task in its own git worktree:
 - [ARCHITECTURE.md](ARCHITECTURE.md) — scope, crates and file layout
 - [TASKS.md](TASKS.md) — what is in progress and to do; finished work is in
   [docs/TASKS_ARCHIVE.md](docs/TASKS_ARCHIVE.md)
+- [docs/MOVEMENT_DASH.md](docs/MOVEMENT_DASH.md) — movement speed control & instant dash (up to 100x speed)
+- [docs/DRAW_DISTANCE.md](docs/DRAW_DISTANCE.md) — extended draw distance & chat command (`dd 5000` up to 8192m)
+- [docs/HITBOX_E_CORES.md](docs/HITBOX_E_CORES.md) — 3D combat hitboxes & individual avatar marker colors
 - [docs/BRANDING.md](docs/BRANDING.md) — palette, logos, icons and UI rules
 - [docs/TESTING.md](docs/TESTING.md) — test switches (demo scenarios,
   captures, diagnostics) and profiling
