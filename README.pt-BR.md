@@ -12,6 +12,7 @@ Renderizador Vulkan, interface limpa e o Second Life que você já conhece.
 [![Download](docs/readme/button-download.svg)](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/latest)&nbsp;
 [![Download para Linux](docs/readme/button-download-linux.svg)](docs/LINUX.md)&nbsp;
 [![Download para macOS (experimental)](docs/readme/button-download-macos.svg)](docs/MACOS.md)&nbsp;
+[![Discord](docs/readme/button-discord.svg)](https://discord.gg/Ra39HM4E2)
 
 [![Release](https://img.shields.io/github/v/release/SunSet-Viewer/SunSet-Viewer?include_prereleases&color=8B5CF6)](https://github.com/SunSet-Viewer/SunSet-Viewer/releases)
 [![Licença: GPLv3](https://img.shields.io/badge/license-GPLv3-4F46E5)](LICENSE)
