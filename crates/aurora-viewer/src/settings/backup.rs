@@ -44,6 +44,10 @@ const THIS_PC: &[&str] = &[
 ];
 /// The same inside `audio`: the devices of this PC.
 const THIS_PC_AUDIO: &[&str] = &["output_device", "input_device"];
+/// The same inside `gifs`: personal API keys.
+const THIS_PC_GIFS: &[&str] = &["giphy_key", "klipy_key", "customer_id"];
+/// Nested setting sections whose values belong to this PC.
+const THIS_PC_NESTED: &[(&str, &[&str])] = &[("audio", THIS_PC_AUDIO), ("gifs", THIS_PC_GIFS)];
 
 /// Whether the path of a setting (`gifs.giphy_key`) names a setting of the
 /// login or of this PC.

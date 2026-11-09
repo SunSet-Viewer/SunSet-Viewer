@@ -71,7 +71,7 @@ pub enum Page {
 }
 
 impl Page {
-    pub const ALL: [Page; 22] = [
+    pub const ALL: [Page; 23] = [
         Page::Aurora,
         Page::Graphics,
         Page::Camera,
