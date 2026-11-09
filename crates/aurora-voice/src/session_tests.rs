@@ -351,6 +351,8 @@ fn ready_now_takes_only_what_is_queued() {
     drop(tx);
     assert_eq!(ready_now(rx.recv()), Some(None));
 }
+
+#[test]
 fn loopback_webrtc_session() {
     LOOPBACK_ONLY.store(true, std::sync::atomic::Ordering::Relaxed);
     check_loopback_channel(ChannelKind::Local { parcel_local_id: Some(5) });
