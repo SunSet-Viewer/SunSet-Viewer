@@ -249,3 +249,4 @@ Após a conclusão bem-sucedida da Release no GitHub:
 | **6. Envio da Tag** | Criar e subir a tag SemVer | `.\scripts\tools\releases.ps1` | Tag deve começar com `v` |
 | **7. Build de Release** | Acompanhar workflow no GitHub | `gh run watch --workflow Release` | Gera MSI, ZIP e Símbolos |
 | **8. Pós-Lançamento** | Testar tela de login e updater | Iniciar o SunSet Viewer | Confirmar cards e download |
+
