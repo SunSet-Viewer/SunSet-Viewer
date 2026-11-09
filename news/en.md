@@ -26,6 +26,10 @@ An empty line starts a new paragraph.
 
 # SunSet Viewer news
 
+## 2026-11-09 — SunSet Viewer v0.9.7: 100x Speed, Aurora v0.9.4 Sync and Stability
+Version v0.9.7 brings full upstream synchronization with Aurora v0.9.4 and high-speed movement upgrades: avatar speed multiplier up to 100x powered by the new Aurora LSL Bridge v1.42, Debug Settings floater (/settings_debug), progressive draw distance up to 8192m (with dd 5000+ support), VRAM mid-session recovery without freezing, face lights toggle in graphics, Alt+Enter OOC chat ((text)), and full non-regression of 3D combat hitboxes and custom avatar marker colors.
+[Read more](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.7)
+
 ## 2026-11-08 — SunSet Viewer v0.9.6: Custom Individual Contact Marker Colors
 Version v0.9.6 introduces custom individual color marking for residents and contacts. Right-click any avatar in the People floater, minimap, or in-world to pick a quick swatch or any custom color to instantly highlight them. Individual colors take precedence over contact set presets across 3D combat hitboxes, minimap blips, and nameplates. Clearing a marked color immediately reverts the avatar to their inherited contact set preset color. All individual avatar color markings are automatically saved across sessions.
 [Read more](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.6)

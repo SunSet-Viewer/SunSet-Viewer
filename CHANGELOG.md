@@ -16,7 +16,15 @@ Todas as mudanças notáveis, novidades e correções de bugs do projeto **SunSe
   - Suporte a curvas suaves com ângulo de até 45° sem zerar bruscamente a velocidade acumulada.
 - **Paridade em Voo Assistido**: O multiplicador de velocidade de voo assistido (`fly_multiplier`) agora também escala até 100x tanto no painel `Movimento & Dash` quanto no floater de movimento nativo.
 
+### 🔄 Sincronização Upstream Aurora-Viewer v0.9.4 (Zero Regressão)
+- **Recuperação de VRAM e Renderização**: Recuperação dinâmica quando a memória de vídeo enche no meio da sessão sem congelar a cena ou perder texturas. Correção de camadas de roupa (*worn layers*) sob mesh, proteção contra superfícies gigantes (*large surface protection*) e suporte a pesos de pele de 16 bits para offsets ósseos longos.
+- **SpeedRez & Progressive Draw Distance**: O visualizador carrega a partir de 32m e dobra progressivamente até a distância de visão alvo, com teto preservado e harmonizado para até 8.192 metros (`dd 5000+`).
+- **Configurações de Depuração (Debug Settings)**: Adicionada a janela nativa de configurações avançadas (`/settings_debug` ou no menu de ajuda/desenvolvimento).
+- **Usabilidade e Chat**: Ocultação de luzes faciais (*Face lights*), atalho `Alt+Enter` no chat para mensagens `(( OOC ))`, botão de solicitar teletransporte em conversas privadas e novas opções de câmera e som.
+- **Localização 100% pt-BR**: 120 novos identificadores traduzidos para Português do Brasil com validação estrita de catálogo.
+
 ### 📚 Documentação Técnica Criada e Atualizada
+- **Checklist Definitivo de Release**: Guia passo a passo em [`docs/CHECKLIST_RELEASE.md`](docs/CHECKLIST_RELEASE.md) para padronizar o ciclo de release e publicação.
 - **Controle de Movimento e Dash**: Novo guia em [`docs/MOVEMENT_DASH.md`](docs/MOVEMENT_DASH.md) cobrindo velocidades até 100x, atalhos de Mouselook e física LSL v1.42.
 - **Distância de Visão Estendida**: Novo guia em [`docs/DRAW_DISTANCE.md`](docs/DRAW_DISTANCE.md) detalhando o uso do comando `dd <metros>` (ex: `dd 5000` até 8.192m estilo Firestorm).
 - **Hitboxes 3D e Cores Individuais**: Novo guia em [`docs/HITBOX_E_CORES.md`](docs/HITBOX_E_CORES.md) documentando a ativação de hitboxes, detecção de tiros e marcação individual de cores com precedência sobre Contact Sets.

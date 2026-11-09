@@ -1,9 +1,10 @@
 # Aurora Viewer — task tracking
 
-- 🔧 Local avatar hitboxes & combat raycast (SunSet features): oriented bounding boxes and raycast occlusion detection.
-- 🔧 Avatar marks & individual colors (SunSet features): individual avatar color overrides with highest priority over contact sets.
-- 🔧 Movement & Instant Dash (SunSet features): up to 100x speed multiplier, bridge v1.42, Mouselook shortcuts E and middle mouse.
-- 🔧 Extended Draw Distance (SunSet features): up to 8192m and dd command.
+- ✅ Local avatar hitboxes & combat raycast (SunSet features): oriented bounding boxes and raycast occlusion detection.
+- ✅ Avatar marks & individual colors (SunSet features): individual avatar color overrides with highest priority over contact sets.
+- ✅ Movement & Instant Dash (SunSet features): up to 100x speed multiplier, bridge v1.42, Mouselook shortcuts E and middle mouse.
+- ✅ Extended Draw Distance (SunSet features): up to 8192m and dd command.
+- ✅ Upstream Aurora v0.9.4 integration: zero-regression sync with complete Portuguese localization.
 
 - 🟡 Always run stays on after a region change ([#3041](https://github.com/Aurora-Viewer/Aurora-Viewer/issues/3041); [PR #3047](https://github.com/Aurora-Viewer/Aurora-Viewer/pull/3047); task `always-run-region-3041`, 2026-11-09): re-send SetAlwaysRun on AgentMovementComplete like LLAgent::sendWalkRun after RegionHandshake. Demo / grid: enable Always run, cross a region or teleport, keep running.
   - ⬜ QA: on the grid, turn on Always run (Ctrl+R or Controls › Run), walk across a region border: the avatar keeps running and Controls still shows Run; same after a teleport; turn Always run off then cross again: the avatar walks; with RLVa @alwaysrun=n the avatar walks after a crossing; a double-tap run and a joystick run keep working across a border.
