@@ -55,3 +55,4 @@ Todos os pontos de interseção entre o código upstream (Aurora v0.9.4) e as cu
 3. **`crates/aurora-viewer/src/app/draw_distance_step.rs`**: `Stepping` respeita metas de até `8192.0m`.
 4. **`crates/aurora-viewer/src/movement/mod.rs` & `ui/movement_dash.rs`**: multiplicador `100x`, salto até `8192m` e atalhos de Mouselook intactos.
 5. **`crates/aurora-viewer/src/scene/combat.rs`, `ui/debug_overlay.rs` & `ui/minimap.rs`**: Hitboxes 3D, raycast com oclusão de cena e cores individuais (`avatar_marks`) operando sem regressão.
+
