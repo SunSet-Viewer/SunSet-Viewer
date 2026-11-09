@@ -2,7 +2,7 @@
 
 > [!IMPORTANT]
 > **Leitura Obrigatória para Lançamento de Versões do SunSet Viewer**  
-> Sempre que uma nova versão (Release) for lançada ou anunciada, é **obrigatório** criar uma publicação profissional e atraente no quadro de notícias da tela de login, garantindo que o link de redirecionamento aponte exclusivamente para o repositório oficial do **SunSet Viewer** (`https://github.com/SunSet-Viewer/SunSet-Viewer/releases/...`).
+> Sempre que uma nova versão (Release) for lançada ou anunciada, é **obrigatório** seguir o [Checklist Definitivo de Release](CHECKLIST_RELEASE.md) e criar uma publicação profissional e atraente no quadro de notícias da tela de login, garantindo que o link de redirecionamento aponte exclusivamente para o repositório oficial do **SunSet Viewer** (`https://github.com/SunSet-Viewer/SunSet-Viewer/releases/...`).
 
 ---
 
