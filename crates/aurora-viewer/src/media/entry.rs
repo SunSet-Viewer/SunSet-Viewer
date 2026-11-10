@@ -453,6 +453,7 @@ impl MediaDataClient {
             })
             .map(|(i, p)| (i, p.priority));
         let update_priority = self.round_robin.iter().map(|p| p.priority).max();
+        #[allow(clippy::manual_option_zip)]
         let best_round_robin =
             update_priority.and_then(|priority| self.round_robin.iter().position(|p| p.priority == priority).map(|i| (i, priority)));
         let use_sorted = match (best_sorted, best_round_robin) {

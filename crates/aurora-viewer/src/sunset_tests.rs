@@ -9,6 +9,8 @@
 //! 6. Identidade Visual e Branding do SunSet Viewer (`LOGO_PNG`, `sunset-logo.png`)
 //! 7. Pipelines CI/CD e Scripts de Compilação (`release.yml`, `check.ps1`)
 
+#![allow(clippy::field_reassign_with_default)]
+
 use crate::movement;
 use crate::scene::avatar::AvatarLibrary;
 use crate::scene::combat::{AvatarHit, CombatRayHit, CombatSceneHit, combat_hit};
