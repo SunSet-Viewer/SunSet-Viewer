@@ -226,8 +226,9 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw "Uploading Windows release files failed ($LASTEXITCODE)." }
 
   macos:
-    name: macOS ARM64 DMG
+    name: macOS ARM64 DMG (Experimental)
     needs: prepare
+    continue-on-error: true
     permissions:
       actions: read
       contents: write
@@ -368,6 +369,7 @@ jobs:
 
   publish:
     name: Publish GitHub release
+    if: ${{ !cancelled() && needs.prepare.result == 'success' && needs.windows.result == 'success' && needs.linux.result == 'success' }}
     needs: [prepare, windows, macos, linux]
     runs-on: ubuntu-24.04
     permissions:
@@ -389,7 +391,6 @@ jobs:
           $required = @(
             "SunSet-Viewer-$env:AURORA_VERSION_TAG-windows-x64.zip",
             "SunSet-Viewer-$env:AURORA_VERSION_TAG-windows-x64-symbols.zip",
-            "SunSet-Viewer-$env:AURORA_VERSION_TAG-macos-arm64.dmg",
             "SunSet-Viewer-$env:AURORA_VERSION_TAG-linux-x64.tar.gz"
           )
           if (-not $env:AURORA_VERSION_TAG.Contains('-')) {
@@ -405,6 +406,12 @@ jobs:
             foreach ($name in @($file, "$file.sha256")) {
               if ($assetNames -notcontains $name) { throw "Missing uploaded release asset: $name" }
             }
+          }
+          $macosDmg = "SunSet-Viewer-$env:AURORA_VERSION_TAG-macos-arm64.dmg"
+          if ($assetNames -contains $macosDmg) {
+            Write-Host "Experimental macOS ARM64 DMG included in release: $macosDmg"
+          } else {
+            Write-Warning "Experimental macOS ARM64 DMG was not produced in this run; publishing release with Windows and Linux packages."
           }
           if ($assetNames -notcontains 'aurora-update-policy.json') { throw 'Missing uploaded release asset: aurora-update-policy.json' }
       - name: Publish verified draft release
