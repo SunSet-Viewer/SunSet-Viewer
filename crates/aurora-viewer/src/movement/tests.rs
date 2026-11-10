@@ -1044,7 +1044,7 @@ fn running_at_x1_is_native_and_the_multiplier_cannot_request_a_slowdown() {
         forward: true,
         ..Default::default()
     };
-    for (value, expected) in [(-1.0, 1.0), (1.0, 1.0), (3.0, 3.0), (5.0, 5.0), (25.0, 20.0), (f32::NAN, 1.0)] {
+    for (value, expected) in [(-1.0, 1.0), (1.0, 1.0), (3.0, 3.0), (5.0, 5.0), (125.0, 100.0), (f32::NAN, 1.0)] {
         prefs.run_multiplier = value;
         prefs.sanitize();
         assert_eq!(prefs.run_multiplier, expected);
@@ -1477,7 +1477,7 @@ fn flight_x1_is_native_and_larger_factors_scale_nominal_flight_without_changing_
             assert!(step.motion.valid());
         }
     }
-    for (value, expected) in [(0.5, 1.0), (6.0, 5.0), (f32::NAN, 1.0)] {
+    for (value, expected) in [(0.5, 1.0), (120.0, 100.0), (f32::NAN, 1.0)] {
         prefs.fly_multiplier = value;
         prefs.sanitize();
         assert_eq!(prefs.fly_multiplier, expected);

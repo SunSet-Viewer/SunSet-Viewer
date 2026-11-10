@@ -12,6 +12,7 @@ A Vulkan renderer, a clean interface, and the Second Life you already know.
 [![Download](docs/readme/button-download.svg)](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/latest)&nbsp;
 [![Download for Linux](docs/readme/button-download-linux.svg)](docs/LINUX.md)&nbsp;
 [![Download for macOS (experimental)](docs/readme/button-download-macos.svg)](docs/MACOS.md)&nbsp;
+[![Discord](docs/readme/button-discord.svg)](https://discord.gg/Ra39HM4E2)
 
 [![Release](https://img.shields.io/github/v/release/SunSet-Viewer/SunSet-Viewer?include_prereleases&color=8B5CF6)](https://github.com/SunSet-Viewer/SunSet-Viewer/releases)
 [![License: GPLv3](https://img.shields.io/badge/license-GPLv3-4F46E5)](LICENSE)
@@ -24,16 +25,16 @@ A Vulkan renderer, a clean interface, and the Second Life you already know.
 
 </div>
 
-**High framerates and low frame time, ultra fast teleports/loading, thanks to modern technologies like Vulkan/Rust.**  
-<img width="1920" height="1032" alt="Second Life viewer in a Japanese garden, with the People, Controls, Places, Inventory, Performance and Conversations windows open" src="docs/screenshots/world.webp" />  
+**Multi-threaded from the ground up: parallel loading, ultra fast teleports, built for today's hardware with Vulkan and Rust.**  
+<img width="1920" height="1032" alt="Second Life viewer in a Japanese garden, with the People, Controls, Places, Inventory, Performance and Conversations windows open" src="docs/screenshots/world.webp" />
 
 
 **All the tools you need to experience SecondLife the way it's meant to be experienced, Photo tools, Auto Hover Height, tons of QoL !**  
-<img width="1920" height="1029" alt="Building in SunSet: the Transform panel next to a selected box, with the About Land, Region / Estate, profile and voice windows" src="docs/screenshots/build-land.webp" />  
+<img width="1920" height="1029" alt="Building in SunSet: the Transform panel next to a selected box, with the About Land, Region / Estate, profile and voice windows" src="docs/screenshots/contrucao.png" />  
 
 
 **Modern UI and Legacy toggles to get the Legacy UI back on the modules you want! (if you prefer).**  
-<img width="1116" height="717" alt="The SunSet page of Preferences, with a SunSet or Legacy choice for each redesigned window" src="docs/screenshots/preferences.webp" />
+<img width="1116" height="717" alt="The SunSet page of Preferences, with a SunSet or Legacy choice for each redesigned window" src="docs/screenshots/preferences.png" />
 
 **New login experience with multi-avatar support.**  
 <img width="1920" height="1032" alt="The SunSet login screen with avatar accounts side by side and live news" src="docs/screenshots/login.webp" />  
@@ -54,7 +55,7 @@ A Vulkan renderer, a clean interface, and the Second Life you already know.
   </tr>
   <tr>
     <td valign="top">
-      <img src="docs/screenshots/inventory.webp" alt="The inventory widened into an explorer, with folders, item rights and a detail pane"><br>
+      <img src="docs/screenshots/inventory.png" alt="The inventory widened into an explorer, with folders, item rights and a detail pane"><br>
       <b>An inventory</b> that widens into an explorer: folders, details, filters and each item's rights at a glance.
     </td>
     <td valign="top">
@@ -68,7 +69,7 @@ A Vulkan renderer, a clean interface, and the Second Life you already know.
       <b>One search</b> for residents, places, events, groups and classifieds, with the details beside the results.
     </td>
     <td valign="top">
-      <img src="docs/screenshots/performance.webp" alt="The resource monitor: processor, graphics card, memory, network and disk, with the frame time split by task"><br>
+      <img src="docs/screenshots/performance.png" alt="The resource monitor: processor, graphics card, memory, network and disk, with the frame time split by task"><br>
       <b>A resource monitor</b> that shows where every millisecond, megabyte and kilobit goes.
     </td>
   </tr>
@@ -92,8 +93,8 @@ licenses, and the upstream relationship are documented in
 <table>
   <tr>
     <td width="25%" align="center" valign="top">
-      <h3>≈ 5×</h3>
-      the frame rate of a classic viewer in a busy store
+      <h3>Multi-core</h3>
+      the work shared across your processor while the graphics card draws
     </td>
     <td width="25%" align="center" valign="top">
       <h3>≈ ½</h3>
@@ -115,60 +116,59 @@ licenses, and the upstream relationship are documented in
 <table>
   <tr>
     <td width="50%" valign="top">
-      <h3>⚔️ Integrated Combat Engine</h3>
+      <h3>⚔️ Integrated 3D Combat & Custom Hitbox Colors</h3>
       Built-in real-time combat system (<code>scene::combat</code>) featuring screen-center raycasting,
-      high-precision avatar hitboxes, weapon collision filtering, and dedicated combat preferences.
+      high-precision avatar hitboxes, scene occlusion filtering, and individual avatar marker colors (<a href="docs/HITBOX_E_CORES.md">guide</a>).
     </td>
     <td width="50%" valign="top">
-      <h3>⚡ AMD FSR 3.1 Upscaling</h3>
-      Native FidelityFX Super Resolution 3.1 with WGSL compute shaders. Crisp, high-framerate
-      rendering for demanding 1440p and 4K displays on any modern graphics card.
+      <h3>🚀 100x Movement, Instant Dash & 8,192m Draw Distance</h3>
+      Up to <b>100x</b> avatar speed multiplier (Bridge v1.42), Instant Dash with Mouselook shortcuts (<a href="docs/MOVEMENT_DASH.md">guide</a>), and extended draw distance up to <b>8,192m</b> (<code>dd 5000+</code>) with SpeedRez (<a href="docs/DRAW_DISTANCE.md">guide</a>).
     </td>
   </tr>
   <tr>
     <td valign="top">
       <h3>🇧🇷 100% Native pt-BR Localization</h3>
-      Comprehensive Brazilian Portuguese translation across 12,650+ interface strings,
+      Comprehensive Brazilian Portuguese translation across 12,770+ interface strings,
       adopting authentic Second Life terminology and community-reviewed translations.
     </td>
     <td valign="top">
-      <h3>🔄 Independent Auto-Updates</h3>
-      One-click background updates with SHA-256 verification and rollback protection,
-      integrated directly with SunSet Viewer's GitHub Releases.
+      <h3>⚡ AMD FSR 3.1 & Independent Auto-Updates</h3>
+      Native FidelityFX Super Resolution 3.1 with WGSL compute shaders, plus one-click background updates with SHA-256 verification and rollback protection.
     </td>
   </tr>
 </table>
 
-### New in 0.9.0 <img src="docs/readme/pill-new.svg" alt="New" height="18" align="absmiddle">
+### New in 0.9.7 (Aurora 0.9.4 Base + SunSet Exclusive Features) <img src="docs/readme/pill-new.svg" alt="New" height="18" align="absmiddle">
 
 <table>
   <tr>
     <td width="50%" valign="top">
-      <h3>OpenSim and Hypergrid, for real</h3>
-      Your avatar bakes on grids that do not, large regions show past
-      256 m, and the inventory, outfits and profiles save without AIS.
-      The grid's own currency and money symbol, and a viewer that follows
-      the grid you are on after a Hypergrid teleport.
+      <h3>Debug settings, like the Legacy Viewer</h3>
+      Every setting by name in one window, from the toolbar or
+      Ctrl+Alt+Shift+S: search the names and descriptions, see the ones you
+      changed, and reset any of them to its default.
     </td>
     <td width="50%" valign="top">
-      <h3>Snap to objects, place on surface</h3>
-      Moved objects go flush against their neighbours, with purple guides
-      on the faces that meet. Press P to place the selection on any surface
-      or the ground, previewed as a hologram.
+      <h3>More of the Legacy Viewer's options</h3>
+      Build preferences for new prims, a progressive draw distance, the
+      Trees detail, large surface protection, particles from worn objects,
+      camera smoothing up to 300 and a limit for the chat lines above the
+      chat bar.
     </td>
   </tr>
   <tr>
     <td valign="top">
-      <h3>The Legacy toolbar, complete</h3>
-      Quick preferences, a built-in web browser, the voice controls,
-      Statistics, Picks, Beacons and Show Friends Only on the toolbar, the
-      Legacy Viewer's menu shortcuts, and the fly override (Ctrl+Alt+V).
+      <h3>A fuller world</h3>
+      Neighbouring regions appear at your draw distance, objects no longer
+      vanish at some camera angles, and the world comes back by itself
+      after video memory was full at login. Media screens in busy regions
+      load again.
     </td>
     <td valign="top">
-      <h3>Steadier on your graphics card</h3>
-      Intel Iris Xe starts again, the card is shared fairly with other
-      viewers and programs, and Photo quality climbs as far as the video
-      memory allows instead of losing the card.
+      <h3>Calls, music and chat</h3>
+      Private calls stay connected across teleports, parcel music no longer
+      cuts out while you cam around, Ctrl+Tab cycles the conversations, and
+      the Japanese IME shows the active conversion segment.
     </td>
   </tr>
 </table>
@@ -178,10 +178,10 @@ are planned or in progress: they are not in the viewer yet.
 
 ### Fast, and smooth
 
-- **Hundreds of frames per second in crowded places.** In a busy store of
-  about 16,000 objects, SunSet ran at around 340 fps where a classic viewer
-  gave 68, on the same PC and at the same spot
-  ([how it was measured](#performance)).
+- **Built for every core.** The work is shared across your processor: while
+  the render thread draws one frame, the main thread prepares the next, and
+  the big loops of a frame are split between helper threads
+  ([who does what](#performance)).
 - **The picture keeps moving when you arrive.** Textures and meshes are
   decoded on background threads and written straight into GPU memory, so
   landing in a busy region doesn't freeze the view.
@@ -193,8 +193,7 @@ are planned or in progress: they are not in the viewer yet.
 - **Instant teleports within a region.** The other teleports show your last
   view, blurred, with real step-by-step progress.
 - **A graphics card that finally does the work.** It decides by itself what
-  is visible and draws thousands of objects in a handful of calls, while a
-  dedicated render thread keeps the frames coming.
+  is visible and draws thousands of objects in a handful of calls.
 - **Faster arrivals**: what you are looking at downloads first, and after a
   teleport the region shows about a second sooner. Downloads keep pace with
   your connection, so avatars come out of the cloud about three times
@@ -650,28 +649,26 @@ are planned or in progress: they are not in the viewer yet.
 
 ## Performance
 
-<table>
-  <tr>
-    <td width="50%" align="center" valign="top">
-      <img src="docs/screenshots/compare-firestorm.png" alt="Legacy Viewer statistics window in a busy store: 68 fps"><br>
-      <b>Legacy Viewer</b> · 68 fps
-    </td>
-    <td width="50%" align="center" valign="top">
-      <img src="docs/screenshots/compare-aurora.png" alt="Upstream Aurora Viewer performance window in the same store: 386 fps"><br>
-      <b>Aurora Viewer (upstream)</b> · 386 fps
-    </td>
-  </tr>
-</table>
+SunSet shares the work across your processor and hands the heavy lifting to
+your graphics card. A frame costs the longer of the main and render threads,
+not their sum: while one frame is drawn, the next is already being prepared.
 
-Measured on 10 October 2026 with the frame cap off, on one PC (RTX 4090), in
-one busy store of about 16,000 objects. This is an informal test, not a
-benchmark:
+| Who | Does what, side by side |
+|---|---|
+| Main thread | The world and the interface: prepares the next frame |
+| Render thread | Draws the current frame, with two helpers that finish the GPU commands in parallel |
+| Frame helpers | Share the big loops of a frame: object placement, draw lists, poses, flexible prims |
+| Background tasks | Decode textures and build meshes at low priority, written straight into GPU memory |
+| Network | Downloads on its own runtime, from 24 up to 192 at once while your connection keeps up, what you look at first |
+| Graphics card | Decides what is visible and draws thousands of objects in a handful of calls (bindless textures, multi-draw-indirect, compute culling) |
 
-- 138 fps where the Legacy Viewer gave 68 fps at the same spot;
-- about 343 fps at that spot (median) once the render thread landed, 386 fps
-  in the capture above.
+Built for today's hardware: Vulkan on Windows and Linux, Metal on macOS
+(Apple Silicon), the dedicated graphics card picked on a laptop, AMD FSR 3.1
+on every brand of card, and a texture memory budget set automatically from
+the video memory your driver grants.
 
-The texture memory budget is set automatically from the detected VRAM.
+The resource monitor (Performance window) shows the time of each step of the
+frame on your own PC.
 
 ## What works today
 
@@ -839,7 +836,7 @@ setting is on by default, like the Legacy Viewer. The translations are in
 
 ### Frame limiter
 
-The frame limiter is enabled at **120 fps by default** and can be disabled
+The frame limiter is enabled at **60 fps by default** and can be disabled
 or adjusted in Preferences › Graphics › Smoothness. Saved preferences are
 preserved.
 
@@ -1210,8 +1207,11 @@ exe before publishing; the local build also writes it to `version.txt`.
   it). Nothing after it is read, so a link from a web page cannot add other
   options. Before login the place is the start location of the next login
   (the saved choice stays); in the world it opens the place's details; a
-  command runs once in the world. When a viewer already runs (same demo
-  mode and `--title`), the link goes to it and the new process stops.
+  command runs once in the world. When a viewer already runs, the link goes
+  to it and the new process stops. On Windows, the last focused matching
+  window receives it: a browser launch without `--title` reaches any online
+  Aurora window, including a titled test window; an explicit `--title` or
+  offline demo stays isolated. Linux matches the demo mode and `--title`.
   Preferences › Language and updates › "Open SLURL and Hypergrid links in
   SunSet Viewer" registers all three schemes for the current user (the registry on
   Windows, a desktop entry and `mimeapps.list` on Linux, see
@@ -1276,6 +1276,11 @@ its own task in its own git worktree:
 - [ARCHITECTURE.md](ARCHITECTURE.md) — scope, crates and file layout
 - [TASKS.md](TASKS.md) — what is in progress and to do; finished work is in
   [docs/TASKS_ARCHIVE.md](docs/TASKS_ARCHIVE.md)
+- [docs/ATUALIZACAO_V0.9.7.md](docs/ATUALIZACAO_V0.9.7.md) — full v0.9.7 release & non-regression architecture guide
+- [docs/MOVEMENT_DASH.md](docs/MOVEMENT_DASH.md) — movement speed control & instant dash (up to 100x speed)
+- [docs/DRAW_DISTANCE.md](docs/DRAW_DISTANCE.md) — extended draw distance, SpeedRez & chat command (`dd 5000` up to 8192m)
+- [docs/HITBOX_E_CORES.md](docs/HITBOX_E_CORES.md) — 3D combat hitboxes & individual avatar marker colors
+- [docs/CHECKLIST_RELEASE.md](docs/CHECKLIST_RELEASE.md) — step-by-step release checklist
 - [docs/BRANDING.md](docs/BRANDING.md) — palette, logos, icons and UI rules
 - [docs/TESTING.md](docs/TESTING.md) — test switches (demo scenarios,
   captures, diagnostics) and profiling
@@ -1283,6 +1288,14 @@ its own task in its own git worktree:
   contact prototype and the creator's LSL script
 - [docs/IK_EDIT.md](docs/IK_EDIT.md) — frozen-pose skeleton editor, target-prim
   offsets and general bone-contact authoring for LSL
+
+Pull requests follow the [pull request template](.github/pull_request_template.md):
+a check lists what a description is missing, and maintainers review a PR
+once its description and its CI are complete. An outside contributor's PR
+still incomplete 3 days later is closed, and can be reopened once it is
+complete. Each outside contributor has up to 10 pull requests in review at
+a time; the others wait in a queue and come back to review on their own,
+oldest first.
 
 Behaviour follows the Legacy Viewer: its sources are expected next to the repository
 (`../phoenix-firestorm`, cloned from

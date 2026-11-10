@@ -41,12 +41,12 @@ impl MovementUi {
         ui.columns(2, |columns| {
             widgets::switch_labeled(&mut columns[0], p, &mut prefs.running, aurora_i18n::tr!("movement-running"));
             columns[0].add_enabled_ui(prefs.running, |ui| {
-                ui.add(egui::Slider::new(&mut prefs.run_multiplier, 1.0..=5.0).prefix("×").step_by(0.1))
+                ui.add(egui::Slider::new(&mut prefs.run_multiplier, 1.0..=100.0).prefix("×").step_by(0.1))
                     .on_hover_text(aurora_i18n::tr!("movement-run-speed"));
             });
             widgets::switch_labeled(&mut columns[1], p, &mut prefs.fly_assist, aurora_i18n::tr!("movement-fly-assist"));
             columns[1].add_enabled_ui(prefs.fly_assist, |ui| {
-                ui.add(egui::Slider::new(&mut prefs.fly_multiplier, 1.0..=5.0).prefix("×").step_by(0.1))
+                ui.add(egui::Slider::new(&mut prefs.fly_multiplier, 1.0..=100.0).prefix("×").step_by(0.1))
                     .on_hover_text(aurora_i18n::tr!("movement-flight-speed"));
             });
         });

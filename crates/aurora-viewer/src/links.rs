@@ -9,8 +9,8 @@ pub const NEW_ISSUE: &str = "https://github.com/SunSet-Viewer/SunSet-Viewer/issu
 /// The project's wiki, generated from the guides of `docs/`
 /// (`scripts/build-wiki.ps1`).
 pub const WIKI: &str = "https://github.com/SunSet-Viewer/SunSet-Viewer/wiki";
-/// Not configured until the project has its own community server.
-pub const DISCORD: &str = "";
+/// Official community Discord server.
+pub const DISCORD: &str = "https://discord.gg/Ra39HM4E2";
 /// The project website or source repository.
 pub const WEBSITE: &str = "https://github.com/SunSet-Viewer/SunSet-Viewer";
 /// Privacy information maintained with this project's source.

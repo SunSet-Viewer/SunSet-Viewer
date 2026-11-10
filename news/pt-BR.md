@@ -20,6 +20,10 @@ Regras:
 
 # Notícias do SunSet Viewer
 
+## 2026-11-09 — SunSet Viewer v0.9.7: Movimento 100x, Aurora v0.9.4 e Estabilidade
+A versão v0.9.7 traz a sincronização completa com o Aurora v0.9.4 e grandes avanços de locomoção: controle de velocidade ampliado até 100x com a nova ponte LSL v1.42, nova janela Debug Settings (/settings_debug), distância de visão progressiva até 8192m (suporte pleno a dd 5000+), recuperação dinâmica de memória de vídeo sem congelamentos, ocultação de luzes faciais e atalho Alt+Enter no chat para texto ((OOC)). Mantida paridade total com hitboxes 3D e cores personalizadas.
+[Saiba mais](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.7)
+
 ## 2026-11-08 — SunSet Viewer v0.9.6: Marcador de Cores Individual para Contatos
 A versão v0.9.6 introduz o sistema de marcação de cor individual para avatares e contatos. Ao clicar com o botão direito em qualquer residente (na lista de Pessoas, no minimapa ou no mundo), escolha uma cor rápida ou selecione qualquer tom personalizado para destacá-lo imediatamente. A cor individual tem prioridade sobre os conjuntos de contatos nos hitboxes de combate 3D, no minimapa e nas listas de nomes. Ao limpar a marcação, o contato retorna instantaneamente à cor herdada do conjunto de predefinições. As preferências de cores são salvas entre sessões.
 [Saiba mais](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.6)

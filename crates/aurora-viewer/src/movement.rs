@@ -176,9 +176,9 @@ impl Preferences {
         self.legacy_fly_speed = None;
         self.controller_version = 6;
         let bounded = |v: f32, min, max, fallback| if v.is_finite() { v.clamp(min, max) } else { fallback };
-        self.run_multiplier = bounded(self.run_multiplier, 1.0, 20.0, 1.0);
+        self.run_multiplier = bounded(self.run_multiplier, 1.0, 100.0, 1.0);
         self.swim_speed = bounded(self.swim_speed, 0.5, 8.0, 5.0);
-        self.fly_multiplier = bounded(self.fly_multiplier, 1.0, 5.0, 1.0);
+        self.fly_multiplier = bounded(self.fly_multiplier, 1.0, 100.0, 1.0);
         self.float_height = bounded(self.float_height, -0.5, 0.5, 0.0);
     }
 }

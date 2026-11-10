@@ -85,7 +85,7 @@ impl Slot {
     /// The slider's range: the one of Preferences.
     pub fn range(self) -> RangeInclusive<f64> {
         match self {
-            Slot::DrawDistance => 32.0..=512.0,
+            Slot::DrawDistance => 32.0..=8192.0,
             Slot::Particles => 0.0..=8192.0,
             Slot::PhysicsDetail => 0.0..=1.0,
             Slot::Lod => 0.5..=4.0,
