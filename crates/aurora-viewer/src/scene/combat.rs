@@ -225,7 +225,13 @@ fn valid_ray(origin: Vec3, direction: Vec3, max_distance: f32) -> bool {
 
 /// Nearest of the avatar and world hits; a world surface at the same
 /// distance wins, like the ray meeting the wall before the body behind it.
-pub(crate) fn combat_hit(avatar: Option<AvatarHit>, scene: Option<CombatSceneHit>, origin: Vec3, direction: Vec3, max_distance: f32) -> CombatRayHit {
+pub(crate) fn combat_hit(
+    avatar: Option<AvatarHit>,
+    scene: Option<CombatSceneHit>,
+    origin: Vec3,
+    direction: Vec3,
+    max_distance: f32,
+) -> CombatRayHit {
     match (avatar, scene) {
         (Some(avatar), Some(scene)) if avatar.distance < scene.distance => CombatRayHit::Avatar(avatar),
         (_, Some(scene)) => CombatRayHit::Scene(scene),
