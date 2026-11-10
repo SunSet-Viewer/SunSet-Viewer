@@ -292,6 +292,26 @@ fn success_removes_backup_only_after_launch_and_refuses_foreign_files_or_concurr
     assert!(!work.root.join("backup").exists());
 }
 
+#[test]
+fn temp_staging_workspace_locks_and_swaps_protected_installation() {
+    let temp = Temp::new();
+    let path = temp.0.join("nested").join("install");
+    installation(&path, b"old");
+    let work = install::Workspace::new_in_temp(&path).expect("temp workspace");
+    assert!(
+        install::Workspace::new_in_temp(&path).is_err(),
+        "concurrent temp-staged update must be blocked by the temp lock"
+    );
+    installation(&work.root.join("prepared"), b"new");
+    install::apply(&path, &work.root, || {
+        assert!(work.root.join("backup/SunSet-Viewer.exe").is_file());
+        Ok(())
+    })
+    .expect("swap committed from temp staging");
+    assert_eq!(fs::read(path.join("SunSet-Viewer.exe")).expect("new viewer"), b"new");
+    assert!(!work.root.join("backup").exists());
+}
+
 /// A media pack path written with the names of the Windows pack, in the
 /// names of this system's pack.
 fn os(path: &str) -> String {

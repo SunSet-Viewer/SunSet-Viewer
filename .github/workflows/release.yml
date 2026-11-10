@@ -180,6 +180,8 @@ jobs:
         run: |
           dotnet tool install --tool-path "$env:RUNNER_TEMP\wix" wix --version 5.0.2
           if ($LASTEXITCODE -ne 0) { throw "Installing WiX failed ($LASTEXITCODE)." }
+          & "$env:RUNNER_TEMP\wix\wix.exe" extension add --global WixToolset.UI.wixext/5.0.2
+          if ($LASTEXITCODE -ne 0) { throw "Installing WixToolset.UI.wixext failed ($LASTEXITCODE)." }
           "$env:RUNNER_TEMP\wix" >> $env:GITHUB_PATH
       - name: Build MSI installer
         if: needs.prepare.outputs.prerelease == 'false'
