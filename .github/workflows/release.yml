@@ -229,7 +229,7 @@ jobs:
     permissions:
       actions: read
       contents: write
-    runs-on: macos-15
+    runs-on: macos-14
     env:
       AURORA_VERSION_TAG: ${{ needs.prepare.outputs.tag }}
     steps:
