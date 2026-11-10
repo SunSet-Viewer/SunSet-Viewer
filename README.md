@@ -30,11 +30,11 @@ A Vulkan renderer, a clean interface, and the Second Life you already know.
 
 
 **All the tools you need to experience SecondLife the way it's meant to be experienced, Photo tools, Auto Hover Height, tons of QoL !**  
-<img width="1920" height="1029" alt="Building in SunSet: the Transform panel next to a selected box, with the About Land, Region / Estate, profile and voice windows" src="docs/screenshots/build-land.webp" />  
+<img width="1920" height="1029" alt="Building in SunSet: the Transform panel next to a selected box, with the About Land, Region / Estate, profile and voice windows" src="docs/screenshots/contrucao.png" />  
 
 
 **Modern UI and Legacy toggles to get the Legacy UI back on the modules you want! (if you prefer).**  
-<img width="1116" height="717" alt="The SunSet page of Preferences, with a SunSet or Legacy choice for each redesigned window" src="docs/screenshots/preferences.webp" />
+<img width="1116" height="717" alt="The SunSet page of Preferences, with a SunSet or Legacy choice for each redesigned window" src="docs/screenshots/preferences.png" />
 
 **New login experience with multi-avatar support.**  
 <img width="1920" height="1032" alt="The SunSet login screen with avatar accounts side by side and live news" src="docs/screenshots/login.webp" />  
@@ -55,7 +55,7 @@ A Vulkan renderer, a clean interface, and the Second Life you already know.
   </tr>
   <tr>
     <td valign="top">
-      <img src="docs/screenshots/inventory.webp" alt="The inventory widened into an explorer, with folders, item rights and a detail pane"><br>
+      <img src="docs/screenshots/inventory.png" alt="The inventory widened into an explorer, with folders, item rights and a detail pane"><br>
       <b>An inventory</b> that widens into an explorer: folders, details, filters and each item's rights at a glance.
     </td>
     <td valign="top">
@@ -69,7 +69,7 @@ A Vulkan renderer, a clean interface, and the Second Life you already know.
       <b>One search</b> for residents, places, events, groups and classifieds, with the details beside the results.
     </td>
     <td valign="top">
-      <img src="docs/screenshots/performance.webp" alt="The resource monitor: processor, graphics card, memory, network and disk, with the frame time split by task"><br>
+      <img src="docs/screenshots/performance.png" alt="The resource monitor: processor, graphics card, memory, network and disk, with the frame time split by task"><br>
       <b>A resource monitor</b> that shows where every millisecond, megabyte and kilobit goes.
     </td>
   </tr>

@@ -29,10 +29,10 @@ Renderizador Vulkan, interface limpa e o Second Life que você já conhece.
 <img width="1920" height="1032" alt="Visualizador do Second Life em um jardim japonês, com janelas de Pessoas, Controles, Lugares, Inventário, Desempenho e Conversas abertas" src="docs/screenshots/world.webp" />  
 
 **Todas as ferramentas que você precisa para aproveitar o Second Life da melhor forma: modo Foto profissional, Auto Hover Height e muita qualidade de vida!**  
-<img width="1920" height="1029" alt="Construção no SunSet: painel Transformar ao lado de uma caixa selecionada, com janelas Sobre o terreno, Região/Propriedade, perfil e voz" src="docs/screenshots/build-land.webp" />  
+<img width="1920" height="1029" alt="Construção no SunSet: painel Transformar ao lado de uma caixa selecionada, com janelas Sobre o terreno, Região/Propriedade, perfil e voz" src="docs/screenshots/contrucao.png" />  
 
 **Interface moderna e botões de alternância para trazer de volta a interface Clássica nos módulos que você preferir!**  
-<img width="1116" height="717" alt="Página SunSet das Preferências, com escolha entre SunSet ou Clássico para cada janela reformulada" src="docs/screenshots/preferences.webp" />
+<img width="1116" height="717" alt="Página SunSet das Preferências, com escolha entre SunSet ou Clássico para cada janela reformulada" src="docs/screenshots/preferences.png" />
 
 **Nova experiência de login com suporte a múltiplas contas de avatar.**  
 <img width="1920" height="1032" alt="Tela de login do SunSet com contas de avatar lado a lado e notícias em tempo real" src="docs/screenshots/login.webp" />  
@@ -53,7 +53,7 @@ Renderizador Vulkan, interface limpa e o Second Life que você já conhece.
   </tr>
   <tr>
     <td valign="top">
-      <img src="docs/screenshots/inventory.webp" alt="Inventário expandido como um explorador de arquivos, com pastas, permissões e painel de detalhes"><br>
+      <img src="docs/screenshots/inventory.png" alt="Inventário expandido como um explorador de arquivos, com pastas, permissões e painel de detalhes"><br>
       <b>Inventário</b> que se expande em um explorador completo: pastas, detalhes, filtros e permissões de cada item em um relance.
     </td>
     <td valign="top">
@@ -67,7 +67,7 @@ Renderizador Vulkan, interface limpa e o Second Life que você já conhece.
       <b>Pesquisa Universal</b> para residentes, lugares, eventos, grupos e classificados, com os detalhes ao lado dos resultados.
     </td>
     <td valign="top">
-      <img src="docs/screenshots/performance.webp" alt="Monitor de recursos: processador, placa de vídeo, memória, rede e disco, com tempo de quadro dividido por tarefa"><br>
+      <img src="docs/screenshots/performance.png" alt="Monitor de recursos: processador, placa de vídeo, memória, rede e disco, com tempo de quadro dividido por tarefa"><br>
       <b>Monitor de Recursos</b> que mostra para onde vai cada milissegundo, megabyte e kilobit.
     </td>
   </tr>
