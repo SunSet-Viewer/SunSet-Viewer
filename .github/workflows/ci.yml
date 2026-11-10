@@ -36,7 +36,7 @@ jobs:
 
   macos:
     name: macOS ARM64 build
-    runs-on: macos-15
+    runs-on: macos-14
     steps:
       - uses: actions/checkout@v7
       - uses: actions-rust-lang/setup-rust-toolchain@v2
