@@ -4,7 +4,29 @@ Todas as mudanças notáveis, novidades e correções de bugs do projeto **SunSe
 
 ---
 
-## [0.9.7] — 2026-11-09
+## [0.9.7] — 2026-11-10
+
+### 🧪 Suíte de Testes Unitários de Não-Regressão SunSet
+- **11 Testes Unitários Automatizados**: Implementada a suíte `crates/aurora-viewer/src/sunset_tests.rs` validando permanentemente contra regressões:
+  - Alcance visual estendido até 8.192m e sanitização (`Settings::sanitized`).
+  - Escalonamento progressivo do SpeedRez (`Stepping`) até 8.192m.
+  - Controle de movimento e voo com multiplicadores de até 100x.
+  - Janela de Dash instantâneo, atalhos de Mouselook (tecla `E` e botão do meio) e física do Aurora LSL Bridge v1.42.
+  - Caixas de colisão 3D de combate (`CombatSettings`) e oclusão de raycast por terreno/objetos de cena.
+  - Presença da página de preferências de Combate (`Page::Combat` em `Page::ALL`).
+  - Precedência de cores individuais de residentes (`avatar_marks`) sobre Contact Sets no Minimapa e Hitboxes 3D.
+  - Localização 100% nativa em Português do Brasil com paridade absoluta (0 chaves ausentes em relação ao `en.ftl`).
+  - Integridade da identidade visual SunSet (logo `assets/branding/sunset-logo.png` e metadados).
+  - Preservação da infraestrutura CI/CD (runner macOS ARM64 `macos-15` e símbolos PDB do Windows).
+
+### 🌌 Sincronização Upstream Aurora-Viewer v0.9.5 & v0.9.6
+- **Céu Noturno e Via Láctea (Milky Way)**: Renderização realista da Via Láctea integrada ao pipeline de renderização estelar com catálogo Tycho-2.
+- **Vitrine de Trajes (Outfit Showcase)**: Nova janela e fluxo para inspecionar, pré-visualizar e gerenciar trajes e anexos diretamente pelo inventário.
+- **Rastreador de Regiões (Region Tracker)**: Monitoramento em segundo plano do status operacional e lotação de regiões favoritas (`Mundo › Rastreador de região`).
+- **Aprimoramentos de Renderização Alfa**: Nova ordenação de transparência alfa reduzindo artefatos em camadas de roupas, cabelos e vegetação.
+- **Encaixe de Terreno (Terrain Snapping)**: Ferramenta aprimorada para alinhamento e ancoragem de prims ao relevo da parcela.
+- **Chat e Emojis**: Suporte a emojis recentes, favoritos, atalho `Alt+Enter` para `(( OOC ))` e histórico de GIFs.
+- **Gerenciamento de Memória de Áudio**: Implementado algoritmo LRU com liberação dinâmica de clipes de áudio não utilizados (`SoundClip` cache eviction).
 
 ### 🚀 Desbloqueio e Aceleração do Multiplicador de Velocidade (até 100x)
 - **Correção da Barreira de 5x**: Resolvida a falha onde a velocidade do avatar não aumentava acima de 5x. O parser de telemetria do bridge (`Ack::parse`) rejeitava respostas com velocidade alvo superior a 2.565 cm/s (`5.13 m/s * 5`), o que causava perda de pacotes e desativação do motor pelo watchdog. O limite foi ampliado para suportar velocidades de até 1.000.000 cm/s.
@@ -16,18 +38,15 @@ Todas as mudanças notáveis, novidades e correções de bugs do projeto **SunSe
   - Suporte a curvas suaves com ângulo de até 45° sem zerar bruscamente a velocidade acumulada.
 - **Paridade em Voo Assistido**: O multiplicador de velocidade de voo assistido (`fly_multiplier`) agora também escala até 100x tanto no painel `Movimento & Dash` quanto no floater de movimento nativo.
 
-### 🔄 Sincronização Upstream Aurora-Viewer v0.9.4 (Zero Regressão)
-- **Recuperação de VRAM e Renderização**: Recuperação dinâmica quando a memória de vídeo enche no meio da sessão sem congelar a cena ou perder texturas. Correção de camadas de roupa (*worn layers*) sob mesh, proteção contra superfícies gigantes (*large surface protection*) e suporte a pesos de pele de 16 bits para offsets ósseos longos.
-- **SpeedRez & Progressive Draw Distance**: O visualizador carrega a partir de 32m e dobra progressivamente até a distância de visão alvo, com teto preservado e harmonizado para até 8.192 metros (`dd 5000+`).
-- **Configurações de Depuração (Debug Settings)**: Adicionada a janela nativa de configurações avançadas (`/settings_debug` ou no menu de ajuda/desenvolvimento).
-- **Usabilidade e Chat**: Ocultação de luzes faciais (*Face lights*), atalho `Alt+Enter` no chat para mensagens `(( OOC ))`, botão de solicitar teletransporte em conversas privadas e novas opções de câmera e som.
-- **Localização 100% pt-BR**: 120 novos identificadores traduzidos para Português do Brasil com validação estrita de catálogo.
+### 👁️ Alcance Visual Desbloqueado até 8.192m e SpeedRez
+- **Progressive Draw Distance (SpeedRez)**: Início dinâmico em 32m com duplicação gradual até a distância configurada, com teto de até 8.192m (`dd 5000+` no chat local e slider de preferências).
 
 ### 📚 Documentação Técnica Criada e Atualizada
-- **Checklist Definitivo de Release**: Guia passo a passo em [`docs/CHECKLIST_RELEASE.md`](docs/CHECKLIST_RELEASE.md) para padronizar o ciclo de release e publicação.
-- **Controle de Movimento e Dash**: Novo guia em [`docs/MOVEMENT_DASH.md`](docs/MOVEMENT_DASH.md) cobrindo velocidades até 100x, atalhos de Mouselook e física LSL v1.42.
-- **Distância de Visão Estendida**: Novo guia em [`docs/DRAW_DISTANCE.md`](docs/DRAW_DISTANCE.md) detalhando o uso do comando `dd <metros>` (ex: `dd 5000` até 8.192m estilo Firestorm).
-- **Hitboxes 3D e Cores Individuais**: Novo guia em [`docs/HITBOX_E_CORES.md`](docs/HITBOX_E_CORES.md) documentando a ativação de hitboxes, detecção de tiros e marcação individual de cores com precedência sobre Contact Sets.
+- **Checklist Definitivo de Release**: Guia passo a passo em [`docs/CHECKLIST_RELEASE.md`](docs/CHECKLIST_RELEASE.md).
+- **Controle de Movimento e Dash**: Guia completo em [`docs/MOVEMENT_DASH.md`](docs/MOVEMENT_DASH.md).
+- **Distância de Visão Estendida**: Guia em [`docs/DRAW_DISTANCE.md`](docs/DRAW_DISTANCE.md).
+- **Hitboxes 3D e Cores Individuais**: Guia em [`docs/HITBOX_E_CORES.md`](docs/HITBOX_E_CORES.md).
+- **Arquitetura da Versão 0.9.7**: Detalhamento em [`docs/ATUALIZACAO_V0.9.7.md`](docs/ATUALIZACAO_V0.9.7.md).
 
 ---
 
