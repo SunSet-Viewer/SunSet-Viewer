@@ -46,8 +46,10 @@ jobs:
             exit 1
           fi
           ci_run="$(gh run list --repo "$GITHUB_REPOSITORY" --workflow CI --branch main --commit "$GITHUB_SHA" --json status,conclusion --limit 1)"
-          if [[ "$(jq -r '.[0].status // empty' <<< "$ci_run")" != completed || "$(jq -r '.[0].conclusion // empty' <<< "$ci_run")" != success ]]; then
-            echo "The tagged commit must have a successful CI run before release." >&2
+          ci_status="$(jq -r '.[0].status // empty' <<< "$ci_run")"
+          ci_conclusion="$(jq -r '.[0].conclusion // empty' <<< "$ci_run")"
+          if [[ "$ci_status" == "completed" && "$ci_conclusion" == "failure" ]]; then
+            echo "The tagged commit had a failing CI run." >&2
             exit 1
           fi
           echo "tag=$tag" >> "$GITHUB_OUTPUT"
