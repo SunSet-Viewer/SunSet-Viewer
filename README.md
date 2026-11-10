@@ -714,7 +714,7 @@ frame on your own PC.
 - **Combat Engine (SunSet Exclusive)** — integrated real-time combat system (`scene::combat`), screen-center raycasting, local hitbox diagnostics, weapon collision filtering, and dedicated combat preferences.
 - **FSR 3.1 Upscaling** — AMD FidelityFX Super Resolution 3.1 with WGSL compute shaders for high framerates at 1440p / 4K.
 - **Complete pt-BR Localization** — 100% native Brazilian Portuguese localization with authentic Second Life terminology.
-- **Auto-Updates** — background update detection, download, and atomic installation directly from the SunSet Viewer repository.
+- **Auto-Updates** — background update detection, download, and atomic installation directly from the SunSet Viewer repository, supporting both portable folders and UAC-elevated installations in `C:\Program Files` or custom MSI directories.
 - **Rendering** — wgpu / Vulkan, bindless textures, multi-draw-indirect,
   PBR and legacy materials, shadows, GTAO ambient occlusion with specular
   occlusion, sun contact shadows, specular anti-aliasing, reflection probes,
