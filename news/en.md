@@ -26,8 +26,8 @@ An empty line starts a new paragraph.
 
 # SunSet Viewer news
 
-## 2026-11-09 — SunSet Viewer v0.9.7: 100x Speed, Aurora v0.9.4 Sync and Stability
-Version v0.9.7 brings full upstream synchronization with Aurora v0.9.4 and high-speed movement upgrades: avatar speed multiplier up to 100x powered by the new Aurora LSL Bridge v1.42, Debug Settings floater (/settings_debug), progressive draw distance up to 8192m (with dd 5000+ support), VRAM mid-session recovery without freezing, face lights toggle in graphics, Alt+Enter OOC chat ((text)), and full non-regression of 3D combat hitboxes and custom avatar marker colors.
+## 2026-11-10 — SunSet Viewer v0.9.7: Aurora v0.9.6, Unit Tests and SunSet Features
+Version v0.9.7 consolidates full upstream synchronization with Aurora v0.9.6 (including Milky Way skybox, Outfit Showcase, Region Tracker, improved alpha sorting, and terrain snapping) alongside a brand-new automated unit test suite covering all custom SunSet Viewer features: avatar speed multiplier up to 100x via Aurora LSL Bridge v1.42, instant Dash jumps, progressive draw distance up to 8192m (with dd 5000+ support), 3D combat hitboxes with scene occlusion, custom individual avatar marker colors, and 100% native Brazilian Portuguese localization.
 [Read more](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.7)
 
 ## 2026-11-08 — SunSet Viewer v0.9.6: Custom Individual Contact Marker Colors
@@ -45,6 +45,16 @@ Version v0.9.4 refines the Brazilian Portuguese experience with more than 114 co
 ## 2026-11-06 — SunSet Viewer v0.9.3: AMD FSR 3.1, SunSet Combat and 100% pt-BR
 SunSet Viewer consolidates its independent release featuring native AMD FSR 3.1 upscaling for smooth performance on any graphics card, full preservation of the custom combat module with raycasts and dedicated hitboxes, autonomous background update checks directly against GitHub Releases, and complete Brazilian Portuguese translation parity.
 [Read more](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.3)
+
+## 2026-11-10 — Aurora 0.9.5: Region Tracker, contact set markers and appearance XML
+World › Region tracker watches a list of regions, like the Legacy Viewer: whether each one is up and how many avatars are there, without opening the map; the World map's Track region adds one. A contact set can now mark its members in the world, through walls and at the screen's edge: set its World marker in People › Contact sets (off by default). Import XML, in the shape, physics and clothing editors, loads an appearance file from a shape website or another viewer. Your cache and settings are kept.
+[Read more](https://github.com/Aurora-Viewer/Aurora-Viewer/releases/tag/v0.9.5)
+
+## 2026-11-10 — Emojis, chat and L$
+Your recent emojis sit in a row by the chat field, and the GIF picker shows the GIFs you sent. Turn on Favorite emojis in Preferences › Chat to keep yours first, with a star tab in the picker. Alt+Enter sends ((OOC)) chat, and Request teleport sits next to Offer teleport in the conversation. A button collapses or expands the conversation list. The L$ you receive or spend show under your balance before they join it, and a resident paying you shows a notification.
+
+## 2026-11-10 — Your view, the world and fixes
+Preferences › Graphics can hide the face lights other avatars wear and keep yours, and World › Hide name tags hides every tag in one click. Avatar tips can stay with world tooltips off, and the media filter's question is a banner that lets you keep flying. The ground stays at region crossings, a full video memory no longer freezes the world, and parcel radios hold through teleports. Thanks to circuskid, ClifHofmann, dash-sl, Gaalrauch, iGao, KanikaBreed, Nowalski, Odessa-Draekavik and RheaMercury.
 
 ## 2026-11-08 — Aurora 0.9.4: Debug settings, and more of the Legacy Viewer's options
 The toolbar's Debug settings button, or Ctrl+Alt+Shift+S, opens the Debug settings window: every setting by name, with a search, a star on the ones you changed and Reset to default. Preferences › Build sets what a new prim starts as: colour, transparency, glow, fullbright, physical, temporary or phantom. Preferences › Graphics gets a progressive draw distance (off by default), the Trees detail and Particles from worn objects, and Preferences › Protections can hide objects with a huge surface. Your cache and settings are kept.

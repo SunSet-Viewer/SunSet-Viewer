@@ -13562,3 +13562,228 @@ update-grace-later-hint = Fecha esta janela e entra no mundo. A atualização se
 # Memória de vídeo cheia
 video-memory-full-notice = A memória de vídeo está cheia e o mundo não pôde ser desenhado. Feche programas que utilizem a placa gráfica: o mundo voltará automaticamente.
 video-memory-full-window-title = { $title } — Memória de vídeo cheia
+
+
+# --- Novas chaves da base Aurora v0.9.5 / v0.9.6 integradas no SunSet Viewer v0.9.7 ---
+
+appearance-xml-failed = O arquivo de aparência não pôde ser importado.
+
+appearance-xml-file-type = XML de Aparência (*.xml)
+
+appearance-xml-import = Importar um XML de aparência
+
+appearance-xml-import-button = Importar XML
+
+appearance-xml-import-hint = Define os controles deslizantes a partir de um arquivo XML de aparência, como os criados por sites de shapes ou exportados por outro visualizador. Apenas as configurações deste item são lidas; salve para mantê-las.
+
+appearance-xml-imported = { $count ->
+    [one] 1 configuração importada. Salve para mantê-la.
+   *[other] { $count } configurações importadas. Salve para mantê-las.
+    }
+
+appearance-xml-none = Este arquivo não possui configurações para este item.
+
+appearance-xml-not-avatar = Este arquivo não é um arquivo de aparência de avatar.
+
+appearance-xml-partial = { $count ->
+    [one] 1 configuração importada, { $errors } não puderam ser lidas. Salve para mantê-la.
+   *[other] { $count } configurações importadas, { $errors } não puderam ser lidas. Salve para mantê-las.
+    }
+
+build-land-join-select-multiple-parcels = Para juntar terrenos, selecione uma área que abranja mais de uma parcela na mesma região.
+
+contact-visual-marker = Marcador no mundo
+
+contact-visual-marker-fade = Ocultar quando meu avatar estiver próximo
+
+contact-visual-marker-fade-distance = Distância
+
+contact-visual-marker-hint = Mostra onde os membros estão, através de paredes e na borda da tela quando fora de visão. Com vários grupos de contato, o de maior prioridade decide. Sua borda e fundo seguem as opções de plaqueta de identificação.
+
+contact-visual-marker-off = Desativado
+
+contact-visual-marker-parcel = Na minha parcela
+
+contact-visual-marker-region = Na minha região
+
+contact-visual-marker-shape = Forma do marcador
+
+contact-visual-marker-shape-circle = Círculo
+
+contact-visual-marker-shape-diamond = Losango
+
+inventory-count-tooltip = Itens: { $items }
+    Pastas: { $folders }
+
+media-filter-not-now = Agora não: esta mídia permanecerá desativada até você desconectar
+
+poser-markers-hide = Ocultar marcadores de articulação e gizmos
+
+poser-pose-filter = Pose do SunSet
+
+poser-save-as = Salvar como…
+
+poser-saved-to = Pose salva em { $path }.
+
+radar-zoom-beyond-draw-distance = { $name } está a { $distance } m de distância, além do seu alcance visual ({ $draw } m).
+
+radar-zoom-unplaced = { $name } ainda não foi carregado e sua altura é desconhecida: a câmera não sabe para onde olhar.
+
+region-tracker-add-current = Adicionar região atual
+
+region-tracker-avatars = Avatares
+
+region-tracker-label = Rótulo
+
+region-tracker-region = Região
+
+region-tracker-track-region = Rastrear região
+
+toolbar-use-name-tag-preferences = Usar preferências de plaquetas de nome
+
+ui-appearance-showcase-all = Todos os trajes
+
+ui-appearance-showcase-attachments = Anexos
+
+ui-appearance-showcase-body = Partes do corpo
+
+ui-appearance-showcase-clothing = Roupas e camadas
+
+ui-appearance-showcase-dismiss = Ocultar esta mensagem
+
+ui-appearance-showcase-folders = Pastas
+
+ui-appearance-showcase-missing = { $count ->
+    [one] { $count } traje ainda não tem foto.
+   *[other] { $count } trajes ainda não têm fotos.
+    }
+
+ui-appearance-showcase-more = Mais ações
+
+ui-appearance-showcase-no-picture = Sem foto
+
+ui-appearance-showcase-no-picture-hint = Tire uma foto do que você vê agora ou escolha uma imagem do seu inventário.
+
+ui-appearance-showcase-no-picture-yet = Ainda sem foto
+
+ui-appearance-showcase-other = Outro
+
+ui-appearance-showcase-pick = Escolha um traje para visualizá-lo aqui.
+
+ui-appearance-showcase-show-them = Mostrá-los
+
+ui-appearance-showcase-wear-item = Vestir este item
+
+ui-bars-balance-received = L$ recebido
+
+ui-bars-balance-spent = L$ gasto
+
+ui-chat-column-collapse = Recolher a lista de conversas
+
+ui-chat-column-expand = Expandir a lista de conversas
+
+ui-chat-column-no-room = A janela é muito estreita para abrir a lista de conversas
+
+ui-chat-gif-no-recent = Nada enviado ainda: os GIFs que você enviar aparecerão aqui.
+
+ui-chat-gif-recent = Enviados recentemente
+
+ui-emoji-favorite = Favorito
+
+ui-emoji-favorites = Favoritos
+
+ui-emoji-no-favorites = Nenhum favorito ainda: clique com o botão direito em um emoji para mantê-lo aqui.
+
+ui-options-aurora-outfit-gallery = Galeria de trajes
+
+ui-options-aurora-outfit-gallery-aurora = Vitrine
+
+ui-options-aurora-outfit-gallery-classic = Blocos (Clássico)
+
+ui-options-aurora-outfit-gallery-help = Galeria de Aparência como vitrine, com suas pastas, fotos grandes e pré-visualização do traje escolhido, ou a grade tradicional de blocos pequenos do visualizador clássico.
+
+ui-options-balance-received = Mostrar L$ recebido abaixo do saldo
+
+ui-options-balance-received-hint = O que você recebe ou compra é exibido em verde abaixo do seu saldo por alguns segundos, depois é incorporado a ele. Também no menu de clique direito do saldo.
+
+ui-options-balance-spent = Mostrar L$ gasto abaixo do saldo
+
+ui-options-balance-spent-hint = O que você gasta é exibido em vermelho abaixo do seu saldo por alguns segundos, depois é deduzido dele. Também no menu de clique direito do saldo.
+
+ui-options-build-auto-material-tab = Abrir a aba de material correspondente à seleção
+
+ui-options-build-auto-material-tab-hint = Selecionar um objeto abre a aba PBR se uma de suas faces possuir material PBR, ou Blinn-Phong caso contrário. Desativado: a última aba escolhida permanece.
+
+ui-options-build-editing = Edição
+
+ui-options-contact-marker-anchor = Posição do marcador
+
+ui-options-contact-marker-anchor-above = Acima da plaqueta de nome
+
+ui-options-contact-marker-anchor-body = Peito
+
+ui-options-contact-marker-anchor-help = Onde os marcadores de grupos de contato ficam no avatar. De perto, unem-se à plaqueta de nome de qualquer forma.
+
+ui-options-contact-markers = Marcadores de grupos de contato
+
+ui-options-contact-markers-help = Cada grupo de contato escolhe onde seus membros recebem um marcador, em Pessoas › Grupos de contato.
+
+ui-options-favorite-emojis = Emojis favoritos
+
+ui-options-favorite-emojis-hint = Clique com o botão direito em um emoji no seletor ou na linha de recentes para fixá-lo: os favoritos aparecem primeiro nessa linha e ganham sua própria aba no seletor.
+
+ui-options-night-sky-hour = Hora estelar
+
+ui-options-night-sky-hour-help = Sol da região: a noite da região exibe as estrelas de uma noite real, em qualquer longitude. Tempo real: as estrelas acima do local neste momento, pelo seu relógio, para que um local mais a oeste as veja mais tarde; quando for dia lá, uma noite na região exibe as estrelas daquele dia.
+
+ui-options-night-sky-hour-real = Tempo real
+
+ui-options-night-sky-hour-region = Sol da região
+
+ui-options-night-sky-longitude = Longitude
+
+ui-options-night-sky-longitude-help = Graus a leste de Greenwich, negativos a oeste. Conta quando a hora estelar está em tempo real. Escolha Personalizado acima para definir a sua.
+
+ui-options-notify-above = Apenas acima de um valor
+
+ui-options-notify-above-hint = Valores menores não geram notificação.
+
+ui-options-notify-direct-payment = Notificar pagamentos diretos
+
+ui-options-notify-direct-payment-hint = Um residente pagando diretamente a você exibe uma notificação, a menos que já apareça como cartão na sua conversa.
+
+ui-options-notify-money-received = Notificar vendas
+
+ui-options-notify-money-received-hint = Uma venda, um objeto pago, um terreno ou dinheiro de grupo exibe uma notificação com quem pagou, quanto e pelo quê.
+
+ui-options-notify-threshold = Valor
+
+ui-options-notify-threshold-hint = Apenas pagamentos acima deste valor exibem uma notificação.
+
+ui-options-preset-mac-mid-high = Médio-Alto (recomendado para este Mac)
+
+ui-options-render-scale-auto = Ajustar à tela
+
+ui-options-render-scale-auto-help = Renderiza o mundo na resolução lógica da tela e faz o upscale: 50% em tela 2×, 67% em 1.5×, resolução total em 1×. A interface e os HUDs continuam nítidos. Ativado por padrão no Mac, como no visualizador clássico. Desative para escolher a porcentagem manualmente.
+
+ui-options-show-recent-emojis = Mostrar emojis recentes
+
+ui-options-show-recent-emojis-hint = Seus últimos emojis usados em uma linha acima dos campos de chat, exibidos após o primeiro envio. Clique em um para adicioná-lo à mensagem.
+
+ui-options-show-recent-emojis-legacy = Mostrar emojis recentes (Estilo clássico)
+
+ui-options-show-recent-emojis-legacy-hint = Com o estilo de chat clássico: seus últimos emojis usados em uma linha abaixo dos campos de chat. Desativado por padrão, como no visualizador clássico.
+
+world-inventory-demo-folder = { "Pasta " }{ $n }
+
+world-payments-for-item = por { $item }
+
+world-payments-for-land = por uma parcela de terra
+
+world-payments-for-land-deed = pela cessão de terreno para grupo
+
+world-payments-for-land-pass = por um passe de acesso ao terreno
+
+world-payments-paid-you-reason = { $name }{ " pagou a você L$" }{ $amount }{ " " }{ $reason }
+
+world-payments-received-title = L$ recebido
