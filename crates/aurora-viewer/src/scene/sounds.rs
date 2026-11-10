@@ -16,7 +16,7 @@ use aurora_audio::{AudioEngine, Channel, SoundClip};
 use aurora_net::fetch::{FetchRequest, FetchResult, Fetcher, Lane};
 use aurora_net::objects::AttachedSound;
 use glam::Vec3;
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
 use std::time::{Duration, Instant};
@@ -44,6 +44,14 @@ const UNDERWATER_ROLLOFF: f32 = 5.0;
 /// A one-shot sound not loaded by then is dropped (a late sound would be
 /// out of place).
 const ONE_SHOT_PATIENCE: Duration = Duration::from_secs(10);
+/// Decoded sounds kept in memory besides the interface ones: the oldest
+/// unused goes first past this count (LL_MAX_AUDIO_BUFFERS and
+/// LLAudioEngine::getFreeBuffer, llaudio/llaudioengine.cpp)...
+const MAX_DECODED_CLIPS: usize = 60;
+/// ...or past this memory (interleaved f32 stereo at 48 kHz: about six
+/// minutes of sound). A sound dropped is decoded again from the disk cache
+/// when it is wanted again; one playing or waiting to play is never dropped.
+const DECODED_BUDGET: usize = 128 << 20;
 
 /// Collision sounds (LLMaterialTable::isCollisionSound: SL and OpenSim
 /// material pairs, llmessage/sound_ids.cpp): EnableCollisionSounds.
@@ -113,11 +121,16 @@ pub fn is_collision(id: &Uuid) -> bool {
 #[derive(Default)]
 struct Clip {
     clip: Option<Arc<SoundClip>>,
-    /// 0 new, 1 reading the cache, 2 downloading, 3 ready, 4 failed.
+    /// 0 new, 1 reading the cache, 2 downloading, 3 ready, 4 failed,
+    /// 5 decoded once then dropped from memory (read again when wanted).
     state: u8,
     failures: u32,
     gesture: bool,
     retry_at: Option<Instant>,
+    /// Interface sound (or one made locally): never dropped from memory.
+    kept: bool,
+    /// Last time it was wanted or played (a tick of `SoundManager::used`).
+    used: u64,
 }
 
 #[derive(Debug, Clone, Copy)]
@@ -245,6 +258,8 @@ pub struct SoundManager {
     pub history: history::History,
     previews: HashMap<Uuid, (Instant, Option<Playing>)>,
     clips: HashMap<Uuid, Clip>,
+    /// Clock of `Clip::used`.
+    used: u64,
     by_key: HashMap<u64, Uuid>,
     next_key: u64,
     cache_dir: PathBuf,
@@ -295,6 +310,7 @@ impl SoundManager {
             history: Default::default(),
             previews: HashMap::new(),
             clips: HashMap::new(),
+            used: 0,
             by_key: HashMap::new(),
             next_key: 1,
             cache_dir,
@@ -309,7 +325,7 @@ impl SoundManager {
         }
     }
 
-    /// A sound made locally (offline demo).
+    /// A sound made locally (offline demo): kept, as no cache holds it.
     pub fn insert(&mut self, id: Uuid, clip: SoundClip) {
         self.clips.insert(
             id,
@@ -319,6 +335,8 @@ impl SoundManager {
                 failures: 0,
                 gesture: false,
                 retry_at: None,
+                kept: true,
+                used: 0,
             },
         );
     }
@@ -355,6 +373,7 @@ impl SoundManager {
     }
 
     /// An interface sound: wanted, and kept in memory once decoded.
+    #[allow(dead_code)]
     pub fn want_kept(&mut self, id: Uuid) {
         self.want(id);
         if let Some(c) = self.clips.get_mut(&id) {
@@ -370,8 +389,12 @@ impl SoundManager {
             .is_some_and(|entry| matches!(entry.state, 3 | 5) || (entry.state == 4 && entry.failures > 0))
     }
 
-    fn ready(&self, id: &Uuid) -> Option<Arc<SoundClip>> {
-        self.clips.get(id).and_then(|c| c.clip.clone())
+    fn ready(&mut self, id: &Uuid) -> Option<Arc<SoundClip>> {
+        let c = self.clips.get_mut(id)?;
+        let clip = c.clip.clone()?;
+        self.used += 1;
+        c.used = self.used;
+        Some(clip)
     }
 
     fn failed(&self, id: &Uuid) -> bool {
@@ -523,12 +546,14 @@ impl SoundManager {
 
     /// Cache reads and downloads of the wanted sounds.
     pub fn fetch(&mut self, jobs: &Jobs, fetcher: &Fetcher, viewer_asset: Option<&str>) {
+        let mut decoded = false;
         while let Ok((id, clip, from_cache)) = self.rx.try_recv() {
             if let Some(c) = self.clips.get_mut(&id) {
                 match clip {
                     Some(clip) => {
                         c.clip = Some(clip);
                         c.state = 3;
+                        decoded = true;
                     }
                     None if from_cache => c.state = 4,
                     None => {
@@ -538,6 +563,9 @@ impl SoundManager {
                     }
                 }
             }
+        }
+        if decoded {
+            self.drop_unused_clips(MAX_DECODED_CLIPS, DECODED_BUDGET);
         }
         let now = Instant::now();
         for (id, c) in self.clips.iter_mut() {
@@ -575,6 +603,49 @@ impl SoundManager {
                     accept: "*/*",
                 });
             }
+        }
+    }
+
+    /// Drops the least recently used decoded sounds past
+    /// [`MAX_DECODED_CLIPS`] or [`DECODED_BUDGET`], except the kept ones
+    /// and those playing or waiting to play (LLAudioEngine::getFreeBuffer
+    /// takes over the oldest buffer not in use).
+    fn drop_unused_clips(&mut self, max_clips: usize, budget: usize) {
+        let held = |c: &Clip| c.clip.as_ref().filter(|_| !c.kept).map(|clip| clip.memory_bytes());
+        let (mut count, mut bytes) = self
+            .clips
+            .values()
+            .filter_map(held)
+            .fold((0usize, 0usize), |(n, b), size| (n + 1, b + size));
+        if count <= max_clips && bytes <= budget {
+            return;
+        }
+        let wanted: HashSet<Uuid> = self
+            .sources
+            .values()
+            .flat_map(|s| [Some(s.sound), s.queued])
+            .flatten()
+            .chain(self.triggered.iter().map(|t| t.sound))
+            .chain(self.previews.keys().copied())
+            .chain(self.ui_pending.iter().map(|(id, _)| *id))
+            .collect();
+        let mut idle: Vec<(u64, Uuid, usize)> = self
+            .clips
+            .iter()
+            .filter(|(id, c)| !wanted.contains(*id) && c.clip.as_ref().is_some_and(|clip| !clip.is_shared()))
+            .filter_map(|(id, c)| Some((c.used, *id, held(c)?)))
+            .collect();
+        idle.sort_unstable_by_key(|&(used, ..)| used);
+        for (_, id, size) in idle {
+            if count <= max_clips && bytes <= budget {
+                break;
+            }
+            if let Some(c) = self.clips.get_mut(&id) {
+                c.clip = None;
+                c.state = 5;
+            }
+            count -= 1;
+            bytes -= size;
         }
     }
 

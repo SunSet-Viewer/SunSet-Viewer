@@ -16,43 +16,43 @@ Este documento descreve todas as funcionalidades, melhorias de engenharia e gara
 
 ---
 
-## 🚀 2. Novidades Integradas do Aurora Viewer v0.9.4
+## 🚀 2. Novidades Integradas do Aurora Viewer v0.9.5 & v0.9.6
 
-### 🔧 Configurações de Depuração (`Debug Settings` — `Ctrl+Alt+Shift+S`)
-- Nova janela dedicada acessível pela barra de ferramentas ou pelo atalho **`Ctrl+Alt+Shift+S`**.
-- Permite pesquisar qualquer configuração interna pelo nome técnico (ou equivalente do visualizador clássico/Firestorm) e pela descrição.
-- Exibe filtro de configurações modificadas e botão para restaurar qualquer chave individualmente ao valor padrão.
+### 🌌 Céu Estelar e Renderização da Via Láctea (Milky Way)
+- Renderização panorâmica realista da Via Láctea integrada ao pipeline de céu diurno/noturno.
+- Integração refinada com o catálogo de estrelas Tycho-2 para brilho e densidade celestial precisa.
 
-### 🏗️ Preferências de Construção (`Preferências › Construção`)
-- Nova página em `Preferências (Ctrl+P)` › **`Construção`** para definir:
-  - Dimensões padrão (`X`, `Y`, `Z`), material, textura e opções (**Físico**, **Temporário**, **Fantasma**) de novos prims criados.
-  - Ponto de pivô no objeto raiz, destaque de prims selecionados, distância máxima de seleção e exibição de eixos na seleção.
-  - Permissões padrão de criação e regras de duplo clique no inventário.
+### 👗 Vitrine de Trajes (Outfit Showcase)
+- Nova funcionalidade para inspeção e gerenciamento visual de trajes no inventário.
+- Permite pré-visualizar itens anexados e camadas com facilidade.
 
-### 🌍 Mundo, Gráficos e Estabilidade de VRAM
-- **Distância de Visão Progressiva (SpeedRez)**: inicia em `32m` ao chegar em uma região e dobra progressivamente até a sua distância configurada (até `8.192m`).
-- **Descoberta Dinâmica de Regiões Vizinhas**: conecta até 3 anéis de regiões adjacentes conforme a distância de visão.
-- **Proteção contra Superfícies Gigantes (`Large Surface Protection`)**: oculta automaticamente faces texturizadas descomunais que causariam queda brusca de FPS.
-- **Detalhe de Árvores (`Trees Detail`) e Partículas de Anexos**: controle independente de LOD para vegetação e interruptor para ocultar partículas emitidas por objetos anexados a outros avatares.
-- **Recuperação Automática de VRAM (`GPU Recovery`)**: reconstrói a cena 3D automaticamente caso a memória de vídeo fique cheia durante o login.
-- **Correção de Frustum/Occlusion Culling**: objetos próximos à câmera não desaparecem mais em determinados ângulos de visão.
+### 🧭 Rastreador de Regiões (Region Tracker)
+- Disponível em `Mundo › Rastreador de região`.
+- Permite adicionar e monitorar regiões favoritas em tempo real (status online/offline e contagem de avatares presentes) sem abrir o mapa-múndi.
 
-### 💬 Voz, Música e Interface
-- **Chamadas de Voz Contínuas no Teleporte**: chamadas privadas de voz permanecem conectadas ao atravessar ou teletransportar entre regiões.
-- **Música do Terreno sem Cortes**: o stream de áudio da parcela continua tocando normalmente ao mover a câmera livremente para fora do terreno.
-- **Alternância Rápida de Conversas (`Ctrl+Tab` / `Ctrl+Shift+Tab`)**: navegue rapidamente entre abas da janela de Conversas.
-- **Suavização de Câmera até `300`**: alcance ampliado para movimentos cinematográficos em vídeos e fotos.
-- **Suporte Aprimorado a IME Japonês**: destaque visual do segmento de conversão ativo.
+### 🎨 Ordenação Alfa e Snap de Terreno
+- **Ordenação Alfa Aprimorada**: Minimização de artefatos de renderização em sobreposição de geometrias transparentes (como cabelos e vegetação).
+- **Snap de Terreno**: Alinhamento inteligente de objetos à malha de altura da parcela durante o modo de construção/edição.
+
+### 💬 Chat, Emojis e Gestão de Cache de Áudio
+- **Emojis & GIFs**: Linha de emojis recentes, aba de favoritos e seletor rápido no chat.
+- **Cache de Sons (LRU Eviction)**: Gerenciamento inteligente de clips de som em memória (`SoundClip` memory budget) com liberação automática de clips inativos.
 
 ---
 
-## 🛡️ 3. Resumo da Auditoria de Não-Regressão
+## 🛡️ 3. Suíte de Testes Unitários de Não-Regressão (`crates/aurora-viewer/src/sunset_tests.rs`)
 
-Todos os pontos de interseção entre o código upstream (Aurora v0.9.4) e as customizações do SunSet Viewer foram auditados e validados por testes automatizados:
+Para blindar o visualizador contra quebras acidentais em futuras sincronizações upstream, foi desenvolvida uma suíte de testes unitários contendo **11 testes automatizados**, cobrindo rigorosamente todos os 7 pilares customizados do SunSet Viewer:
 
-1. **`crates/aurora-viewer/src/settings.rs`**: `self.draw_distance = self.draw_distance.clamp(32.0, 8192.0)` preservado em `Settings::sanitize()`.
-2. **`crates/aurora-viewer/src/ui/quick_prefs.rs` & `pages/graphics.rs`**: `Slot::DrawDistance` e o slider de Gráficos operam na faixa `32.0..=8192.0`.
-3. **`crates/aurora-viewer/src/app/draw_distance_step.rs`**: `Stepping` respeita metas de até `8192.0m`.
-4. **`crates/aurora-viewer/src/movement/mod.rs` & `ui/movement_dash.rs`**: multiplicador `100x`, salto até `8192m` e atalhos de Mouselook intactos.
-5. **`crates/aurora-viewer/src/scene/combat.rs`, `ui/debug_overlay.rs` & `ui/minimap.rs`**: Hitboxes 3D, raycast com oclusão de cena e cores individuais (`avatar_marks`) operando sem regressão.
+1. **`test_draw_distance_sanitize_clamps_to_8192`**: Garante que `Settings::sanitize()` nunca rejeite ou resete distâncias de visão até `8192.0m`.
+2. **`test_quick_prefs_slider_draw_distance_range_allows_8192`**: Garante que o slider de Preferências Rápidas permita deslizar até `8192.0m`.
+3. **`test_speedrez_draw_distance_stepping_supports_8192m`**: Valida a progressão exponencial de SpeedRez partindo de 32m até 8192m.
+4. **`test_movement_dash_settings_and_multiplier_up_to_100x`**: Valida o clamping de dash até 8192m e o multiplicador de velocidade até 100x.
+5. **`test_movement_preferences_sanitize_run_and_fly_100x`**: Testa a sanitização de preferências de corrida e voo assistido até 100.0x.
+6. **`test_combat_settings_and_preferences_page_presence`**: Assegura a presença da página `Page::Combat` na lista global de opções `Page::ALL`.
+7. **`test_combat_hitbox_and_scene_blocking_behavior`**: Valida a lógica de cálculo de hitboxes 3D, detecção de membros e bloqueio por obstáculos do cenário (`scene_objects_block_rays`).
+8. **`test_avatar_marks_individual_colors_precedence`**: Valida a prioridade de marcação individual de cor de avatar sobre Contact Sets no Minimapa e no Combate.
+9. **`test_localization_pt_br_has_zero_missing_keys_compared_to_en`**: Valida programaticamente que o arquivo `pt-BR.ftl` possui **zero** chaves faltantes em relação ao `en.ftl`.
+10. **`test_sunset_branding_logo_and_assets_validity`**: Verifica os magic bytes de imagem PNG e a integridade de `assets/branding/sunset-logo.png`.
+11. **`test_ci_cd_workflows_and_build_scripts_integrity`**: Valida a presença do runner `macos-15` em `release.yml`, a emissão de símbolos PDB para Windows e o suporte a builds locais no script `check.ps1`.
 

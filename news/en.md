@@ -26,8 +26,8 @@ An empty line starts a new paragraph.
 
 # SunSet Viewer news
 
-## 2026-11-09 — SunSet Viewer v0.9.7: 100x Speed, Aurora v0.9.4 Sync and Stability
-Version v0.9.7 brings full upstream synchronization with Aurora v0.9.4 and high-speed movement upgrades: avatar speed multiplier up to 100x powered by the new Aurora LSL Bridge v1.42, Debug Settings floater (/settings_debug), progressive draw distance up to 8192m (with dd 5000+ support), VRAM mid-session recovery without freezing, face lights toggle in graphics, Alt+Enter OOC chat ((text)), and full non-regression of 3D combat hitboxes and custom avatar marker colors.
+## 2026-11-10 — SunSet Viewer v0.9.7: Aurora v0.9.6, Unit Tests and SunSet Features
+Version v0.9.7 consolidates full upstream synchronization with Aurora v0.9.6 (including Milky Way skybox, Outfit Showcase, Region Tracker, improved alpha sorting, and terrain snapping) alongside a brand-new automated unit test suite covering all custom SunSet Viewer features: avatar speed multiplier up to 100x via Aurora LSL Bridge v1.42, instant Dash jumps, progressive draw distance up to 8192m (with dd 5000+ support), 3D combat hitboxes with scene occlusion, custom individual avatar marker colors, and 100% native Brazilian Portuguese localization.
 [Read more](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.7)
 
 ## 2026-11-08 — SunSet Viewer v0.9.6: Custom Individual Contact Marker Colors
