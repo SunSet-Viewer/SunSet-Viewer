@@ -2,7 +2,8 @@
 param(
     [Parameter(Mandatory)][string]$Package,
     [Parameter(Mandatory)][string]$Out,
-    [string]$WixSource = (Join-Path (Split-Path $PSScriptRoot -Parent) 'packaging/windows/Product.wxs')
+    [string]$WixSource = (Join-Path (Split-Path $PSScriptRoot -Parent) 'packaging/windows/Product.wxs'),
+    [string]$LicenseRtf = (Join-Path (Split-Path $PSScriptRoot -Parent) 'packaging/windows/License.rtf')
 )
 $ErrorActionPreference = 'Stop'
 
@@ -20,15 +21,24 @@ if ([int]$Matches[1] -gt 255 -or [int]$Matches[2] -gt 255 -or [int]$Matches[3] -
     throw "MSI version '$version' exceeds Windows Installer's version limits."
 }
 if (-not (Test-Path -LiteralPath $WixSource)) { throw "Missing WiX authoring: $WixSource" }
+if (-not (Test-Path -LiteralPath $LicenseRtf)) { throw "Missing WiX license RTF: $LicenseRtf" }
+$licensePath = (Resolve-Path -LiteralPath $LicenseRtf -ErrorAction Stop).Path
 $wix = Get-Command wix -ErrorAction Stop
+$extensions = (& $wix.Source extension list --global 2>$null | Out-String)
+if ($extensions -notmatch 'WixToolset\.UI\.wixext') {
+    & $wix.Source extension add --global WixToolset.UI.wixext/5.0.2
+    if ($LASTEXITCODE -ne 0) { throw "Failed to install WixToolset.UI.wixext ($LASTEXITCODE)." }
+}
 $outPath = [IO.Path]::GetFullPath($Out)
 New-Item -ItemType Directory -Force -Path (Split-Path -Parent $outPath) -ErrorAction Stop | Out-Null
 
 $arguments = @(
     'build',
     '-arch', 'x64',
+    '-ext', 'WixToolset.UI.wixext',
     '-d', "PackageRoot=$packageRoot",
     '-d', "PackageVersion=$version",
+    '-d', "LicenseRtf=$licensePath",
     '-o', $outPath,
     $WixSource
 )

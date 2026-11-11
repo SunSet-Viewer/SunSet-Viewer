@@ -3,8 +3,10 @@
 
 use anyhow::{Context, Result, ensure};
 use serde::{Deserialize, Serialize};
+use sha2::{Digest, Sha256};
 use std::{
     fs::{self, File, OpenOptions},
+    io::Write,
     path::{Path, PathBuf},
     process::{Child, Command},
     time::{Duration, Instant},
@@ -29,6 +31,7 @@ pub struct Workspace {
     token: String,
     _lock: File,
     handed_off: bool,
+    elevate: bool,
 }
 
 fn lock_path(install: &Path) -> Result<PathBuf> {
@@ -38,15 +41,50 @@ fn lock_path(install: &Path) -> Result<PathBuf> {
     )))
 }
 
-fn lock(install: &Path) -> Result<File> {
-    let file = OpenOptions::new()
-        .read(true)
-        .write(true)
-        .create(true)
-        .truncate(false)
-        .open(lock_path(install)?)?;
+fn temp_staging_parent() -> Result<PathBuf> {
+    let dir = std::env::temp_dir();
+    Ok(dir.canonicalize().unwrap_or(dir))
+}
+
+fn temp_lock_path(install: &Path) -> Result<PathBuf> {
+    let digest = Sha256::digest(install.to_string_lossy().as_bytes());
+    let hex: String = digest[..8].iter().map(|b| format!("{b:02x}")).collect();
+    Ok(temp_staging_parent()?.join(format!(".aurora-update-{hex}.lock")))
+}
+
+fn open_lock_file(path: &Path) -> std::io::Result<File> {
+    OpenOptions::new().read(true).write(true).create(true).truncate(false).open(path)
+}
+
+fn lock_in_temp(install: &Path) -> Result<File> {
+    let file = open_lock_file(&temp_lock_path(install)?)?;
     file.try_lock().context("another updater owns this installation")?;
     Ok(file)
+}
+
+fn lock(install: &Path) -> Result<(File, bool)> {
+    let install_writable = OpenOptions::new().write(true).open(install.join("LICENSE")).is_ok();
+    if install_writable {
+        match open_lock_file(&lock_path(install)?) {
+            Ok(file) => {
+                file.try_lock().context("another updater owns this installation")?;
+                return Ok((file, false));
+            }
+            Err(e) if e.kind() == std::io::ErrorKind::PermissionDenied => {}
+            Err(e) => return Err(e.into()),
+        }
+    }
+    Ok((lock_in_temp(install)?, true))
+}
+
+fn lock_for_work(install: &Path, work: &Path) -> Result<File> {
+    if work.parent() == install.parent() {
+        let file = open_lock_file(&lock_path(install)?)?;
+        file.try_lock().context("another updater owns this installation")?;
+        Ok(file)
+    } else {
+        lock_in_temp(install)
+    }
 }
 
 pub(crate) fn plain_dir(path: &Path) -> Result<()> {
@@ -109,19 +147,54 @@ impl Workspace {
     pub fn new(install: &Path) -> Result<Self> {
         validate_install(install)?;
         let install = install.canonicalize()?;
-        let lock = lock(&install)?;
+        let (mut lock_file, mut elevate) = lock(&install)?;
         let token = uuid::Uuid::new_v4().to_string();
-        let root = install
-            .parent()
-            .context("installation parent")?
-            .join(format!(".aurora-update-{token}"));
-        fs::create_dir(&root).context("cannot write next to installation")?;
+        let dir_name = format!(".aurora-update-{token}");
+        let root = if !elevate {
+            let candidate = install.parent().context("installation parent")?.join(&dir_name);
+            match fs::create_dir(&candidate) {
+                Ok(()) => candidate,
+                Err(e) if e.kind() == std::io::ErrorKind::PermissionDenied => {
+                    elevate = true;
+                    drop(lock_file);
+                    lock_file = lock_in_temp(&install)?;
+                    let fallback = temp_staging_parent()?.join(&dir_name);
+                    fs::create_dir(&fallback).context("cannot write to temporary update folder")?;
+                    fallback
+                }
+                Err(e) => return Err(e).context("cannot write next to installation"),
+            }
+        } else {
+            let fallback = temp_staging_parent()?.join(&dir_name);
+            fs::create_dir(&fallback).context("cannot write to temporary update folder")?;
+            fallback
+        };
         Ok(Self {
             root,
             install,
             token,
-            _lock: lock,
+            _lock: lock_file,
             handed_off: false,
+            elevate,
+        })
+    }
+
+    /// Creates a workspace staged in the user's `%TEMP%` directory even when
+    /// the installation directory itself is writable (used by tests and UAC staging).
+    pub fn new_in_temp(install: &Path) -> Result<Self> {
+        validate_install(install)?;
+        let install = install.canonicalize()?;
+        let lock_file = lock_in_temp(&install)?;
+        let token = uuid::Uuid::new_v4().to_string();
+        let root = temp_staging_parent()?.join(format!(".aurora-update-{token}"));
+        fs::create_dir(&root).context("cannot write to temporary update folder")?;
+        Ok(Self {
+            root,
+            install,
+            token,
+            _lock: lock_file,
+            handed_off: false,
+            elevate: true,
         })
     }
 
@@ -146,18 +219,22 @@ impl Workspace {
         file.write_all(&serde_json::to_vec(&plan)?)?;
         file.sync_all()?;
         drop(file);
-        let mut command = Command::new(self.root.join("helper.exe"));
-        command.arg("--sunset-update-helper").arg(&self.root).current_dir(&self.root);
-        hidden(&mut command);
-        let mut child = command.spawn().context("cannot start update helper")?;
-        let start = Instant::now();
-        while !self.root.join("helper-ready").exists() {
-            if child.try_wait()?.is_some() || start.elapsed() >= Duration::from_secs(15) {
-                let _ = child.kill();
-                let _ = child.wait();
-                anyhow::bail!("update helper did not start");
+        if self.elevate {
+            spawn_elevated_helper(&self.root)?;
+        } else {
+            let mut command = Command::new(self.root.join("helper.exe"));
+            command.arg("--sunset-update-helper").arg(&self.root).current_dir(&self.root);
+            hidden(&mut command);
+            let mut child = command.spawn().context("cannot start update helper")?;
+            let start = Instant::now();
+            while !self.root.join("helper-ready").exists() {
+                if child.try_wait()?.is_some() || start.elapsed() >= Duration::from_secs(15) {
+                    let _ = child.kill();
+                    let _ = child.wait();
+                    anyhow::bail!("update helper did not start");
+                }
+                std::thread::sleep(Duration::from_millis(50));
             }
-            std::thread::sleep(Duration::from_millis(50));
         }
         self.handed_off = true;
         // Drop the installation lock now: the helper waits for the parent process
@@ -166,7 +243,74 @@ impl Workspace {
     }
 }
 
-use std::io::Write;
+#[cfg(windows)]
+fn spawn_elevated_helper(root: &Path) -> Result<()> {
+    use std::os::windows::ffi::OsStrExt;
+    use windows_sys::Win32::{
+        Foundation::CloseHandle,
+        System::Threading::{TerminateProcess, WaitForSingleObject},
+        UI::{
+            Shell::{SEE_MASK_NOCLOSEPROCESS, SHELLEXECUTEINFOW, ShellExecuteExW},
+            WindowsAndMessaging::SW_HIDE,
+        },
+    };
+
+    fn wide(s: &std::ffi::OsStr) -> Vec<u16> {
+        s.encode_wide().chain(std::iter::once(0)).collect()
+    }
+
+    struct HandleGuard(windows_sys::Win32::Foundation::HANDLE);
+    impl Drop for HandleGuard {
+        fn drop(&mut self) {
+            // SAFETY: uniquely owned process handle from ShellExecuteExW.
+            unsafe {
+                CloseHandle(self.0);
+            }
+        }
+    }
+
+    let verb = wide(std::ffi::OsStr::new("runas"));
+    let file = wide(root.join("helper.exe").as_os_str());
+    let params_str = format!("--sunset-update-helper \"{}\"", root.display());
+    let params = wide(std::ffi::OsStr::new(&params_str));
+    let dir = wide(root.as_os_str());
+    // SAFETY: SHELLEXECUTEINFOW is plain-old-data and initialized before use.
+    let mut info: SHELLEXECUTEINFOW = unsafe { std::mem::zeroed() };
+    info.cbSize = std::mem::size_of::<SHELLEXECUTEINFOW>() as u32;
+    info.fMask = SEE_MASK_NOCLOSEPROCESS;
+    info.lpVerb = verb.as_ptr();
+    info.lpFile = file.as_ptr();
+    info.lpParameters = params.as_ptr();
+    info.lpDirectory = dir.as_ptr();
+    info.nShow = SW_HIDE;
+    // SAFETY: all wide buffers remain alive across the synchronous ShellExecuteExW call.
+    let ok = unsafe { ShellExecuteExW(&mut info) };
+    ensure!(
+        ok != 0 && !info.hProcess.is_null(),
+        "administrator permission was declined or update helper failed to start"
+    );
+    let guard = HandleGuard(info.hProcess);
+    let start = Instant::now();
+    while !root.join("helper-ready").exists() {
+        // SAFETY: guard.0 is a valid process handle.
+        let exited = unsafe { WaitForSingleObject(guard.0, 0) == 0 };
+        if exited || start.elapsed() >= Duration::from_secs(15) {
+            // SAFETY: guard.0 is a valid process handle.
+            unsafe {
+                let _ = TerminateProcess(guard.0, 1);
+            }
+            anyhow::bail!("elevated update helper did not start");
+        }
+        std::thread::sleep(Duration::from_millis(50));
+    }
+    Ok(())
+}
+
+#[cfg(not(windows))]
+fn spawn_elevated_helper(_root: &Path) -> Result<()> {
+    anyhow::bail!("elevated update helper is Windows-only")
+}
+
 impl Drop for Workspace {
     fn drop(&mut self) {
         if !self.handed_off {
@@ -195,9 +339,11 @@ struct Plan {
 
 fn validate_work(work: &Path, plan: &Plan) -> Result<()> {
     ensure!(uuid::Uuid::parse_str(&plan.token).is_ok(), "invalid transaction token");
+    let temp_parent = temp_staging_parent().ok();
+    let valid_parent = work.parent() == plan.install.parent() || (temp_parent.is_some() && work.parent() == temp_parent.as_deref());
     ensure!(
         work.is_absolute()
-            && work.parent() == plan.install.parent()
+            && valid_parent
             && work
                 .file_name()
                 .is_some_and(|n| n == format!(".aurora-update-{}", plan.token).as_str()),
@@ -238,6 +384,52 @@ fn hidden(command: &mut Command) {
     }
 }
 
+fn is_cross_device(err: &std::io::Error) -> bool {
+    #[cfg(windows)]
+    if err.raw_os_error() == Some(17) {
+        return true;
+    }
+    #[cfg(unix)]
+    if err.raw_os_error() == Some(18) {
+        return true;
+    }
+    err.kind() == std::io::ErrorKind::CrossesDevices
+}
+
+fn copy_tree(from: &Path, to: &Path) -> Result<()> {
+    plain_dir(from)?;
+    fs::create_dir_all(to)?;
+    for entry in fs::read_dir(from)? {
+        let entry = entry?;
+        let src = entry.path();
+        let dst = to.join(entry.file_name());
+        let metadata = fs::symlink_metadata(&src)?;
+        ensure!(!metadata.file_type().is_symlink(), "package contains a link");
+        if metadata.is_dir() {
+            copy_tree(&src, &dst)?;
+        } else {
+            fs::copy(&src, &dst)?;
+        }
+    }
+    Ok(())
+}
+
+fn move_dir(from: &Path, to: &Path) -> Result<()> {
+    match fs::rename(from, to) {
+        Ok(()) => Ok(()),
+        Err(e) if is_cross_device(&e) => {
+            validate_tree(from)?;
+            if let Err(copy_err) = copy_tree(from, to) {
+                let _ = fs::remove_dir_all(to);
+                return Err(copy_err);
+            }
+            fs::remove_dir_all(from)?;
+            Ok(())
+        }
+        Err(e) => Err(e.into()),
+    }
+}
+
 /// The private helper route runs before CLI parsing, logging, GPU or settings.
 pub fn run_helper() -> Result<bool> {
     let mut args = std::env::args_os().skip(1);
@@ -259,7 +451,7 @@ pub fn run_helper() -> Result<bool> {
     fs::write(work.join("helper-ready"), b"ready")?;
     parent.wait()?;
     let result = (|| -> Result<()> {
-        let _lock = lock(&plan.install)?;
+        let _lock = lock_for_work(&plan.install, &work)?;
         validate_install(&plan.install)?;
         validate_install(&work.join("prepared"))?;
         apply(&plan.install, &work, || {
@@ -331,10 +523,10 @@ pub fn apply(install: &Path, work: &Path, launch: impl FnOnce() -> Result<()>) -
     validate_install(&work.join("prepared"))?;
     let backup = work.join("backup");
     ensure!(!backup.exists(), "backup already exists");
-    fs::rename(install, &backup).context("cannot move old viewer; close other instances")?;
-    if let Err(error) = fs::rename(work.join("prepared"), install) {
-        fs::rename(&backup, install).context("cannot restore old viewer")?;
-        return Err(error.into());
+    move_dir(install, &backup).context("cannot move old viewer; close other instances")?;
+    if let Err(error) = move_dir(&work.join("prepared"), install) {
+        move_dir(&backup, install).context("cannot restore old viewer")?;
+        return Err(error);
     }
     match launch() {
         Ok(()) => {
@@ -349,8 +541,8 @@ pub fn apply(install: &Path, work: &Path, launch: impl FnOnce() -> Result<()>) -
             Ok(())
         }
         Err(error) => {
-            fs::rename(install, work.join("failed")).context("cannot move failed update")?;
-            fs::rename(&backup, install).context("cannot restore backup")?;
+            move_dir(install, &work.join("failed")).context("cannot move failed update")?;
+            move_dir(&backup, install).context("cannot restore backup")?;
             Err(error)
         }
     }
@@ -391,7 +583,7 @@ pub fn acknowledge_frame() {
             for _ in 0..300 {
                 std::thread::sleep(Duration::from_millis(200));
                 if work.join("committed").exists()
-                    && let Ok(_lock) = lock(&plan.install)
+                    && let Ok(_lock) = lock_for_work(&plan.install, &work)
                     && cleanup_work(&work, &plan.install, &plan.token).is_ok()
                 {
                     break;

@@ -97,8 +97,11 @@ reuse the draft and replace assets by name:
 - `SunSet-Viewer-vX.Y.Z-windows-x64.zip`, with a single root folder of that name;
 - its `.zip.sha256` file, in the format `hash  zip-name`;
 - stable releases also include `SunSet-Viewer-vX.Y.Z-windows-x64.msi` and its
-  `.msi.sha256`; the MSI installs under Program Files and adds a Start menu
-  shortcut. Beta releases do not include an MSI;
+  `.msi.sha256`; the MSI provides a directory selection dialog (`WixUI_InstallDir`)
+  defaulting to `C:\Program Files\SunSet Viewer` while allowing the user to pick
+  any custom installation folder (remembered in `HKLM\Software\SunSet Viewer\InstallDir`
+  for subsequent MSI upgrades) and adds a Start menu shortcut. Beta releases do
+  not include an MSI;
 - `aurora-update-policy.json`: `schema: 1`, `version: X.Y.Z`,
   `minimum_supported_version`, `cache_invalidation_before` and
   `settings_reset_before`: `null` or a stable SemVer version ≤ X.Y.Z;
@@ -171,14 +174,21 @@ is not that of the Aurora releases.
 
 Download, hash and extraction run in the background. Extraction refuses
 path traversals, links, Windows duplicates, reserved files and archives
-exceeding the size limits. The staging is done next to the installation, on
-the same volume. The installation refuses repositories, build trees, folder
+exceeding the size limits. When the installation directory is user-writable,
+staging is done next to the installation on the same volume; when the
+installation is in a protected folder such as `C:\Program Files\SunSet Viewer`,
+the lock file and the `.aurora-update-<UUID>` staging directory are created in
+`%TEMP%`. The installation refuses repositories, build trees, folder
 links and folders containing files foreign to the package.
 
 After the agreement to restart, a copy of the viewer acts as a helper
-outside the installed folder. It waits for the end of the parent with a
-Windows handle, takes a lock, backs up the old folder and puts the new one
-in place. The arguments are kept. The new instance signals a presented
+outside the installed folder. For protected installations, the helper is
+started via `ShellExecuteExW` with the `"runas"` verb so Windows prompts for
+UAC administrator approval before modifying `Program Files`. It waits for the
+end of the parent with a Windows handle, takes a lock, backs up the old folder
+and puts the new one in place (falling back to a validated cross-volume copy
+when `%TEMP%` and the chosen installation directory reside on different drives).
+The arguments are kept. The new instance signals a presented
 frame; the backup is then deleted. If it exits or shows nothing for
 90 seconds, the old version is restored and restarted with a message. The
 errors offer the release page.

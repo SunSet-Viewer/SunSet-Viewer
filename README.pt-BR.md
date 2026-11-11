@@ -240,7 +240,7 @@ Medição realizada em loja movimentada com cerca de 16.000 objetos no mesmo com
 - **Distância de Visão até 8.192m (`dd 5000+`) & SpeedRez (Exclusivo SunSet)** — alcance visual estendido de `32m` a `8.192m` via comando de chat `dd`, Preferências Rápidas e Gráficos, harmonizado com a Distância de Visão Progressiva (SpeedRez) ([guia](docs/DRAW_DISTANCE.md)).
 - **Upscaling AMD FSR 3.1** — renderização de alta resolução com excelente desempenho utilizando compute shaders WGSL.
 - **Localização 100% pt-BR** — tradução nativa em Português do Brasil com mais de 12.770 termos autênticos da comunidade Second Life.
-- **Atualizador Automático** — verificação e instalação atômica diretamente dos lançamentos no GitHub.
+- **Atualizador Automático** — verificação e instalação atômica diretamente dos lançamentos no GitHub, com suporte a pastas portáteis e elevação UAC (`%TEMP%`) para instalações em `C:\Program Files` ou pastas personalizadas escolhidas no instalador `.msi`.
 - **Renderização Vulkan** — pipeline bindless, multi-draw indirect, GTAO, sombras de contato, materiais PBR e legados.
 - **Avatares e Bento** — animações suaves, bakes de servidor, roupas em camadas, Quickjump e reset de esqueleto.
 - **Modo Foto** — visor de alta precisão, foco automático nos olhos, profundidade de campo, exportação até 8K e suporte a LUTs.

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
+     xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
   <Package
     Name="SunSet Viewer"
     Manufacturer="SunSet Viewer"
@@ -10,6 +11,18 @@
       AllowSameVersionUpgrades="yes"
       DowngradeErrorMessage="A newer version of SunSet Viewer is already installed." />
     <MediaTemplate EmbedCab="yes" />
+
+    <Property Id="INSTALLFOLDER">
+      <RegistrySearch
+        Id="RememberedInstallDir"
+        Root="HKLM"
+        Key="Software\SunSet Viewer"
+        Name="InstallDir"
+        Type="raw" />
+    </Property>
+
+    <ui:WixUI Id="WixUI_InstallDir" InstallDirectory="INSTALLFOLDER" />
+    <WixVariable Id="WixUILicenseRtf" Value="$(var.LicenseRtf)" />
 
     <StandardDirectory Id="ProgramFiles64Folder">
       <Directory Id="INSTALLFOLDER" Name="SunSet Viewer" />
@@ -31,6 +44,12 @@
             Type="integer"
             Value="1"
             KeyPath="yes" />
+          <RegistryValue
+            Root="HKLM"
+            Key="Software\SunSet Viewer"
+            Name="InstallDir"
+            Type="string"
+            Value="[INSTALLFOLDER]" />
         </Component>
       </Directory>
     </StandardDirectory>
