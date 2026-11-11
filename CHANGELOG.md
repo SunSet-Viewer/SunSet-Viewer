@@ -4,6 +4,35 @@ Todas as mudanças notáveis, novidades e correções de bugs do projeto **SunSe
 
 ---
 
+## [0.9.8] — 2026-11-10
+
+### 👗 Vitrine de Trajes, Retratos Automáticos e Foto HD (Aurora v0.9.6 Final)
+- **Retratos Automáticos de Trajes (Auto Portrait)**: Enquadramento inteligente por ossos do avatar (corpo inteiro, busto e rosto), poses locais de estúdio e iluminação dedicada sem afetar a visão dos demais residentes.
+- **Retratos em Lote (Batch Portraits)**: Geração sequencial automatizada de retratos para todos os trajes do inventário sem imagem a partir da Vitrine de Trajes.
+- **Foto HD Opcional para Trajes**: Suporte a texturas em alta resolução (512×512 ou 1024×1024) salvas na pasta do traje além da miniatura gratuita (256×256).
+
+### 📸 65 Looks de Foto Embutidos e Aprimoramentos no Poser
+- **LUTs por Czar Fenris e Nanner Pudding**: 65 tabelas de cores 3D (20 do Czar Fenris e 45 do Nanner Pudding) integradas e comprimidas nativamente no executável.
+- **Importação Múltipla de LUTs**: Suporte à seleção e importação de múltiplos arquivos `.cube` simultâneos.
+- **Poser com Profundidade de Campo (DoF)**: O editor de poses agora preserva o desfoque de profundidade de campo configurado no modo de fotografia.
+
+### 🎮 Renderização, GPU e Controles
+- **Tipos de Renderização (Advanced › Rendering Types)**: Menu com alternância rápida para Terreno, Água, Céu, Nuvens, Objetos, Avatares, Animesh, Árvores, Grama e Partículas com atalhos de teclado dedicados no padrão do visualizador clássico.
+- **Correção para AMD Radeon RX 9000 (RDNA 4)**: Eliminação de travamentos de GPU (TDR/device lost) nas sombras de contato através de shader sem dependência de workgroup memory.
+- **Freio com Barra de Espaço**: Tecla `Espaço` interrompe o movimento do avatar imediatamente no solo ou no ar.
+- **Confirmações de Inventário com Teclado**: Teclas `Enter` e `Tab` agora respondem diretamente aos diálogos de exclusão de itens e esvaziamento da lixeira.
+- **Proteção de Região/Propriedade**: Diálogo de confirmação para alterações de acesso que enviem residentes de volta para casa.
+
+### 📦 Instalador Windows MSI e Atualizador Automático
+- **Diretório Customizável de Instalação no MSI**: O instalador oficial Windows agora permite selecionar qualquer pasta de destino (`WixUI_InstallDir`).
+- **Elevação UAC Transparente via `%TEMP%`**: O atualizador executa a instalação a partir do diretório temporário do usuário, garantindo elevação segura de privilégios administrativos.
+
+### 🌐 Localização e Não-Regressão
+- **Paridade Total em Português (`pt-BR.ftl`)**: 169 novas chaves traduzidas e validadas, com 100% de paridade em relação ao inglês.
+- **12 Testes Unitários de Não-Regressão**: Suíte automatizada validando permanentemente todos os recursos exclusivos do SunSet e a base 0.9.6.
+
+---
+
 ## [0.9.7] — 2026-11-10
 
 ### 🧪 Suíte de Testes Unitários de Não-Regressão SunSet
