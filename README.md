@@ -37,7 +37,7 @@ A Vulkan renderer, a clean interface, and the Second Life you already know.
 <img width="1116" height="717" alt="The SunSet page of Preferences, with a SunSet or Legacy choice for each redesigned window" src="docs/screenshots/preferences.png" />
 
 **New login experience with multi-avatar support.**  
-<img width="1920" height="1032" alt="The SunSet login screen with avatar accounts side by side and live news" src="docs/screenshots/login.webp" />  
+<img width="1920" height="1041" alt="The SunSet Viewer login screen with saved avatar account, version status, update check, and live news" src="docs/screenshots/login.png" />  
 
 <details>
 <summary><b>More screenshots</b>: conversations, notifications, inventory, places, search and the resource monitor</summary>
@@ -374,7 +374,7 @@ are planned or in progress: they are not in the viewer yet.
 
 ### A photo mode like a real camera
 
-<img width="1920" height="1025" alt="The photo viewfinder: rule of thirds, the autofocus point locked on an avatar's face, the camera pad, the focal ring and the exposure readouts" src="docs/screenshots/viewfinder.webp" />
+<img width="1920" height="1041" alt="The SunSet photo viewfinder: rule of thirds, the autofocus point locked on an avatar's face, the camera pad, the focal ring and the exposure readouts" src="docs/screenshots/viewfinder.png" />
 
 - **A viewfinder, full screen**: the world under a camera's overlay, with
   three display levels from everything to the picture alone.
@@ -420,7 +420,7 @@ are planned or in progress: they are not in the viewer yet.
   miniature, a blurred background, the subject standing out. What you see in
   the viewfinder is what the photo gets, at full resolution.
 
-<img width="1600" height="900" alt="The photo mode's filter panel: three effects stacked (silver black and white, old lens, glitch), the glitch's sliders, and the filters tab with its sections" src="docs/screenshots/photo-looks.webp" />
+<img width="1919" height="1047" alt="The SunSet photo mode filter panel: Sepia filter active in the viewfinder, with search and tabs for Legacy, aurora, and My LUTs" src="docs/screenshots/photo-looks.png" />
 
 ### Creator tools
 
@@ -618,6 +618,8 @@ are planned or in progress: they are not in the viewer yet.
 - **A clean way out**: on closing, a dialog over a blurred background offers
   Quit, Log out (back to the login screen) and Cancel. Esc cancels; the
   viewer waits for the logout before closing.
+
+<img width="1920" height="1042" alt="The SunSet Viewer exit confirmation dialog over a blurred background offering Cancel, Log out, and Quit" src="docs/screenshots/sair.png" />
 - **Updates in one click**: at launch SunSet offers the new version,
   downloads it in the background, checks it against its published hash,
   installs it and restarts your session, and rolls back if anything goes
