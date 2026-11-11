@@ -3522,7 +3522,6 @@ world-tphistory-6-days-ago-or-earlier = 6 dias atrás ou antes
 world-tphistory-6-months-ago-or-earlier = 6 meses atrás ou antes
 common-image = Imagem
 app-inventory-thumbnail-demo-image-unavailable = Imagem de demonstração indisponível.
-ui-appearance-gallery-outfit-picture = Foto da roupa
 app-inventory-thumbnail-invalid-or-oversized-image = Imagem inválida ou superdimensionada.
 app-inventory-thumbnail-images = Imagens
 ui-bars-frames-per-second-click-for-performance-details = Quadros por segundo: clique para detalhes de desempenho
@@ -6723,8 +6722,8 @@ photo-knob-desaturate = Dessaturação
 photo-knob-darken = Escurecimento
 photo-knob-subject-zone = Zona de assunto
 photo-looks-legacy = Legado
-photo-looks-aurora = aurora
-photo-looks-luts = Meus LUTs
+photo-looks-aurora = SunSet
+photo-looks-luts = LUTs
 photo-looks-search = Pesquise os filtros
 photo-looks-no-result = Nenhum filtro tem esse nome
 photo-looks-film = Filme
@@ -6732,14 +6731,21 @@ photo-looks-color = Cor
 photo-looks-lens = Lente
 photo-looks-creative = Criativo
 photo-looks-depth = Profundidade
-photo-lut-import = Importe um arquivo .cube…
+photo-lut-import = Importar arquivos .cube…
 photo-lut-folder = Abra a pasta
 photo-lut-remove = Excluir este LUT
 photo-lut-empty = Ainda não há LUT. Importe os looks do Lightroom, DaVinci Resolve ou Photoshop como arquivos .cube.
 photo-lut-hint = LUTs 3D para fotos e vídeos (.cube), até 128 pontos por lado.
-photo-lut-dialog = Importar uma LUT
+photo-lut-dialog = Importar LUTs
 photo-lut-files = LUT 3D
 photo-lut-imported = { $name } importado
+photo-lut-imported-many = { $count ->
+    [one] { $count } LUT importado
+   *[other] { $count } LUTs importados
+    }
+photo-lut-pack = Por { $creator }
+photo-lut-pack-tip = LUTs criados por { $creator } e compartilhados com todos os usuários do SunSet
+photo-lut-mine = Meus LUTs
 photo-lut-failed = LUT não lido: { $error }
 photo-look-a-fine-grain = Grão fino
 photo-look-a-fine-grain-tip = Um grão de filme leve, mais visível nos tons médios
@@ -8877,7 +8883,6 @@ radar-age-alert = { $days ->
     [one] acionou o alerta de idade. Idade: { $days } dia
    *[other] acionou o alerta de idade. Idade: { $days } dias
     }
-radar-too-far-to-zoom = Este avatar está muito longe para a câmera alcançá-lo.
 people-view-sort-options = Opções de visualização/classificação
 people-filter-by-name = Filtrar por nome…
 people-edit-contact-hold = Segure o botão esquerdo do mouse para editar as configurações do contato.
@@ -11950,12 +11955,11 @@ poser-also-bvh = Também .bvh
 poser-upload = Enviar como animação…
 poser-open-folder = Abrir pasta
 poser-natural = Alinhamento de rotação natural
-poser-dof = Profundidade de campo while posing
+poser-dof = Profundidade de campo durante a pose, fora do modo foto
 poser-sensitivity = Sensibilidade do trackball
 poser-unlock-pelvis = Desbloqueie a pélvis em .bvh
 poser-overwrite = Confirme antes de substituir uma pose
 poser-file-filter = Pose SunSet, animação nativa ou BVH
-poser-saved = Pose salva em sua biblioteca local.
 poser-format-limits = O formato de pose local mantém escalas e volumes de colisão. Animações nativas e BVH não contêm faixas de escala; A BVH também omite os volumes de colisão. O upload sempre abre a visualização normal e a confirmação do preço.
 poser-body = Corpo
 poser-face = Cara
@@ -13662,7 +13666,7 @@ ui-appearance-showcase-more = Mais ações
 
 ui-appearance-showcase-no-picture = Sem foto
 
-ui-appearance-showcase-no-picture-hint = Tire uma foto do que você vê agora ou escolha uma imagem do seu inventário.
+ui-appearance-showcase-no-picture-hint = O SunSet enquadra seu avatar de frente em um fundo liso e tira a foto. Um traje que você não estiver usando só é vestido se você pedir, e o seu traje atual pode ser recolocado depois.
 
 ui-appearance-showcase-no-picture-yet = Ainda sem foto
 
@@ -13670,7 +13674,7 @@ ui-appearance-showcase-other = Outro
 
 ui-appearance-showcase-pick = Escolha um traje para visualizá-lo aqui.
 
-ui-appearance-showcase-show-them = Mostrá-los
+ui-appearance-batch-open = Tirar os retratos
 
 ui-appearance-showcase-wear-item = Vestir este item
 
@@ -13787,3 +13791,176 @@ world-payments-for-land-pass = por um passe de acesso ao terreno
 world-payments-paid-you-reason = { $name }{ " pagou a você L$" }{ $amount }{ " " }{ $reason }
 
 world-payments-received-title = L$ recebido
+
+# --- Novas chaves da release final Aurora v0.9.6 integradas no SunSet Viewer ---
+
+render-types-menu = Tipos de renderização
+render-types-terrain = Terreno
+render-types-water = Água
+render-types-sky = Céu
+render-types-clouds = Nuvens
+render-types-objects = Objetos
+render-types-avatars = Avatares
+render-types-animesh = Animesh
+render-types-trees = Árvores
+render-types-grass = Grama
+render-types-particles = Partículas
+render-types-show-all = Mostrar tudo
+keybinds-render-trees = Tipo de renderização: Árvores
+keybinds-render-avatars = Tipo de renderização: Avatares
+keybinds-render-terrain = Tipo de renderização: Terreno
+keybinds-render-sky = Tipo de renderização: Céu
+keybinds-render-water = Tipo de renderização: Água
+keybinds-render-objects = Tipo de renderização: Objetos
+keybinds-render-grass = Tipo de renderização: Grama
+keybinds-render-clouds = Tipo de renderização: Nuvens
+
+ui-appearance-portrait-auto = Retrato automático
+ui-appearance-portrait-new-photo = Nova foto (retrato automático)
+ui-appearance-portrait-photo-mode = Modo foto, quadro quadrado
+ui-appearance-portrait-title = Retrato automático — { $outfit }
+ui-appearance-portrait-framed = Enquadrado automaticamente
+ui-appearance-portrait-check = A foto: usar ou tirar outra
+ui-appearance-portrait-preparing = Preparando a pré-visualização…
+ui-appearance-portrait-local = A pose, o fundo e a iluminação aparecem apenas na sua tela: os outros veem você normalmente. HUDs e nomes ficam de fora da foto. Sua câmera volta para onde estava depois. A foto se torna a imagem gratuita de 256 × 256 do traje, mantida no seu inventário.
+ui-appearance-portrait-current = Imagem atual
+ui-appearance-portrait-current-replaced = Ela será substituída quando você usar a nova foto.
+ui-appearance-portrait-framing = Enquadramento
+ui-appearance-portrait-body = Corpo inteiro
+ui-appearance-portrait-bust = Busto
+ui-appearance-portrait-face = Rosto
+ui-appearance-portrait-pose = Pose
+ui-appearance-portrait-pose-a = Pose em A
+ui-appearance-portrait-arms-down = Braços ao lado do corpo
+ui-appearance-portrait-pose-current = Minha pose atual
+ui-appearance-portrait-angle = Ângulo
+ui-appearance-portrait-front = Frente
+ui-appearance-portrait-three-quarter = Três quartos
+ui-appearance-portrait-profile = Perfil
+ui-appearance-portrait-backdrop = Fundo
+ui-appearance-portrait-dark = Escuro
+ui-appearance-portrait-grey = Cinza
+ui-appearance-portrait-light = Claro
+ui-appearance-portrait-scene = A cena
+ui-appearance-portrait-lighting = Iluminação
+ui-appearance-portrait-studio = Estúdio
+ui-appearance-portrait-region = Da região
+ui-appearance-portrait-hide-others = Ocultar outros avatares durante a foto
+ui-appearance-portrait-keep = Manter estas configurações para os próximos retratos
+ui-appearance-portrait-take = Tirar a foto
+ui-appearance-portrait-taking = Tirando a foto…
+ui-appearance-portrait-use = Usar esta foto
+ui-appearance-portrait-retake = Tirar novamente
+ui-appearance-portrait-adjust = Ajustar manualmente no modo foto
+ui-appearance-portrait-not-worn = Você não está vestindo este traje. Vista-o para a foto: você pode recolocar o seu depois.
+ui-appearance-portrait-unsaved = Seu traje atual tem alterações não salvas: ao recolocá-lo, será vestida a versão salva.
+ui-appearance-portrait-wear = Vestir para a foto
+ui-appearance-portrait-wearing = Vestindo o traje: tire a foto assim que tudo estiver carregado.
+ui-appearance-portrait-saved = A foto agora é a imagem do traje.
+ui-appearance-portrait-not-saved = Nenhuma foto foi salva.
+ui-appearance-portrait-previous-unknown = O traje que você usava antes não foi identificado: vista outro pela galeria se desejar.
+ui-appearance-portrait-put-back = Vestir { $outfit } novamente
+ui-appearance-portrait-keep-this = Manter este traje
+ui-appearance-portrait-vf-banner = Foto para o traje
+ui-appearance-portrait-vf-square = quadro quadrado
+ui-appearance-portrait-vf-exit = Sair do modo foto
+ui-appearance-portrait-vf-helpers = Auxiliares
+ui-appearance-portrait-vf-reframe = Reenquadrar no meu avatar
+ui-appearance-portrait-vf-pose = Pose em A (na minha tela)
+ui-appearance-portrait-vf-studio = Fundo de estúdio
+ui-appearance-portrait-vf-how = Como funciona
+ui-appearance-portrait-vf-how-text = O visor habitual, com todas as suas configurações. Apenas o quadrado é mantido: ele se torna a imagem do traje. Tire a foto e depois clique em “Usar para o traje”.
+ui-appearance-portrait-vf-use = Usar para o traje
+ui-appearance-portrait-hd-title = Foto em HD
+ui-appearance-portrait-hd = Foto em HD (L$ { $cost })
+ui-appearance-portrait-hd-no-price = Foto em HD (preço desconhecido)
+ui-appearance-portrait-hd-short = Seu saldo é insuficiente: a foto em HD custa L$ { $cost }.
+ui-appearance-portrait-hd-unknown = O preço de envio do grid ainda não é conhecido: a foto em HD aguarda essa informação.
+ui-appearance-portrait-hd-busy = Outra foto em HD ainda está sendo enviada.
+ui-appearance-portrait-hd-about = Além da imagem gratuita: uma textura paga deste tamanho, guardada na pasta do traje, para a visualização grande da galeria.
+ui-appearance-portrait-hd-replaces = A foto em HD anterior do traje vai para a Lixeira.
+ui-appearance-portrait-hd-confirm = Enviar a foto em HD para o traje custa L$ { $cost }. A imagem gratuita também é definida.
+ui-appearance-portrait-hd-pay = Pagar L$ { $cost } e usar
+ui-appearance-portrait-hd-back = Voltar
+ui-appearance-portrait-hd-item-name = Foto do traje "{ $outfit }"
+app-outfit-hd-sending = Enviando a foto em HD (L$ { $cost })…
+app-outfit-hd-saved = A foto em HD está no traje (L$ { $cost }).
+app-outfit-hd-failed = A foto em HD não foi enviada: { $error }
+app-outfit-hd-outfit-gone = A foto em HD não foi enviada: o traje não existe mais.
+app-outfit-hd-price-changed = O preço de envio mudou para L$ { $cost }: use a foto em HD novamente para confirmar.
+app-outfit-hd-unknown = O resultado do envio da foto em HD é desconhecido: verifique a pasta do traje antes de tentar novamente.
+app-outfit-hd-refused = O servidor recusou a foto em HD.
+ui-appearance-batch-title = Retratos de trajes
+ui-appearance-batch-choose = Trajes para fotografar
+ui-appearance-batch-none = Nenhum destes trajes pode ser fotografado por você.
+ui-appearance-batch-progress = Foto { $index } de { $count }…
+ui-appearance-batch-paused = Pausado — foto { $index } de { $count }
+ui-appearance-batch-restoring = Recolocando seu traje…
+ui-appearance-batch-finished = Retratos concluídos
+ui-appearance-batch-summary = { $done ->
+    [one] { $done } retrato tirado
+   *[other] { $done } retratos tirados
+    }, { $skipped } ignorados.
+ui-appearance-batch-not-restored = Não foi possível recolocar seu traje inicial: vista-o novamente pela galeria.
+ui-appearance-batch-redo = { $name } (refazer)
+ui-appearance-batch-no-picture = Sem foto
+ui-appearance-batch-has-picture = Já tem foto: marque para tirar novamente
+ui-appearance-batch-locked = Bloqueado por RLVa
+ui-appearance-batch-empty = Nada para vestir nele
+ui-appearance-batch-waiting = Aguardando
+ui-appearance-batch-wearing = Vestindo o traje…
+ui-appearance-batch-loading = Carregando o traje… { $worn } / { $total } itens
+ui-appearance-batch-loading-look = Carregando o traje… texturas e camadas
+ui-appearance-batch-framing = Enquadrando…
+ui-appearance-batch-shooting = Tirando o retrato…
+ui-appearance-batch-saving = Salvando a imagem…
+ui-appearance-batch-done = Concluído
+ui-appearance-batch-done-missing = Concluído, { $missing } itens ainda carregando
+ui-appearance-batch-not-done = Não concluído
+ui-appearance-batch-skipped-locked = Ignorado: bloqueado por RLVa
+ui-appearance-batch-skipped-refused = Ignorado: RLVa recusou a troca
+ui-appearance-batch-skipped-slow = Ignorado: ainda carregando após { $seconds } s
+ui-appearance-batch-skipped-gone = Ignorado: o traje não existe mais
+ui-appearance-batch-skipped-empty = Ignorado: nada para vestir nele
+ui-appearance-batch-failed = Falhou: { $reason }
+ui-appearance-batch-settings = Configurações do retrato
+ui-appearance-batch-how = O SunSet veste cada traje, aguarda o carregamento (texturas e camadas), tira o retrato e passa para o próximo.
+ui-appearance-batch-seen = Outras pessoas verão você trocando de traje.
+ui-appearance-batch-back = Seu traje inicial retorna ao final ou assim que você parar. Trajes bloqueados por RLVa são ignorados.
+ui-appearance-batch-unsaved = Salve ou desfaça primeiro as alterações do seu traje atual: é ele que será recolocado ao final.
+ui-appearance-batch-no-start = Vista primeiro um traje salvo: é ele que será recolocado ao final.
+ui-appearance-batch-start = Iniciar ({ $count })
+ui-appearance-batch-stop = Parar e recolocar meu traje
+ui-appearance-batch-pause = Pausar
+ui-appearance-batch-resume = Retomar
+ui-appearance-batch-hd-title = Fotos em HD
+ui-appearance-batch-hd = Fotos em HD (L$ { $total }: { $count } × L$ { $each })
+ui-appearance-batch-hd-balance = Seu saldo: L$ { $balance }.
+ui-appearance-batch-hd-short = Seu saldo (L$ { $balance }) é insuficiente para os L$ { $total } destas fotos em HD: desmarque trajes ou deixe as fotos em HD de fora.
+ui-appearance-batch-hd-about = Cada traje também recebe uma textura em HD paga em sua pasta; você paga apenas pelos retratos tirados, e a foto em HD anterior de cada traje vai para a Lixeira.
+ui-appearance-batch-hd-confirm = Enviar { $count } fotos em HD custa L$ { $total } no total (L$ { $each } cada). Você paga apenas pelos retratos tirados; as imagens gratuitas também são definidas.
+ui-appearance-batch-hd-pay = Pagar L$ { $total } e iniciar
+ui-appearance-batch-hd-saved = Fotos em HD salvas: { $saved } (L$ { $paid })
+ui-appearance-batch-hd-pending = Fotos em HD ainda sendo enviadas: { $pending }
+ui-appearance-batch-hd-failed = Fotos em HD não enviadas: { $failed } ({ $error })
+
+keybinds-stop-moving = Parar movimento (frear)
+
+ui-options-confirm-inventory-delete = Confirmar exclusão de itens do inventário
+ui-options-confirm-inventory-delete-help = Perguntar antes de mover itens para a Lixeira. Exclusões permanentes da Lixeira sempre pedem confirmação.
+
+region-people-ask-sent-home = Aqueles que estiverem na propriedade neste momento serão enviados para casa.
+region-ask-restrict-title = Restringir quem pode entrar?
+region-ask-restrict-lists = Apenas os residentes e grupos permitidos da propriedade, seus gerentes e seu proprietário poderão entrar.
+region-ask-restrict-age = Residentes menores de 18 anos serão recusados.
+region-ask-restrict-payment = Residentes sem informações de pagamento cadastradas serão recusados.
+region-ask-restrict-bots = Contas declaradas como agentes roteirizados (bots) serão recusadas.
+region-ask-restrict-sent-home = Isso se aplica a todas as regiões da propriedade de uma só vez: quem já estiver lá e não atender mais aos requisitos será enviado para casa.
+region-ask-restrict-here = { $count ->
+    [one] { $count } outra pessoa está nesta região neste momento.
+   *[other] { $count } outras pessoas estão nesta região neste momento.
+}
+region-ask-restrict-ok = Restringir acesso
+
+inventory-favorites-show-parent-folders = Mostrar pastas pai nos Favoritos
+inventory-favorites-show-parent-folders-help = Mostra os favoritos em sua árvore de pastas original. Desativado por padrão: os favoritos aparecem diretamente na lista; uma pasta favorita mantém seu conteúdo.

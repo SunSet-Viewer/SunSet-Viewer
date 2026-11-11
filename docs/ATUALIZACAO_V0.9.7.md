@@ -12,19 +12,27 @@ Este documento descreve todas as funcionalidades, melhorias de engenharia e gara
 | **Controle de Movimento (100x) & Salto Instantâneo (Dash)** | Multiplicador de velocidade de solo e voo até **100x** via **Aurora LSL Bridge v1.42**, salto instantâneo (`Dash`) de até **8.192m** (`/dash <metros>`) e atalhos em Mouselook (**Tecla `E`** e **Botão do Meio do Mouse**). | [MOVEMENT_DASH.md](MOVEMENT_DASH.md) |
 | **Hitboxes 3D de Combate & Raycast Local** | Renderização em tempo real dos cubos de colisão 3D reportados pelo simulador, detecção local de impacto por articulação do esqueleto, linha de diagnóstico de raycast e oclusão por objetos/terreno (`scene_objects_block_rays`). | [HITBOX_E_CORES.md](HITBOX_E_CORES.md) |
 | **Cores Individuais de Hitbox e Minimapa (`avatar_marks`)** | Marcação individual de cor por residente via menu de contexto (`Marcar cor` › Paleta rápida ou RGB/HSV), com precedência máxima sobre Contact Sets tanto no **Minimapa** quanto no **Hitbox 3D** do mundo. | [HITBOX_E_CORES.md](HITBOX_E_CORES.md) |
-| **Localização 100% Nativa em Português (`pt-BR`)** | Mais de 12.770 chaves traduzidas em `crates/aurora-i18n/locales/pt-BR.ftl`, incluindo todas as 120 novas strings introduzidas na base 0.9.4 e todas as chaves exclusivas do SunSet Viewer. | [TRANSLATING.md](TRANSLATING.md) |
+| **Localização 100% Nativa em Português (`pt-BR`)** | Mais de 12.930 chaves traduzidas em `crates/aurora-i18n/locales/pt-BR.ftl`, incluindo todas as chaves da release final `v0.9.6` e todas as chaves exclusivas do SunSet Viewer. | [TRANSLATING.md](TRANSLATING.md) |
+| **Instalador MSI Customizável & Auto-Update com Elevação UAC** | Escolha livre de diretório de instalação no MSI (`WixUI_InstallDir`) e atualização automática resiliente via `%TEMP%` com elevação UAC sob demanda. | [UPDATES.md](UPDATES.md) |
 
 ---
 
-## 🚀 2. Novidades Integradas do Aurora Viewer v0.9.5 & v0.9.6
+## 🚀 2. Novidades Integradas do Aurora Viewer v0.9.5 & Release Final v0.9.6
 
-### 🌌 Céu Estelar e Renderização da Via Láctea (Milky Way)
-- Renderização panorâmica realista da Via Láctea integrada ao pipeline de céu diurno/noturno.
-- Integração refinada com o catálogo de estrelas Tycho-2 para brilho e densidade celestial precisa.
+### 🌌 Céu Estelar, Via Láctea e Tipos de Renderização (`Rendering Types`)
+- Renderização panorâmica realista da Via Láctea integrada ao pipeline de céu diurno/noturno e catálogo Tycho-2.
+- Novo menu `Avançado › Tipos de renderização` (Terreno, Água, Céu, Nuvens, Objetos, Avatares, Animesh, Árvores, Grama e Partículas) com atalhos de teclado dedicados.
+- Correção de sombras de contato sem *workgroup memory* para placas **AMD Radeon RX 9000 (RDNA 4)** e aplicação única de nitidez (*FidelityFX CAS*) no upscale.
 
-### 👗 Vitrine de Trajes (Outfit Showcase)
-- Nova funcionalidade para inspeção e gerenciamento visual de trajes no inventário.
-- Permite pré-visualizar itens anexados e camadas com facilidade.
+### 👗 Vitrine de Trajes, Retratos Automáticos, Lote e Foto HD
+- **Retrato Automático e Modo Foto Quadrada (`#3226`)**: Enquadramento automático (corpo inteiro, busto ou rosto) com fundo e iluminação de estúdio locais.
+- **Retratos em Lote (`#3235`)**: Fotografe automaticamente múltiplos trajes sem foto direto pela Vitrine de Trajes.
+- **Foto HD Opcional (`#3237`)**: Opção de salvar textura HD (`512×512` ou `1024×1024`) na pasta do traje além da miniatura gratuita (`256×256`).
+
+### 📸 65 LUTs Embutidos, Poser e Construção
+- **65 Looks de Foto Embutidos (`#3205`, `#3224`)**: 20 LUTs por **Czar Fenris** e 45 LUTs por **Nanner Pudding** comprimidos no executável, além de importação de vários `.cube` de uma só vez.
+- **Poser + DoF (`#3230`)**: O Poser preserva a profundidade de campo da janela de fotografia.
+- **Inventário, Gizmo e Região**: Favoritos sem pastas pai por padrão (`#3212`), confirmação com `Enter`/`Tab` ao excluir (`#2979`), freio de movimento com `Espaço` (`#2417`) e confirmação de restrições de Região/Propriedade que enviam residentes para casa (`#3243`).
 
 ### 🧭 Rastreador de Regiões (Region Tracker)
 - Disponível em `Mundo › Rastreador de região`.
@@ -42,7 +50,7 @@ Este documento descreve todas as funcionalidades, melhorias de engenharia e gara
 
 ## 🛡️ 3. Suíte de Testes Unitários de Não-Regressão (`crates/aurora-viewer/src/sunset_tests.rs`)
 
-Para blindar o visualizador contra quebras acidentais em futuras sincronizações upstream, foi desenvolvida uma suíte de testes unitários contendo **11 testes automatizados**, cobrindo rigorosamente todos os 7 pilares customizados do SunSet Viewer:
+Para blindar o visualizador contra quebras acidentais em futuras sincronizações upstream, foi desenvolvida uma suíte de testes unitários contendo **12 testes automatizados**, cobrindo rigorosamente todos os pilares customizados do SunSet Viewer e a integração da `v0.9.6`:
 
 1. **`test_draw_distance_sanitize_clamps_to_8192`**: Garante que `Settings::sanitize()` nunca rejeite ou resete distâncias de visão até `8192.0m`.
 2. **`test_quick_prefs_slider_draw_distance_range_allows_8192`**: Garante que o slider de Preferências Rápidas permita deslizar até `8192.0m`.
@@ -55,4 +63,5 @@ Para blindar o visualizador contra quebras acidentais em futuras sincronizaçõe
 9. **`test_localization_pt_br_has_zero_missing_keys_compared_to_en`**: Valida programaticamente que o arquivo `pt-BR.ftl` possui **zero** chaves faltantes em relação ao `en.ftl`.
 10. **`test_sunset_branding_logo_and_assets_validity`**: Verifica os magic bytes de imagem PNG e a integridade de `assets/branding/sunset-logo.png`.
 11. **`test_ci_cd_workflows_and_build_scripts_integrity`**: Valida a presença do runner `macos-15` em `release.yml`, a emissão de símbolos PDB para Windows e o suporte a builds locais no script `check.ps1`.
+12. **`test_aurora_v096_final_features_integrated_without_regression`**: Valida os 65 LUTs embutidos, os 10 controles de `Rendering types` e a convivência de `outfit_portrait` com `draw_distance` de `8192m`.
 

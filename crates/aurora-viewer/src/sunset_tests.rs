@@ -297,3 +297,35 @@ fn test_ci_cd_workflows_and_build_scripts_integrity() {
         "check.ps1 deve conter as flags de tolerância aprovadas para o workspace"
     );
 }
+
+// ============================================================================
+// 8. Integração da Release Final Aurora v0.9.6 sem Regressão
+// ============================================================================
+
+#[test]
+fn test_aurora_v096_final_features_integrated_without_regression() {
+    // 1. Pacotes de LUT embutidos (Czar Fenris: 20 + Nanner Pudding: 45 = 65 LUTs)
+    let packs = crate::snapshot::lut_packs::packs();
+    assert_eq!(packs.len(), 2, "Devem existir 2 pacotes de LUT embutidos");
+    let total_luts: usize = packs.iter().map(|p| p.tables.len()).sum();
+    assert_eq!(total_luts, 65, "Devem existir 65 LUTs embutidos no total");
+
+    // 2. Tipos de renderização (Advanced › Rendering types)
+    let mut hidden = crate::scene::render_types::Hidden::default();
+    assert_eq!(hidden, Default::default(), "Nenhum tipo de renderização vem oculto por padrão");
+    hidden.trees = true;
+    assert!(hidden.trees, "Deve permitir alternar visibilidade de árvores");
+    assert_eq!(crate::ui::bars::RENDER_TYPE_ACTIONS.len(), 10);
+    assert_eq!(crate::ui::bars::RENDER_TYPE_ICONS.len(), 12);
+
+    // 3. Preservação de Settings::sanitized() com outfit_portrait e draw_distance 8192m
+    let mut s = Settings::default();
+    s.draw_distance = 8192.0;
+    s.outfit_portrait.hd = true;
+    let s = s.sanitized();
+    assert_eq!(
+        s.draw_distance, 8192.0,
+        "draw_distance de 8192m preservado junto com outfit_portrait"
+    );
+    assert!(s.outfit_portrait.hd, "Configuração outfit_portrait.hd preservada");
+}

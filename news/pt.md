@@ -20,8 +20,8 @@ Regras:
 
 # Notícias do SunSet Viewer
 
-## 2026-11-10 — SunSet Viewer v0.9.7: Aurora v0.9.6, Testes de Não-Regressão e Recursos SunSet
-A versão v0.9.7 consolida a sincronização total com o Aurora v0.9.6 (incluindo Via Láctea, Vitrine de Trajes, Rastreador de Regiões, ordenação alfa e snap de terreno) e traz a nova suíte de testes unitários automatizados cobrindo todos os recursos exclusivos do SunSet Viewer: controle de velocidade ampliado até 100x com a ponte LSL v1.42, saltos de Dash instantâneo, alcance de visão até 8192m com SpeedRez, hitboxes de combate 3D com oclusão de cenário, marcação individual de cores com precedência e localização 100% nativa em Português do Brasil sem chaves ausentes.
+## 2026-11-10 — SunSet Viewer v0.9.7: Release Final Aurora v0.9.6, Retratos, 65 LUTs e Recursos SunSet
+A versão v0.9.7 integra 100% da release oficial Aurora v0.9.6 (Vitrine de Trajes com retrato automático, retratos em lote e foto HD, 65 LUTs embutidos de Czar Fenris e Nanner Pudding, Via Láctea, Tipos de Renderização, fix para AMD RX 9000 e instalador MSI com pasta customizável) preservando todos os recursos exclusivos do SunSet: velocidade até 100x, Dash instantâneo, visão até 8192m com SpeedRez, hitboxes 3D com oclusão, cores individuais de avatares e tradução 100% pt-BR.
 [Saiba mais](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.7)
 
 ## 2026-11-08 — SunSet Viewer v0.9.6: Marcador de Cores Individual para Contatos
