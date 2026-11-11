@@ -35,7 +35,7 @@ Renderizador Vulkan, interface limpa e o Second Life que você já conhece.
 <img width="1116" height="717" alt="Página SunSet das Preferências, com escolha entre SunSet ou Clássico para cada janela reformulada" src="docs/screenshots/preferences.png" />
 
 **Nova experiência de login com suporte a múltiplas contas de avatar.**  
-<img width="1920" height="1032" alt="Tela de login do SunSet com contas de avatar lado a lado e notícias em tempo real" src="docs/screenshots/login.webp" />  
+<img width="1920" height="1041" alt="Tela de login do SunSet Viewer com conta salva, status de versão e notícias em tempo real" src="docs/screenshots/login.png" />  
 
 <details>
 <summary><b>Mais capturas de tela</b>: conversas, notificações, inventário, lugares, pesquisa e monitor de recursos</summary>
@@ -192,7 +192,7 @@ O SunSet Viewer é um cliente modificado para Second Life baseado no [Aurora Vie
 
 ### Modo Foto Profissional
 
-<img width="1920" height="1025" alt="Visor de fotos profissional com regra dos terços, foco automático facial e controles manuais" src="docs/screenshots/viewfinder.webp" />
+<img width="1920" height="1041" alt="Visor de fotos profissional do SunSet Viewer com regra dos terços, foco automático facial e controles manuais" src="docs/screenshots/viewfinder.png" />
 
 - **Visor de Câmera Completo (Viewfinder)**: sobreposição de câmera profissional em tela cheia com alternância entre níveis de detalhes pelo atalho `I`.
 - **Foco Automático Facial**: modos AF-S, AF-C e foco manual. Em avatares, o ponto de foco trava nos olhos e acompanha os movimentos com confirmação sonora.
@@ -201,6 +201,8 @@ O SunSet Viewer é um cliente modificado para Second Life baseado no [Aurora Vie
 - **Resoluções até 8K**: presets prontos em PNG, JPEG e BMP, para salvar em disco, enviar para o inventário ou publicar no feed.
 - **Isolamento de Objeto / Avatar**: tire fotos do seu avatar ou de amigos com fundo totalmente transparente (canal alfa limpo) para criar cartazes e montagens sem esforço.
 - **Filtros e LUTs 3D**: 30 filtros consagrados do visualizador clássico, 36 efeitos modernos embutidos (grão de filme, teal & orange, visual analógico, falha/glitch) e importação direta de arquivos `.cube` do Photoshop, Lightroom ou DaVinci Resolve.
+
+<img width="1919" height="1047" alt="Painel de filtros do modo Foto no SunSet Viewer com filtro Sépia aplicado e abas Legado, aurora e Meus LUTs" src="docs/screenshots/photo-looks.png" />
 
 ---
 
@@ -216,20 +218,9 @@ O SunSet Viewer é um cliente modificado para Second Life baseado no [Aurora Vie
 
 ### Desempenho
 
-<table>
-  <tr>
-    <td width="50%" align="center" valign="top">
-      <img src="docs/screenshots/compare-firestorm.png" alt="Janela de estatísticas do Legacy Viewer em loja movimentada: 68 fps"><br>
-      <b>Legacy Viewer</b> · 68 fps
-    </td>
-    <td width="50%" align="center" valign="top">
-      <img src="docs/screenshots/compare-aurora.png" alt="Janela de estatísticas do Aurora upstream na mesma loja: 386 fps"><br>
-      <b>Aurora upstream / SunSet base</b> · 386 fps
-    </td>
-  </tr>
-</table>
+<img width="1175" height="759" alt="Monitor de recursos do SunSet Viewer em Português com CPU, GPU Vulkan, VRAM, rede, disco e divisão do tempo de quadro" src="docs/screenshots/performance.png" />
 
-Medição realizada em loja movimentada com cerca de 16.000 objetos no mesmo computador (RTX 4090) e mesmo local.
+O SunSet distribui o trabalho pesado entre múltiplos núcleos da CPU enquanto a GPU renderiza em paralelo pelo pipeline **Vulkan (`wgpu`)**, acompanhado de um monitor de recursos completo em tempo real.
 
 ---
 
@@ -253,6 +244,11 @@ Medição realizada em loja movimentada com cerca de 16.000 objetos no mesmo com
 
 ### Contas e Login
 A tela inicial exibe suas contas salvas em cartões com a foto do último local visitado e a grade escolhida. Basta clicar no cartão para entrar. O gerenciador de contas permite organizar a ordem dos cartões, esquecer senhas ou limpar autorizações 2FA.
+
+### Saída Limpa e Desconexão
+Ao fechar o visualizador, uma caixa de confirmação sobre fundo desfocado permite escolher entre **Cancelar**, **Desconectar** (retornar à tela de login) ou **Sair** aguardando o encerramento seguro da sessão.
+
+<img width="1920" height="1042" alt="Diálogo de saída do SunSet Viewer sobre fundo desfocado oferecendo Cancelar, Desconectar e Sair" src="docs/screenshots/sair.png" />
 
 ### Idioma
 O SunSet Viewer detecta automaticamente o idioma do seu sistema operacional. Para escolher manualmente:
