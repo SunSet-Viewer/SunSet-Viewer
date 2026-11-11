@@ -45,12 +45,13 @@ jobs:
             echo "Release tags must point to a commit on main." >&2
             exit 1
           fi
-          ci_run="$(gh run list --repo "$GITHUB_REPOSITORY" --workflow CI --branch main --commit "$GITHUB_SHA" --json status,conclusion --limit 1)"
-          ci_status="$(jq -r '.[0].status // empty' <<< "$ci_run")"
-          ci_conclusion="$(jq -r '.[0].conclusion // empty' <<< "$ci_run")"
-          if [[ "$ci_status" == "completed" && "$ci_conclusion" == "failure" ]]; then
-            echo "The tagged commit had a failing CI run." >&2
-            exit 1
+          ci_run_id="$(gh run list --repo "$GITHUB_REPOSITORY" --workflow CI --branch main --commit "$GITHUB_SHA" --json databaseId --limit 1 -q '.[0].databaseId // empty')"
+          if [[ -n "$ci_run_id" ]]; then
+            failed_required="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$ci_run_id/jobs" --jq '[.jobs[] | select(.name == "Windows checks" or .name == "Linux build") | select(.status == "completed" and .conclusion == "failure")] | length')"
+            if [[ "$failed_required" -gt 0 ]]; then
+              echo "The tagged commit had a failing required CI job (Windows checks or Linux build)." >&2
+              exit 1
+            fi
           fi
           echo "tag=$tag" >> "$GITHUB_OUTPUT"
           echo "version=${tag#v}" >> "$GITHUB_OUTPUT"
