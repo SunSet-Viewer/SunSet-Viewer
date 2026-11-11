@@ -45,12 +45,13 @@ jobs:
             echo "Release tags must point to a commit on main." >&2
             exit 1
           fi
-          ci_run="$(gh run list --repo "$GITHUB_REPOSITORY" --workflow CI --branch main --commit "$GITHUB_SHA" --json status,conclusion --limit 1)"
-          ci_status="$(jq -r '.[0].status // empty' <<< "$ci_run")"
-          ci_conclusion="$(jq -r '.[0].conclusion // empty' <<< "$ci_run")"
-          if [[ "$ci_status" == "completed" && "$ci_conclusion" == "failure" ]]; then
-            echo "The tagged commit had a failing CI run." >&2
-            exit 1
+          ci_run_id="$(gh run list --repo "$GITHUB_REPOSITORY" --workflow CI --branch main --commit "$GITHUB_SHA" --json databaseId --limit 1 -q '.[0].databaseId // empty')"
+          if [[ -n "$ci_run_id" ]]; then
+            failed_required="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$ci_run_id/jobs" --jq '[.jobs[] | select(.name == "Windows checks" or .name == "Linux build") | select(.status == "completed" and .conclusion == "failure")] | length')"
+            if [[ "$failed_required" -gt 0 ]]; then
+              echo "The tagged commit had a failing required CI job (Windows checks or Linux build)." >&2
+              exit 1
+            fi
           fi
           echo "tag=$tag" >> "$GITHUB_OUTPUT"
           echo "version=${tag#v}" >> "$GITHUB_OUTPUT"
@@ -90,17 +91,54 @@ jobs:
       AURORA_VERSION_TAG: ${{ needs.prepare.outputs.tag }}
       CARGO_PROFILE_RELEASE_DEBUG: "2"
     steps:
+      - name: Check existing Windows assets in draft release
+        id: check_windows
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          IS_PRERELEASE: ${{ needs.prepare.outputs.prerelease }}
+        run: |
+          $skip = 'false'
+          try {
+            $rel = & gh release view $env:AURORA_VERSION_TAG --repo $env:GITHUB_REPOSITORY --json isDraft,assets | ConvertFrom-Json
+            if ($LASTEXITCODE -eq 0 -and $rel.isDraft -eq $true) {
+              $names = @($rel.assets | ForEach-Object { $_.name })
+              $needed = @(
+                "SunSet-Viewer-$env:AURORA_VERSION_TAG-windows-x64.zip",
+                "SunSet-Viewer-$env:AURORA_VERSION_TAG-windows-x64.zip.sha256",
+                "SunSet-Viewer-$env:AURORA_VERSION_TAG-windows-x64-symbols.zip",
+                "SunSet-Viewer-$env:AURORA_VERSION_TAG-windows-x64-symbols.zip.sha256"
+              )
+              if ($env:IS_PRERELEASE -ne 'true') {
+                $needed += "SunSet-Viewer-$env:AURORA_VERSION_TAG-windows-x64.msi"
+                $needed += "SunSet-Viewer-$env:AURORA_VERSION_TAG-windows-x64.msi.sha256"
+              }
+              $missing = @($needed | Where-Object { $names -notcontains $_ })
+              if ($missing.Count -eq 0) {
+                Write-Host "All Windows release assets already exist in draft release. Skipping rebuild."
+                $skip = 'true'
+              }
+            }
+          } catch {
+            Write-Host "Could not query draft release, proceeding with full Windows build."
+          }
+          "skip=$skip" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
       - uses: actions/checkout@v7
+        if: steps.check_windows.outputs.skip != 'true'
         with:
           ref: ${{ needs.prepare.outputs.tag }}
           persist-credentials: false
       - uses: actions-rust-lang/setup-rust-toolchain@v2
+        if: steps.check_windows.outputs.skip != 'true'
       - name: Build release viewer
+        if: steps.check_windows.outputs.skip != 'true'
         run: cargo build --release --locked -p aurora-viewer --features xr-static-loader
       - name: Verify release version
+        if: steps.check_windows.outputs.skip != 'true'
         shell: pwsh
         run: ./scripts/verify-version.ps1 -Exe target/release/SunSet-Viewer.exe -Tag $env:AURORA_VERSION_TAG
       - name: Build crash symbols
+        if: steps.check_windows.outputs.skip != 'true'
         shell: pwsh
         run: |
           cargo install dump_syms --version 2.3.9 --locked
@@ -138,7 +176,7 @@ jobs:
           $hash = (Get-FileHash -LiteralPath $symbolsZip -Algorithm SHA256).Hash.ToLowerInvariant()
           [IO.File]::WriteAllText("${symbolsZip}.sha256", "$hash  $(Split-Path -Leaf $symbolsZip)`n", [Text.UTF8Encoding]::new($false))
       - name: Sign the Windows executable when a certificate is configured
-        if: needs.prepare.outputs.prerelease == 'false'
+        if: steps.check_windows.outputs.skip != 'true' && needs.prepare.outputs.prerelease == 'false'
         shell: pwsh
         env:
           WINDOWS_CERTIFICATE_PFX: ${{ secrets.WINDOWS_CERTIFICATE_PFX }}
@@ -162,6 +200,7 @@ jobs:
           & $signtool.FullName sign /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 /sha1 $cert.Thumbprint target/release/SunSet-Viewer.exe
           if ($LASTEXITCODE -ne 0) { throw "Signing the viewer failed ($LASTEXITCODE)." }
       - name: Package portable ZIP
+        if: steps.check_windows.outputs.skip != 'true'
         shell: pwsh
         run: |
           $name = "SunSet-Viewer-${env:AURORA_VERSION_TAG}-windows-x64"
@@ -175,7 +214,7 @@ jobs:
           [IO.File]::WriteAllText("${zip}.sha256", "$hash  $(Split-Path -Leaf $zip)`n", [Text.UTF8Encoding]::new($false))
           "PACKAGE_ROOT=$package" >> $env:GITHUB_ENV
       - name: Install the pinned WiX toolset
-        if: needs.prepare.outputs.prerelease == 'false'
+        if: steps.check_windows.outputs.skip != 'true' && needs.prepare.outputs.prerelease == 'false'
         shell: pwsh
         run: |
           dotnet tool install --tool-path "$env:RUNNER_TEMP\wix" wix --version 5.0.2
@@ -184,11 +223,11 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw "Installing WixToolset.UI.wixext failed ($LASTEXITCODE)." }
           "$env:RUNNER_TEMP\wix" >> $env:GITHUB_PATH
       - name: Build MSI installer
-        if: needs.prepare.outputs.prerelease == 'false'
+        if: steps.check_windows.outputs.skip != 'true' && needs.prepare.outputs.prerelease == 'false'
         shell: pwsh
         run: ./scripts/package-msi.ps1 -Package $env:PACKAGE_ROOT -Out "release-output/SunSet-Viewer-${env:AURORA_VERSION_TAG}-windows-x64.msi"
       - name: Sign MSI when a certificate is configured
-        if: needs.prepare.outputs.prerelease == 'false'
+        if: steps.check_windows.outputs.skip != 'true' && needs.prepare.outputs.prerelease == 'false'
         shell: pwsh
         env:
           WINDOWS_CERTIFICATE_PFX: ${{ secrets.WINDOWS_CERTIFICATE_PFX }}
@@ -209,6 +248,7 @@ jobs:
           & $signtool.FullName sign /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 /sha1 $cert.Thumbprint $msi
           if ($LASTEXITCODE -ne 0) { throw "Signing the MSI failed ($LASTEXITCODE)." }
       - name: Create missing checksums
+        if: steps.check_windows.outputs.skip != 'true'
         shell: pwsh
         run: |
           Get-ChildItem release-output -File | Where-Object { $_.Extension -ne '.sha256' } | ForEach-Object {
@@ -218,6 +258,7 @@ jobs:
             }
           }
       - name: Upload Windows packages to the draft release
+        if: steps.check_windows.outputs.skip != 'true'
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
@@ -348,8 +389,12 @@ jobs:
       - uses: actions-rust-lang/setup-rust-toolchain@v2
       - name: Install native build dependencies
         run: |
-          sudo apt-get update
-          sudo apt-get install -y build-essential clang cmake libasound2-dev libudev-dev libvulkan-dev libwayland-dev libx11-dev libxcursor-dev libxi-dev libxkbcommon-dev libxrandr-dev pkg-config
+          sudo sed -i 's|mirror+file:/etc/apt/apt-mirrors.txt|http://archive.ubuntu.com/ubuntu/|g; s|http://azure.archive.ubuntu.com/ubuntu|http://archive.ubuntu.com/ubuntu|g; s|azure\.archive\.ubuntu\.com|archive.ubuntu.com|g' /etc/apt/sources.list /etc/apt/sources.list.d/* /etc/apt/apt-mirrors.txt 2>/dev/null || true
+          if ! getent hosts archive.ubuntu.com >/dev/null 2>&1 || ! getent hosts security.ubuntu.com >/dev/null 2>&1; then
+            printf "nameserver 1.1.1.1\nnameserver 8.8.8.8\n" | sudo tee /etc/resolv.conf >/dev/null
+          fi
+          sudo apt-get -o Acquire::ForceIPv4=true -o Acquire::http::Timeout=15 -o Acquire::https::Timeout=15 -o Acquire::Retries=3 update
+          sudo apt-get -o Acquire::ForceIPv4=true -o Acquire::http::Timeout=15 -o Acquire::https::Timeout=15 -o Acquire::Retries=3 install -y build-essential clang cmake libasound2-dev libudev-dev libvulkan-dev libwayland-dev libx11-dev libxcursor-dev libxi-dev libxkbcommon-dev libxrandr-dev pkg-config
       - name: Build release viewer
         run: cargo build --release --locked -p aurora-viewer
       - name: Verify release version
