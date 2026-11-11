@@ -32,7 +32,7 @@ Renderizador Vulkan, interface limpa e o Second Life que você já conhece.
 <img width="1920" height="1029" alt="Construção no SunSet: painel Transformar ao lado de uma caixa selecionada, com janelas Sobre o terreno, Região/Propriedade, perfil e voz" src="docs/screenshots/contrucao.png" />  
 
 **Interface moderna e botões de alternância para trazer de volta a interface Clássica nos módulos que você preferir!**  
-<img width="1116" height="717" alt="Página SunSet das Preferências, com escolha entre SunSet ou Clássico para cada janela reformulada" src="docs/screenshots/preferences.png" />
+<img width="961" height="660" alt="Página SunSet das Preferências, com escolha entre SunSet ou Clássico para cada janela reformulada" src="docs/screenshots/preferences.png" />
 
 **Nova experiência de login com suporte a múltiplas contas de avatar.**  
 <img width="1920" height="1041" alt="Tela de login do SunSet Viewer com conta salva, status de versão e notícias em tempo real" src="docs/screenshots/login.png" />  

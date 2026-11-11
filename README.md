@@ -34,7 +34,7 @@ A Vulkan renderer, a clean interface, and the Second Life you already know.
 
 
 **Modern UI and Legacy toggles to get the Legacy UI back on the modules you want! (if you prefer).**  
-<img width="1116" height="717" alt="The SunSet page of Preferences, with a SunSet or Legacy choice for each redesigned window" src="docs/screenshots/preferences.png" />
+<img width="961" height="660" alt="The SunSet page of Preferences, with a SunSet or Legacy choice for each redesigned window" src="docs/screenshots/preferences.png" />
 
 **New login experience with multi-avatar support.**  
 <img width="1920" height="1041" alt="The SunSet Viewer login screen with saved avatar account, version status, update check, and live news" src="docs/screenshots/login.png" />  
@@ -619,7 +619,8 @@ are planned or in progress: they are not in the viewer yet.
   Quit, Log out (back to the login screen) and Cancel. Esc cancels; the
   viewer waits for the logout before closing.
 
-<img width="1920" height="1042" alt="The SunSet Viewer exit confirmation dialog over a blurred background offering Cancel, Log out, and Quit" src="docs/screenshots/sair.png" />
+  <img width="1920" height="1042" alt="The SunSet Viewer exit confirmation dialog over a blurred background offering Cancel, Log out, and Quit" src="docs/screenshots/sair.png" />
+
 - **Updates in one click**: at launch SunSet offers the new version,
   downloads it in the background, checks it against its published hash,
   installs it and restarts your session, and rolls back if anything goes
