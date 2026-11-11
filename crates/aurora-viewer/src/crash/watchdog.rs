@@ -23,7 +23,8 @@ use std::time::Duration;
 #[cfg(any(windows, target_os = "linux"))]
 use std::time::Instant;
 #[cfg(any(windows, target_os = "linux"))]
-use std::time::{SystemTime, UNIX_EPOCH};
+use std::time::SystemTime;
+use std::time::UNIX_EPOCH;
 
 /// How often the window is tested.
 #[cfg(any(windows, target_os = "linux"))]
