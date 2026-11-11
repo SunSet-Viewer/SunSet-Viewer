@@ -337,6 +337,7 @@ fn lists_memory_budget(extensions: &[vk::ExtensionProperties]) -> bool {
 /// 18446744073709367296 on a 256 MB heap, not the one read here on a
 /// discrete GPU) would be past any budget, which pauses a window behind and
 /// takes its textures, or a budget without a limit.
+#[allow(dead_code)]
 fn plausible(budget: u64, usage: u64) -> bool {
     budget > 0 && budget.max(usage) <= i64::MAX as u64
 }

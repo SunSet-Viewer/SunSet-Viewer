@@ -138,7 +138,7 @@ licenses, and the upstream relationship are documented in
   </tr>
 </table>
 
-### New in 0.9.7 (Aurora 0.9.6 Base + SunSet Exclusive Features) <img src="docs/readme/pill-new.svg" alt="New" height="18" align="absmiddle">
+### New in 0.9.8 (Aurora 0.9.6 Base + SunSet Exclusive Features) <img src="docs/readme/pill-new.svg" alt="New" height="18" align="absmiddle">
 
 <table>
   <tr>

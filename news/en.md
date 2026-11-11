@@ -26,8 +26,12 @@ An empty line starts a new paragraph.
 
 # SunSet Viewer news
 
-## 2026-11-10 — SunSet Viewer v0.9.7: Complete Aurora v0.9.6 Release, Auto Portraits, 65 LUTs & SunSet Features
-Version v0.9.7 integrates the complete official Aurora v0.9.6 release (Outfit Showcase with auto portraits, batch portraits and optional HD pictures, 65 built-in photo LUTs by Czar Fenris and Nanner Pudding, Milky Way skybox, Rendering types menu, AMD RX 9000 contact shadow fix, and custom MSI install directory) alongside all custom SunSet Viewer features: 100x speed multiplier, instant Dash jumps, 8192m draw distance with SpeedRez, 3D combat hitboxes, individual avatar colors, and 100% pt-BR localization.
+## 2026-11-10 — SunSet Viewer v0.9.8: Complete Aurora v0.9.6 Release, 65 LUTs & SunSet Features
+Version v0.9.8 integrates the complete official Aurora v0.9.6 release (Outfit Showcase with auto portraits, batch portraits and optional HD pictures, 65 built-in photo LUTs by Czar Fenris and Nanner Pudding, Milky Way skybox, Rendering types menu, AMD RX 9000 contact shadow fix, and custom MSI install directory) alongside all custom SunSet Viewer features: 100x speed multiplier, instant Dash jumps, 8192m draw distance with SpeedRez, 3D combat hitboxes, individual avatar colors, and 100% pt-BR localization.
+[Read more](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.8)
+
+## 2026-11-10 — SunSet Viewer v0.9.7: Automated Non-Regression Tests & Optional macOS
+Version v0.9.7 establishes comprehensive automated unit tests covering all custom SunSet features and decouples experimental macOS DMG builds in the release workflow, ensuring capacity constraints on ARM64 runners never block release publication.
 [Read more](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.7)
 
 ## 2026-11-08 — SunSet Viewer v0.9.6: Custom Individual Contact Marker Colors

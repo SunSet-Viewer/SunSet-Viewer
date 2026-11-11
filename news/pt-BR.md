@@ -20,8 +20,12 @@ Regras:
 
 # Notícias do SunSet Viewer
 
-## 2026-11-10 — SunSet Viewer v0.9.7: Release Final Aurora v0.9.6, Retratos, 65 LUTs e Recursos SunSet
-A versão v0.9.7 integra 100% da release oficial Aurora v0.9.6 (Vitrine de Trajes com retrato automático, retratos em lote e foto HD, 65 LUTs embutidos de Czar Fenris e Nanner Pudding, Via Láctea, Tipos de Renderização, fix para AMD RX 9000 e instalador MSI com pasta customizável) preservando todos os recursos exclusivos do SunSet: velocidade até 100x, Dash instantâneo, visão até 8192m com SpeedRez, hitboxes 3D com oclusão, cores individuais de avatares e tradução 100% pt-BR.
+## 2026-11-10 — SunSet Viewer v0.9.8: Release Final Aurora v0.9.6, Retratos e 65 LUTs
+A versão v0.9.8 integra 100% da release oficial Aurora v0.9.6 (Vitrine de Trajes com retrato automático, retratos em lote e foto HD, 65 LUTs embutidos de Czar Fenris e Nanner Pudding, Via Láctea, Tipos de Renderização, fix para AMD RX 9000 e instalador MSI com pasta customizável) preservando todos os recursos exclusivos do SunSet: velocidade até 100x, Dash instantâneo, visão até 8192m com SpeedRez, hitboxes 3D com oclusão, cores individuais de avatares e tradução 100% pt-BR.
+[Saiba mais](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.8)
+
+## 2026-11-10 — SunSet Viewer v0.9.7: Testes Automatizados e Suporte macOS Opcional
+A versão v0.9.7 consolida a infraestrutura de testes de não-regressão cobrindo todos os pilares exclusivos do SunSet Viewer e desacopla a publicação do DMG do macOS no CI de lançamento, garantindo que restrições de capacidade de runners ARM64 nunca bloqueiem a liberação imediata de novos pacotes.
 [Saiba mais](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.7)
 
 ## 2026-11-08 — SunSet Viewer v0.9.6: Marcador de Cores Individual para Contatos

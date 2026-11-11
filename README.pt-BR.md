@@ -128,7 +128,7 @@ O SunSet Viewer é um cliente modificado para Second Life baseado no [Aurora Vie
   </tr>
 </table>
 
-### Novidades da v0.9.7 (Base Aurora 0.9.4 + SunSet) <img src="docs/readme/pill-new.svg" alt="Novo" height="18" align="absmiddle">
+### Novidades da v0.9.8 (Base Aurora 0.9.6 + SunSet) <img src="docs/readme/pill-new.svg" alt="Novo" height="18" align="absmiddle">
 
 <table>
   <tr>
@@ -283,7 +283,7 @@ cargo build --release -p aurora-viewer
 
 Para gerar pacotes portáteis oficiais prontos para distribuição com metadados de instalação e versionamento:
 ```powershell
-$env:AURORA_VERSION_TAG = "v0.9.7"
+$env:AURORA_VERSION_TAG = "v0.9.8"
 cargo build --release -p aurora-viewer
 powershell -ExecutionPolicy Bypass -File "scripts\package.ps1" -Exe "target\release\SunSet-Viewer.exe" -Out "RELEASE\SunSet-Viewer" -Source "."
 ```
