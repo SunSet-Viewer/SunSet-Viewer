@@ -26,8 +26,8 @@ An empty line starts a new paragraph.
 
 # SunSet Viewer news
 
-## 2026-11-10 — SunSet Viewer v0.9.7: Aurora v0.9.6, Unit Tests and SunSet Features
-Version v0.9.7 consolidates full upstream synchronization with Aurora v0.9.6 (including Milky Way skybox, Outfit Showcase, Region Tracker, improved alpha sorting, and terrain snapping) alongside a brand-new automated unit test suite covering all custom SunSet Viewer features: avatar speed multiplier up to 100x via Aurora LSL Bridge v1.42, instant Dash jumps, progressive draw distance up to 8192m (with dd 5000+ support), 3D combat hitboxes with scene occlusion, custom individual avatar marker colors, and 100% native Brazilian Portuguese localization.
+## 2026-11-10 — SunSet Viewer v0.9.7: Complete Aurora v0.9.6 Release, Auto Portraits, 65 LUTs & SunSet Features
+Version v0.9.7 integrates the complete official Aurora v0.9.6 release (Outfit Showcase with auto portraits, batch portraits and optional HD pictures, 65 built-in photo LUTs by Czar Fenris and Nanner Pudding, Milky Way skybox, Rendering types menu, AMD RX 9000 contact shadow fix, and custom MSI install directory) alongside all custom SunSet Viewer features: 100x speed multiplier, instant Dash jumps, 8192m draw distance with SpeedRez, 3D combat hitboxes, individual avatar colors, and 100% pt-BR localization.
 [Read more](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.7)
 
 ## 2026-11-08 — SunSet Viewer v0.9.6: Custom Individual Contact Marker Colors

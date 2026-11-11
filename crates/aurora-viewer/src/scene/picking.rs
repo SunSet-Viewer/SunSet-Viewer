@@ -752,7 +752,9 @@ impl Scene {
             .copied()
             .chain(all)
             .filter_map(|idx| Some((idx, self.gpu.get(idx)?)))
-            .filter(|(idx, gpu)| self.first_person_object_visible(*idx, gpu))
+            // (what is not drawn is not picked: a hidden rendering type, as
+            // LLPipeline::lineSegmentIntersectInWorld skips its partitions)
+            .filter(|(idx, gpu)| !gpu.hidden && self.first_person_object_visible(*idx, gpu))
     }
 
     /// Nearest world surface or terrain along `ray`, for the combat raycast
