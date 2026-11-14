@@ -26,6 +26,10 @@ Une ligne vide commence un nouveau paragraphe.
 
 # Actualités d'Aurora Viewer
 
+## 2026-11-14 — SunSet Viewer v0.9.9 : Traduction Espagnole 100%, Thèmes de Skins SunSet et Texte Flottant
+La version v0.9.9 apporte la prise en charge complète de l'espagnol avec 13 077 clés traduites, ainsi que le nouveau sélecteur de thèmes et skins dans Préférences › Apparence offrant un aperçu en direct avec 6 palettes SunSet (Défaut, Rose, Rose Pastel, Violet, Pourpre et Lilas Clair) et le retour rapide au thème Aurora. Elle ajoute également des curseurs de distance et de fondu progressif pour les textes flottants (llSetText) et étend la portée des hitboxes et du raycast de combat jusqu'à 128 mètres.
+[En savoir plus](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.9)
+
 ## 2026-11-10 — Aurora 0.9.5 : le Suivi de région, les marqueurs des cercles et l'apparence en XML
 Monde › Suivi de région surveille une liste de régions, comme le Legacy Viewer : si chacune est en ligne et combien d'avatars s'y trouvent, sans ouvrir la carte ; Suivre la région, sur la Carte du monde, en ajoute une. Un cercle de contacts peut marquer ses membres dans le monde, à travers les murs et au bord de l'écran : réglez son Marqueur dans le monde dans Personnes › Cercles (désactivé par défaut). Importer XML, dans les éditeurs de silhouette, de physique et de vêtements, charge un fichier d'apparence d'un site de silhouettes ou d'un autre viewer. Cache et réglages sont gardés.
 [En savoir plus](https://github.com/Aurora-Viewer/Aurora-Viewer/releases/tag/v0.9.5)
