@@ -170,7 +170,10 @@ pub(super) fn show(
                         let nav = crate::ui::emoji::codes::keys(ui, conv_input);
                         let suggest_nav = if nav.is_none() { suggest::keys(ui, conv_input) } else { None };
                         let mut output = super::input::show(ui, Some(&mut *emoji), conv_input, &mut draft, field_w, BUTTON, |edit| {
-                            edit.id(conv_input).hint_text(hint).frame(egui::Frame::NONE)
+                            edit.id(conv_input)
+                                .hint_text(hint)
+                                .text_color(p.typed_text)
+                                .frame(egui::Frame::NONE)
                         });
                         if recalled {
                             output.response.mark_changed();

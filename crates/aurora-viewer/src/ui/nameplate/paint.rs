@@ -229,7 +229,12 @@ fn face(env: &Env<'_>, level: Level, c: &Content, t: f32) -> Face {
         .nameplate_name
         .map(crate::ui::colors::set_color)
         .unwrap_or_else(|| c.role.name_color(p, &crate::ui::colors::get()));
-    let color = surface_tint(env, c).map(|bg| readable_name(color, bg, p.ink)).unwrap_or(color);
+    let bg = surface_tint(env, c).unwrap_or(env.tint);
+    let color = if p.is_light() || surface_tint(env, c).is_some() {
+        readable_name(color, bg, p.ink)
+    } else {
+        color
+    };
     let mut format = match level {
         // the far pill's name is a regular weight
         Level::Far => TextFormat::simple(FontId::proportional(m.name_pt), color),
@@ -442,11 +447,13 @@ fn marker_slot(level: Level, c: &Content, face: &Face, rect: Rect) -> Option<Rec
 fn background(env: &Env<'_>, rect: Rect, st: &State, alpha: f32, far: f32, c: &Content, cache: &mut Option<Built<SurfaceKey>>) {
     let p = env.p;
     let s = SCALE;
+    let light = p.is_light();
     if st.glass > 0.0 {
         // inside the antialiased edge of the surface, which hides the blur's own
         let radius = rect.height() * 0.5 - 0.5;
+        let shade = if light { 1.0 } else { GLASS_SHADE };
         env.painter
-            .add(aurora_render::glass_region(rect.shrink(0.5), radius, st.glass * alpha, GLASS_SHADE));
+            .add(aurora_render::glass_region(rect.shrink(0.5), radius, st.glass * alpha, shade));
     }
     let key = SurfaceKey {
         tint: surface_tint(env, c).unwrap_or(env.tint),
@@ -464,9 +471,18 @@ fn background(env: &Env<'_>, rect: Rect, st: &State, alpha: f32, far: f32, c: &C
             offset: Vec2::new(0.0, 6.0 * s),
             blur: 18.0 * s,
             spread: 0.0,
-            color: p.navy.gamma_multiply(0.35),
+            color: if light {
+                p.ink.gamma_multiply(0.18)
+            } else {
+                p.navy.gamma_multiply(0.35)
+            },
         };
-        let opacity = lerp((lerp(TINT_PLAIN, far), lerp(TINT_GLASS, far)), st.glass);
+        let (tint_plain, tint_glass) = if light {
+            ((0.90, 0.82), (0.85, 0.76))
+        } else {
+            (TINT_PLAIN, TINT_GLASS)
+        };
+        let opacity = lerp((lerp(tint_plain, far), lerp(tint_glass, far)), st.glass);
         let plain = key
             .border
             .unwrap_or_else(|| p.ink.gamma_multiply(lerp(BORDER, far) + HOVER_BORDER * key.hover));

@@ -1,6 +1,6 @@
-# Hitboxes 3D e Cores Individuais de Avatares — SunSet Viewer
+# Hitboxes 3D, Alcance do Meter de Combate e Cores Individuais de Avatares — SunSet Viewer
 
-O **SunSet Viewer** conta com um sistema de caixas de colisão 3D (**Hitboxes**) e marcação visual individual de avatares com suporte a cores personalizadas, projetado tanto para combate competitivo (PVP/RP) quanto para identificação tática rápida no Second Life.
+O **SunSet Viewer** conta com um sistema de caixas de colisão 3D (**Hitboxes**), controle de distância do **Texto Flutuante / Meter de Combate (`llSetText`)** e marcação visual individual de avatares com suporte a cores personalizadas, projetado tanto para combate competitivo (PVP/RP) quanto para identificação tática rápida no Second Life.
 
 ---
 
@@ -32,7 +32,27 @@ Na mesma página de **Preferências › Combate**, você encontra ferramentas in
 
 ---
 
-## 🎨 3. Cores dos Hitboxes e Marcação Individual de Avatares
+## 📏 3. Distância de Visibilidade do Meter de Combate (Texto Flutuante)
+
+Em regiões de tiro e combate (PVP/RP), os *combat meters* anexados aos avatares utilizam texto flutuante 3D (`llSetText`). Por padrão, esse texto começa a esmaecer a partir de `8.0 m` e desaparece completamente a `12.0 m` (`8.0 m + 4.0 m`).
+
+Para enxergar o *meter* de oponentes e aliados a longas distâncias, ajuste as duas configurações portadas do Legacy Viewer (`FSHudTextFadeDistance` e `FSHudTextFadeRange`):
+
+- **Distância de esmaecimento do texto flutuante (`floating_text_fade_distance`)**: Distância em metros na qual o texto flutuante / *meter* começa a desaparecer gradualmente.
+  - **Valor padrão**: `8.0 m` (idêntico ao padrão do Legacy Viewer).
+  - **Intervalo do controle deslizante**: `0.0 m` a `64.0 m`.
+- **Alcance de esmaecimento do texto flutuante (`floating_text_fade_range`)**: Distância adicional em metros que o texto leva para ir de 100% visível até ficar invisível.
+  - **Valor padrão**: `4.0 m` (idêntico ao padrão do Legacy Viewer, resultando em `12.0 m` totais por padrão).
+  - **Intervalo do controle deslizante**: `0.25 m` a `32.0 m`.
+- **Alcance máximo combinado em combate**: Configurando `64.0 m` + `32.0 m`, o *meter* de combate permanece visível a até **`96.0 metros`** de distância.
+
+### Onde Configurar:
+1. **Preferências › Combate** › grupo **`Opções de texto flutuante`**
+2. **Preferências › Layout › Dicas de ferramentas** › grupo **`Opções de texto flutuante`**
+
+---
+
+## 🎨 4. Cores dos Hitboxes e Marcação Individual de Avatares
 
 No SunSet Viewer, os **Hitboxes 3D não têm cores genéricas estáticas**. Eles herdam dinamicamente as cores de identificação do avatar, permitindo distinguir instantaneamente amigos, inimigos e alvos prioritários no calor da batalha.
 
@@ -46,7 +66,7 @@ No SunSet Viewer, os **Hitboxes 3D não têm cores genéricas estáticas**. Eles
 
 ---
 
-## 🖱️ 4. Como Marcar uma Cor Individual para um Avatar
+## 🖱️ 5. Como Marcar uma Cor Individual para um Avatar
 
 Você pode marcar ou trocar a cor de qualquer avatar em poucos cliques:
 
@@ -63,7 +83,7 @@ Você pode marcar ou trocar a cor de qualquer avatar em poucos cliques:
 
 ---
 
-## 💾 5. Persistência Automática
+## 💾 6. Persistência Automática
 
 Todas as cores individuais marcadas são salvas automaticamente no arquivo de configuração do seu perfil local (`settings.json`). Mesmo que você reinicie o SunSet Viewer ou viaje entre simuladores diferentes, suas cores marcadas permanecerão intactas.
 

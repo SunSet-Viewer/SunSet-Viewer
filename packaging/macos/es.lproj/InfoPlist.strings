@@ -1,0 +1,3 @@
+/* Shown by macOS when voice chat first opens the microphone. */
+"NSMicrophoneUsageDescription" = "SunSet Viewer usa el micrófono para el chat de voz en Second Life.";
+

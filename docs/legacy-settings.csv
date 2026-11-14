@@ -611,8 +611,8 @@ FSGrowlWhenActive,Boolean,in-aurora,,system_notifications_when_active,"If Growl 
 FSHideHelpButtons,Boolean,not-applicable,,"a look of the Legacy interface (opacity, spacing, cursors); Aurora's interface has its own design (docs/BRANDING.md)","When enabled, hides the help button from floaters (requires restart)"
 FSHighlightGroupMods,Boolean,to-add,low,,Enable group moderator message highlighting
 FSHudTextBackgroundOpacity,F32,to-add,low,,"Opacity of floating text background (0.0 = completely transparent, 1.0 = completely opaque)"
-FSHudTextFadeDistance,F32,to-add,low,,Sets the distance where HUD text starts to fade
-FSHudTextFadeRange,F32,to-add,low,,Sets the range it takes for a HUD text to fade from fully visible to invisible
+FSHudTextFadeDistance,F32,in-aurora,,floating_text_fade_distance,Sets the distance where HUD text starts to fade
+FSHudTextFadeRange,F32,in-aurora,,floating_text_fade_range,Sets the range it takes for a HUD text to fade from fully visible to invisible
 FSHudTextShowBackground,S32,to-add,low,,Displays a black/white background behind the prim floating text to make the text more readable
 FSHudTextUseHoverHighlight,Boolean,to-add,low,,"When an object is being hovered over, highlight the HUD text by moving to the foreground and disable alpha"
 FSIMChatFlashOnFriendStatusChange,Boolean,to-add,low,,Flash IM tab when friend goes online or offline.

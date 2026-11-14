@@ -271,7 +271,7 @@ pub fn filter_field(ui: &mut egui::Ui, p: &Palette, text: &mut String, id: egui:
     }
     let mut response = ui.add_sized(
         [width, ui.spacing().interact_size.y],
-        egui::TextEdit::singleline(text).id(id).margin(margin),
+        egui::TextEdit::singleline(text).id(id).margin(margin).text_color(p.typed_text),
     );
     clear_filter(ui, p, text, &mut response);
     response
@@ -302,7 +302,7 @@ pub fn search_text_edit_with_margin(
     // button's room. Keep it reserved while empty too, so typing cannot
     // hide the end of a query for one frame or move the surrounding layout.
     margin.right += CLEAR_WIDTH;
-    let mut response = ui.add(configure(egui::TextEdit::singleline(text)).margin(margin));
+    let mut response = ui.add(configure(egui::TextEdit::singleline(text)).margin(margin).text_color(p.typed_text));
     clear_filter(ui, p, text, &mut response);
     note_search_clear(ui, &response, was_filled && text.is_empty());
     response
@@ -396,6 +396,7 @@ fn icon_field_inner(ui: &mut egui::Ui, p: &Palette, icon: &str, text: &mut Strin
                     egui::TextEdit::singleline(text)
                         .frame(egui::Frame::NONE.inner_margin(centre))
                         .hint_text(hint)
+                        .text_color(p.typed_text)
                         .desired_width(f32::INFINITY),
                 );
                 if clear {

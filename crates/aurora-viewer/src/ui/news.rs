@@ -30,6 +30,7 @@ const FALLBACK: &str = "en";
 /// The news files of the repository when this viewer was built.
 const BUILTIN: &[(&str, &str)] = &[
     ("en", include_str!("../../../../news/en.md")),
+    ("es", include_str!("../../../../news/es.md")),
     ("fr", include_str!("../../../../news/fr.md")),
 ];
 

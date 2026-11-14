@@ -10,6 +10,7 @@ use egui::Color32;
 use uuid::Uuid;
 
 static GLOBAL: std::sync::RwLock<Option<ColorSettings>> = std::sync::RwLock::new(None);
+static SKIN_CHAT: std::sync::RwLock<Option<crate::skin_presets::SkinChatColors>> = std::sync::RwLock::new(None);
 
 /// Install the current colors (call when settings change).
 pub fn set(c: &ColorSettings) {
@@ -18,8 +19,49 @@ pub fn set(c: &ColorSettings) {
     }
 }
 
+/// Install the semantic chat/friend colours of the active skin preset.
+pub fn set_skin_chat_colors(c: crate::skin_presets::SkinChatColors) {
+    if let Ok(mut g) = SKIN_CHAT.write() {
+        *g = Some(c);
+    }
+}
+
 pub fn get() -> ColorSettings {
-    GLOBAL.read().ok().and_then(|g| *g).unwrap_or_default()
+    let mut out = GLOBAL.read().ok().and_then(|g| *g).unwrap_or_default();
+    if let Ok(g) = SKIN_CHAT.read()
+        && let Some(skin) = *g
+    {
+        let def = ColorSettings::default();
+        use crate::skin_presets::SkinChatColors;
+        if out.chat_mine == def.chat_mine {
+            out.chat_mine = SkinChatColors::rgba(skin.chat_mine);
+        }
+        if out.chat_others == def.chat_others {
+            out.chat_others = SkinChatColors::rgba(skin.chat_others);
+        }
+        if out.chat_friends == def.chat_friends {
+            out.chat_friends = SkinChatColors::rgba(skin.chat_friends);
+        }
+        if out.sender_avatar == def.sender_avatar {
+            out.sender_avatar = SkinChatColors::rgba(skin.sender_avatar);
+        }
+        if out.tag_friend == def.tag_friend {
+            out.tag_friend = SkinChatColors::rgba(skin.tag_friend);
+        }
+        if out.mention_residents == def.mention_residents {
+            out.mention_residents = SkinChatColors::rgba(skin.mention_residents);
+        }
+        if out.mention_me == def.mention_me {
+            out.mention_me = SkinChatColors::rgba(skin.mention_me);
+        }
+        if out.chat_urls == def.chat_urls {
+            out.chat_urls = SkinChatColors::rgba(skin.chat_urls);
+        }
+        if out.chat_slurl == def.chat_slurl {
+            out.chat_slurl = SkinChatColors::rgba(skin.chat_urls);
+        }
+    }
+    out
 }
 
 /// A configured color as drawn: daltonised for the colour blindness chosen

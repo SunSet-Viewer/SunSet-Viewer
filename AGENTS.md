@@ -41,7 +41,7 @@ else's work.
    they write to you** (French or English). PRs, issues and commits made
    before this rule stay as they are: do not translate them. Interface text
    and network messages meant for the user go through `aurora_i18n::tr!`:
-   add the key and its English, French and Japanese versions in the same
+   add the key and its English, Spanish, French, Japanese and Brazilian Portuguese versions in the same
    PR (every catalogue of `crates/aurora-i18n/locales/`; a missing one fails
    the parity test), never a hard-coded label. Variables, plurals and the
    Japanese rules follow [docs/TRANSLATING.md](docs/TRANSLATING.md).
@@ -363,8 +363,11 @@ is a defect, even if it works. The full rules are in
 [docs/BRANDING.md](docs/BRANDING.md); the points you must respect with every
 change to the interface:
 
-- **Colours**: never hard-coded, always the `Palette` (`p.violet`, `p.ink`…);
-  on a violet face, text and icons in `p.on_accent`.
+- **Colours**: never hard-coded, always the `Palette` (`p.violet`, `p.ink`,
+  `p.typed_text` for text fields and inputs…); on a violet face, text and
+  icons in `p.on_accent`. Respect both dark and light skins from
+  `skin_presets.rs` by checking `p.is_light()` whenever surface/hover/glass
+  contrast depends on theme polarity.
 - **Surfaces**: a window goes through `widgets::Floater`, a dialog through
   `widgets::Modal`, any other panel through `widgets::overlay` (laid over the
   world, with the windows' blur) or `widgets::overlay_frame` (no world

@@ -28,4 +28,11 @@ pub fn page(cx: &mut Cx) {
             &field!(combat.show_raycast),
         );
     });
+    cx.group(tr!("ui-options-floating-text"), |cx| {
+        cx.borrow(
+            super::super::Page::Layout,
+            1,
+            &["floating_text_fade_distance", "floating_text_fade_range"],
+        );
+    });
 }

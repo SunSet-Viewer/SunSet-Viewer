@@ -21,6 +21,7 @@ pub fn page(cx: &mut Cx, tab: usize) {
         _ => {
             use aurora_i18n::tr;
             let p = cx.p;
+            skin_selector(cx);
             interface_colors(cx);
             cx.group(tr!("extra-skin"), |cx| {
                 cx.link(
@@ -113,6 +114,227 @@ fn interface_colors(cx: &mut Cx) {
             }
         }
     });
+}
+
+fn skin_selector(cx: &mut Cx) {
+    use crate::skin_presets::{DEFAULT_SCHEME, DEFAULT_SKIN, demo_override, families, family_label, find_scheme, scheme_label};
+    use aurora_i18n::tr;
+    let p = cx.p;
+    cx.group(tr!("appearance-skin-preset-group"), |cx| {
+        if cx.searching() {
+            let words: Vec<String> = families().iter().map(family_label).collect();
+            cx.keywords(&words.join(" "));
+        }
+        cx.row(
+            tr!("appearance-skin-family"),
+            tr!("appearance-skin-family-hint"),
+            &field!(skin),
+            |ui, s| {
+                let fams = families();
+                let labels: Vec<String> = fams.iter().map(family_label).collect();
+                let choices: Vec<(&'static str, &str)> = fams.iter().zip(labels.iter()).map(|(f, lbl)| (f.id, lbl.as_str())).collect();
+                let (shown_skin, shown_scheme) = demo_override().unwrap_or_else(|| (s.skin.clone(), s.skin_theme.clone()));
+                let (fam, _) = find_scheme(&shown_skin, &shown_scheme);
+                let mut chosen = fam.id;
+                if super::super::combo(ui, &mut chosen, &choices) {
+                    let (new_fam, new_scheme) = find_scheme(chosen, "");
+                    s.skin = new_fam.id.to_owned();
+                    s.skin_theme = new_scheme.id.to_owned();
+                    s.interface_colors = Default::default();
+                    return true;
+                }
+                false
+            },
+        );
+        if cx.searching() {
+            let words: Vec<String> = families().iter().flat_map(|f| f.schemes.iter()).map(scheme_label).collect();
+            cx.keywords(&words.join(" "));
+        }
+        cx.row(
+            tr!("appearance-skin-scheme"),
+            tr!("appearance-skin-scheme-hint"),
+            &field!(skin_theme),
+            |ui, s| {
+                let (shown_skin, shown_scheme) = demo_override().unwrap_or_else(|| (s.skin.clone(), s.skin_theme.clone()));
+                let (fam, scheme) = find_scheme(&shown_skin, &shown_scheme);
+                let mut picked = scheme.id.to_owned();
+                let changed = scheme_combo(ui, fam, scheme, &mut picked);
+                if changed {
+                    apply_scheme_choice(s, fam.id, &picked);
+                }
+                changed
+            },
+        );
+        cx.wide().below().row(tr!("skin-family-sunset"), "", &Nothing, |ui, s| {
+            let (shown_skin, shown_scheme) = demo_override().unwrap_or_else(|| (s.skin.clone(), s.skin_theme.clone()));
+            let (active_fam, active_scheme) = find_scheme(&shown_skin, &shown_scheme);
+            let sunset_schemes = crate::skin_presets::find_family("sunset").schemes;
+            let mut changed = false;
+            ui.horizontal_wrapped(|ui| {
+                ui.spacing_mut().item_spacing = egui::vec2(6.0, 6.0);
+                for item in sunset_schemes {
+                    let selected = item.id == active_scheme.id && (active_fam.id == "sunset" || active_fam.id == "aurora");
+                    if skin_scheme_chip(ui, &p, item, selected) && !selected {
+                        let target_family = if item.id == DEFAULT_SCHEME { DEFAULT_SKIN } else { "sunset" };
+                        apply_scheme_choice(s, target_family, item.id);
+                        changed = true;
+                    }
+                }
+            });
+            changed
+        });
+        if demo_override().is_none() {
+            cx.note(tr!("appearance-skin-applied-live"));
+        }
+        cx.wide().below().row(tr!("appearance-skin-preview"), "", &Nothing, |ui, _| {
+            skin_preview_card(ui, &p);
+            false
+        });
+        let (shown_skin, shown_scheme) = demo_override().unwrap_or_else(|| (cx.s.skin.clone(), cx.s.skin_theme.clone()));
+        let modified = shown_skin != DEFAULT_SKIN || shown_scheme != DEFAULT_SCHEME || !cx.s.interface_colors.is_default();
+        cx.conditional(modified, |cx| {
+            cx.row(tr!("skin-family-aurora"), "", &Nothing, |ui, s| {
+                let reset = crate::ui::widgets::action_button(
+                    ui,
+                    &p,
+                    "restore",
+                    tr!("appearance-skin-reset-aurora"),
+                    crate::ui::widgets::ActionKind::Flat,
+                    egui::vec2(0.0, 26.0),
+                )
+                .clicked();
+                if reset {
+                    apply_scheme_choice(s, DEFAULT_SKIN, DEFAULT_SCHEME);
+                }
+                reset
+            });
+        });
+    });
+}
+
+fn apply_scheme_choice(s: &mut crate::settings::Settings, family_id: &str, scheme_id: &str) {
+    use crate::skin_presets::{DEFAULT_SCHEME, DEFAULT_SKIN, find_scheme};
+    let resolved_family = if scheme_id == DEFAULT_SCHEME && family_id == "sunset" {
+        DEFAULT_SKIN
+    } else if family_id == DEFAULT_SKIN && !scheme_id.is_empty() && scheme_id != DEFAULT_SCHEME {
+        "sunset"
+    } else {
+        family_id
+    };
+    let (new_fam, new_scheme) = find_scheme(resolved_family, scheme_id);
+    s.skin = new_fam.id.to_owned();
+    s.skin_theme = new_scheme.id.to_owned();
+    s.interface_colors = Default::default();
+}
+
+fn skin_scheme_chip(ui: &mut egui::Ui, p: &crate::theme::Palette, item: &crate::skin_presets::SkinSchemeSpec, selected: bool) -> bool {
+    let label = crate::skin_presets::scheme_label(item);
+    let r = ui.visuals().widgets.inactive.corner_radius;
+    let fill = if selected {
+        p.violet.gamma_multiply(0.24)
+    } else {
+        p.raised.gamma_multiply(0.55)
+    };
+    let border = if selected { p.violet } else { p.muted_dim.gamma_multiply(0.45) };
+    egui::Frame::NONE
+        .fill(fill)
+        .stroke(egui::Stroke::new(1.0, border))
+        .corner_radius(r)
+        .inner_margin(egui::Margin::symmetric(6, 3))
+        .show(ui, |ui| {
+            ui.spacing_mut().item_spacing.x = 5.0;
+            skin_swatch_strip(ui, item.preview_swatches(), ui.visuals().widgets.inactive.fg_stroke.color);
+            ui.add(egui::Button::selectable(selected, &label)).clicked()
+        })
+        .inner
+}
+
+fn scheme_combo(
+    ui: &mut egui::Ui,
+    fam: &crate::skin_presets::SkinFamilySpec,
+    active: &crate::skin_presets::SkinSchemeSpec,
+    picked: &mut String,
+) -> bool {
+    let mut changed = false;
+    let salt = ui.scope_id().with("skin-scheme-combo");
+    egui::ComboBox::from_id_salt(salt)
+        .width(COMBO_W)
+        .selected_text(crate::skin_presets::scheme_label(active))
+        .truncate()
+        .show_ui(ui, |ui| {
+            for item in fam.schemes {
+                let sel = item.id == active.id;
+                let label = crate::skin_presets::scheme_label(item);
+                let swatches = item.preview_swatches();
+                let clicked = ui
+                    .horizontal(|ui| {
+                        skin_swatch_strip(ui, swatches, ui.visuals().widgets.inactive.fg_stroke.color);
+                        ui.add(egui::Button::selectable(sel, &label).truncate()).clicked()
+                    })
+                    .inner;
+                if clicked {
+                    if !sel {
+                        *picked = item.id.to_owned();
+                        changed = true;
+                    }
+                    ui.close();
+                }
+            }
+        });
+    changed
+}
+
+fn skin_swatch_strip(ui: &mut egui::Ui, swatches: [egui::Color32; 3], border: egui::Color32) {
+    let r = ui.visuals().widgets.inactive.corner_radius;
+    let border = border.gamma_multiply(0.45);
+    for color in swatches {
+        let (rect, _) = ui.allocate_exact_size(egui::vec2(10.0, 12.0), egui::Sense::hover());
+        ui.painter().rect_filled(rect, r, color);
+        ui.painter()
+            .rect_stroke(rect, r, egui::Stroke::new(1.0, border), egui::StrokeKind::Inside);
+    }
+}
+
+fn skin_preview_card(ui: &mut egui::Ui, p: &crate::theme::Palette) {
+    use aurora_i18n::tr;
+    let r = ui.visuals().widgets.inactive.corner_radius;
+    let c = crate::ui::colors::get().chat_friends;
+    let friend_c = egui::Color32::from_rgb(c[0], c[1], c[2]);
+    let font = egui::FontId::proportional(11.5);
+    let btn_galley = ui
+        .painter()
+        .layout_no_wrap(tr!("appearance-skin-preview-button").to_owned(), font.clone(), p.on_accent);
+    let typed_galley = ui
+        .painter()
+        .layout_no_wrap(tr!("appearance-skin-preview-typed").to_owned(), font, p.typed_text);
+    egui::Frame::NONE
+        .fill(p.panel)
+        .stroke(egui::Stroke::new(1.0, p.muted_dim.gamma_multiply(0.6)))
+        .corner_radius(ui.visuals().window_corner_radius)
+        .inner_margin(egui::Margin::same(8))
+        .show(ui, |ui| {
+            ui.horizontal_wrapped(|ui| {
+                let (btn_r, _) = ui.allocate_exact_size(egui::vec2(btn_galley.size().x + 18.0, 22.0), egui::Sense::hover());
+                ui.painter().rect_filled(btn_r, r, p.violet);
+                ui.painter().galley(
+                    egui::pos2(btn_r.left() + 9.0, btn_r.center().y - btn_galley.size().y / 2.0),
+                    btn_galley,
+                    p.on_accent,
+                );
+                let (field_r, _) = ui.allocate_exact_size(egui::vec2(typed_galley.size().x + 16.0, 22.0), egui::Sense::hover());
+                ui.painter().rect_filled(field_r, r, p.field);
+                ui.painter()
+                    .rect_stroke(field_r, r, egui::Stroke::new(1.0, p.violet), egui::StrokeKind::Inside);
+                ui.painter().galley(
+                    egui::pos2(field_r.left() + 8.0, field_r.center().y - typed_galley.size().y / 2.0),
+                    typed_galley,
+                    p.typed_text,
+                );
+                let (dot_r, _) = ui.allocate_exact_size(egui::vec2(8.0, 22.0), egui::Sense::hover());
+                ui.painter().circle_filled(dot_r.center(), 3.5, p.teal);
+                ui.label(RichText::new(tr!("appearance-skin-preview-friend")).size(11.5).color(friend_c));
+            });
+        });
 }
 
 /// One base colour: its swatch shows the colour in use (a demo run's
@@ -306,6 +528,15 @@ fn font(cx: &mut Cx) {
 fn colors(cx: &mut Cx) {
     use aurora_i18n::tr;
     let p = cx.p;
+    cx.group(tr!("extra-skin"), |cx| {
+        cx.link(
+            tr!("appearance-skin-preset-group"),
+            tr!("appearance-skin-scheme-hint"),
+            tr!("extra-skin"),
+            super::super::Page::Appearance,
+            2,
+        );
+    });
     cx.group(tr!("ui-options-messages"), |cx| {
         cx.color(tr!("ui-options-my-messages"), "", &field!(colors.chat_mine));
         cx.color(tr!("common-others"), "", &field!(colors.chat_others));

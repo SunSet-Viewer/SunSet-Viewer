@@ -1,7 +1,7 @@
 # Translating the viewer
 
 Each language has a Fluent catalogue in `crates/aurora-i18n/locales/`.
-English is in `en.ftl`, French in `fr.ftl`, Japanese in `ja.ftl` and
+English is in `en.ftl`, Spanish in `es.ftl`, French in `fr.ftl`, Japanese in `ja.ftl` and
 Brazilian Portuguese in `pt-BR.ftl`. The files are embedded at build time;
 adding `de.ftl`, for example, adds a language to the Preferences without
 changing the Rust code. The file name
@@ -26,7 +26,7 @@ simulator through `UpdateAgentLanguage`, after login, a region change or a
 change to the preferences, following the Legacy Viewer's `LLAgentLanguage::update`.
 
 A new text uses an explicit key and its version in every catalogue
-(English, French, Japanese and Brazilian Portuguese) in the same PR, at the
+(English, Spanish, French, Japanese and Brazilian Portuguese) in the same PR, at the
 same place as in `en.ftl`. A key missing from one catalogue fails the parity test, in
 `scripts/check.ps1` and in the merge queue.
 
@@ -137,6 +137,7 @@ To compare the languages without changing the preferences:
 $env:AURORA_DEMO = '1'
 $env:AURORA_DEMO_OPTIONS = '1'
 cargo run -p aurora-viewer -- --language en --title "Test langue-viewer"
+cargo run -p aurora-viewer -- --language es --title "Test langue-viewer"
 cargo run -p aurora-viewer -- --language fr --title "Test langue-viewer"
 cargo run -p aurora-viewer -- --language ja --title "Test langue-viewer"
 cargo run -p aurora-viewer -- --language pt-BR --title "Test langue-viewer"

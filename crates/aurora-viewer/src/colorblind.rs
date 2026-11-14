@@ -332,6 +332,7 @@ pub fn palette(mut p: Palette, v: Vision) -> Palette {
                 &mut p.violet_light,
                 &mut p.violet_pale,
                 &mut p.ink,
+                &mut p.typed_text,
                 &mut p.muted,
                 &mut p.rose,
                 &mut p.danger_dim,

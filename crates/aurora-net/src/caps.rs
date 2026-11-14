@@ -260,7 +260,7 @@ mod language_tests {
     #[test]
     fn language_capability_is_requested_and_payload_keeps_protocol_fields() {
         assert!(REQUESTED_CAPS.contains(&"UpdateAgentLanguage"));
-        for language in ["en", "fr", "pt-BR"] {
+        for language in ["en", "es", "fr", "pt-BR"] {
             for public in [false, true] {
                 let body = agent_language_body(language, public);
                 let bytes = aurora_llsd::to_xml(&body);

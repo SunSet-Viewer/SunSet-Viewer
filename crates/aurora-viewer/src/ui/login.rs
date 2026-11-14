@@ -228,11 +228,11 @@ fn field(
                 let remembered = password.is_some() && text.is_empty() && !hint.is_empty();
                 if remembered {
                     // The saved-password marker should look filled, not like a placeholder.
-                    ui.visuals_mut().weak_text_color = Some(p.ink);
+                    ui.visuals_mut().weak_text_color = Some(p.typed_text);
                 }
                 let hidden = remembered || password.as_deref().is_some_and(|show| !*show);
                 // Interactivity comes from the disabled UI and TextEdit.
-                // Keep this form's explicit ink color while it is disabled.
+                // Keep this form's explicit typed color while it is disabled.
                 let resp = widgets::text_field_with_policy(ui, true, text, restriction, |b, ui| {
                     TextEdit::singleline(b)
                         .id(id)
@@ -244,7 +244,7 @@ fn field(
                         .password(hidden)
                         .hint_text(RichText::new(hint).color(p.muted_dim))
                         .font(egui::FontId::proportional(14.0))
-                        .text_color(p.ink)
+                        .text_color(p.typed_text)
                         .desired_width(w)
                 });
                 if let Some(show) = password {

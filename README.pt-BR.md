@@ -108,8 +108,8 @@ O SunSet Viewer é um cliente modificado para Second Life baseado no [Aurora Vie
 <table>
   <tr>
     <td width="50%" valign="top">
-      <h3>⚔️ Combate 3D & Cores Individuais</h3>
-      Sistema completo de combate em tempo real (<code>scene::combat</code>) com raycasting do centro da tela, hitboxes 3D por avatar/articulação, oclusão por paredes e <b>marcação individual de cores</b> no Hitbox e Minimapa (<a href="docs/HITBOX_E_CORES.md">guia</a>).
+      <h3>⚔️ Combate 3D, Meter & Cores Individuais</h3>
+      Sistema completo de combate em tempo real (<code>scene::combat</code>) com raycasting do centro da tela, hitboxes 3D por avatar/articulação, oclusão por paredes, <b>alcance configurável do texto flutuante / meter de combate</b> (<code>8m + 4m</code> padrão, até <code>96m</code>) e <b>marcação individual de cores</b> no Hitbox e Minimapa (<a href="docs/HITBOX_E_CORES.md">guia</a>).
     </td>
     <td width="50%" valign="top">
       <h3>🚀 Movimento 100x, Dash & Alcance 8.192m</h3>
@@ -118,12 +118,22 @@ O SunSet Viewer é um cliente modificado para Second Life baseado no [Aurora Vie
   </tr>
   <tr>
     <td valign="top">
-      <h3>🇧🇷 Localização 100% Nativa em Português (pt-BR)</h3>
-      Tradução integral e criteriosa de mais de 12.770 termos de interface, menus e mensagens de sistema, adotando o jargão consagrado do Second Life no Brasil (ex: <i>"Em uso"</i>, <i>"Desanexar de você"</i>, <i>"Sempre correr"</i>).
+      <h3>🇧🇷 🇪🇸 Localização Nativa em pt-BR & Espanhol</h3>
+      Tradução integral e criteriosa de mais de 13.100 termos em <b>Português do Brasil (<code>pt-BR</code>)</b> e <b>Espanhol (<code>es</code>)</b> com paridade garantida nos catálogos e terminologia autêntica do Second Life.
     </td>
     <td valign="top">
       <h3>⚡ Upscaling AMD FSR 3.1 & Auto-Updates</h3>
       AMD FidelityFX Super Resolution 3.1 nativo em WGSL para alto FPS em 1440p/4K e atualizador automático em segundo plano com verificação SHA-256 integrado ao GitHub Releases.
+    </td>
+  </tr>
+  <tr>
+    <td valign="top">
+      <h3>🎨 Skins, Temas SunSet & Firestorm</h3>
+      Troca ao vivo (sem reiniciar) em <b>Preferências › Aparência › Skin</b>: <code>Aurora (Padrão)</code> preservado, 7 temas exclusivos <b>SunSet</b> (Crepúsculo, Rosa, Rosa Pastel, Violeta, Roxo, Lilás e Lilás Claro) e 22 esquemas clássicos do <b>Firestorm</b> (<a href="docs/SKINS_E_TEMAS.md">guia</a>).
+    </td>
+    <td valign="top">
+      <h3>✨ Textos Digitados & Temas Claros</h3>
+      A skin escolhida colore menus, botões, lista de Amigos, crachás 3D, tela de login e <b>textos digitados</b> com contraste WCAG validado — incluindo temas claros e pastéis.
     </td>
   </tr>
 </table>
@@ -226,11 +236,12 @@ O SunSet distribui o trabalho pesado entre múltiplos núcleos da CPU enquanto a
 
 ### O que Funciona Hoje
 
-- **Módulo de Combate & Cores Individuais (Exclusivo SunSet)** — combate em tempo real (`scene::combat`), raycasting a partir da mira da tela, hitboxes 3D por avatar/articulação, oclusão por objetos/terreno e cores individuais (`Marcar cor`) compartilhadas entre Hitbox 3D e Minimapa ([guia](docs/HITBOX_E_CORES.md)).
+- **Módulo de Combate, Meter & Cores Individuais (Exclusivo SunSet)** — combate em tempo real (`scene::combat`), raycasting a partir da mira da tela, hitboxes 3D por avatar/articulação, oclusão por objetos/terreno, alcance configurável do texto flutuante / meter de combate (`8m + 4m` padrão, ajustável até `96m`) e cores individuais (`Marcar cor`) compartilhadas entre Hitbox 3D e Minimapa ([guia](docs/HITBOX_E_CORES.md)).
 - **Controle de Movimento 100x & Salto Instantâneo / Dash (Exclusivo SunSet)** — velocidade de solo e voo até `100x` via Bridge LSL v1.42, salto instantâneo (`/dash <metros>`) e atalhos em Mouselook (`Tecla E` e `Botão do Meio do Mouse`) ([guia](docs/MOVEMENT_DASH.md)).
 - **Distância de Visão até 8.192m (`dd 5000+`) & SpeedRez (Exclusivo SunSet)** — alcance visual estendido de `32m` a `8.192m` via comando de chat `dd`, Preferências Rápidas e Gráficos, harmonizado com a Distância de Visão Progressiva (SpeedRez) ([guia](docs/DRAW_DISTANCE.md)).
+- **Skins, Temas SunSet & Firestorm (Exclusivo SunSet)** — troca ao vivo sem reiniciar em **Preferências › Aparência › Skin** entre `Aurora (Padrão)`, 7 temas originais **SunSet** e 22 esquemas portados do **Firestorm** ([guia](docs/SKINS_E_TEMAS.md)).
 - **Upscaling AMD FSR 3.1** — renderização de alta resolução com excelente desempenho utilizando compute shaders WGSL.
-- **Localização 100% pt-BR** — tradução nativa em Português do Brasil com mais de 12.770 termos autênticos da comunidade Second Life.
+- **Localização 100% pt-BR & Espanhol (`es`)** — tradução nativa em Português do Brasil e Espanhol com mais de 13.100 termos autênticos da comunidade Second Life.
 - **Atualizador Automático** — verificação e instalação atômica diretamente dos lançamentos no GitHub, com suporte a pastas portáteis e elevação UAC (`%TEMP%`) para instalações em `C:\Program Files` ou pastas personalizadas escolhidas no instalador `.msi`.
 - **Renderização Vulkan** — pipeline bindless, multi-draw indirect, GTAO, sombras de contato, materiais PBR e legados.
 - **Avatares e Bento** — animações suaves, bakes de servidor, roupas em camadas, Quickjump e reset de esqueleto.
@@ -253,8 +264,14 @@ Ao fechar o visualizador, uma caixa de confirmação sobre fundo desfocado permi
 ### Idioma
 O SunSet Viewer detecta automaticamente o idioma do seu sistema operacional. Para escolher manualmente:
 1. Abra **Preferências › Interface › Idioma**.
-2. Selecione **Português do Brasil (`pt-BR`)**, **Inglês (`en`)**, **Francês (`fr`)** ou **Japonês (`ja`)**.
+2. Selecione **Português do Brasil (`pt-BR`)**, **Espanhol (`es`)**, **Inglês (`en`)**, **Francês (`fr`)** ou **Japonês (`ja`)**.
 3. A alteração é aplicada instantaneamente, sem necessidade de reiniciar.
+
+### Skins e Conjuntos de Cores
+Personalize toda a interface sem reiniciar:
+1. Abra **Preferências › Aparência › Skin** (ou clique no atalho **Skin** no topo de **Preferências › Aparência › Cores**).
+2. Escolha entre os chips rápidos de 1 clique ou os menus **Skin** e **Conjunto de cores**: **`Aurora (Padrão)`** (visual original preservado), **7 temas SunSet** (`Tema SunSet (Pôr do Sol)`, `Rosa`, `Rosa Pastel (Claro)`, `Violeta`, `Roxo`, `Lilás` e `Lilás Claro`) e **22 esquemas portados do Firestorm** (`Firestorm`, `AnsaStorm`, `AnsaStorm Modern`, `MetaHarper Modern`, `StarLight`, `StarLight CUI` e `Vintage`).
+3. Janelas, barras, tela de login, menus, botões, lista de Amigos, crachás 3D e os **textos digitados** atualizam ao vivo, com opção de refinar **Cor de destaque**, **Fundo da janela** e **Texto** logo abaixo ([guia completo](docs/SKINS_E_TEMAS.md)).
 
 ### Ajuste de Altura do Avatar (Hover Height)
 Abra **Aparência › Altura de flutuação (Hover Height)** para ajustar a altura dos pés em relação ao chão. A opção automática calcula a altura ideal a partir dos calçados anexados.
@@ -294,7 +311,8 @@ Documentação técnica complementar:
 - [ATUALIZACAO_V0.9.7.md](docs/ATUALIZACAO_V0.9.7.md) — Guia completo de recursos, integração Aurora v0.9.4 e auditoria da versão v0.9.7.
 - [MOVEMENT_DASH.md](docs/MOVEMENT_DASH.md) — Controle de Movimento e Dash Instantâneo (velocidades até 100x e atalhos).
 - [DRAW_DISTANCE.md](docs/DRAW_DISTANCE.md) — Distância de Visão estendida (comando `dd 5000` até 8.192m + SpeedRez, estilo Firestorm).
-- [HITBOX_E_CORES.md](docs/HITBOX_E_CORES.md) — Caixas de colisão 3D (Hitboxes) e marcação de cores individuais para avatares.
+- [HITBOX_E_CORES.md](docs/HITBOX_E_CORES.md) — Caixas de colisão 3D (Hitboxes), alcance do meter de combate / texto flutuante e marcação de cores individuais para avatares.
+- [SKINS_E_TEMAS.md](docs/SKINS_E_TEMAS.md) — Sistema de Skins, temas exclusivos SunSet e conjuntos de cores Firestorm.
 - [CHECKLIST_RELEASE.md](docs/CHECKLIST_RELEASE.md) — Checklist passo a passo para validação e publicação de releases.
 - [GUIA_DE_LANCAMENTO_E_NOTICIAS.md](docs/GUIA_DE_LANCAMENTO_E_NOTICIAS.md) — Regras de publicação de releases e notícias da tela de login.
 - [BRANDING.md](docs/BRANDING.md) — Paleta de cores, ícones e regras de interface.

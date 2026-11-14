@@ -11,13 +11,23 @@ consistent icons. Every screen must look polished and finished.
 
 ## Palette
 
-The colours come from `crates/aurora-viewer/src/theme.rs` (`Theme::default`).
-In the code, always use the resolved `Palette` (`p.violet`, `p.ink`…),
-**never a hard-coded colour**: a skin can change them, and so can the user,
+The colours come from `crates/aurora-viewer/src/theme.rs` (`Theme::default`)
+or from a selected preset skin in `crates/aurora-viewer/src/skin_presets.rs`
+loaded through `ui/skin.rs`. **`Aurora (Default)`** (`aurora` / `default`)
+preserves `Theme::default()` byte-for-byte; alongside it sit 7 **SunSet**
+themes (`sunset_default`, `rose`, `rose_pastel`, `violet`, `purple`, `lilac`,
+`lilac_light`) and 22 ported Firestorm schemes across dark and light palettes.
+In the code, always use the resolved `Palette` (`p.violet`, `p.ink`,
+`p.typed_text` for text inputs…), **never a hard-coded colour**: a skin can
+change them (and check `p.is_light()` where light-surface backdrop or hover
+contrast needs adaptation, such as `aurora_bg.rs`, `menu.rs` and
+`ui/nameplate/paint.rs`), and so can the user,
 from Preferences › Appearance › Skin › Interface colours
 (`interface_colors.rs`): they pick the accent (`violet`), the windows'
 background (`panel`) and the text (`ink`), and the other accent, surface
-and text roles follow from those three. So never pick a role for its
+and text roles follow from those three. Uncustomized semantic chat, friend
+and tag colours follow the active preset's `SkinChatColors` (`ui/colors.rs`).
+So never pick a role for its
 violet: a teal or pink accent, or a light background, must still read.
 On a chosen background the states and `teal` move in lightness to read
 4.5:1, their hue kept; a configured chat colour goes through
