@@ -23,6 +23,10 @@ Una línea en blanco inicia un nuevo párrafo.
 
 # Noticias de SunSet Viewer
 
+## 2026-11-14 — SunSet Viewer v0.9.9: Traducción 100% al Español, Temas de Skins SunSet y Texto Flotante
+La versión v0.9.9 incorpora soporte completo en Español con 13.077 claves traducidas en paridad total con Portugués e Inglés, además del nuevo selector de Temas y Skins en Preferencias › Apariencia con vista previa en vivo y 6 esquemas exclusivos de la familia SunSet (Predeterminado, Rosa, Rosa Pastel, Violeta, Púrpura y Lila Claro) junto al restablecimiento rápido a Aurora. También añade controles de distancia y desvanecimiento gradual para textos flotantes (llSetText) y amplía el alcance de hitboxes y raycast de combate hasta 128 metros.
+[Leer más](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.9)
+
 ## 2026-11-10 — SunSet Viewer v0.9.8: Lanzamiento Aurora v0.9.6, 65 LUTs y Funciones SunSet
 La versión v0.9.8 integra por completo la versión oficial Aurora v0.9.6 (Vitrina de atuendos con retratos automáticos, retratos por lotes y foto HD opcional, 65 LUTs fotográficos integrados de Czar Fenris y Nanner Pudding, cielo de la Vía Láctea, menú de Tipos de renderizado, corrección de sombras de contacto en AMD RX 9000 e instalador MSI con carpeta personalizada) junto con todas las funciones exclusivas de SunSet Viewer: multiplicador de velocidad 100x, Dash instantáneo, distancia de visión de 8192 m con SpeedRez, hitboxes de combate 3D y colores individuales de avatares.
 [Leer más](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.8)

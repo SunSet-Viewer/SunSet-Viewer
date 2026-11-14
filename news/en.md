@@ -26,6 +26,10 @@ An empty line starts a new paragraph.
 
 # SunSet Viewer news
 
+## 2026-11-14 — SunSet Viewer v0.9.9: 100% Spanish Localization, SunSet Skin Themes & Floating Text Controls
+Version v0.9.9 introduces complete Spanish localization with 13,077 translated keys at full parity with English and Brazilian Portuguese, plus the new Skin Preset & Color Scheme selector in Preferences › Appearance featuring live preview across 6 custom SunSet palettes (Default, Rose, Rose Pastel, Violet, Purple, and Lilac Light) and one-click Aurora reset. It also adds configurable distance and smooth fade range sliders for floating text (llSetText) and extends 3D combat hitbox and raycast range up to 128 meters.
+[Read more](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.9)
+
 ## 2026-11-10 — SunSet Viewer v0.9.8: Complete Aurora v0.9.6 Release, 65 LUTs & SunSet Features
 Version v0.9.8 integrates the complete official Aurora v0.9.6 release (Outfit Showcase with auto portraits, batch portraits and optional HD pictures, 65 built-in photo LUTs by Czar Fenris and Nanner Pudding, Milky Way skybox, Rendering types menu, AMD RX 9000 contact shadow fix, and custom MSI install directory) alongside all custom SunSet Viewer features: 100x speed multiplier, instant Dash jumps, 8192m draw distance with SpeedRez, 3D combat hitboxes, individual avatar colors, and 100% pt-BR localization.
 [Read more](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.8)

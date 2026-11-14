@@ -4,6 +4,22 @@ Todas as mudanças notáveis, novidades e correções de bugs do projeto **SunSe
 
 ---
 
+## [0.9.9] — 2026-11-14
+
+### 🌐 Localização Nativa em Espanhol (`es.ftl`)
+- **Paridade Completa em Espanhol**: Catálogo completo `crates/aurora-i18n/locales/es.ftl` com **13.077 chaves** traduzidas e validadas em paridade absoluta com Inglês (`en.ftl`) e Português do Brasil (`pt-BR.ftl`).
+- **Pacotes de Idioma e Sistema**: Atualizados os metadados de idioma para macOS (`es.lproj/InfoPlist.strings`) e Linux (`aurora-viewer.desktop`), além do verificador automático de catálogos (`aurora-i18n/tests/catalogs.rs`).
+
+### 🎨 Temas e Esquemas de Skins SunSet (Preferências › Aparência)
+- **Seletor de Família e Esquema ao Vivo**: Novo painel em **Preferências › Aparência** para alternar entre as famílias **Aurora** e **SunSet** com aplicação instantânea em tempo real e restauração rápida para Aurora.
+- **6 Esquemas Exclusivos SunSet**: *Padrão (SunSet)*, *Rosa*, *Rosa Pastel*, *Violeta*, *Roxo* e *Lilás Claro*, integrados à paleta, fundos e widgets da interface.
+
+### 💬 Textos Flutuantes (`llSetText`) e Combate 128 m
+- **Distância e Desvanecimento de Textos Flutuantes**: Novos controles de alcance máximo (`0–128 m`) e faixa de desvanecimento suave (`1–64 m`) em **Preferências › Gráficos** e nas **Preferências Rápidas**.
+- **Combate Até 128 m**: Alcance de exibição de hitboxes 3D e raycast de combate ampliado para até `128 m`.
+
+---
+
 ## [0.9.8] — 2026-11-10
 
 ### 👗 Vitrine de Trajes, Retratos Automáticos e Foto HD (Aurora v0.9.6 Final)
