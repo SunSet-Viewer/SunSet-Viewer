@@ -85,7 +85,8 @@ impl Default for Layout {
 }
 
 pub struct Skin {
-    pub name: String,
+    pub family: String,
+    pub scheme: String,
     pub dir: Option<PathBuf>,
     pub theme: Theme,
     pub layout: Layout,
@@ -142,12 +143,41 @@ fn read_json<T: for<'de> Deserialize<'de> + Default>(path: &Path) -> T {
     }
 }
 
+fn merge_theme_file(base: &mut Theme, path: &Path) {
+    let Ok(bytes) = std::fs::read(path) else {
+        return;
+    };
+    let name = path.file_name().map(|n| n.to_string_lossy().into_owned()).unwrap_or_default();
+    if let Ok(over) = serde_json::from_slice::<serde_json::Value>(&bytes)
+        && let Ok(mut target) = serde_json::to_value(&*base)
+        && let (Some(dst), Some(src)) = (target.as_object_mut(), over.as_object())
+    {
+        for (k, v) in src {
+            dst.insert(k.clone(), v.clone());
+        }
+        if let Ok(rebuilt) = serde_json::to_vec(&target)
+            && let Some(read) = crate::tolerant::from_slice::<Theme>(&rebuilt, &name)
+        {
+            *base = read.value;
+        }
+    }
+}
+
 impl Skin {
-    pub fn load(ctx: &egui::Context, name: &str, font_scale: f32) -> Skin {
-        let dir = skin_dirs(name).into_iter().find(|d| d.is_dir());
+    pub fn load_preset(ctx: &egui::Context, family: &str, scheme: &str, font_scale: f32) -> Skin {
+        let (eff_family, eff_scheme) = if std::env::var_os("AURORA_DEMO").is_some()
+            && let Some((df, ds)) = crate::skin_presets::demo_override()
+        {
+            (df, ds)
+        } else {
+            (family.to_owned(), scheme.to_owned())
+        };
+        let (fam_spec, scheme_spec) = crate::skin_presets::find_scheme(&eff_family, &eff_scheme);
+        let dir_name = "aurora";
+        let dir = skin_dirs(dir_name).into_iter().find(|d| d.is_dir());
         // First run: write the default skin as an editable template.
         let dir = dir.or_else(|| {
-            let d = crate::settings::config_dir().join("skins").join(name);
+            let d = crate::settings::config_dir().join("skins").join(dir_name);
             std::fs::create_dir_all(d.join("icons")).ok()?;
             let theme = serde_json::to_vec_pretty(&Theme::default()).ok()?;
             let layout = serde_json::to_vec_pretty(&Layout::default()).ok()?;
@@ -160,19 +190,33 @@ impl Skin {
             );
             Some(d)
         });
-        let theme = dir.as_ref().map(|d| read_json::<Theme>(&d.join("theme.json"))).unwrap_or_default();
+        let mut theme = (scheme_spec.build_theme)();
+        if fam_spec.id == crate::skin_presets::DEFAULT_SKIN
+            && scheme_spec.id == crate::skin_presets::DEFAULT_SCHEME
+            && let Some(d) = &dir
+        {
+            merge_theme_file(&mut theme, &d.join("theme.json"));
+        }
+        let custom_scheme = crate::settings::config_dir().join("skins").join(fam_spec.id).join("theme.json");
+        if fam_spec.id != crate::skin_presets::DEFAULT_SKIN {
+            merge_theme_file(&mut theme, &custom_scheme);
+        }
         let layout = dir
             .as_ref()
             .map(|d| read_json::<Layout>(&d.join("layout.json")))
             .unwrap_or_default();
+        crate::ui::colors::set_skin_chat_colors(scheme_spec.chat);
         theme.apply(ctx, font_scale);
         let icons = Icons::load(ctx, dir.as_deref().map(|d| d.join("icons")).as_deref());
         log::info!(
-            "skin '{name}' loaded from {}",
-            dir.as_ref().map(|d| d.display().to_string()).unwrap_or_else(|| "(intégré)".into())
+            "skin '{}/{}' loaded from {}",
+            fam_spec.id,
+            scheme_spec.id,
+            dir.as_ref().map(|d| d.display().to_string()).unwrap_or_else(|| "(built-in)".into())
         );
         Skin {
-            name: name.to_owned(),
+            family: fam_spec.id.to_owned(),
+            scheme: scheme_spec.id.to_owned(),
             stamp: dir.as_deref().and_then(stamp),
             dir,
             theme,
@@ -193,7 +237,7 @@ impl Skin {
         };
         let s = stamp(dir);
         if s != self.stamp {
-            *self = Skin::load(ctx, &self.name.clone(), font_scale);
+            *self = Skin::load_preset(ctx, &self.family.clone(), &self.scheme.clone(), font_scale);
             return true;
         }
         false

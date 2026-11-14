@@ -34,6 +34,7 @@ fn colors(p: &Palette) -> Vec<(&'static str, Color32)> {
         ("danger_dim", p.danger_dim),
         ("indigo_light", p.indigo_light),
         ("on_accent", p.on_accent),
+        ("typed_text", p.typed_text),
     ]
 }
 

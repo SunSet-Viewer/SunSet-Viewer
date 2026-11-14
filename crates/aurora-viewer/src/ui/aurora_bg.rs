@@ -78,12 +78,19 @@ fn shapes(p: &Palette, rect: Rect, t: f32, alpha: f32, soft: bool) -> Vec<Shape>
     let a = alpha.clamp(0.0, 1.0);
     let (w, h) = (rect.width(), rect.height());
     let fade = |c: Color32| c.gamma_multiply(a);
+    let light = p.is_light();
+    let wash = |c: Color32, k: f32| {
+        if light { c.gamma_multiply(k * 0.45) } else { glow(c, k) }
+    };
 
     // ---- sky
     let mut sky = Mesh::default();
     let night = p.navy;
-    let deep = mix(p.navy, Color32::BLACK, 0.45);
-    let horizon = mix(p.navy, p.indigo, 0.22);
+    let (deep, horizon) = if light {
+        (mix(p.bar, p.violet, 0.14), mix(p.panel, p.teal, 0.18))
+    } else {
+        (mix(p.navy, Color32::BLACK, 0.45), mix(p.navy, p.indigo, 0.22))
+    };
     let mid = Rect::from_min_max(rect.min, Pos2::new(rect.right(), rect.top() + h * 0.55));
     gradient(&mut sky, mid, fade(deep), fade(night));
     gradient(
@@ -95,7 +102,7 @@ fn shapes(p: &Palette, rect: Rect, t: f32, alpha: f32, soft: bool) -> Vec<Shape>
     out.push(Shape::mesh(sky));
 
     // ---- stars (upper sky), twinkling
-    let stars = if soft { 0 } else { 170u32 };
+    let stars = if soft || light { 0 } else { 170u32 };
     for i in 0..stars {
         let x = rect.left() + hash(i * 3) * w;
         let y = rect.top() + hash(i * 3 + 1).powf(1.6) * h * 0.72;
@@ -144,10 +151,10 @@ fn shapes(p: &Palette, rect: Rect, t: f32, alpha: f32, soft: bool) -> Vec<Shape>
             // out of focus, the lower edge spreads and loses its brightness
             let (below, peak) = if soft { (0.11, 0.8) } else { (0.035, 1.0) };
             // top (faint, tall), bright lower edge, quick fade below
-            aur.vertices.push(v(Pos2::new(x, y - ht), glow(tint, 0.0)));
-            aur.vertices.push(v(Pos2::new(x, y - ht * 0.35), glow(tint, strength * 0.55)));
-            aur.vertices.push(v(Pos2::new(x, y), glow(*low_c, strength * peak)));
-            aur.vertices.push(v(Pos2::new(x, y + h * below), glow(*low_c, 0.0)));
+            aur.vertices.push(v(Pos2::new(x, y - ht), wash(tint, 0.0)));
+            aur.vertices.push(v(Pos2::new(x, y - ht * 0.35), wash(tint, strength * 0.55)));
+            aur.vertices.push(v(Pos2::new(x, y), wash(*low_c, strength * peak)));
+            aur.vertices.push(v(Pos2::new(x, y + h * below), wash(*low_c, 0.0)));
         }
         for s in 0..N as u32 {
             let i = start + s * 4;
@@ -167,10 +174,10 @@ fn shapes(p: &Palette, rect: Rect, t: f32, alpha: f32, soft: bool) -> Vec<Shape>
         Pos2::new(rect.right(), rect.top() + h * 0.86),
     );
     let i = haze.vertices.len() as u32;
-    haze.vertices.push(v(hz.left_top(), glow(p.violet, 0.0)));
-    haze.vertices.push(v(hz.right_top(), glow(p.violet, 0.0)));
-    haze.vertices.push(v(hz.right_bottom(), glow(p.violet, 0.10 * a)));
-    haze.vertices.push(v(hz.left_bottom(), glow(p.indigo, 0.10 * a)));
+    haze.vertices.push(v(hz.left_top(), wash(p.violet, 0.0)));
+    haze.vertices.push(v(hz.right_top(), wash(p.violet, 0.0)));
+    haze.vertices.push(v(hz.right_bottom(), wash(p.violet, 0.10 * a)));
+    haze.vertices.push(v(hz.left_bottom(), wash(p.indigo, 0.10 * a)));
     haze.add_triangle(i, i + 1, i + 2);
     haze.add_triangle(i, i + 2, i + 3);
     out.push(Shape::mesh(haze));
@@ -202,8 +209,13 @@ fn shapes(p: &Palette, rect: Rect, t: f32, alpha: f32, soft: bool) -> Vec<Shape>
         }
         out.push(Shape::mesh(m));
     };
-    ridge(0.7, 0.86, 0.16, fade(mix(p.navy, p.indigo, 0.16)));
-    ridge(2.9, 0.93, 0.13, fade(mix(p.navy, Color32::BLACK, 0.35)));
+    let (far_hill, near_hill) = if light {
+        (mix(p.bar, p.indigo_light, 0.25), mix(p.panel, p.violet, 0.35))
+    } else {
+        (mix(p.navy, p.indigo, 0.16), mix(p.navy, Color32::BLACK, 0.35))
+    };
+    ridge(0.7, 0.86, 0.16, fade(far_hill));
+    ridge(2.9, 0.93, 0.13, fade(near_hill));
     out
 }
 

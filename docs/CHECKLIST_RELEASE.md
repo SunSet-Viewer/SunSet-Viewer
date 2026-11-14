@@ -56,7 +56,7 @@ Antes de fazer qualquer commit ou push para o repositório remoto, valide se o c
   ```powershell
   cargo test -p aurora-i18n
   ```
-  *Critério:* O teste `every_language_has_english_keys_and_variables` deve passar com sucesso. O catálogo `pt-BR.ftl` deve ter paridade exata de chaves e variáveis com `en.ftl`.
+  *Critério:* O teste `every_language_has_english_keys_and_variables` deve passar com sucesso. Os catálogos `pt-BR.ftl` e `es.ftl` devem ter paridade exata de chaves e variáveis com `en.ftl`.
 
 - [ ] **1.4. Compilação Release Local:**
   ```powershell
@@ -99,8 +99,8 @@ Antes de fazer qualquer commit ou push para o repositório remoto, valide se o c
   - Crie uma seção com a nova versão `## [vX.Y.Z] - AAAA-MM-DD`.
   - Liste as novidades agrupadas em: *Novas Funcionalidades*, *Correções de Bugs*, *Desempenho*, *Localização*.
 
-- [ ] **3.2. Redigir os cards de notícias (`news/pt-BR.md`, `news/pt.md` e `news/en.md`):**
-  Adicione a nova notícia no topo dos três arquivos, respeitando os limites:
+- [ ] **3.2. Redigir os cards de notícias (`news/pt-BR.md`, `news/pt.md`, `news/es.md` e `news/en.md`):**
+  Adicione a nova notícia no topo dos quatro arquivos, respeitando os limites:
   - **Título:** Máximo de 120 caracteres (`## AAAA-MM-DD — SunSet Viewer vX.Y.Z: Título Atraente`).
   - **Corpo:** Máximo de 600 caracteres, texto corrido sem listas de marcadores (* ou -).
   - **Link:** Exclusivamente no formato abaixo e sozinho na linha:
@@ -110,6 +110,7 @@ Antes de fazer qualquer commit ou push para o repositório remoto, valide se o c
   - *Arquivos obrigatórios:*
     - `news/pt-BR.md` (Prioritário em Português)
     - `news/pt.md` (Fallback idêntico)
+    - `news/es.md` (Versão em Espanhol)
     - `news/en.md` (Versão em Inglês)
 
 - [ ] **3.3. Atualizar tarefas em `TASKS.md`:**
@@ -127,7 +128,7 @@ Antes de fazer qualquer commit ou push para o repositório remoto, valide se o c
 
 - [ ] **4.2. Commit das alterações de release:**
   ```powershell
-  git add CHANGELOG.md news/pt-BR.md news/pt.md news/en.md TASKS.md docs/
+  git add CHANGELOG.md news/pt-BR.md news/pt.md news/es.md news/en.md TASKS.md docs/
   git commit -m "chore(release): prepare vX.Y.Z (changelog, news, docs)"
   ```
 

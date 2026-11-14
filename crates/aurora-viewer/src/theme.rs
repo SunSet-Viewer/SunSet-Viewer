@@ -29,6 +29,8 @@ pub struct Theme {
     pub danger_dim: String,
     pub indigo_light: String,
     pub on_accent: String,
+    #[serde(default = "String::new")]
+    pub typed_text: String,
     pub panel_alpha: u8,
     pub button_radius: u8,
     pub window_radius: u8,
@@ -61,6 +63,7 @@ impl Default for Theme {
             danger_dim: "#A85252".into(),
             indigo_light: "#818CF8".into(),
             on_accent: "#FFFFFF".into(),
+            typed_text: "#E8EDFB".into(),
             panel_alpha: 230,
             button_radius: 5,
             window_radius: 3,
@@ -77,6 +80,16 @@ pub fn hex(s: &str) -> Color32 {
     } else {
         Color32::from_rgb(p(0), p(2), p(4))
     }
+}
+
+/// Relative luminance (WCAG 2) of an opaque sRGB colour, from `0.0` (black)
+/// to `1.0` (white).
+pub fn relative_luminance(c: Color32) -> f32 {
+    let ch = |u: u8| {
+        let v = f32::from(u) / 255.0;
+        if v <= 0.04045 { v / 12.92 } else { ((v + 0.055) / 1.055).powf(2.4) }
+    };
+    0.2126 * ch(c.r()) + 0.7152 * ch(c.g()) + 0.0722 * ch(c.b())
 }
 
 /// Resolved colors for direct use in UI code.
@@ -106,6 +119,8 @@ pub struct Palette {
     /// selected tool, checked box): `ink` belongs to the panels, and a skin
     /// may give them a dark one.
     pub on_accent: Color32,
+    /// User-entered text inside editable inputs (`TextEdit`).
+    pub typed_text: Color32,
     pub panel_alpha: u8,
     /// The high contrast palette of Preferences › Accessibility
     /// (`crate::high_contrast`): buttons, fields, windows, islands and
@@ -115,6 +130,11 @@ pub struct Palette {
 }
 
 impl Palette {
+    /// Whether the window panels are light (`luminance > 0.35`).
+    pub fn is_light(&self) -> bool {
+        relative_luminance(self.panel) > 0.35
+    }
+
     /// The brand gradient in the world (docs/BRANDING.md: gradients are for
     /// brand elements), from its bright end to its deep one: teal, light
     /// indigo, violet, the colors of the aurora of the login screen. The
@@ -159,6 +179,12 @@ impl Theme {
 
     /// The colors as the skin writes them.
     pub fn skin_palette(&self) -> Palette {
+        let ink = hex(&self.ink);
+        let typed_text = if self.typed_text.trim().is_empty() {
+            ink
+        } else {
+            hex(&self.typed_text)
+        };
         Palette {
             violet: hex(&self.violet),
             indigo: hex(&self.indigo),
@@ -170,7 +196,7 @@ impl Theme {
             raised: hex(&self.raised),
             violet_light: hex(&self.violet_light),
             violet_pale: hex(&self.violet_pale),
-            ink: hex(&self.ink),
+            ink,
             muted: hex(&self.muted),
             muted_dim: hex(&self.muted_dim),
             amber: hex(&self.amber),
@@ -181,6 +207,7 @@ impl Theme {
             danger_dim: hex(&self.danger_dim),
             indigo_light: hex(&self.indigo_light),
             on_accent: hex(&self.on_accent),
+            typed_text,
             panel_alpha: self.panel_alpha,
             high_contrast: false,
         }
@@ -188,15 +215,16 @@ impl Theme {
 
     pub fn apply(&self, ctx: &egui::Context, extra_font_scale: f32) {
         let p = self.palette();
-        // `v.text_options` stays at epaint's dark-theme defaults on purpose
+        let is_light = p.is_light();
+        // `v.text_options` stays at epaint's defaults on purpose
         // (compared live in demo and chosen by the human on 2026-10-16):
-        // coverage → alpha 2c − c² suits light text on the dark glass, where
+        // coverage → alpha 2c − c² suits text on the glass, where
         // lighter curves (gamma 0.75, linear) wash out the small grey labels
         // and heavier ones (gamma 0.4) clog them; hinting on (off is
         // blurrier); sub-pixel binning on, which keeps the letter spacing
         // even at 11–12 points. The hinting target changes nothing for Inter
         // and Roboto, which ship their own TrueType hinting.
-        let mut v = Visuals::dark();
+        let mut v = if is_light { Visuals::light() } else { Visuals::dark() };
         let br = CornerRadius::same(self.button_radius);
         let panel = Color32::from_rgba_unmultiplied(p.panel.r(), p.panel.g(), p.panel.b(), p.panel_alpha);
         v.override_text_color = Some(p.ink);
@@ -208,18 +236,23 @@ impl Theme {
         v.error_fg_color = p.danger;
         v.window_fill = panel;
         v.panel_fill = panel;
-        v.window_stroke = Stroke::new(1.0, p.raised);
+        v.window_stroke = Stroke::new(1.0, if is_light { p.muted_dim.gamma_multiply(0.45) } else { p.raised });
         v.window_corner_radius = CornerRadius::same(self.window_radius);
         v.menu_corner_radius = CornerRadius::same(self.window_radius);
         v.window_shadow = egui::Shadow {
             offset: [0, 4],
             blur: 14,
             spread: 0,
-            color: p.bar.gamma_multiply(0.35),
+            color: if is_light {
+                p.ink.gamma_multiply(0.18)
+            } else {
+                p.bar.gamma_multiply(0.35)
+            },
         };
         v.popup_shadow = v.window_shadow;
         v.selection.bg_fill = p.violet;
         v.selection.stroke = Stroke::new(1.0, p.on_accent);
+        v.text_cursor.stroke = Stroke::new(1.5, if is_light { p.violet } else { p.violet_light });
         // LLLineEditor::draw (indra/llui/lllineeditor.cpp) and
         // LLTextEditor::drawPreeditMarker (indra/llui/lltexteditor.cpp)
         // underline the composition and distinguish its active segment.
@@ -231,24 +264,24 @@ impl Theme {
         let w = &mut v.widgets;
         w.noninteractive.bg_fill = panel;
         w.noninteractive.weak_bg_fill = panel;
-        w.noninteractive.bg_stroke = Stroke::new(1.0, p.raised);
+        w.noninteractive.bg_stroke = Stroke::new(1.0, if is_light { p.muted_dim.gamma_multiply(0.35) } else { p.raised });
         w.noninteractive.fg_stroke = Stroke::new(1.0, p.muted);
         w.noninteractive.corner_radius = br;
 
         // Buttons and combo boxes are plain filled faces (the human's
         // choice): their border has the color of the face, so only text
         // fields and check boxes, drawn on a darker ground, show it.
-        // bg_fill is also the slider rail / checkbox background.
+        // Light skins add a gentle border so surfaces and inputs stay crisp.
         let hot = p.raised.lerp_to_gamma(p.ink, 0.16);
         w.inactive.bg_fill = p.raised;
         w.inactive.weak_bg_fill = p.raised;
-        w.inactive.bg_stroke = Stroke::new(1.0, p.raised);
+        w.inactive.bg_stroke = Stroke::new(1.0, if is_light { p.muted_dim.gamma_multiply(0.35) } else { p.raised });
         w.inactive.fg_stroke = Stroke::new(1.0, p.ink);
         w.inactive.corner_radius = br;
 
         w.hovered.bg_fill = hot;
         w.hovered.weak_bg_fill = hot;
-        w.hovered.bg_stroke = Stroke::new(1.0, hot);
+        w.hovered.bg_stroke = Stroke::new(1.0, if is_light { p.violet.gamma_multiply(0.45) } else { hot });
         w.hovered.fg_stroke = Stroke::new(1.0, p.ink);
         w.hovered.corner_radius = br;
         w.hovered.expansion = 0.0;
@@ -256,7 +289,7 @@ impl Theme {
         w.active.bg_fill = p.indigo;
         w.active.weak_bg_fill = p.indigo;
         w.active.bg_stroke = Stroke::new(1.0, p.violet_light);
-        w.active.fg_stroke = Stroke::new(1.0, p.ink);
+        w.active.fg_stroke = Stroke::new(1.0, p.on_accent);
         w.active.corner_radius = br;
         w.active.expansion = 0.0;
 
@@ -302,7 +335,11 @@ impl Theme {
             h.size = 15.0;
         }
         crate::ui::fonts::set_scale(ctx, self.font_scale.clamp(0.6, 2.0) * extra_font_scale.clamp(0.5, 2.0));
-        ctx.set_theme(egui::ThemePreference::Dark);
+        ctx.set_theme(if is_light {
+            egui::ThemePreference::Light
+        } else {
+            egui::ThemePreference::Dark
+        });
         ctx.all_styles_mut(|s| *s = style.clone());
         ctx.replace_widget_theme::<egui::widget_style::TextEditStyle>(FieldSize);
         // every interface context goes through here

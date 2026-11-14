@@ -481,7 +481,7 @@ fn row_lead_sensed(ui: &mut Ui, p: &Palette, lead: Lead, label: &str, enabled: b
     let painter = ui.painter();
     let mut face = p.panel;
     if hot {
-        let wash = p.violet.gamma_multiply(0.35);
+        let wash = p.violet.gamma_multiply(if p.is_light() { 0.20 } else { 0.35 });
         painter.rect_filled(rect, ui.visuals().window_corner_radius, wash);
         face = face.blend(wash);
     }

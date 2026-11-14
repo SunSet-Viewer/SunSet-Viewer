@@ -1903,7 +1903,7 @@ fn location_field(ui: &mut egui::Ui, p: &Palette, panels: &mut Panels, st: &Stat
             .id(id)
             .frame(egui::Frame::NONE.inner_margin(crate::ui::widgets::field_text_margin(ui.ctx(), &egui::FontId::proportional(12.0))))
             .font(egui::FontId::proportional(12.0))
-            .text_color(p.ink)
+            .text_color(p.typed_text)
             .hint_text(aurora_i18n::tr!("ui-bars-slurl-region-x-y-z-or-region-name"))
             .desired_width(w),
     );

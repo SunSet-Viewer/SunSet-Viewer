@@ -116,9 +116,9 @@ licenses, and the upstream relationship are documented in
 <table>
   <tr>
     <td width="50%" valign="top">
-      <h3>⚔️ Integrated 3D Combat & Custom Hitbox Colors</h3>
+      <h3>⚔️ Integrated 3D Combat, Meter Range & Custom Hitbox Colors</h3>
       Built-in real-time combat system (<code>scene::combat</code>) featuring screen-center raycasting,
-      high-precision avatar hitboxes, scene occlusion filtering, and individual avatar marker colors (<a href="docs/HITBOX_E_CORES.md">guide</a>).
+      high-precision avatar hitboxes, scene occlusion filtering, configurable floating text / combat meter fade distance (<code>8m + 4m</code> default, up to <code>96m</code>), and individual avatar marker colors (<a href="docs/HITBOX_E_CORES.md">guide</a>).
     </td>
     <td width="50%" valign="top">
       <h3>🚀 100x Movement, Instant Dash & 8,192m Draw Distance</h3>
@@ -127,13 +127,22 @@ licenses, and the upstream relationship are documented in
   </tr>
   <tr>
     <td valign="top">
-      <h3>🇧🇷 100% Native pt-BR Localization</h3>
-      Comprehensive Brazilian Portuguese translation across 12,850+ interface strings,
-      adopting authentic Second Life terminology and community-reviewed translations.
+      <h3>🇧🇷 🇪🇸 100% Native pt-BR & Spanish Localization</h3>
+      Comprehensive localization across 13,100+ interface strings in <b>Brazilian Portuguese (<code>pt-BR</code>)</b> and <b>Spanish (<code>es</code>)</b>, adopting authentic Second Life terminology with zero missing keys.
     </td>
     <td valign="top">
       <h3>⚡ AMD FSR 3.1 & Independent Auto-Updates</h3>
       Native FidelityFX Super Resolution 3.1 with WGSL compute shaders, plus one-click background updates with SHA-256 verification and rollback protection.
+    </td>
+  </tr>
+  <tr>
+    <td valign="top">
+      <h3>🎨 Skins, SunSet Themes & Firestorm Palettes</h3>
+      Instant live skin switching (no restart) in <b>Preferences › Appearance › Skin</b>: exact <code>Aurora (Default)</code>, 7 original <b>SunSet</b> schemes (Twilight, Rose, Rose Pastel Light, Violet, Purple, Lilac, Lilac Light) and 22 classic <b>Firestorm</b> colour schemes (<a href="docs/SKINS_E_TEMAS.md">guide</a>).
+    </td>
+    <td valign="top">
+      <h3>✨ Full UI, Light Mode & Typed-Text Theming</h3>
+      Every skin styles windows, menus, buttons, Friends, floating 3D nameplates, the login backdrop and <b>typed input text</b> with verified readability ratios across dark and light palettes.
     </td>
   </tr>
 </table>
@@ -481,10 +490,17 @@ are planned or in progress: they are not in the viewer yet.
 - **Borderless fullscreen**: Alt+Enter fills the screen without a title bar
   or borders, at once and without a restart, and gives the window back
   exactly as it was (Preferences › Graphics).
-- **In English, French and Japanese (日本語)**: the whole interface follows
+- **In English, Spanish, French and Japanese (日本語)**: the whole interface follows
   your system language or your choice, applied at once. Japanese uses Second
   Life's official Japanese terms (インベントリ, 区画, フレンド…), Japanese
   interface fonts and Japanese dates ([details](#language)).
+- **Built-in Skins & Color Schemes**: switch live without restarting in
+  **Preferences › Appearance › Skin** between exact **`Aurora (Default)`**,
+  7 original **SunSet** palettes (*Twilight*, *Rose*, *Rose Pastel Light*,
+  *Violet*, *Purple*, *Lilac*, *Lilac Light*), and 22 classic **Firestorm**
+  colour schemes — updating windows, menus, buttons, Friends, floating 3D
+  nameplates, the login sky and **typed input text** across both dark and
+  light themes ([guide](docs/SKINS_E_TEMAS.md)).
 - **Conversations made for today**: a Contacts tab, conversations you can
   reorder, group pictures, and nearby chat as cards with the speaker's
   picture. Unread conversations flash softly, three dots bounce on the
@@ -797,7 +813,7 @@ frame on your own PC.
   tools, folder colours, outfit backups to JSON, dedicated Marketplace and
   listings windows, compact import launcher and per-type editors; sound
   waveform previews, trimming, gain and splitting.
-- **Interface** — in English, French and Japanese; flat SunSet theme, Inter font, Tabler icons, glass island bars,
+- **Interface** — in English, Brazilian Portuguese, Spanish, French and Japanese; flat SunSet theme, Inter font, Tabler icons, glass island bars,
   customizable bottom and side toolbars, classic layout options, SunSet
   search and Places windows, mini-map, world map, preferences and debug
   overlays; an immersive mode that keeps only the chat; project team and
@@ -862,9 +878,9 @@ Manager) and, when you tick it, a 30-day MFA authorization.
 ### Language
 
 The interface is available in English, Brazilian Portuguese (Português do Brasil),
-French and Japanese (日本語): system language detection, a choice saved in Preferences
-and applied at once. The Brazilian Portuguese translation covers 100% of interface
-strings (12,650+ keys) using authentic, community-reviewed Second Life terms
+Spanish (Español), French and Japanese (日本語): system language detection, a choice saved in Preferences
+and applied at once. The Brazilian Portuguese and Spanish translations cover 100% of interface
+strings (13,100+ keys) using authentic, community-reviewed Second Life terms
 ("Em uso", "Desanexar de você", "Sempre correr"). Japanese translation covers every
 message with official Second Life Japanese terms, drawing with Japanese interface fonts
 and writing dates the Japanese way. Fluent catalogues make it possible to add a
@@ -1325,7 +1341,8 @@ its own task in its own git worktree:
 - [docs/ATUALIZACAO_V0.9.7.md](docs/ATUALIZACAO_V0.9.7.md) — full v0.9.7 release & non-regression architecture guide
 - [docs/MOVEMENT_DASH.md](docs/MOVEMENT_DASH.md) — movement speed control & instant dash (up to 100x speed)
 - [docs/DRAW_DISTANCE.md](docs/DRAW_DISTANCE.md) — extended draw distance, SpeedRez & chat command (`dd 5000` up to 8192m)
-- [docs/HITBOX_E_CORES.md](docs/HITBOX_E_CORES.md) — 3D combat hitboxes & individual avatar marker colors
+- [docs/HITBOX_E_CORES.md](docs/HITBOX_E_CORES.md) — 3D combat hitboxes, floating text / combat meter fade distance & individual avatar marker colors
+- [docs/SKINS_E_TEMAS.md](docs/SKINS_E_TEMAS.md) — live skin switching, SunSet palettes & Firestorm colour schemes
 - [docs/CHECKLIST_RELEASE.md](docs/CHECKLIST_RELEASE.md) — step-by-step release checklist
 - [docs/BRANDING.md](docs/BRANDING.md) — palette, logos, icons and UI rules
 - [docs/TESTING.md](docs/TESTING.md) — test switches (demo scenarios,

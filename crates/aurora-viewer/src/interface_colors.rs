@@ -118,7 +118,7 @@ pub fn apply(skin: Palette, colors: &InterfaceColors) -> Palette {
     }
     let p = derive(skin, colors).0;
     if let Ok(mut panel) = PANEL.lock() {
-        let wanted = (p.panel != skin.panel).then_some(p.panel);
+        let wanted = (p.panel != skin.panel || p.is_light()).then_some(p.panel);
         if panel.as_ref().map(|(c, _)| *c) != wanted {
             *panel = wanted.map(|c| (c, Vec::new()));
         }
@@ -178,6 +178,17 @@ pub fn derive(skin: Palette, colors: &InterfaceColors) -> (Palette, Adjusted) {
         }
         p.muted = readable(Along::of(skin.ink, skin.panel, skin.muted).on(p.ink, p.panel), p.panel, TEXT);
         p.muted_dim = readable(Along::of(skin.ink, skin.panel, skin.muted_dim).on(p.ink, p.panel), p.panel, UI);
+        p.typed_text = if text.is_some() {
+            let candidate = if text == Some(skin.ink) && surface.unwrap_or(skin.panel) == skin.panel {
+                skin.typed_text
+            } else {
+                p.ink
+            };
+            readable(candidate, p.field, TEXT)
+        } else {
+            let derived = Along::of(skin.ink, skin.panel, skin.typed_text).on(p.ink, p.panel);
+            readable(derived, p.field, TEXT)
+        };
         // the states and the links keep their hue, in the lightness that
         // reads on the new panel: they colour text as well as dots and
         // badges, so the text minimum (the skin's already reach it)
@@ -208,14 +219,19 @@ pub fn derive(skin: Palette, colors: &InterfaceColors) -> (Palette, Adjusted) {
 }
 
 /// Text on the accent: the skin's while it reads at least as well as on
-/// the skin's own accent (up to 4.5:1), else the better of it and navy.
+/// the skin's own accent (up to 4.5:1), else the better of it, navy, and
+/// panel ink (for light skins where navy itself is pale).
 fn on_accent(skin: &Palette, accent: Color32) -> Color32 {
     let need = TEXT.min(contrast(skin.on_accent, skin.violet));
     let light = contrast(skin.on_accent, accent);
-    if light >= need || light >= contrast(skin.navy, accent) {
+    let navy = contrast(skin.navy, accent);
+    if light >= need {
         skin.on_accent
-    } else {
+    } else if navy >= light {
         skin.navy
+    } else {
+        let ink = contrast(skin.ink, accent);
+        if ink > light && ink > navy { skin.ink } else { skin.on_accent }
     }
 }
 

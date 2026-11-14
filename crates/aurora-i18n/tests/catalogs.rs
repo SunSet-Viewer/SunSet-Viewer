@@ -250,6 +250,52 @@ fn brazilian_portuguese_dates_and_numbers_follow_regional_conventions() {
 }
 
 #[test]
+fn spanish_is_bundled_and_selected_from_system_locale() {
+    let languages = ["en", "es", "fr", "pt-BR"];
+    assert_eq!(resolve_language("default", "es-ES", &languages), "es");
+    assert_eq!(resolve_language("default", "es-MX", &languages), "es");
+    assert_eq!(resolve_language("", "es_AR", &languages), "es");
+    assert_eq!(resolve_language("default", "es-419", &languages), "es");
+    assert_eq!(resolve_language("es", "en-US", &languages), "es");
+    assert!(SOURCES.iter().any(|&(code, _)| code == "es"), "Spanish catalog is bundled");
+    assert!(aurora_i18n::available_languages().any(|language| language == ("es", "Español")));
+    assert_eq!(aurora_i18n::text_in("es_ES", "language-name"), "Español");
+    assert_eq!(aurora_i18n::text_in("es-MX", "language-system"), "Idioma del sistema");
+}
+
+#[test]
+fn spanish_plurals_dates_and_numbers_follow_conventions() {
+    use fluent_bundle::{FluentArgs, FluentBundle, FluentResource};
+    let &(_, source) = SOURCES.iter().find(|&&(code, _)| code == "es").expect("Spanish catalog");
+    let mut bundle = FluentBundle::new(vec!["es".parse().unwrap()]);
+    bundle.set_use_isolating(false);
+    bundle.add_resource(FluentResource::try_new(source.to_owned()).unwrap()).unwrap();
+    for (count, word) in [(0, "elementos"), (1, "elemento"), (2, "elementos")] {
+        let mut args = FluentArgs::new();
+        args.set("count", count);
+        let pattern = bundle.get_message("language-item-count").unwrap().value().unwrap();
+        let mut errors = Vec::new();
+        let actual = bundle.format_pattern(pattern, Some(&args), &mut errors);
+        assert!(errors.is_empty(), "{errors:?}");
+        assert_eq!(actual, format!("{count} {word}"));
+    }
+    assert_eq!(
+        aurora_i18n::tr_in!("es", "date-day-month", day = "11", month = "noviembre"),
+        "11 de noviembre"
+    );
+    assert_eq!(
+        aurora_i18n::tr_in!("es", "date-day-month-year", day = "11", month = "noviembre", year = "2026"),
+        "11 de noviembre de 2026"
+    );
+    assert_eq!(
+        aurora_i18n::tr_in!("es", "profile-date", day = "11", month = "11", year = "2026"),
+        "11/11/2026"
+    );
+    assert_eq!(aurora_i18n::text_in("es", "number-decimal-separator"), ",");
+    assert_eq!(aurora_i18n::text_in("es", "number-thousands-separator"), ".");
+}
+
+#[test]
 fn japanese_falls_back_to_english_only_for_unknown_keys() {
     assert_ne!(
         aurora_i18n::text_in("ja", "language-system"),

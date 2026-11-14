@@ -72,6 +72,7 @@ Os arquivos estão localizados na raiz da pasta `news/`:
 
 - `news/pt-BR.md`: **Prioritário** para usuários que utilizam o visualizador em Português do Brasil (`pt-BR`).
 - `news/pt.md`: Fallback para usuários em Português genérico (`pt`). Deve ser idêntico ou equivalente ao `pt-BR.md`.
+- `news/es.md`: Versão em Espanhol (`es`) exibida para usuários hispanofalantes.
 - `news/en.md`: Versão em Inglês exibida para o restante do mundo ou caso o idioma do sistema não possua arquivo dedicado.
 
 ---
@@ -86,12 +87,13 @@ Ao preparar e lançar uma nova versão do SunSet Viewer:
 ### Etapa 2: Redigir a Notícia da Tela de Login
 1. Abra `news/pt-BR.md` e adicione a nova notícia no topo (abaixo do comentário HTML).
 2. Replique a notícia em `news/pt.md`.
-3. Escreva a versão em inglês no topo de `news/en.md`.
-4. Garanta que o link seja: `https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/vX.Y.Z`.
+3. Escreva a versão em espanhol no topo de `news/es.md`.
+4. Escreva a versão em inglês no topo de `news/en.md`.
+5. Garanta que o link seja: `https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/vX.Y.Z`.
 
 ### Etapa 3: Criar a Tag e Enviar para o GitHub
 ```powershell
-git -C SunSet-Viewer add CHANGELOG.md news/pt-BR.md news/pt.md news/en.md
+git -C SunSet-Viewer add CHANGELOG.md news/pt-BR.md news/pt.md news/es.md news/en.md
 git -C SunSet-Viewer commit -m "docs: release notes and login news for vX.Y.Z"
 git -C SunSet-Viewer tag vX.Y.Z
 git -C SunSet-Viewer push origin main

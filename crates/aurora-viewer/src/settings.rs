@@ -339,6 +339,17 @@ pub struct HoverTips {
 /// Viewer's delay sliders go to 6 s).
 pub const MAX_HOVER_TIP_DELAY: f32 = 6.0;
 
+/// Default distance where world floating text (llSetText) begins to fade (FSHudTextFadeDistance).
+pub const DEFAULT_FLOATING_TEXT_FADE_DISTANCE: f32 = 8.0;
+/// Longest fade start distance on the preferences slider (FSHudTextFadeDistance, 64 m).
+pub const MAX_FLOATING_TEXT_FADE_DISTANCE: f32 = 64.0;
+/// Default range over which world floating text fades to invisible (FSHudTextFadeRange).
+pub const DEFAULT_FLOATING_TEXT_FADE_RANGE: f32 = 4.0;
+/// Shortest fade range on the preferences slider (FSHudTextFadeRange, 0.25 m).
+pub const MIN_FLOATING_TEXT_FADE_RANGE: f32 = 0.25;
+/// Longest fade range on the preferences slider (FSHudTextFadeRange, 32 m).
+pub const MAX_FLOATING_TEXT_FADE_RANGE: f32 = 32.0;
+
 impl Default for HoverTips {
     fn default() -> Self {
         HoverTips {
@@ -1091,6 +1102,10 @@ pub struct Settings {
     /// are typed (off, as in the Legacy Viewer).
     pub auto_replace: bool,
     pub name_tag_distance: f32,
+    /// Distance where world floating text (llSetText) starts to fade (FSHudTextFadeDistance, 8 m).
+    pub floating_text_fade_distance: f32,
+    /// Range over which world floating text fades from visible to invisible (FSHudTextFadeRange, 4 m).
+    pub floating_text_fade_range: f32,
     pub show_own_name_tag: bool,
     pub show_friend_name_tags: bool,
     pub show_other_name_tags: bool,
@@ -1250,6 +1265,11 @@ pub struct Settings {
     /// (`crate::high_contrast`, #906) instead of the skin's colours, off by
     /// default.
     pub high_contrast: bool,
+    /// Preferences › Appearance › Skin: active skin family (`"aurora"` by
+    /// default, keeping the original palette unchanged).
+    pub skin: String,
+    /// Preferences › Appearance › Skin: colour scheme within `skin`.
+    pub skin_theme: String,
     /// Preferences › Appearance › Skin: the accent, background and text
     /// colours of the interface (`crate::interface_colors`), each the
     /// skin's by default.
@@ -2225,6 +2245,8 @@ impl Default for Settings {
             spelling: Default::default(),
             auto_replace: false,
             name_tag_distance: 64.0,
+            floating_text_fade_distance: DEFAULT_FLOATING_TEXT_FADE_DISTANCE,
+            floating_text_fade_range: DEFAULT_FLOATING_TEXT_FADE_RANGE,
             show_own_name_tag: true,
             show_friend_name_tags: true,
             show_other_name_tags: true,
@@ -2275,6 +2297,8 @@ impl Default for Settings {
             color_blindness: crate::colorblind::Deficiency::Off,
             color_blindness_strength: 1.0,
             high_contrast: false,
+            skin: crate::skin_presets::DEFAULT_SKIN.to_owned(),
+            skin_theme: crate::skin_presets::DEFAULT_SCHEME.to_owned(),
             interface_colors: Default::default(),
             classic_controls: false,
             camera_shots: Vec::new(),
@@ -3086,6 +3110,9 @@ impl Settings {
             0.5
         };
         self.ui_scale = self.ui_scale.clamp(0.75, 2.0);
+        let (skin, skin_theme) = crate::skin_presets::normalize_pair(&self.skin, &self.skin_theme);
+        self.skin = skin;
+        self.skin_theme = skin_theme;
         self.mouse_sensitivity = self.mouse_sensitivity.clamp(0.1, 5.0);
         self.texture_budget_mb = self.texture_budget_mb.clamp(256, 32768);
         self.font_scale = self.font_scale.clamp(FONT_SCALE_MIN, FONT_SCALE_MAX);
@@ -3129,6 +3156,17 @@ impl Settings {
         };
         self.im_toast_seconds = self.im_toast_seconds.clamp(3.0, 60.0);
         self.name_tag_distance = self.name_tag_distance.clamp(0.0, 128.0);
+        self.floating_text_fade_distance = if self.floating_text_fade_distance.is_finite() {
+            self.floating_text_fade_distance.clamp(0.0, MAX_FLOATING_TEXT_FADE_DISTANCE)
+        } else {
+            DEFAULT_FLOATING_TEXT_FADE_DISTANCE
+        };
+        self.floating_text_fade_range = if self.floating_text_fade_range.is_finite() {
+            self.floating_text_fade_range
+                .clamp(MIN_FLOATING_TEXT_FADE_RANGE, MAX_FLOATING_TEXT_FADE_RANGE)
+        } else {
+            DEFAULT_FLOATING_TEXT_FADE_RANGE
+        };
         self.name_tag_show_seconds = if self.name_tag_show_seconds.is_finite() {
             self.name_tag_show_seconds.clamp(1.0, 60.0)
         } else {
@@ -4402,7 +4440,7 @@ mod tests {
         let old: Settings = serde_json::from_str("{}").expect("synthetic old settings");
         assert_eq!(old.language, "default");
         assert!(old.language_is_public);
-        for language in ["default", "en", "fr", "pt-BR"] {
+        for language in ["default", "en", "es", "fr", "pt-BR"] {
             for public in [false, true] {
                 let original = Settings {
                     language: language.into(),

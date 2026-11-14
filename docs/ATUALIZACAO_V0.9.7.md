@@ -11,8 +11,10 @@ Este documento descreve todas as funcionalidades, melhorias de engenharia e gara
 | **Distância de Visão Estendida (`dd 5000+` até `8.192m`) + SpeedRez** | Suporte a até **8.192 metros** via comando `dd <metros>` no chat local, Preferências Rápidas e Preferências › Gráficos (`Settings::sanitize` em `32.0..=8192.0`), harmonizado com a nova **Distância de Visão Progressiva (SpeedRez)**. | [DRAW_DISTANCE.md](DRAW_DISTANCE.md) |
 | **Controle de Movimento (100x) & Salto Instantâneo (Dash)** | Multiplicador de velocidade de solo e voo até **100x** via **Aurora LSL Bridge v1.42**, salto instantâneo (`Dash`) de até **8.192m** (`/dash <metros>`) e atalhos em Mouselook (**Tecla `E`** e **Botão do Meio do Mouse**). | [MOVEMENT_DASH.md](MOVEMENT_DASH.md) |
 | **Hitboxes 3D de Combate & Raycast Local** | Renderização em tempo real dos cubos de colisão 3D reportados pelo simulador, detecção local de impacto por articulação do esqueleto, linha de diagnóstico de raycast e oclusão por objetos/terreno (`scene_objects_block_rays`). | [HITBOX_E_CORES.md](HITBOX_E_CORES.md) |
+| **Alcance do Texto Flutuante / Meter de Combate (`floating_text_fade_distance` & `floating_text_fade_range`)** | Controle da distância de início (`0..=64m`, padrão `8m`) e alcance de transição (`0.25..=32m`, padrão `4m`) do texto flutuante 3D (`llSetText`), permitindo enxergar *meters* de combate a até **96 metros** em **Preferências › Combate** ou **Preferências › Layout › Dicas de ferramentas**. | [HITBOX_E_CORES.md](HITBOX_E_CORES.md) |
 | **Cores Individuais de Hitbox e Minimapa (`avatar_marks`)** | Marcação individual de cor por residente via menu de contexto (`Marcar cor` › Paleta rápida ou RGB/HSV), com precedência máxima sobre Contact Sets tanto no **Minimapa** quanto no **Hitbox 3D** do mundo. | [HITBOX_E_CORES.md](HITBOX_E_CORES.md) |
-| **Localização 100% Nativa em Português (`pt-BR`)** | Mais de 12.930 chaves traduzidas em `crates/aurora-i18n/locales/pt-BR.ftl`, incluindo todas as chaves da release final `v0.9.6` e todas as chaves exclusivas do SunSet Viewer. | [TRANSLATING.md](TRANSLATING.md) |
+| **Localização 100% Nativa em Português (`pt-BR`) e Espanhol (`es`)** | Mais de 13.100 chaves traduzidas em `crates/aurora-i18n/locales/pt-BR.ftl` e `crates/aurora-i18n/locales/es.ftl`, com zero chaves faltantes em relação ao catálogo em inglês e terminologia autêntica do Second Life. | [TRANSLATING.md](TRANSLATING.md) |
+| **Sistema de Skins & Conjuntos de Cores (`Aurora`, `SunSet` & `Firestorm`)** | Troca ao vivo em **Preferências › Aparência › Skin** com chips rápidos de 1 clique, preservando `Aurora (Padrão)` idêntico ao `Theme::default()` e oferecendo 7 temas exclusivos **SunSet** (Crepúsculo, Rosa, Rosa Pastel Claro, Violeta, Roxo, Lilás e Lilás Claro) + 22 esquemas portados do **Firestorm**, colorindo interfaces, menus, botões, amigos, crachás 3D e textos digitados. | [SKINS_E_TEMAS.md](SKINS_E_TEMAS.md) |
 | **Instalador MSI Customizável & Auto-Update com Elevação UAC** | Escolha livre de diretório de instalação no MSI (`WixUI_InstallDir`) e atualização automática resiliente via `%TEMP%` com elevação UAC sob demanda. | [UPDATES.md](UPDATES.md) |
 
 ---
@@ -50,7 +52,7 @@ Este documento descreve todas as funcionalidades, melhorias de engenharia e gara
 
 ## 🛡️ 3. Suíte de Testes Unitários de Não-Regressão (`crates/aurora-viewer/src/sunset_tests.rs`)
 
-Para blindar o visualizador contra quebras acidentais em futuras sincronizações upstream, foi desenvolvida uma suíte de testes unitários contendo **12 testes automatizados**, cobrindo rigorosamente todos os pilares customizados do SunSet Viewer e a integração da `v0.9.6`:
+Para blindar o visualizador contra quebras acidentais em futuras sincronizações upstream, foi desenvolvida uma suíte de testes unitários contendo **16 testes automatizados**, cobrindo rigorosamente todos os pilares customizados do SunSet Viewer, a localização em Espanhol, as skins e a integração da `v0.9.6`:
 
 1. **`test_draw_distance_sanitize_clamps_to_8192`**: Garante que `Settings::sanitize()` nunca rejeite ou resete distâncias de visão até `8192.0m`.
 2. **`test_quick_prefs_slider_draw_distance_range_allows_8192`**: Garante que o slider de Preferências Rápidas permita deslizar até `8192.0m`.
@@ -64,4 +66,8 @@ Para blindar o visualizador contra quebras acidentais em futuras sincronizaçõe
 10. **`test_sunset_branding_logo_and_assets_validity`**: Verifica os magic bytes de imagem PNG e a integridade de `assets/branding/sunset-logo.png`.
 11. **`test_ci_cd_workflows_and_build_scripts_integrity`**: Valida a presença do runner `macos-15` em `release.yml`, a emissão de símbolos PDB para Windows e o suporte a builds locais no script `check.ps1`.
 12. **`test_aurora_v096_final_features_integrated_without_regression`**: Valida os 65 LUTs embutidos, os 10 controles de `Rendering types` e a convivência de `outfit_portrait` com `draw_distance` de `8192m`.
+13. **`test_localization_es_has_zero_missing_keys_compared_to_en`**: Valida programaticamente que o catálogo `es.ftl` possui **zero** chaves faltantes em relação ao `en.ftl`.
+14. **`test_skin_defaults_and_presets_contract`**: Garante preservação exata do padrão `Aurora (Padrão)` (`aurora/default`), presença das 9 famílias (incluindo os 7 esquemas `SunSet` e polaridade clara de `Rose Pastel` / `Lilac Light`) e sanitização de aliases em `Settings::sanitized()`.
+15. **`test_skin_i18n_keys_present_across_all_locales`**: Assegura que todas as 21 chaves de UI e nomes de skins estejam traduzidas em `en.ftl`, `pt-BR.ftl`, `es.ftl`, `fr.ftl` e `ja.ftl`.
+16. **`test_floating_text_fade_settings_sanitized_and_extended_combat_range`**: Valida os valores padrão (`8.0m` e `4.0m`), a sanitização (`0.0..=64.0m` e `0.25..=32.0m`) e o cálculo de opacidade do texto flutuante / meter de combate a longas distâncias (até `96.0m`).
 

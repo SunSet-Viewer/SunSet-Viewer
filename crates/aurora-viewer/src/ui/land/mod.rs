@@ -1403,7 +1403,7 @@ mod tests {
     fn money_groups_thousands() {
         let (eighty_eight_thousand, million) = match aurora_i18n::language() {
             "fr" => ("88\u{a0}000", "1\u{a0}234\u{a0}567"),
-            "pt-BR" => ("88.000", "1.234.567"),
+            "es" | "pt-BR" => ("88.000", "1.234.567"),
             _ => ("88,000", "1,234,567"),
         };
         assert_eq!(money(88000), eighty_eight_thousand);

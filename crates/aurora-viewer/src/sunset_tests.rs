@@ -255,6 +255,43 @@ fn test_localization_pt_br_has_zero_missing_keys_compared_to_en() {
     );
 }
 
+#[test]
+fn test_localization_es_has_zero_missing_keys_compared_to_en() {
+    let en_path = Path::new(env!("CARGO_MANIFEST_DIR")).join("../aurora-i18n/locales/en.ftl");
+    let es_path = Path::new(env!("CARGO_MANIFEST_DIR")).join("../aurora-i18n/locales/es.ftl");
+
+    let en_content = std::fs::read_to_string(&en_path).expect("en.ftl deve existir");
+    let es_content = std::fs::read_to_string(&es_path).expect("es.ftl deve existir");
+
+    let extract_keys = |content: &str| -> HashSet<String> {
+        let mut keys = HashSet::new();
+        for line in content.lines() {
+            let trimmed = line.trim_start();
+            if trimmed.starts_with('#') || trimmed.is_empty() {
+                continue;
+            }
+            if let Some((k, _)) = trimmed.split_once('=') {
+                let key = k.trim();
+                if !key.is_empty() && !key.contains(' ') && !key.starts_with('{') && !key.starts_with('[') {
+                    keys.insert(key.to_string());
+                }
+            }
+        }
+        keys
+    };
+
+    let en_keys = extract_keys(&en_content);
+    let es_keys = extract_keys(&es_content);
+
+    let missing: Vec<_> = en_keys.difference(&es_keys).cloned().collect();
+    assert!(
+        missing.is_empty(),
+        "es.ftl deve ter paridade total com en.ftl. Chaves ausentes ({}): {:?}",
+        missing.len(),
+        missing
+    );
+}
+
 // ============================================================================
 // 6. Identidade Visual e Branding SunSet
 // ============================================================================
@@ -328,4 +365,148 @@ fn test_aurora_v096_final_features_integrated_without_regression() {
         "draw_distance de 8192m preservado junto com outfit_portrait"
     );
     assert!(s.outfit_portrait.hd, "Configuração outfit_portrait.hd preservada");
+}
+
+// ============================================================================
+// 9. Skins, Firestorm Presets, SunSet Twilight and Typed Text
+// ============================================================================
+
+#[test]
+fn test_skin_defaults_and_presets_contract() {
+    use crate::skin_presets::{DEFAULT_SCHEME, DEFAULT_SKIN, families, find_scheme};
+    use crate::theme::Theme;
+
+    let defaults = Settings::default();
+    assert_eq!(defaults.skin, DEFAULT_SKIN);
+    assert_eq!(defaults.skin_theme, DEFAULT_SCHEME);
+
+    let (aurora_fam, aurora_scheme) = find_scheme(&defaults.skin, &defaults.skin_theme);
+    assert_eq!(aurora_fam.id, "aurora");
+    assert_eq!(aurora_scheme.id, "default");
+    assert_eq!(
+        serde_json::to_value((aurora_scheme.build_theme)()).unwrap(),
+        serde_json::to_value(Theme::default()).unwrap(),
+        "Aurora default skin must stay byte-for-byte identical to Theme::default()"
+    );
+
+    let expected_families = [
+        "aurora",
+        "sunset",
+        "firestorm",
+        "ansastorm",
+        "ansastorm_modern",
+        "metaharper_modern",
+        "starlight",
+        "starlight_cui",
+        "vintage",
+    ];
+    let present: Vec<&str> = families().iter().map(|f| f.id).collect();
+    for id in expected_families {
+        assert!(present.contains(&id), "Expected skin family '{id}' to exist");
+    }
+
+    for scheme_id in ["sunset_default", "rose", "rose_pastel", "violet", "purple", "lilac", "lilac_light"] {
+        let (fam, scheme) = find_scheme("sunset", scheme_id);
+        assert_eq!(fam.id, "sunset");
+        assert_eq!(scheme.id, scheme_id);
+    }
+
+    let (_, rose_pastel) = find_scheme("sunset", "rose_pastel");
+    assert!((rose_pastel.build_theme)().skin_palette().is_light());
+    let (_, lilac_light) = find_scheme("sunset", "lilac_light");
+    assert!((lilac_light.build_theme)().skin_palette().is_light());
+
+    let mut dirty = Settings {
+        skin: "SunSet".to_owned(),
+        skin_theme: "twilight".to_owned(),
+        ..Settings::default()
+    };
+    dirty = dirty.sanitized();
+    assert_eq!((dirty.skin.as_str(), dirty.skin_theme.as_str()), ("sunset", "sunset_default"));
+
+    let mut invalid = Settings {
+        skin: "unknown-skin".to_owned(),
+        skin_theme: "unknown-scheme".to_owned(),
+        ..Settings::default()
+    };
+    invalid = invalid.sanitized();
+    assert_eq!((invalid.skin.as_str(), invalid.skin_theme.as_str()), ("aurora", "default"));
+}
+
+#[test]
+fn test_skin_i18n_keys_present_across_all_locales() {
+    let locales_dir = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../crates/aurora-i18n/locales");
+    let required_keys = [
+        "appearance-skin-preset-group",
+        "appearance-skin-family",
+        "appearance-skin-family-hint",
+        "appearance-skin-scheme",
+        "appearance-skin-scheme-hint",
+        "appearance-skin-applied-live",
+        "appearance-skin-reset-aurora",
+        "appearance-skin-preview",
+        "appearance-skin-preview-button",
+        "appearance-skin-preview-friend",
+        "appearance-skin-preview-typed",
+        "skin-family-aurora",
+        "skin-family-sunset",
+        "skin-scheme-aurora-default",
+        "skin-scheme-sunset-default",
+        "skin-scheme-sunset-rose",
+        "skin-scheme-sunset-rose-pastel",
+        "skin-scheme-sunset-violet",
+        "skin-scheme-sunset-purple",
+        "skin-scheme-sunset-lilac",
+        "skin-scheme-sunset-lilac-light",
+    ];
+    for file in ["en.ftl", "pt-BR.ftl", "es.ftl", "fr.ftl", "ja.ftl"] {
+        let content = std::fs::read_to_string(locales_dir.join(file)).expect("locale file exists");
+        for key in required_keys {
+            let prefix = format!("{key} =");
+            assert!(content.lines().any(|l| l.starts_with(&prefix)), "{file} missing skin key '{key}'");
+        }
+    }
+}
+
+#[test]
+fn test_floating_text_fade_settings_sanitized_and_extended_combat_range() {
+    use crate::settings::{
+        DEFAULT_FLOATING_TEXT_FADE_DISTANCE, DEFAULT_FLOATING_TEXT_FADE_RANGE, MAX_FLOATING_TEXT_FADE_DISTANCE,
+        MAX_FLOATING_TEXT_FADE_RANGE, MIN_FLOATING_TEXT_FADE_RANGE,
+    };
+
+    let defaults = Settings::default();
+    assert_eq!(defaults.floating_text_fade_distance, DEFAULT_FLOATING_TEXT_FADE_DISTANCE);
+    assert_eq!(defaults.floating_text_fade_range, DEFAULT_FLOATING_TEXT_FADE_RANGE);
+
+    let clamped = Settings {
+        floating_text_fade_distance: 200.0,
+        floating_text_fade_range: 100.0,
+        ..Settings::default()
+    }
+    .sanitized();
+    assert_eq!(clamped.floating_text_fade_distance, MAX_FLOATING_TEXT_FADE_DISTANCE);
+    assert_eq!(clamped.floating_text_fade_range, MAX_FLOATING_TEXT_FADE_RANGE);
+
+    let min_clamped = Settings {
+        floating_text_fade_distance: -5.0,
+        floating_text_fade_range: 0.0,
+        ..Settings::default()
+    }
+    .sanitized();
+    assert_eq!(min_clamped.floating_text_fade_distance, 0.0);
+    assert_eq!(min_clamped.floating_text_fade_range, MIN_FLOATING_TEXT_FADE_RANGE);
+
+    let nan_reset = Settings {
+        floating_text_fade_distance: f32::NAN,
+        floating_text_fade_range: f32::INFINITY,
+        ..Settings::default()
+    }
+    .sanitized();
+    assert_eq!(nan_reset.floating_text_fade_distance, DEFAULT_FLOATING_TEXT_FADE_DISTANCE);
+    assert_eq!(nan_reset.floating_text_fade_range, DEFAULT_FLOATING_TEXT_FADE_RANGE);
+
+    assert_eq!(crate::ui::hud::floating_text_fade(60.0, &clamped), Some(1.0));
+    assert!(crate::ui::hud::floating_text_fade(95.0, &clamped).is_some());
+    assert_eq!(crate::ui::hud::floating_text_fade(96.0, &clamped), None);
 }

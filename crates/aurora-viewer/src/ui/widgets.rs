@@ -2464,18 +2464,25 @@ pub fn action_button_keyed(
         _ => {}
     }
     let hot = enabled && (resp.hovered() || resp.has_focus());
+    let danger_ink = if p.is_light() { p.on_accent } else { p.navy };
     let (fill, ink) = match kind {
         ActionKind::Primary => (if hot { p.violet_light } else { p.violet }, p.on_accent),
-        ActionKind::Danger => (if hot { p.danger } else { p.danger.gamma_multiply(0.88) }, p.navy),
-        ActionKind::Caution => (if hot { p.amber } else { p.amber.gamma_multiply(0.88) }, p.navy),
-        ActionKind::FlatDanger if hot => (p.danger.gamma_multiply(0.88), p.navy),
-        ActionKind::SoftDanger if hot => (p.danger.gamma_multiply(0.88), p.navy),
+        ActionKind::Danger => (if hot { p.danger } else { p.danger.gamma_multiply(0.88) }, danger_ink),
+        ActionKind::Caution => (if hot { p.amber } else { p.amber.gamma_multiply(0.88) }, danger_ink),
+        ActionKind::FlatDanger if hot => (p.danger.gamma_multiply(0.88), danger_ink),
+        ActionKind::SoftDanger if hot => (p.danger.gamma_multiply(0.88), danger_ink),
         ActionKind::SoftDanger => (p.danger.gamma_multiply(0.14), p.danger),
         ActionKind::Flat | ActionKind::FlatDanger => (if hot { p.raised.lerp_to_gamma(p.ink, 0.16) } else { p.raised }, p.ink),
     };
+    let light_disabled = !enabled && p.is_light();
     let fade = if enabled { 1.0 } else { 0.45 };
+    let fill_paint = if light_disabled {
+        fill.lerp_to_gamma(p.panel, 0.58)
+    } else {
+        fill.gamma_multiply(fade)
+    };
     let radius = ui.visuals().widgets.inactive.corner_radius;
-    ui.painter().rect_filled(rect, radius, fill.gamma_multiply(fade));
+    ui.painter().rect_filled(rect, radius, fill_paint);
     // high contrast: the dark faces get the buttons' light border, white
     // when hovered (the accent's and the states' faces stand out already)
     if p.high_contrast && matches!(kind, ActionKind::Flat | ActionKind::FlatDanger | ActionKind::SoftDanger) {
@@ -2483,7 +2490,7 @@ pub fn action_button_keyed(
         ui.painter()
             .rect_stroke(rect, radius, Stroke::new(1.0, edge.gamma_multiply(fade)), egui::StrokeKind::Inside);
     }
-    let ink = ink.gamma_multiply(fade);
+    let ink = if light_disabled { p.muted } else { ink.gamma_multiply(fade) };
     let galley = ui.painter().layout_no_wrap(label.to_owned(), font, ink);
     let left = rect.center().x - content / 2.0;
     if let Some(texture) = super::icons::global(icon) {

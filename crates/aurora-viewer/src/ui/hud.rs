@@ -181,6 +181,25 @@ impl NameTagVisibility {
     }
 }
 
+/// Port of LLHUDText::updateVisibility and LLHUDText::renderText
+/// (indra/newview/llhudtext.cpp, originally LGPL 2.1): floating text
+/// starts fading at `floating_text_fade_distance` (FSHudTextFadeDistance,
+/// 8 m) and disappears after `floating_text_fade_range`
+/// (FSHudTextFadeRange, 4 m).
+pub(crate) fn floating_text_fade(distance: f32, settings: &crate::settings::Settings) -> Option<f32> {
+    let start = settings.floating_text_fade_distance.max(0.0);
+    let range = settings.floating_text_fade_range.max(0.0);
+    if distance > start + range {
+        return None;
+    }
+    let fade = if distance > start && range > 0.0 {
+        (1.0 - (distance - start) / range).clamp(0.0, 1.0)
+    } else {
+        1.0
+    };
+    (fade > 0.0).then_some(fade)
+}
+
 fn name_tag_enabled(settings: &crate::settings::Settings, own: bool, friend: bool) -> bool {
     if own {
         settings.show_own_name_tag
@@ -632,10 +651,9 @@ pub fn draw(
             if hud {
                 continue;
             }
-            // LLHUDText: fade from 8 m over 4 m, anchored 0.6 x height above the
+            // LLHUDText: fade from `floating_text_fade_distance` over
+            // `floating_text_fade_range`, anchored 0.6 x height above the
             // object and pulled towards the camera by its radius
-            const FADE_DISTANCE: f32 = 8.0;
-            const FADE_RANGE: f32 = 4.0;
             let c = o.text_color;
             if c[3] == 0 {
                 continue;
@@ -649,13 +667,8 @@ pub fn draw(
                 top
             };
             let d = anchor.distance(eye);
-            if d > FADE_DISTANCE + FADE_RANGE {
+            let Some(fade) = floating_text_fade(d, settings) else {
                 continue;
-            }
-            let fade = if d > FADE_DISTANCE {
-                (1.0 - (d - FADE_DISTANCE) / FADE_RANGE).max(0.0)
-            } else {
-                1.0
             };
             let Some((sp, _)) = proj.project(anchor) else {
                 continue;
@@ -1243,5 +1256,26 @@ mod tests {
         let up = Vec3::new(6.0, 3.0, 9.0);
         let pulled = tag_point(up, eye);
         assert!((pulled - eye).normalize().distance((up - eye).normalize()) < 1e-5);
+    }
+
+    #[test]
+    fn floating_text_fade_uses_settings_distances() {
+        let defaults = crate::settings::Settings::default();
+        assert_eq!(floating_text_fade(4.0, &defaults), Some(1.0));
+        assert_eq!(floating_text_fade(8.0, &defaults), Some(1.0));
+        assert_eq!(floating_text_fade(10.0, &defaults), Some(0.5));
+        assert_eq!(floating_text_fade(12.0, &defaults), None);
+        assert_eq!(floating_text_fade(25.0, &defaults), None);
+
+        let combat = crate::settings::Settings {
+            floating_text_fade_distance: 50.75,
+            floating_text_fade_range: 32.0,
+            ..Default::default()
+        };
+        assert_eq!(floating_text_fade(50.0, &combat), Some(1.0));
+        let mid = floating_text_fade(66.75, &combat).expect("visible inside fade range");
+        assert!((mid - 0.5).abs() < 1e-5, "expected 0.5 fade at midpoint, got {mid}");
+        assert!(floating_text_fade(82.5, &combat).is_some());
+        assert_eq!(floating_text_fade(82.75, &combat), None);
     }
 }

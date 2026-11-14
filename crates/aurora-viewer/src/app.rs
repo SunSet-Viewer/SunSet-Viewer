@@ -1475,7 +1475,7 @@ impl App {
         crate::colorblind::set(wanted_vision(&settings));
         crate::high_contrast::set(wanted_high_contrast(&settings));
         crate::interface_colors::set(wanted_interface_colors(&settings));
-        let skin = Skin::load(&egui_ctx, "aurora", text_scale(&settings));
+        let skin = Skin::load_preset(&egui_ctx, &settings.skin, &settings.skin_theme, text_scale(&settings));
         apply_chat_text_scale(&egui_ctx, &settings);
         crate::crash::update(&skin.theme, &settings);
         let palette = skin.theme.palette();
@@ -11408,18 +11408,30 @@ impl App {
             if self.settings.vsync != vsync {
                 gfx.renderer.set_vsync(self.settings.vsync);
             }
-            // a new colour blindness, contrast or interface colour: the
+            // a new colour blindness, contrast, interface colour or skin: the
             // palette again, at once
             let vision = wanted_vision(&self.settings);
             let high_contrast = wanted_high_contrast(&self.settings);
             let interface_colors = wanted_interface_colors(&self.settings);
-            if vision != crate::colorblind::current()
+            let accessibility_changed = vision != crate::colorblind::current()
                 || high_contrast != crate::high_contrast::current()
-                || interface_colors != crate::interface_colors::current()
-            {
+                || interface_colors != crate::interface_colors::current();
+            if accessibility_changed {
                 crate::colorblind::set(vision);
                 crate::high_contrast::set(high_contrast);
                 crate::interface_colors::set(interface_colors);
+            }
+            let skin_changed = crate::skin_presets::demo_override().is_none()
+                && (self.settings.skin != self.skin.family || self.settings.skin_theme != self.skin.scheme);
+            if skin_changed {
+                self.skin = Skin::load_preset(
+                    &self.egui_ctx,
+                    &self.settings.skin,
+                    &self.settings.skin_theme,
+                    text_scale(&self.settings),
+                );
+            }
+            if accessibility_changed || skin_changed {
                 self.palette = self.skin.theme.palette();
                 self.cursors.set_palette(&self.palette);
             }
