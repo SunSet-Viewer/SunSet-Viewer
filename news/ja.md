@@ -26,6 +26,10 @@ Aurora Viewer のログイン画面のニュース（日本語）。
 
 # Aurora Viewer のニュース
 
+## 2026-11-15 — SunSet Viewer v0.9.10：データ領域の完全分離と Aurora 公式版との共存
+バージョン v0.9.10 では、設定、保存済みアカウント、チャット履歴、スキン、キャッシュ、メディアプラグイン、ログを SunSet Viewer 専用フォルダ（%APPDATA%\SunSet\SunSetViewer および %LOCALAPPDATA%\SunSet\SunSetViewer）へ分離し、公式の Aurora Viewer と同じ PC で競合なく併用できるようになりました。初回起動時には既存の Aurora プロファイルを一度だけ安全に自動コピーし、アップデータやアンインストーラも SunSet のみへ作用します。
+[詳しく見る](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.10)
+
 ## 2026-11-14 — SunSet Viewer v0.9.9：スペイン語完全対応、SunSet スキンテーマ、フローティングテキスト設定
 バージョン v0.9.9 では 13,077 個の翻訳キーによるスペイン語への完全対応に加え、環境設定 › 外観に新しいスキンテーマ選択機能を追加しました。6 種類の SunSet カラーパレット（デフォルト、ローズ、ローズパステル、バイオレット、パープル、ライラックライト）をリアルタイムで適用でき、ワンクリックで Aurora 標準テーマへ戻せます。また、フローティングテキスト（llSetText）の表示距離とフェード範囲の調整スライダーを追加し、3D 戦闘ヒットボックスとレイキャストの最大距離を 128 メートルに拡張しました。
 [詳しく見る](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.9)
