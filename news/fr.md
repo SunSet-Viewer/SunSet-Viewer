@@ -26,6 +26,10 @@ Une ligne vide commence un nouveau paragraphe.
 
 # Actualités d'Aurora Viewer
 
+## 2026-11-15 — SunSet Viewer v0.9.10 : Isolation des Données et Coexistence avec Aurora
+La version v0.9.10 stocke les paramètres, comptes enregistrés, historiques, thèmes, cache, plugins multimédias et journaux de SunSet Viewer dans des dossiers dédiés (%APPDATA%\SunSet\SunSetViewer et %LOCALAPPDATA%\SunSet\SunSetViewer), afin de cohabiter avec Aurora Viewer officiel sur le même PC sans conflit. Au premier lancement, un profil Aurora existant est copié une seule fois sans aucune suppression ni altération des données d'origine.
+[En savoir plus](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.10)
+
 ## 2026-11-14 — SunSet Viewer v0.9.9 : Traduction Espagnole 100%, Thèmes de Skins SunSet et Texte Flottant
 La version v0.9.9 apporte la prise en charge complète de l'espagnol avec 13 077 clés traduites, ainsi que le nouveau sélecteur de thèmes et skins dans Préférences › Apparence offrant un aperçu en direct avec 6 palettes SunSet (Défaut, Rose, Rose Pastel, Violet, Pourpre et Lilas Clair) et le retour rapide au thème Aurora. Elle ajoute également des curseurs de distance et de fondu progressif pour les textes flottants (llSetText) et étend la portée des hitboxes et du raycast de combat jusqu'à 128 mètres.
 [En savoir plus](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.9)
