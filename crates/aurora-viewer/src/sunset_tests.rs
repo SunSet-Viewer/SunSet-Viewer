@@ -510,3 +510,74 @@ fn test_floating_text_fade_settings_sanitized_and_extended_combat_range() {
     assert!(crate::ui::hud::floating_text_fade(95.0, &clamped).is_some());
     assert_eq!(crate::ui::hud::floating_text_fade(96.0, &clamped), None);
 }
+
+#[test]
+fn test_sunset_user_data_dirs_isolated_from_official_aurora() {
+    let config_root = crate::settings::default_config_root();
+    let cache_root = crate::settings::default_cache_root();
+    let logs_dir = crate::logging::logs_dir();
+    let legacy = crate::settings::legacy_aurora_project_dirs().expect("legacy aurora ProjectDirs");
+
+    assert_eq!(crate::cache_location::ROOT_NAME, "SunSetViewerCache");
+    for path in [&config_root, &cache_root, &logs_dir] {
+        let components: Vec<String> = path.components().map(|c| c.as_os_str().to_string_lossy().into_owned()).collect();
+        assert!(
+            components.iter().any(|c| c.eq_ignore_ascii_case("SunSetViewer"))
+                || components.iter().any(|c| c.eq_ignore_ascii_case("sunsetviewer")),
+            "Expected SunSetViewer folder in path {}",
+            path.display()
+        );
+        assert!(
+            !path.starts_with(legacy.config_dir()) && !path.starts_with(legacy.cache_dir()) && !path.starts_with(legacy.data_local_dir()),
+            "SunSet directory {} must not overlap official Aurora directory",
+            path.display()
+        );
+    }
+}
+
+#[test]
+fn test_migrate_legacy_aurora_profile_and_media_plugins_non_destructive() {
+    let root = std::env::temp_dir().join(format!("sunset-migration-test-{}", Uuid::new_v4()));
+    let legacy_config = root.join("legacy-config");
+    let target_config = root.join("target-config");
+    let legacy_plugins = root.join("legacy-plugins");
+    let target_plugins = root.join("target-plugins");
+
+    std::fs::create_dir_all(legacy_config.join("accounts/acc-1")).unwrap();
+    std::fs::create_dir_all(legacy_config.join("skins")).unwrap();
+    std::fs::write(legacy_config.join("settings.json"), b"{\"skin\":\"sunset\"}").unwrap();
+    std::fs::write(legacy_config.join("login_accounts.json"), b"[{\"user\":\"Test\"}]").unwrap();
+    std::fs::write(legacy_config.join("accounts/acc-1/contacts.json"), b"{}").unwrap();
+    std::fs::write(legacy_config.join("skins/custom.json"), b"{\"ok\":true}").unwrap();
+    std::fs::write(legacy_config.join("cache_location.txt"), b"C:\\AuroraCache").unwrap();
+    std::fs::write(legacy_config.join("settings.newer-backup.json"), b"{}").unwrap();
+
+    std::fs::create_dir_all(legacy_plugins.join("bin")).unwrap();
+    std::fs::write(legacy_plugins.join("bin/plugin.dll"), b"cef").unwrap();
+
+    assert!(crate::settings::migrate_legacy_config_dir(&legacy_config, &target_config));
+    assert_eq!(
+        std::fs::read(target_config.join("settings.json")).unwrap(),
+        b"{\"skin\":\"sunset\"}"
+    );
+    assert!(target_config.join("login_accounts.json").exists());
+    assert!(target_config.join("accounts/acc-1/contacts.json").exists());
+    assert!(target_config.join("skins/custom.json").exists());
+    assert!(!target_config.join("cache_location.txt").exists());
+    assert!(!target_config.join("settings.newer-backup.json").exists());
+    assert!(legacy_config.join("settings.json").exists());
+    assert!(legacy_config.join("cache_location.txt").exists());
+
+    std::fs::write(target_config.join("settings.json"), b"{\"skin\":\"sunset\",\"edited\":true}").unwrap();
+    assert!(!crate::settings::migrate_legacy_config_dir(&legacy_config, &target_config));
+    assert_eq!(
+        std::fs::read(target_config.join("settings.json")).unwrap(),
+        b"{\"skin\":\"sunset\",\"edited\":true}"
+    );
+
+    assert!(crate::settings::migrate_legacy_media_plugins_dir(&legacy_plugins, &target_plugins));
+    assert_eq!(std::fs::read(target_plugins.join("bin/plugin.dll")).unwrap(), b"cef");
+    assert!(!crate::settings::migrate_legacy_media_plugins_dir(&legacy_plugins, &target_plugins));
+
+    let _ = std::fs::remove_dir_all(&root);
+}

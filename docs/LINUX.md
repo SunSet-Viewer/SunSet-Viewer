@@ -90,7 +90,7 @@ The first time a web page or a video needs them, the viewer asks before it
 downloads the media plugins (about 200 MB), once; "Not now" leaves a
 Download button in Preferences › Sound and voice › Media and where the page
 would show, and the same row shows the progress. They go to
-`~/.local/share/auroraviewer/media-plugins`.
+`~/.local/share/sunsetviewer/media-plugins`.
 
 - **Video does not play:** check that the GStreamer packages of step 1 are
   installed (`gst-libav` / `gstreamer1.0-libav` for H.264 and AAC).
@@ -98,7 +98,7 @@ would show, and the same row shows the progress. They go to
   are missing; install their packages.
 
   ```bash
-  ldd ~/.local/share/auroraviewer/media-plugins/*/llplugin/libcef.so | grep "not found"
+  ldd ~/.local/share/sunsetviewer/media-plugins/*/llplugin/libcef.so | grep "not found"
   ```
 
 - The built-in browser runs without Chromium's sandbox, as in the Legacy
@@ -114,9 +114,9 @@ Your settings, cache and logs are kept: they are not in the viewer's folder.
 
 | What | Where |
 |---|---|
-| Settings | `~/.config/auroraviewer` |
-| Cache | `~/.cache/auroraviewer` |
-| Logs, media plugins | `~/.local/share/auroraviewer` |
+| Settings | `~/.config/sunsetviewer` |
+| Cache | `~/.cache/sunsetviewer` |
+| Logs, media plugins | `~/.local/share/sunsetviewer` |
 
 ## Second Life links
 

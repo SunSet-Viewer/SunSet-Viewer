@@ -14,7 +14,7 @@ $env:AURORA_DEMO_MAP = "1"          # a scenario, if needed
 cargo run -p aurora-viewer -- --title "Test my-task"
 ```
 
-The logs are in `%LOCALAPPDATA%\Aurora\AuroraViewer\data\logs\`.
+The logs are in `%LOCALAPPDATA%\SunSet\SunSetViewer\data\logs\`.
 
 For localisation, launch the same scenario with `--language en`, then
 `--language fr`. `AURORA_DEMO_OPTIONS=1` opens the interface preferences,
@@ -10063,7 +10063,7 @@ What the inventory must show with these scenarios:
   web and media support?", answered once per settings file, the demo's
   included; a PC that already has a pack is not asked), then downloads it
   once from the Aurora release `media-plugins-<n>` into
-  `%LOCALAPPDATA%\Aurora\AuroraViewer\data\media-plugins\<n>`; every later
+  `%LOCALAPPDATA%\SunSet\SunSetViewer\data\media-plugins\<n>`; every later
   run and every worktree reuses it. The media wait for it
   and start by themselves; the log says `media: downloading the plugins
   pack` then `media: plugins in …`. An installed Firestorm is no longer
@@ -12046,7 +12046,7 @@ cached textures (read-only), per size class, on one thread then on as many
 threads as the background tasks:
 
 ```powershell
-cargo run --release -p aurora-assets --example j2k_bench -- "$env:LOCALAPPDATA\Aurora\AuroraViewer\cache\tex"
+cargo run --release -p aurora-assets --example j2k_bench -- "$env:LOCALAPPDATA\SunSet\SunSetViewer\cache\tex"
 ```
 
 Options: `--sample <n>` (2000 textures by default), `--threads <n>`,
@@ -12057,7 +12057,7 @@ pass the quality check, video memory with and without it, cost of encoding
 against decoding), opaque textures and textures with alpha apart:
 
 ```powershell
-cargo run --release -p aurora-render --example bc7_check -- "$env:LOCALAPPDATA\Aurora\AuroraViewer\cache\tex"
+cargo run --release -p aurora-render --example bc7_check -- "$env:LOCALAPPDATA\SunSet\SunSetViewer\cache\tex"
 ```
 
 Options: `--sample <n>` (1000 by default), `--discard <n>` (decoded level,

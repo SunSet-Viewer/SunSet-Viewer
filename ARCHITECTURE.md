@@ -4112,13 +4112,13 @@ own root. In the offline demo the viewer hands it that root through
 
 | What | Where (Windows) |
 |---|---|
-| Settings, skins, window layout | `%APPDATA%\Aurora\AuroraViewer\config\` |
-| Files of an account (contact sets, pinned groups, teleport history, HUD zooms) | `%APPDATA%\Aurora\AuroraViewer\config\accounts\<account uuid>\` |
-| Conversation history (readable text, one file per conversation; never attached to a bug report) | `%APPDATA%\Aurora\AuroraViewer\config\accounts\<account uuid>\chat_logs\<grid>\` (`agni`, `aditi`, `custom_<login address>`; the demo: `config\demo\accounts\<uuid>\chat_logs\demo\`) |
-| Cache (textures, mesh, animations, inventory…) | `%LOCALAPPDATA%\Aurora\AuroraViewer\cache\` |
-| Logs (`aurora.log`, `aurora-demo.log`, `aurora-demo-<title>.log`) | `%LOCALAPPDATA%\Aurora\AuroraViewer\data\logs\` |
-| Cache or conversation history in a folder chosen in the preferences | the cache in `<chosen folder>\AuroraViewerCache\` (from the next start); the history in `<chosen folder>\<account uuid>\chat_logs\<grid>\` |
-| Remembered password (hash, never the password) | Windows Credential Manager, "Aurora Viewer" service |
+| Settings, skins, window layout | `%APPDATA%\SunSet\SunSetViewer\config\` |
+| Files of an account (contact sets, pinned groups, teleport history, HUD zooms) | `%APPDATA%\SunSet\SunSetViewer\config\accounts\<account uuid>\` |
+| Conversation history (readable text, one file per conversation; never attached to a bug report) | `%APPDATA%\SunSet\SunSetViewer\config\accounts\<account uuid>\chat_logs\<grid>\` (`agni`, `aditi`, `custom_<login address>`; the demo: `config\demo\accounts\<uuid>\chat_logs\demo\`) |
+| Cache (textures, mesh, animations, inventory…) | `%LOCALAPPDATA%\SunSet\SunSetViewer\cache\` |
+| Logs (`sunset-<pid>.log`, `sunset-demo-<pid>.log`, `sunset-demo-<title>.log`) | `%LOCALAPPDATA%\SunSet\SunSetViewer\data\logs\` |
+| Cache or conversation history in a folder chosen in the preferences | the cache in `<chosen folder>\SunSetViewerCache\` (from the next start); the history in `<chosen folder>\<account uuid>\chat_logs\<grid>\` |
+| Remembered password (hash, never the password) | Windows Credential Manager, "SunSet Viewer" service |
 
 The explicit offline `AURORA_DEMO_AO=design-*` study populates `AoUi::prototype` only in demo mode. `ui/ao/prototype.rs` reuses the native AO body and shared widgets, with current/tabs/collapsible-section layouts and transient motor settings. `ao/demo.rs` seeds inventory links for the contributed swim pack; preview states go through the actual AO runtime, with stable animation signals and no motor/persistent movement changes. The maintainer selected the tab layout: normal sessions now embed `ui/movement.rs` in the AO manager, with the same inventory animation editor in the Animations tab. The earlier workbench remains an explicit offline comparison fixture only.
 

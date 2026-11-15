@@ -2500,9 +2500,21 @@ pub fn config_dir() -> PathBuf {
     for_mode(default_config_root())
 }
 
+pub const APP_QUALIFIER: &str = "org";
+pub const APP_ORGANIZATION: &str = "SunSet";
+pub const APP_NAME: &str = "SunSetViewer";
+
+pub(crate) fn project_dirs() -> Option<directories::ProjectDirs> {
+    directories::ProjectDirs::from(APP_QUALIFIER, APP_ORGANIZATION, APP_NAME)
+}
+
+pub(crate) fn legacy_aurora_project_dirs() -> Option<directories::ProjectDirs> {
+    directories::ProjectDirs::from("org", "Aurora", "AuroraViewer")
+}
+
 /// The settings folder before the demo's subfolder.
 pub(crate) fn default_config_root() -> PathBuf {
-    directories::ProjectDirs::from("org", "Aurora", "AuroraViewer")
+    project_dirs()
         .map(|d| d.config_dir().to_path_buf())
         .unwrap_or_else(|| PathBuf::from("."))
 }
@@ -2544,7 +2556,7 @@ pub fn asset_cache_dir() -> PathBuf {
 }
 
 pub(crate) fn default_cache_root() -> PathBuf {
-    directories::ProjectDirs::from("org", "Aurora", "AuroraViewer")
+    project_dirs()
         .map(|d| d.cache_dir().to_path_buf())
         .unwrap_or_else(|| PathBuf::from("cache"))
 }
@@ -2555,7 +2567,7 @@ pub fn default_cache_dirs() -> Vec<PathBuf> {
     vec![default_cache_root()]
 }
 
-/// Where Aurora's media plugins pack is installed: next to the logs, outside
+/// Where SunSet's media plugins pack is installed: next to the logs, outside
 /// the cache (it survives a cache clear and the viewer's updates) and shared
 /// by the offline demo and the real sessions, several hundred MB being
 /// downloaded once.
@@ -2566,9 +2578,99 @@ pub fn media_plugins_dir() -> PathBuf {
     if let Some(test) = aurora_updater::test_environment() {
         return test.root.join("media-plugins");
     }
-    directories::ProjectDirs::from("org", "Aurora", "AuroraViewer")
+    project_dirs()
         .map(|d| d.data_local_dir().join("media-plugins"))
         .unwrap_or_else(|| PathBuf::from("media-plugins"))
+}
+
+/// Copies non-destructively any existing profile files from a legacy Aurora
+/// config folder into SunSet's config folder when SunSet's `settings.json`
+/// does not exist yet. Skips `cache_location.txt` and `*.newer-backup.json` /
+/// `*.corrupt-backup.json` so SunSet initializes its own cache marker cleanly.
+pub(crate) fn migrate_legacy_config_dir(legacy_config: &Path, target_config: &Path) -> bool {
+    if target_config.join("settings.json").exists() || !legacy_config.join("settings.json").exists() {
+        return false;
+    }
+    copy_tree_non_destructive(legacy_config, target_config, true)
+}
+
+/// Copies non-destructively already-downloaded media plugins from the legacy
+/// Aurora `media-plugins` directory if SunSet's `media-plugins` directory is
+/// missing or empty.
+pub(crate) fn migrate_legacy_media_plugins_dir(legacy_plugins: &Path, target_plugins: &Path) -> bool {
+    let target_has_entries = std::fs::read_dir(target_plugins).ok().is_some_and(|mut it| it.next().is_some());
+    if target_has_entries || !legacy_plugins.is_dir() {
+        return false;
+    }
+    copy_tree_non_destructive(legacy_plugins, target_plugins, false)
+}
+
+fn should_skip_legacy_config_file(name: &str) -> bool {
+    name.eq_ignore_ascii_case("cache_location.txt") || name.ends_with(".newer-backup.json") || name.ends_with(".corrupt-backup.json")
+}
+
+fn copy_tree_non_destructive(src: &Path, dst: &Path, filter_config_artifacts: bool) -> bool {
+    let Ok(entries) = std::fs::read_dir(src) else {
+        return false;
+    };
+    if std::fs::create_dir_all(dst).is_err() {
+        return false;
+    }
+    let mut copied_any = false;
+    for entry in entries.flatten() {
+        let Ok(file_type) = entry.file_type() else {
+            continue;
+        };
+        if file_type.is_symlink() {
+            continue;
+        }
+        let name = entry.file_name();
+        let name_str = name.to_string_lossy();
+        if filter_config_artifacts && should_skip_legacy_config_file(&name_str) {
+            continue;
+        }
+        let src_path = entry.path();
+        let dst_path = dst.join(&name);
+        if file_type.is_dir() {
+            if copy_tree_non_destructive(&src_path, &dst_path, filter_config_artifacts) {
+                copied_any = true;
+            }
+        } else if file_type.is_file() && !dst_path.exists() && std::fs::copy(&src_path, &dst_path).is_ok() {
+            copied_any = true;
+        }
+    }
+    copied_any
+}
+
+/// Runs once at viewer startup (outside unit/updater test environments) to
+/// seed `%APPDATA%\SunSet\SunSetViewer\config` and `media-plugins` from an
+/// existing `Aurora\AuroraViewer` installation without modifying or deleting
+/// anything in `Aurora`.
+pub fn migrate_legacy_aurora_data_if_needed() {
+    if unit_test_root().is_some() || aurora_updater::test_environment().is_some() {
+        return;
+    }
+    let Some(legacy) = legacy_aurora_project_dirs() else {
+        return;
+    };
+    let target_config = default_config_root();
+    let legacy_config = legacy.config_dir();
+    if migrate_legacy_config_dir(legacy_config, &target_config) {
+        log::info!(
+            "migrated existing user profile from {} to {}",
+            legacy_config.display(),
+            target_config.display()
+        );
+    }
+    let target_plugins = media_plugins_dir();
+    let legacy_plugins = legacy.data_local_dir().join("media-plugins");
+    if migrate_legacy_media_plugins_dir(&legacy_plugins, &target_plugins) {
+        log::info!(
+            "migrated existing media plugins from {} to {}",
+            legacy_plugins.display(),
+            target_plugins.display()
+        );
+    }
 }
 
 /// What a settings file says of the viewer window: (its maximized state,
@@ -2626,7 +2728,14 @@ impl Settings {
     /// any thread): this one field of the file, no log, no thread; false
     /// when the file or the field is missing or unreadable.
     pub fn allow_overlays_at_start() -> bool {
-        allow_overlays_in(std::fs::read(Self::path()).ok().as_deref())
+        let bytes = std::fs::read(Self::path()).ok().or_else(|| {
+            if unit_test_root().is_some() || aurora_updater::test_environment().is_some() {
+                return None;
+            }
+            let legacy = for_mode(legacy_aurora_project_dirs()?.config_dir().to_path_buf());
+            std::fs::read(legacy.join("settings.json")).ok()
+        });
+        allow_overlays_in(bytes.as_deref())
     }
 
     /// One text field of the settings file as saved, read alone (no repair

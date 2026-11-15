@@ -172,6 +172,7 @@ fn main() -> anyhow::Result<()> {
     aurora_i18n::select("default", cli::get().language.as_deref());
     crash::start();
     logging::init();
+    settings::migrate_legacy_aurora_data_if_needed();
     // The loader scans the layer manifests (and may call their pre-instance
     // hooks): on a thread of its own, like the crash report's list of layers
     // (crash/mod.rs), so the window never waits for this log line

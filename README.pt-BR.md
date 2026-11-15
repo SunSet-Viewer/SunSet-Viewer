@@ -279,6 +279,15 @@ Abra **Aparência › Altura de flutuação (Hover Height)** para ajustar a altu
 ### Notícias na Tela de Login
 O painel lateral de notícias traz os anúncios e notas de lançamento oficiais do SunSet Viewer diretamente da branch `main` do GitHub, mantendo você sempre informado sobre melhorias, novidades e atualizações.
 
+### Onde Ficam Seus Arquivos (Coexistência com o Aurora Oficial)
+O SunSet Viewer utiliza diretórios próprios isolados para que você possa manter o **Aurora Oficial** e o **SunSet Viewer** instalados no mesmo PC sem conflitos de configurações, contas ou cache criptografado:
+- **Configurações, contas, layout e skins (`Roaming`)**: `%APPDATA%\SunSet\SunSetViewer\config\`
+- **Histórico de conversas**: `%APPDATA%\SunSet\SunSetViewer\config\accounts\<id da conta>\chat_logs\<grid>\`
+- **Cache de texturas e malhas (`Local`)**: `%LOCALAPPDATA%\SunSet\SunSetViewer\cache\` (ou `<pasta escolhida>\SunSetViewerCache\` quando configurada em Preferências › Rede)
+- **Logs de sessão (`sunset-<pid>.log`) e media plugins**: `%LOCALAPPDATA%\SunSet\SunSetViewer\data\logs\` e `%LOCALAPPDATA%\SunSet\SunSetViewer\data\media-plugins\`
+
+Na primeira abertura em um PC que já possua perfil em `%APPDATA%\Aurora\AuroraViewer`, o SunSet copia automaticamente (de forma única e não destrutiva, sem apagar nada do Aurora Oficial) suas configurações, contas, histórico, skins e plugins de mídia já baixados.
+
 ---
 
 ## Compilação

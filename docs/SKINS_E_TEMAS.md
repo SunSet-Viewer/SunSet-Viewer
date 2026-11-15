@@ -55,7 +55,7 @@ Além da família nativa `SunSet`, o visualizador inclui **22 conjuntos de cores
 - **Cores da Interface (`interface_colors.rs`)**: Na mesma aba **Aparência › Skin**, é possível ajustar manualmente apenas **Cor de destaque**, **Fundo da janela** e **Texto** sobre a skin ativa; o sistema recalcula automaticamente as variações em OKLCH/OKLab preservando contraste mínimo WCAG (`4.5:1` para texto e `3:1` para acento).
 - **Cores Semânticas de Chat e Amigos (`ui/colors.rs`)**: Enquanto o usuário não personalizar cores individuais na aba **Aparência › Cores**, a paleta da skin fornece automaticamente tons legíveis para mensagens próprias, de amigos, URLs, menções e marcadores (`SkinChatColors`).
 - **Alto Contraste e Daltonismo**: **Preferências › Acessibilidade** (`high_contrast.rs` e `colorblind.rs`) sobrepõem ou adaptam a paleta da skin mantendo todas as telas legíveis.
-- **Pasta de Skins em Disco (`ui/skin.rs`)**: Sobrescritas avançadas via `%APPDATA%\Aurora\AuroraViewer\config\skins\<familia>\theme.json` continuam suportadas com recarregamento automático.
+- **Pasta de Skins em Disco (`ui/skin.rs`)**: Sobrescritas avançadas via `%APPDATA%\SunSet\SunSetViewer\config\skins\<familia>\theme.json` continuam suportadas com recarregamento automático.
 - **Persistência**: As preferências escolhidas são salvas automaticamente em `settings.json` nos campos `skin` e `skin_theme` (com sanitização automática em `Settings::sanitize()`).
 - **Modo Demonstração / Testes**: É possível forçar uma skin na inicialização via variável de ambiente `AURORA_DEMO_SKIN=<familia>:<esquema>` (ex.: `sunset:rose`, `sunset:rose_pastel`, `firestorm:blue`).
 

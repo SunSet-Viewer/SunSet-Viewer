@@ -42,7 +42,7 @@ pub fn logs_dir() -> PathBuf {
     if let Some(test) = aurora_updater::test_environment() {
         return test.root.join("logs");
     }
-    directories::ProjectDirs::from("org", "Aurora", "AuroraViewer")
+    directories::ProjectDirs::from("org", "SunSet", "SunSetViewer")
         .map(|d| d.data_local_dir().join("logs"))
         .unwrap_or_else(|| PathBuf::from("logs"))
 }
@@ -59,9 +59,9 @@ fn log_stem() -> String {
         return name.to_string_lossy().into_owned();
     }
     let base = if std::env::var_os("AURORA_DEMO").is_some() {
-        "aurora-demo"
+        "sunset-demo"
     } else {
-        "aurora"
+        "sunset"
     };
     match crate::cli::title_slug() {
         Some(slug) => format!("{base}-{slug}"),

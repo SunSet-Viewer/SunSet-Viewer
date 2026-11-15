@@ -1100,13 +1100,16 @@ for ideas and feature requests.
 
 ### Where your files are
 
-Logs are in `%LOCALAPPDATA%\Aurora\AuroraViewer\data\logs\`; the existing
-upstream data location is intentionally retained so installations keep their
-settings and credentials. Each viewer writes its own (`aurora-<pid>.log`), so several viewers open at once
+Logs are in `%LOCALAPPDATA%\SunSet\SunSetViewer\data\logs\`. SunSet Viewer uses
+its own isolated `SunSet\SunSetViewer` directories (so it can stay installed
+side-by-side with the official Aurora Viewer without settings or cache key
+conflicts), and on first launch performs a one-time non-destructive copy of any
+existing profile settings and media plugins from `Aurora\AuroraViewer`. Each
+viewer writes its own log (`sunset-<pid>.log`), so several viewers open at once
 do not overwrite each other's.
 
 Conversation history (plain text, one file per conversation) is in
-`%APPDATA%\Aurora\AuroraViewer\config\accounts\<account id>\chat_logs\<grid>\`;
+`%APPDATA%\SunSet\SunSetViewer\config\accounts\<account id>\chat_logs\<grid>\`;
 Preferences › Chat shows the folder, turns logging off and erases it. These
 files never leave the machine and are never attached to a bug report.
 

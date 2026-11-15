@@ -4,6 +4,14 @@ Todas as mudanças notáveis, novidades e correções de bugs do projeto **SunSe
 
 ---
 
+## [Não Lançado]
+
+### 📁 Isolamento Total de Dados (`SunSet\SunSetViewer`) e Coexistência com o Aurora Oficial
+- **Diretórios Próprios do SunSet Viewer**: Configurações, contas salvas, histórico de conversas, skins, cache (`SunSetViewerCache`), media plugins e logs (`sunset-<pid>.log`) passam a ser armazenados exclusivamente em `%APPDATA%\SunSet\SunSetViewer\config` e `%LOCALAPPDATA%\SunSet\SunSetViewer\{cache,data}`, evitando conflitos de `settings.json`, chaves criptografadas de cache e credenciais ao manter o **Aurora Viewer Oficial** instalado no mesmo PC.
+- **Migração Automática Única e Não Destrutiva**: Na primeira inicialização sem perfil próprio, o SunSet copia automaticamente as configurações existentes, contas, histórico, skins e `media-plugins` de `%APPDATA%\Aurora\AuroraViewer` / `%LOCALAPPDATA%\Aurora\AuroraViewer` sem alterar nem remover os arquivos do Aurora Oficial.
+
+---
+
 ## [0.9.9] — 2026-11-14
 
 ### 🌐 Localização Nativa em Espanhol (`es.ftl`)

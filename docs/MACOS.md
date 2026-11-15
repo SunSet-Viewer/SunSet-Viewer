@@ -128,8 +128,8 @@ cache and logs are kept: they are not inside the application.
 
 | What | Where |
 |---|---|
-| Settings, logs | `~/Library/Application Support/org.Aurora.AuroraViewer` |
-| Cache | `~/Library/Caches/org.Aurora.AuroraViewer` |
+| Settings, logs | `~/Library/Application Support/org.SunSet.SunSetViewer` |
+| Cache | `~/Library/Caches/org.SunSet.SunSetViewer` |
 | Saved passwords | the macOS keychain (Keychain Access) |
 
 To see these folders in the Finder: **Go › Go to Folder…** (Cmd+Shift+G) and

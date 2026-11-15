@@ -233,7 +233,7 @@ cargo run -p aurora-viewer --bin SunSet-Viewer -- --title "Test avatar-gaze"
 - **Always `--title "Test <task>"`**: the window is named
   "SunSet Viewer <version> - Test <task> (Dev)" (the build profile ends the
   title: Dev, Release or Debug) and the log is
-  `%LOCALAPPDATA%\Aurora\AuroraViewer\data\logs\aurora-demo-test-<task>.log`.
+  `%LOCALAPPDATA%\SunSet\SunSetViewer\data\logs\sunset-demo-test-<task>.log`.
   The agents' windows and logs do not get mixed up.
 - **Automated tests without human intervention**: use
   `--title "Test <task> [AUTOMATION - DO NOT TOUCH]"` and run
