@@ -451,16 +451,17 @@ for the format of the packages and their policy.
 | Task tracking | [TASKS.md](TASKS.md) (open work and what was finished since the last release); older finished tasks in [docs/TASKS_ARCHIVE.md](docs/TASKS_ARCHIVE.md) |
 | Agents' working folders | `work\`, in the project folder |
 | Legacy Viewer sources (reference) | `phoenix-firestorm\`, in the project folder |
-| Settings, skins, layout | `%APPDATA%\Aurora\AuroraViewer\config\` |
-| Conversation history (text files, per account and per grid; Preferences › Chat to open it, turn it off or erase it) | `%APPDATA%\Aurora\AuroraViewer\config\accounts\<account uuid>\chat_logs\<grid>\` |
-| Cache (textures, mesh…) — can be deleted safely | `%LOCALAPPDATA%\Aurora\AuroraViewer\cache\` |
-| Logs (to send to an agent after a test) | `%LOCALAPPDATA%\Aurora\AuroraViewer\data\logs\` |
+| Settings, skins, layout | `%APPDATA%\SunSet\SunSetViewer\config\` |
+| Conversation history (text files, per account and per grid; Preferences › Chat to open it, turn it off or erase it) | `%APPDATA%\SunSet\SunSetViewer\config\accounts\<account uuid>\chat_logs\<grid>\` |
+| Cache (textures, mesh…) — can be deleted safely | `%LOCALAPPDATA%\SunSet\SunSetViewer\cache\` |
+| Logs (to send to an agent after a test) | `%LOCALAPPDATA%\SunSet\SunSetViewer\data\logs\` |
 | `--release` viewer of the latest `main` | `RELEASE\SunSet-Viewer\SunSet-Viewer.exe`, in the project folder |
 | Program built by hand | `target\debug\SunSet-Viewer.exe` (or `work\<task>\target\debug\`) |
 
-`aurora.log` is the log of your last real session; the session before is kept
-as `aurora.previous.log`. Demo sessions have their own logs
-(`aurora-demo*.log`).
+`sunset-<pid>.log` is the log of your session; demo sessions have their own
+logs (`sunset-demo*.log`). On first launch, SunSet copies any existing profile
+files and media plugins from `Aurora\AuroraViewer` without modifying Official
+Aurora Viewer's files.
 
 ## Security
 
