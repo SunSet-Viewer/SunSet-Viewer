@@ -26,6 +26,9 @@ Aurora Viewer のログイン画面のニュース（日本語）。
 
 # Aurora Viewer のニュース
 
+## 2026-11-16 — SunSet Viewer v0.9.11：Aurora v0.9.10 同期、Avatar Studio、ディレクターカメラおよび各種バグ修正
+バージョン v0.9.11 では、Aurora 公式 v0.9.10 のすべてのバグ修正と新機能を完全同期しました。スタジオ照明付きのアバタースタジオ、キーフレーム補間によるディレクターカメラ、区画ごとの天候・環境カスタマイズ、6軸ジョイスティック・スペースマウス対応を統合。SunSet 独自の 8192m 描画距離、即時ダッシュ、3D ヒットボックス、アバターカラー、6 種類のカスタムスキン、データフォルダ完全分離などの機能もすべて保持されています。
+[詳しく見る](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.11)
 
 ## 2026-11-15 — SunSet Viewer v0.9.10：データ領域の完全分離と Aurora 公式版との共存
 バージョン v0.9.10 では、設定、保存済みアカウント、チャット履歴、スキン、キャッシュ、メディアプラグイン、ログを SunSet Viewer 専用フォルダ（%APPDATA%\SunSet\SunSetViewer および %LOCALAPPDATA%\SunSet\SunSetViewer）へ分離し、公式の Aurora Viewer と同じ PC で競合なく併用できるようになりました。初回起動時には既存の Aurora プロファイルを一度だけ安全に自動コピーし、アップデータやアンインストーラも SunSet のみへ作用します。
