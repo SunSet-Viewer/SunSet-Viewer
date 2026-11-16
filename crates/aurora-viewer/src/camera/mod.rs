@@ -1809,6 +1809,54 @@ impl Camera {
         }
     }
 
+    pub fn mouselook_eye_position(&self, agent: &AgentState, s: &CameraSettings, eye_offset: Option<Vec3>) -> Vec3 {
+        self.mouselook_eye(agent, s, eye_offset)
+    }
+
+    /// Point Mouselook directly at `target` in world space, updating `agent.yaw`
+    /// (and `seat.local_yaw` when seated) plus `agent.pitch` so both the local
+    /// view ray and the simulator `AgentUpdate` camera aim lock onto `target`.
+    pub fn aim_mouselook_at(&mut self, world: &mut World, target: Vec3, s: &CameraSettings, now: Instant, eye_offset: Option<Vec3>) {
+        // Cancel any active mode-transition blend so `update` tracks
+        // `mouselook_aim` immediately instead of pulling aim off target.
+        self.anim = None;
+        self.last_mode = self.mode;
+        for _ in 0..4 {
+            let prev_yaw = world.agent.yaw;
+            let prev_pitch = world.agent.pitch;
+            self.avatar = avatar_frame(world, s, now);
+            self.sync_seat(&mut world.agent, s);
+            let mut eye = self.mouselook_eye(&world.agent, s, eye_offset);
+            if let Some(land) = world.ground_height(eye) {
+                eye.z = eye.z.max(land);
+            }
+            let Some(dir) = (target - eye).try_normalize() else {
+                return;
+            };
+            match (self.avatar.seat, &mut self.seat) {
+                (Some(seat), Some(seat_state)) if !self.avatar.camera_decoupled => {
+                    let local = seat.inverse() * dir;
+                    seat_state.local_yaw = local.y.atan2(local.x);
+                    let horiz = local.truncate().length();
+                    world.agent.pitch = local.z.atan2(horiz).clamp(-1.5, 1.5);
+                    let world_dir = seat * Quat::from_rotation_z(seat_state.local_yaw) * Vec3::X;
+                    if world_dir.truncate().length_squared() > 1e-6 {
+                        world.agent.yaw = world_dir.y.atan2(world_dir.x);
+                    }
+                    seat_state.written_yaw = world.agent.yaw;
+                }
+                _ => {
+                    world.agent.yaw = dir.y.atan2(dir.x);
+                    let horiz = dir.truncate().length();
+                    world.agent.pitch = dir.z.atan2(horiz).clamp(-1.5, 1.5);
+                }
+            }
+            if (world.agent.yaw - prev_yaw).abs() < 1e-6 && (world.agent.pitch - prev_pitch).abs() < 1e-6 {
+                break;
+            }
+        }
+    }
+
     /// LLAgentCamera::calcCameraPositionTargetGlobal.
     fn calc_camera_target(&mut self, world: &World, s: &CameraSettings, f: &FrameInput) -> Vec3 {
         let agent = &world.agent;
@@ -3658,6 +3706,35 @@ mod tests {
                 camera.look(30.0, -20.0, 1.0, &mut world.agent);
             }
         }
+    }
+
+    #[test]
+    fn aim_mouselook_at_cancels_transition_anim_and_locks_with_follow_eyes() {
+        let settings = CameraSettings {
+            mouselook_follow_eyes: true,
+            ..Default::default()
+        };
+        let mut world = world_at(Vec3::new(128.0, 128.0, 25.0));
+        let mut camera = Camera::default();
+        // Start in ThirdPerson and transition into Mouselook (leaves `self.anim` active).
+        camera.update(&mut world, &settings, &frame(1.0 / 60.0));
+        camera.change_to_mouselook(&mut world.agent, &settings, true);
+        assert!(camera.anim.is_some());
+
+        let mut input = frame(1.0 / 60.0);
+        input.eye_offset = Some(Vec3::new(0.15, 0.25, 0.65));
+        let target = Vec3::new(118.0, 140.0, 27.5);
+        camera.aim_mouselook_at(&mut world, target, &settings, input.now, input.eye_offset);
+        assert!(camera.anim.is_none());
+
+        camera.update(&mut world, &settings, &input);
+        let to_target = (target - camera.position).normalize();
+        assert!(
+            camera.forward().abs_diff_eq(to_target, 1e-4),
+            "camera forward {:?} drifted from target dir {:?}",
+            camera.forward(),
+            to_target
+        );
     }
 
     #[test]

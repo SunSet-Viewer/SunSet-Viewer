@@ -307,15 +307,15 @@ impl App {
 
     fn mouse_button(&mut self, button: MouseButton, pressed: bool, over_ui: bool) {
         match button {
-            MouseButton::Middle if pressed => {
-                if !over_ui
+            MouseButton::Middle
+                if pressed
+                    && !over_ui
                     && self.in_world()
                     && self.camera.mouselook()
                     && self.settings.movement_dash.enabled
-                    && self.settings.movement_dash.mouselook_middle_click
-                {
-                    self.perform_dash(self.settings.movement_dash.dash_distance, true);
-                }
+                    && self.settings.movement_dash.mouselook_middle_click =>
+            {
+                self.perform_dash(self.settings.movement_dash.dash_distance, true);
             }
             MouseButton::Right => self.on_right_button(pressed, over_ui),
             MouseButton::Left if pressed => {
@@ -719,6 +719,7 @@ impl App {
             }
         }
         self.clicks.held.clear();
+        self.script_click_up();
     }
 
     /// The build tools' release of a demo script, behind its press.

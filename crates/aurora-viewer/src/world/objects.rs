@@ -543,6 +543,15 @@ impl Object {
         }
     }
 
+    /// Simulator seconds elapsed since this object's last motion report.
+    pub(crate) fn motion_elapsed(&self, motion_time: f64) -> f32 {
+        if self.extrapolates() && self.motion_time.is_finite() && motion_time.is_finite() {
+            (motion_time - self.motion_time).max(0.0) as f32
+        } else {
+            0.0
+        }
+    }
+
     fn reported(&self) -> motion::Reported {
         let (velocity, acceleration) = self.linear_motion();
         motion::Reported {
@@ -565,7 +574,7 @@ impl Object {
     /// interpolateLinearMotion): a velocity in the update of a worn prim
     /// would carry it away from its point, in the point's frame, until the
     /// next update.
-    fn linear_motion(&self) -> (Vec3, Vec3) {
+    pub(crate) fn linear_motion(&self) -> (Vec3, Vec3) {
         if self.is_attachment() {
             (Vec3::ZERO, Vec3::ZERO)
         } else {
@@ -800,6 +809,11 @@ impl ObjectStore {
         self.motion_rates.insert(region, rate);
     }
 
+    /// Current simulator clock rate (time dilation and circuit phase-out) for `region`.
+    pub fn motion_rate(&self, region: RegionHandle) -> f32 {
+        self.motion_rates.get(&region).copied().unwrap_or(1.0)
+    }
+
     /// The clock of a region at the moment a report was received: a report
     /// describes the object when the datagram was read, not when the main
     /// thread got to it (item 6 of the network audit). Without a time, or
@@ -809,7 +823,7 @@ impl ObjectStore {
         let (Some(received), Some(tick)) = (received, self.motion_tick) else {
             return clock;
         };
-        let rate = f64::from(self.motion_rates.get(&region).copied().unwrap_or(1.0));
+        let rate = f64::from(self.motion_rate(region));
         let offset = if received >= tick {
             received.duration_since(tick).as_secs_f64()
         } else {

@@ -379,6 +379,7 @@ pub struct OptionsUi {
     pub rlva_sendim_locked: bool,
     pub joystick: crate::joystick::Snapshot,
     pub flycam_active: bool,
+    pub contact_set_presets: Vec<(String, crate::settings::Rgba)>,
     pub anti_spam_blocks: Vec<(crate::world::anti_spam::Queue, uuid::Uuid, String)>,
     pub anti_spam_version: u64,
     /// The page shown and its tab.

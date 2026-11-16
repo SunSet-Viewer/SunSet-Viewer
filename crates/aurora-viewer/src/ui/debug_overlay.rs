@@ -230,11 +230,15 @@ pub fn draw(
     eye: Vec3,
     dv: &DebugView,
     combat: &CombatSettings,
+    combat_target: Option<uuid::Uuid>,
+    combat_shot_count: u32,
+    ping_ms: u32,
     minimap: &MiniMap,
     probes: Option<ProbeList>,
     lod: &[LodInfo],
 ) {
-    if !dv.any_overlay() && !combat.show_hitboxes && !combat.local_hit_detection && !combat.show_raycast {
+    let has_combat_target = crate::settings::COMBAT_AUTO_AIM_ENABLED && combat.auto_head_aim && combat_target.is_some();
+    if !dv.any_overlay() && !combat.show_hitboxes && !combat.local_hit_detection && !combat.show_raycast && !has_combat_target {
         return;
     }
     let lines = Lines {
@@ -243,17 +247,51 @@ pub fn draw(
     };
     let now = Instant::now();
 
-    if combat.show_hitboxes {
+    if combat.show_hitboxes || has_combat_target {
         for hitbox in scene.avatar_hitboxes(world, now) {
+            let is_target = crate::settings::COMBAT_AUTO_AIM_ENABLED
+                && combat.auto_head_aim
+                && combat_target == Some(hitbox.avatar)
+                && hitbox.avatar != world.agent_id;
+            if !combat.show_hitboxes && !is_target {
+                continue;
+            }
             let reach = scene.draw_distance + hitbox.size.length();
             if hitbox.position.distance_squared(eye) > reach * reach {
                 continue;
             }
+            let body_color = if is_target {
+                RED
+            } else {
+                minimap.avatar_color(world, &hitbox.avatar)
+            };
             lines.cube_width(
                 |x, y, z| hitbox.position + hitbox.rotation * (hitbox.size * 0.5 * Vec3::new(x, y, z)),
-                minimap.avatar_color(world, &hitbox.avatar),
-                2.0,
+                body_color,
+                if is_target { 3.2 } else { 2.0 },
             );
+            if is_target {
+                let (head_center, head_size) = hitbox.head_bounds();
+                lines.cube_width(
+                    |x, y, z| head_center + hitbox.rotation * (head_size * 0.5 * Vec3::new(x, y, z)),
+                    RED,
+                    2.8,
+                );
+                let lead_s = crate::scene::combat::combat_lead_seconds(ping_ms, combat.auto_aim_lead_compensation);
+                let aim_pt = scene.avatar_combat_aim_point_with_lead(world, &hitbox, combat_shot_count, combat.auto_aim_mode, lead_s, now);
+                lines.cross(aim_pt, 6.0, RED);
+                if let Some((at, _)) = proj.project(aim_pt) {
+                    lines.painter.circle_stroke(at, 8.0, Stroke::new(1.8, RED));
+                }
+                let top = hitbox.position + hitbox.rotation * Vec3::new(0.0, 0.0, hitbox.size.z * 0.5 + 0.18);
+                let name = super::minimap::avatar_name(world, &hitbox.avatar);
+                let dist = hitbox.position.distance(eye);
+                lines.label(
+                    top,
+                    &format!("{}: {name} ({dist:.1} m)", aurora_i18n::tr!("ui-debug-overlay-target")),
+                    RED,
+                );
+            }
         }
     }
     if combat.local_hit_detection

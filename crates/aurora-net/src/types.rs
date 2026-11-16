@@ -1663,6 +1663,10 @@ pub enum NetCommand {
     /// Every change of the control flags comes through here, in order: a
     /// key tapped between two ticks of the session is not lost.
     AgentControls(AgentControls),
+    /// Fine-aim combat controls sent while Mouselook auto-aim is locked onto
+    /// a target, lowering the angular send deadband while preserving the
+    /// simulator's 125 Hz rate cap.
+    CombatAgentControls(AgentControls),
     /// Walk / run toggle (SetAlwaysRun), used for double-tap running.
     SetAlwaysRun(bool),
     /// Our look-at target (ViewerEffect, LLHUDEffectLookAt::packData).

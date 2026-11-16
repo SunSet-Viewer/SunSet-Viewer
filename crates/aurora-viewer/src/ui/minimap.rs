@@ -393,14 +393,33 @@ impl MiniMap {
     /// The avatar marker colour shared by the map and its world-space debug box.
     /// Overrides contact set presets when explicitly marked by the user.
     pub fn avatar_color(&self, world: &World, id: &Uuid) -> Color32 {
-        if let Some(mark) = world.avatar_marks.get(id).copied().or_else(|| self.marks.get(id).copied()) {
-            return mark;
-        }
-        if let Some(set_col) = world.contact_sets.appearance(id).minimap.map(super::colors::set_color) {
-            return set_col;
-        }
-        let name = avatar_name(world, id);
-        super::colors::map_color(world, id, &name)
+        avatar_hitbox_color(world, Some(&self.marks), id)
+    }
+}
+
+/// Resolves the visible minimap/hitbox colour for `id` with exact precedence:
+/// manual mark (`world.avatar_marks` / minimap marks) -> Contact Set colour ->
+/// relation colour (`colors::map_color`).
+pub fn avatar_hitbox_color(world: &World, marks: Option<&std::collections::HashMap<Uuid, Color32>>, id: &Uuid) -> Color32 {
+    if let Some(mark) = world
+        .avatar_marks
+        .get(id)
+        .copied()
+        .or_else(|| marks.and_then(|m| m.get(id).copied()))
+    {
+        return mark;
+    }
+    if let Some(set_col) = world.contact_sets.appearance(id).minimap.map(super::colors::set_color) {
+        return set_col;
+    }
+    let name = avatar_name(world, id);
+    super::colors::map_color(world, id, &name)
+}
+
+impl MiniMap {
+    /// Manual radar/hitbox colour marks keyed by avatar UUID.
+    pub(crate) fn marks(&self) -> &HashMap<Uuid, Color32> {
+        &self.marks
     }
 
     /// The floater (Ctrl+Shift+M).
