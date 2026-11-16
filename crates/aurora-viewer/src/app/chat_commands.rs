@@ -105,8 +105,8 @@ impl App {
             }
             Command::DrawDistance(amount) => {
                 let d = amount.apply(self.settings.draw_distance);
-                // Draw distance range: clamped between 32 m and 8192 m (allowing high vista/photography distances).
-                self.settings.draw_distance = d.clamp(32.0, 8192.0);
+                // the slider's range (extended in SunSet up to 8192 m)
+                self.settings.draw_distance = d.clamp(crate::settings::DRAW_DISTANCE_MIN, crate::settings::DRAW_DISTANCE_MAX);
                 self.report_command(aurora_i18n::tr!(
                     "app-chat-commands-draw-distance-set-to-m",
                     value0 = format!("{:.0}", self.settings.draw_distance)

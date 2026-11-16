@@ -195,8 +195,8 @@ fn test_combat_settings_and_preferences_page_presence() {
         );
     }
 
-    // Validação da contagem de páginas de Preferências incluindo Combat
-    assert_eq!(Page::ALL.len(), 23, "Page::ALL deve conter exatamente 23 páginas");
+    // Validação da contagem de páginas de Preferências incluindo Combat (24 do upstream v0.9.10 + Combat do SunSet = 25)
+    assert_eq!(Page::ALL.len(), 25, "Page::ALL deve conter exatamente 25 páginas");
     assert!(Page::ALL.contains(&Page::Combat), "Page::Combat deve estar registrada em Page::ALL");
     assert_eq!(Page::Combat.key(), "combat");
     assert!(!Page::Combat.tabs().is_empty(), "Page::Combat deve possuir abas registradas");
@@ -666,6 +666,7 @@ fn test_combat_auto_head_aim_mouselook_locks_and_raycasts_head() {
         build_mode: false,
         edit_tracking: None,
         eye_offset: None,
+        follow_joint_offset: None,
         draw_distance: settings.draw_distance,
         region_width: 256.0,
         aspect: 1.0,
@@ -736,6 +737,7 @@ fn test_combat_auto_aim_shot_cycle_five_head_one_chest_no_arm() {
         build_mode: false,
         edit_tracking: None,
         eye_offset: None,
+        follow_joint_offset: None,
         draw_distance: settings.draw_distance,
         region_width: 256.0,
         aspect: 1.0,

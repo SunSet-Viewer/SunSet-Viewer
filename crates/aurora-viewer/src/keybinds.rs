@@ -112,6 +112,7 @@ fn key_label(k: &str) -> String {
         "ArrowRight" => aurora_i18n::tr!("keybinds-right-arrow"),
         "PageUp" => aurora_i18n::tr!("keybinds-previous-page"),
         "PageDown" => aurora_i18n::tr!("keybinds-next-page"),
+        // LLKeyboard names KEY_HOME "Home" (indra/llwindow/llkeyboard.cpp).
         "Home" => aurora_i18n::tr!("keybinds-origin"),
         "End" => aurora_i18n::tr!("keybinds-end-2"),
         "Insert" => aurora_i18n::tr!("keybinds-insert"),
@@ -351,6 +352,10 @@ pub enum Action {
     /// (handle_look_at_selection, H and Shift+H).
     FocusSelection,
     ZoomSelection,
+    /// Advanced › Shortcuts › Look at Last Chatter (View.LookAtLastChatter,
+    /// menu_viewer.xml, `shortcut="control|\"`): the camera over our
+    /// shoulder, on the last resident or object heard.
+    LookAtLastChatter,
     /// LLViewerJoystick::toggleFlycam (menu_viewer.xml, Alt+Shift+F).
     Flycam,
     /// The Controls window, on its Camera tab (Firestorm's View › Camera
@@ -453,6 +458,8 @@ pub enum Action {
     RenderClouds,
     /// Aurora's Dev Toolbox window (Ctrl+Alt+D).
     DevToolbox,
+    /// Advanced › Request Admin Status (menu_viewer.xml, control|alt|G).
+    RequestAdminStatus,
     /// Advanced.ShowDebugSettings.
     DebugSettings,
     /// "Force appearance update (rebake)" (Firestorm Ctrl+Alt+R).
@@ -565,6 +572,7 @@ pub fn sections() -> &'static Vec<(&'static str, Vec<(Action, &'static str)>)> {
                     (Action::ResetCameraAngles, aurora_i18n::tr!("keybinds-reset-camera-angles")),
                     (Action::FocusSelection, aurora_i18n::tr!("keybinds-focus-selection")),
                     (Action::ZoomSelection, aurora_i18n::tr!("keybinds-zoom-selection")),
+                    (Action::LookAtLastChatter, aurora_i18n::tr!("keybinds-look-at-last-chatter")),
                     (Action::Flycam, aurora_i18n::tr!("joystick-flycam")),
                     (Action::CameraControls, aurora_i18n::tr!("controls-camera-title")),
                     (Action::LensZoomIn, aurora_i18n::tr!("keybinds-lens-zoom-in")),
@@ -660,6 +668,7 @@ pub fn sections() -> &'static Vec<(&'static str, Vec<(Action, &'static str)>)> {
                 aurora_i18n::tr!("keybinds-debug"),
                 vec![
                     (Action::DevToolbox, aurora_i18n::tr!("dev-toolbox-title")),
+                    (Action::RequestAdminStatus, aurora_i18n::tr!("god-mode-request")),
                     (Action::DebugSettings, aurora_i18n::tr!("toolbar-command-debug-settings")),
                     (Action::ShowTransparency, aurora_i18n::tr!("common-show-transparency")),
                     (Action::SelectionOutlines, aurora_i18n::tr!("keybinds-selection-outlines")),
@@ -801,6 +810,8 @@ impl KeyBindings {
             // menu_viewer.xml: Focus on / Zoom to Selection, H and shift|H
             (Action::FocusSelection, [k(K::KeyH), None]),
             (Action::ZoomSelection, [kmod(K::KeyH, false, true), None]),
+            // menu_viewer.xml: Look at Last Chatter, shortcut="control|\"
+            (Action::LookAtLastChatter, [kmod(K::Backslash, true, false), None]),
             (Action::Flycam, [kalt(K::KeyF, false, true), None]),
             (Action::CameraControls, [kmod(K::KeyC, true, true), None]),
             (Action::LensZoomIn, [kmod(K::Digit0, true, false), kmod(K::Numpad0, true, false)]),
@@ -978,6 +989,8 @@ impl KeyBindings {
             ),
             // Aurora's Dev Toolbox (Advanced › Dev Toolbox)
             (Action::DevToolbox, [kalt(K::KeyD, true, false), None]),
+            // menu_viewer.xml: Request Admin Status
+            (Action::RequestAdminStatus, [kalt(K::KeyG, true, false), None]),
             (Action::DebugSettings, [kalt(K::KeyS, true, true), None]),
             // menu_viewer.xml: Avatar Health
             (Action::StopAnimations, [kalt(K::KeyA, false, true), None]),
@@ -1532,6 +1545,26 @@ mod tests {
     use super::*;
     use crate::build::ui::Shortcut;
 
+    /// LLKeyboard names KEY_HOME "Home" (indra/llwindow/llkeyboard.cpp).
+    /// French keyboards print Début. Japanese keyboards print Home.
+    #[test]
+    fn the_home_key_is_labelled_home() {
+        assert_eq!(aurora_i18n::text_in("en", "keybinds-origin"), "Home");
+        assert_eq!(aurora_i18n::text_in("ja", "keybinds-origin"), "Home");
+        assert_eq!(aurora_i18n::text_in("fr", "keybinds-origin"), "Début");
+        assert_eq!(key_label("Home"), aurora_i18n::text_in(aurora_i18n::language(), "keybinds-origin"));
+    }
+
+    /// LLKeyboard names KEY_END "End" (indra/llwindow/llkeyboard.cpp). Japanese
+    /// keyboards print End, as they print Home: 終了 read as "Quit".
+    #[test]
+    fn the_end_key_keeps_its_keyboard_name() {
+        assert_eq!(aurora_i18n::text_in("en", "keybinds-end-2"), "End");
+        assert_eq!(aurora_i18n::text_in("ja", "keybinds-end-2"), "End");
+        assert_eq!(aurora_i18n::text_in("fr", "keybinds-end-2"), "Fin");
+        assert_eq!(key_label("End"), aurora_i18n::text_in(aurora_i18n::language(), "keybinds-end-2"));
+    }
+
     /// Space stops moving while held, as the Legacy Viewer's stop_moving;
     /// a settings file from before it keeps a Space the user gave to
     /// another action.
@@ -1803,6 +1836,7 @@ mod tests {
             (KeyCode::Escape, m(false, true, false), Action::ResetCameraAngles),
             (KeyCode::KeyH, m(false, false, false), Action::FocusSelection),
             (KeyCode::KeyH, m(false, true, false), Action::ZoomSelection),
+            (KeyCode::Backslash, m(true, false, false), Action::LookAtLastChatter),
         ] {
             assert_eq!(kb.triggered(&Input::key(code), mods), Some(action), "{code:?} {mods:?}");
             assert_eq!(
@@ -2364,6 +2398,7 @@ mod tests {
             (Action::RenderObjects, (true, true, true), [K::Digit9; 4]),
             (Action::RenderGrass, (true, true, true), [K::Digit0; 4]),
             (Action::DevToolbox, (true, false, true), [K::KeyD; 4]),
+            (Action::RequestAdminStatus, (true, false, true), [K::KeyG; 4]),
             (Action::DebugSettings, (true, true, true), [K::KeyS; 4]),
             (Action::Rebake, (true, false, true), [K::KeyR; 4]),
             (Action::StopAnimations, (false, true, true), [K::KeyA, K::KeyQ, K::KeyQ, K::KeyA]),

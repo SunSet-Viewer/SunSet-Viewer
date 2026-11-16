@@ -721,8 +721,18 @@ pub enum Failure {
 }
 
 /// The clients previews download with: `trusted_only`, redirects must stay
-/// on the trusted sites.
+/// on the trusted sites. Neither ever reaches this computer or the local
+/// network: a redirect there stops, and names resolve to public addresses
+/// only (`PublicOnly`). A link written with such an address gets no preview
+/// in the first place (`link_trust`).
 pub fn client(trusted_only: bool) -> Option<reqwest::Client> {
+    builder(trusted_only)
+        .build()
+        .map_err(|e| log::warn!("link previews: no HTTP client: {e}"))
+        .ok()
+}
+
+fn builder(trusted_only: bool) -> reqwest::ClientBuilder {
     let policy = reqwest::redirect::Policy::custom(move |attempt| {
         let to = attempt.url().as_str();
         let off_trusted = trusted_only && crate::link_trust::classify(to) != Trust::Trusted;
@@ -741,9 +751,34 @@ pub fn client(trusted_only: bool) -> Option<reqwest::Client> {
         .timeout(Duration::from_secs(20))
         .retry(reqwest::retry::never())
         .redirect(policy)
-        .build()
-        .map_err(|e| log::warn!("link previews: no HTTP client: {e}"))
-        .ok()
+        .dns_resolver(PublicOnly)
+}
+
+/// The name resolver of the previews: the system's, keeping only the
+/// public addresses (`link_trust::is_public_ip`). The connection uses the
+/// very addresses kept here, so a name that resolves to the local network,
+/// now or on a second lookup, is never reached. The Destination Guide's
+/// pictures use it too (`destination_guide.rs`).
+pub(crate) struct PublicOnly;
+
+impl reqwest::dns::Resolve for PublicOnly {
+    fn resolve(&self, name: reqwest::dns::Name) -> reqwest::dns::Resolving {
+        Box::pin(public_addresses(name.as_str().to_owned()))
+    }
+}
+
+async fn public_addresses(host: String) -> Result<reqwest::dns::Addrs, Box<dyn std::error::Error + Send + Sync>> {
+    let lookup = host.clone();
+    let found = tokio::task::spawn_blocking(move || {
+        std::net::ToSocketAddrs::to_socket_addrs(&(lookup.as_str(), 0)).map(|addrs| addrs.collect::<Vec<_>>())
+    })
+    .await??;
+    let public: Vec<std::net::SocketAddr> = found.into_iter().filter(|a| crate::link_trust::is_public_ip(a.ip())).collect();
+    if public.is_empty() {
+        log::debug!("link preview: {host} has no public address");
+        return Err(format!("{host}: no public address").into());
+    }
+    Ok(Box::new(public.into_iter()))
 }
 
 /// The body of `url`, at most `max` bytes, and its content type.

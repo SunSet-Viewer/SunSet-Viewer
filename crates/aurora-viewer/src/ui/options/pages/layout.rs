@@ -10,6 +10,12 @@ pub fn page(cx: &mut Cx, tab: usize) {
         0 => {
             cx.group(tr!("ui-options-bars"), |cx| {
                 cx.toggle(tr!("bug-toolbar"), tr!("bug-toolbar-help"), &field!(show_bug_report));
+                // the Legacy Viewer's Stand / Stop flying panel
+                cx.toggle(
+                    tr!("ui-options-stand-fly-panel"),
+                    tr!("ui-options-stand-fly-panel-help"),
+                    &field!(show_stand_fly_panel),
+                );
                 // the place island of the Aurora bars (also in its right-click menu)
                 cx.toggle(
                     tr!("ui-options-place-bar-stretch"),
@@ -185,22 +191,7 @@ pub fn page(cx: &mut Cx, tab: usize) {
                     " s",
                 );
             });
-            cx.group(tr!("ui-options-floating-text"), |cx| {
-                cx.slider(
-                    tr!("ui-options-floating-text-fade-distance"),
-                    tr!("ui-options-floating-text-fade-distance-help"),
-                    &field!(floating_text_fade_distance),
-                    0.0..=crate::settings::MAX_FLOATING_TEXT_FADE_DISTANCE,
-                    " m",
-                );
-                cx.slider(
-                    tr!("ui-options-floating-text-fade-range"),
-                    tr!("ui-options-floating-text-fade-range-help"),
-                    &field!(floating_text_fade_range),
-                    crate::settings::MIN_FLOATING_TEXT_FADE_RANGE..=crate::settings::MAX_FLOATING_TEXT_FADE_RANGE,
-                    " m",
-                );
-            });
+            floating_text(cx);
         }
         _ => cx.group(tr!("ui-options-at-startup"), |cx| {
             cx.toggle(tr!("ui-options-conversations-at-startup"), "", &field!(show_chat));
@@ -208,4 +199,57 @@ pub fn page(cx: &mut Cx, tab: usize) {
             cx.toggle(tr!("ui-options-mini-map-at-startup"), "", &field!(show_minimap));
         }),
     }
+}
+
+/// The objects' floating texts (llSetText): the Legacy Viewer's options of
+/// panel_preferences_UI.xml (FSHudTextFadeDistance, FSHudTextFadeRange,
+/// FSHudTextUseHoverHighlight, FSHudTextShowBackground) and
+/// panel_preferences_colors.xml (FSHudTextBackgroundOpacity), with its
+/// ranges. They sit by the hover tips, as in its 3D World tab.
+fn floating_text(cx: &mut Cx) {
+    use crate::settings::FloatingTextBackground as Bg;
+    use aurora_i18n::tr;
+    cx.group(tr!("ui-options-floating-text"), |cx| {
+        cx.slider(
+            tr!("ui-options-floating-text-fade-distance"),
+            tr!("ui-options-floating-text-fade-distance-help"),
+            &field!(floating_text_fade_distance),
+            0.0..=64.0,
+            " m",
+        );
+        cx.slider(
+            tr!("ui-options-floating-text-fade-range"),
+            tr!("ui-options-floating-text-fade-range-help"),
+            &field!(floating_text_fade_range),
+            0.25..=32.0,
+            " m",
+        );
+        cx.toggle(
+            tr!("ui-options-floating-text-highlight"),
+            tr!("ui-options-floating-text-highlight-help"),
+            &field!(floating_text_hover_highlight),
+        );
+        // the hovered object's background needs the highlight (LLHUDText::renderText)
+        let why = (!cx.s.floating_text_hover_highlight).then(|| tr!("ui-options-floating-text-background-hovered-why"));
+        cx.combo_blocked(
+            tr!("ui-options-floating-text-background"),
+            tr!("ui-options-floating-text-background-help"),
+            &field!(floating_text_background),
+            &[
+                (Bg::Off, tr!("ui-options-floating-text-background-off"), None),
+                (Bg::Hovered, tr!("ui-options-floating-text-background-hovered"), why),
+                (Bg::All, tr!("ui-options-floating-text-background-all"), None),
+            ],
+        );
+        let off = cx.s.floating_text_background == Bg::Off;
+        cx.subs(off, |cx| {
+            cx.slider(
+                tr!("ui-options-floating-text-background-opacity"),
+                "",
+                &field!(floating_text_background_opacity),
+                0.0..=1.0,
+                "",
+            );
+        });
+    });
 }
