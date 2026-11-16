@@ -4374,7 +4374,7 @@ mod tests {
 
     #[test]
     fn draw_distance_goes_to_1024_like_the_legacy_slider() {
-        for (asked, kept) in [(16.0, 32.0), (512.0, 512.0), (1024.0, 1024.0), (2000.0, 1024.0)] {
+        for (asked, kept) in [(16.0, 32.0), (512.0, 512.0), (1024.0, 1024.0), (9000.0, super::DRAW_DISTANCE_MAX)] {
             let s = super::Settings {
                 draw_distance: asked,
                 ..Default::default()
@@ -4389,7 +4389,13 @@ mod tests {
         // the largest probe range keeps the whole draw distance's reach; the
         // default stays 512 m
         assert_eq!(super::Settings::default().probe_range, 512.0);
-        for (asked, kept) in [(8.0, 32.0), (512.0, 512.0), (1024.0, 1024.0), (5000.0, 1024.0), (f32::NAN, 512.0)] {
+        for (asked, kept) in [
+            (8.0, 32.0),
+            (512.0, 512.0),
+            (1024.0, 1024.0),
+            (10000.0, super::DRAW_DISTANCE_MAX),
+            (f32::NAN, 512.0),
+        ] {
             let s = super::Settings {
                 probe_range: asked,
                 ..Default::default()
