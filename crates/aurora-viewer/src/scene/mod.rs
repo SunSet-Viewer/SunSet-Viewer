@@ -5757,8 +5757,21 @@ impl Scene {
 
     /// Last rendered shape/pose, including mesh joint overrides, for framing.
     pub fn joint_world(&self, world: &World, id: &Uuid, name: &str, now: Instant) -> Option<Vec3> {
+        Self::joint_world_in(world, id, name, now, false)
+    }
+
+    /// Simulation-space joint position without viewer-only vertical offsets.
+    pub fn joint_world_unshifted(&self, world: &World, id: &Uuid, name: &str, now: Instant) -> Option<Vec3> {
+        Self::joint_world_in(world, id, name, now, true)
+    }
+
+    fn joint_world_in(world: &World, id: &Uuid, name: &str, now: Instant, unshifted: bool) -> Option<Vec3> {
         let index = world.objects.index_of_uuid(id)?;
-        let (position, rotation, _) = Self::object_transform(world, index, now, 0)?;
+        let (position, rotation, _) = if unshifted {
+            Self::object_transform_unshifted(world, index, now)?
+        } else {
+            Self::object_transform(world, index, now, 0)?
+        };
         let rig = &world.avatar_lib.rig;
         let joint = *rig.names.get(name)?;
         let rest = rig.default_world_inv[joint].inverse().w_axis.truncate();
