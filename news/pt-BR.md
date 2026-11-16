@@ -20,6 +20,10 @@ Regras:
 
 # Notícias do SunSet Viewer
 
+## 2026-11-16 — SunSet Viewer v0.9.11: Sincronização Aurora v0.9.10, Avatar Studio, Câmera do Diretor e Correções
+A versão v0.9.11 sincroniza todas as correções de bugs e novidades oficiais do Aurora v0.9.10, trazendo o Avatar Studio para retratos de avatar com iluminação de estúdio, a Câmera do Diretor com trajetórias suaves de keyframes, clima e ambiente personalizáveis por parcela e suporte a joysticks e space mouse de 6 eixos. Todos os recursos exclusivos do SunSet Viewer continuam preservados: 8192 m de alcance visual, Dash nativo, hitboxes 3D, cores de avatar, 6 skins temáticas, diretórios isolados e tradução completa em Português e Espanhol.
+[Saiba mais](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.11)
+
 ## 2026-11-15 — SunSet Viewer v0.9.10: Isolamento Total de Dados e Coexistência com o Aurora
 A versão v0.9.10 passa a armazenar configurações, contas salvas, histórico, skins, cache, media plugins e logs do SunSet Viewer em pastas exclusivas (%APPDATA%\SunSet\SunSetViewer e %LOCALAPPDATA%\SunSet\SunSetViewer), permitindo manter o Aurora Viewer oficial instalado no mesmo PC sem conflitos ou perda de dados. Na primeira inicialização, perfis existentes do Aurora são migrados uma única vez de forma automática e não destrutiva, e o atualizador e o desinstalador respeitam o perfil isolado do SunSet.
 [Saiba mais](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.10)

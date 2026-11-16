@@ -4,6 +4,24 @@ Todas as mudanças notáveis, novidades e correções de bugs do projeto **SunSe
 
 ---
 
+## [0.9.11] — 2026-11-16
+
+### 🔄 Sincronização Upstream Completa: Aurora v0.9.10
+- **Avatar Studio**: Ferramenta dedicada para captura e enquadramento de avatares com iluminação controlada, poses locais e geração limpa de miniaturas e retratos.
+- **Câmera do Diretor (Director Camera)**: Gravação e reprodução de trajetórias de câmera com interpolação suave de keyframes para vídeos cinematográficos e machinimas.
+- **Ambiente e Clima Personalizado (Weather & Environment)**: Suporte completo à customização de condições climáticas, iluminação de céu e água por parcela e região.
+- **Controle por Joystick e Space Mouse**: Suporte nativo a controles analógicos de 6 eixos, gamepads e manche para navegação fluida em terra e voo.
+- **Correções e Estabilidade do Motor Aurora**: Integração de dezenas de correções de bugs de travessia de regiões (crossing ask & portals), edição de IK de avatares, reprodução de mídia em lote, descarte de sombras em hardware AMD e estabilidade de rede.
+
+### 🛡️ Preservação Integral dos Recursos Exclusivos SunSet Viewer
+- **Alcance Visual Extremo (8192 m)**: Contrato de renderização e probe de longo alcance calibrado e validado em 8192 metros com SpeedRez acelerado.
+- **Dash & Mobilidade Avançada**: Movimento nativo instantâneo por teclas rápidas (Shift / toque duplo W, A, S, D) e multiplicador de velocidade 100×.
+- **Hitboxes 3D e Marcadores de Avatar**: Renderização de hitboxes e caixas delimitadoras até 128 m, com personalização individual de cores de avatares no mini-mapa, radar e placas de nome.
+- **Localização 100% Atualizada**: Paridade absoluta de 14.329 chaves traduzidas em Português do Brasil (`pt-BR.ftl`) e Espanhol (`es.ftl`), incluindo todos os novos termos do Aurora v0.9.10.
+- **Temas SunSet & Coexistência**: 6 paletas visuais exclusivas SunSet e isolamento total de diretórios (`SunSet\SunSetViewer`) coexistindo em harmonia com o Aurora oficial.
+
+---
+
 ## [0.9.10] — 2026-11-15
 
 ### 📁 Isolamento Total de Dados (`SunSet\SunSetViewer`) e Coexistência com o Aurora Oficial

@@ -246,11 +246,11 @@ mod tests {
         // what a camera 1024 m from the avatar can show at a draw distance
         // of 1024 m is in reach (four regions away diagonally, about
         // 1086 m), a teleport across the map is not
-        assert_eq!(OUT_OF_REACH, 2048.0);
+        assert_eq!(OUT_OF_REACH, 2.0 * crate::settings::DRAW_DISTANCE_MAX as f64);
         assert!(region_gap(main, at(1003, 1003)) < OUT_OF_REACH);
         assert!(region_gap(main, at(1005, 1004)) > 1024.0);
         assert!(region_gap(main, at(1005, 1004)) < OUT_OF_REACH);
-        assert!(region_gap(main, at(1010, 1000)) > OUT_OF_REACH);
+        assert!(region_gap(main, at(1100, 1000)) > OUT_OF_REACH);
         assert!(region_gap(main, at(677, 1082)) > OUT_OF_REACH);
         // a large region reaches its far neighbours
         let wide = (aurora_net::origin_to_handle(1000 * 256, 1000 * 256), (1024, 1024));
