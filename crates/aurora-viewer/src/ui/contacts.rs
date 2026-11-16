@@ -27,7 +27,14 @@ use uuid::Uuid;
 
 pub(crate) mod drag;
 mod importing;
+mod quick_sort;
+mod set_editor;
+mod set_options;
 mod visuals;
+
+pub use set_editor::DemoScroll;
+pub(crate) use set_editor::EditorTab;
+pub(crate) use visuals::{TileNumber, set_tile, set_tile_number};
 #[cfg(test)]
 mod window_tests;
 
@@ -119,6 +126,12 @@ pub enum ContactsAction {
     ToggleTornOff,
     /// The Group titles window (onGroupTitlesButtonClicked).
     GroupTitles,
+    /// A text conference with these residents (LLAvatarActions::startConference).
+    Conference(Vec<Uuid>),
+    /// Search on its Groups tab (LLGroupActions::search).
+    SearchGroups,
+    /// The invitation window of this group (LLFloaterGroupInvite::showForGroup).
+    GroupInvite(Uuid),
 }
 
 /// Confirmations and text prompts (Firestorm notifications).
@@ -160,6 +173,34 @@ enum Dialog {
     },
 }
 
+/// `AURORA_DEMO_CONTACTS=conference|map|invite`: the friends, or the group,
+/// selected to show the buttons they enable.
+pub fn demo_selection(world: &World, mode: &str) -> (Vec<Uuid>, Option<Uuid>) {
+    let friends = &world.social.friends;
+    match mode {
+        "conference" => (friends.iter().filter(|f| f.online).map(|f| f.id).collect(), None),
+        "map" => (
+            friends
+                .iter()
+                .find(|f| world.social.can_map_friend(f.id))
+                .map(|f| f.id)
+                .into_iter()
+                .collect(),
+            None,
+        ),
+        "invite" => (
+            Vec::new(),
+            world
+                .groups
+                .groups
+                .iter()
+                .find(|g| g.powers & aurora_net::groups::powers::MEMBER_INVITE != 0)
+                .map(|g| g.id),
+        ),
+        _ => (Vec::new(), None),
+    }
+}
+
 #[derive(Default)]
 pub struct ContactsUi {
     import_job: Option<importing::Job>,
@@ -186,6 +227,24 @@ pub struct ContactsUi {
     /// Contact set being configured (FSFloaterContactSetConfiguration).
     config: Option<String>,
     rename: String,
+    /// The custom responses of the set being configured, by
+    /// `ResponseMode::ALL`, as typed: saved when the field loses the focus
+    /// or the window closes (the Legacy Viewer's commit on focus lost).
+    response_edit: Option<(String, [String; 3])>,
+    /// A name typed in the editor for a set left before it was applied:
+    /// (that set, the name).
+    pending_rename: Option<(String, String)>,
+    /// AURORA_DEMO_SET_NOTICES=config-responses|config-bottom: the window
+    /// scrolled down to the set's responses, or to its end.
+    pub demo_scroll: Option<DemoScroll>,
+    /// The set editor's tab, badge grid and preview distance.
+    pub(crate) editor: set_editor::EditorUi,
+    /// The options shared by every set (the gear of People's sets), and
+    /// whether they were just asked for (shown whole and in front).
+    options_open: bool,
+    options_raise: bool,
+    /// Quick sort of the friends in no set, while its window is open.
+    quick_sort: Option<quick_sort::QuickSort>,
     /// Height under the group and contact set lists (the count line),
     /// measured each frame.
     groups_footer: f32,
@@ -196,6 +255,14 @@ pub struct ContactsUi {
 }
 
 impl ContactsUi {
+    /// The selection of a demo scenario ([`demo_selection`]).
+    pub fn demo_select(&mut self, friends: Vec<Uuid>, group: Option<Uuid>) {
+        self.friends_sel = friends;
+        if group.is_some() {
+            self.group_sel = group;
+        }
+    }
+
     /// Initial group filter text (demo scenarios).
     pub fn filter_groups(&mut self, text: &str) {
         self.group_filter = text.to_owned();
@@ -308,8 +375,61 @@ impl ContactsUi {
 
     /// FSFloaterContactSetConfiguration on `set`: name, color, sorting.
     pub fn configure_set(&mut self, set: &str) {
+        if let Some(old) = self.config.clone()
+            && old != set
+        {
+            self.editor = set_editor::EditorUi::default();
+            // a name still being typed for the set left: applied on the
+            // editor's next frame (it has the world)
+            if self.rename.trim() != old {
+                self.pending_rename = Some((old, std::mem::take(&mut self.rename)));
+            }
+        } else if self.config.is_none() {
+            self.editor = set_editor::EditorUi::default();
+        }
         self.rename = set.to_owned();
         self.config = Some(set.to_owned());
+        self.editor.raise = true;
+    }
+
+    /// The set editor on `set`, at one of its tabs (the demo's captures).
+    pub fn configure_set_at(&mut self, set: &str, tab: EditorTab) {
+        self.configure_set(set);
+        self.editor.tab = tab;
+    }
+
+    /// The set editor's badge grid unfolded, or its marker shown (the
+    /// demo's captures).
+    pub fn demo_editor(&mut self, badges: bool, marker: bool) {
+        self.editor.badges_open = badges;
+        self.editor.reveal_badges = badges;
+        self.editor.reveal_marker = marker;
+    }
+
+    /// The nickname of `ids`, asked (SetAlias); the first one's nickname
+    /// is offered to edit.
+    pub fn ask_nickname(&mut self, world: &World, ids: Vec<Uuid>) {
+        if ids.is_empty() {
+            return;
+        }
+        let alias = ids
+            .first()
+            .and_then(|id| world.contact_sets.pseudonym(id))
+            .filter(|a| *a != contact_sets::DN_REMOVED)
+            .unwrap_or_default()
+            .to_owned();
+        self.dialog = Some(Dialog::SetAlias { ids, alias });
+    }
+
+    /// The window of the options shared by every set.
+    pub fn open_set_options(&mut self) {
+        self.options_open = true;
+        self.options_raise = true;
+    }
+
+    /// Quick sort of the friends in no set, as they are now.
+    pub fn open_quick_sort(&mut self, world: &World) {
+        self.quick_sort = Some(quick_sort::QuickSort::new(world));
     }
 }
 
@@ -317,11 +437,26 @@ impl ContactsUi {
 /// (FSPanelContactSets' buttons), applied to the world by the app.
 #[derive(Debug, Clone, PartialEq)]
 pub enum SetEdit {
-    Add { set: String, ids: Vec<Uuid> },
-    Move { from: String, to: String, ids: Vec<Uuid> },
-    Nickname { ids: Vec<Uuid>, alias: String },
+    Add {
+        set: String,
+        ids: Vec<Uuid>,
+    },
+    Move {
+        from: String,
+        to: String,
+        ids: Vec<Uuid>,
+    },
+    Nickname {
+        ids: Vec<Uuid>,
+        alias: String,
+    },
     ClearNickname(Vec<Uuid>),
     RemoveDisplayName(Vec<Uuid>),
+    /// A set dragged to `index` of the priority order (0 is the highest).
+    Reorder {
+        set: String,
+        index: usize,
+    },
 }
 
 /// Apply `edit` to the contact sets (non-friends become extra avatars, as
@@ -342,13 +477,21 @@ pub fn apply_set_edit(world: &mut World, edit: SetEdit) {
         }
         SetEdit::ClearNickname(ids) => sets.clear_pseudonym(&ids, is_friend),
         SetEdit::RemoveDisplayName(ids) => sets.remove_display_name(&ids, is_friend),
+        SetEdit::Reorder { set, index } => sets.move_priority_to(&set, index),
     }
 }
 
 /// The confirmations and prompts, shown whether the contact list is open
 /// or not (they are also asked from the other right-click menus and from
-/// People), and the configuration window of a contact set.
-pub fn dialog_windows(ctx: &egui::Context, p: &Palette, world: &mut World, st: &mut ContactsUi) -> Vec<ContactsAction> {
+/// People), the editor of a contact set, the options of all sets and
+/// Quick sort (`pics`: the residents' profile pictures).
+pub fn dialog_windows(
+    ctx: &egui::Context,
+    p: &Palette,
+    world: &mut World,
+    st: &mut ContactsUi,
+    pics: &HashMap<Uuid, egui::TextureHandle>,
+) -> Vec<ContactsAction> {
     importing::poll(world, st);
     let mut actions = Vec::new();
     // the resident picker shared with About Land (LLFloaterAvatarPicker),
@@ -362,7 +505,9 @@ pub fn dialog_windows(ctx: &egui::Context, p: &Palette, world: &mut World, st: &
         picked(world, st, PickFor::Set(set), ids);
     }
     dialogs(ctx, p, world, st, &mut actions);
-    set_config_window(ctx, p, world, st);
+    set_editor::window(ctx, p, world, st, pics);
+    set_options::window(ctx, p, world, st);
+    quick_sort::window(ctx, p, world, st, pics);
     actions
 }
 
@@ -1213,14 +1358,16 @@ fn friend_buttons(ui: &mut egui::Ui, p: &Palette, world: &World, st: &mut Contac
     let sel = &st.friends_sel;
     let n = sel.len();
     let all_online = sel.iter().all(|id| world.social.friends.iter().any(|f| f.id == *id && f.online));
-    let soon = aurora_i18n::tr!("ui-contacts-coming-soon-in-aurora");
+    // FSFloaterContacts::onImButtonClicked: one friend, an IM; several, a
+    // conference, only when all are online (refreshRightsChangeList: an
+    // offline friend would be dropped from the session without a word).
     let im_tip = if n > 1 {
-        aurora_i18n::tr!("ui-contacts-multi-person-conference-coming-soon-in-aurora")
+        aurora_i18n::tr!("ui-contacts-conference-friends")
     } else {
         aurora_i18n::tr!("ui-contacts-open-private-conversation-window")
     };
-    if side_button(ui, p, aurora_i18n::tr!("status-im-call"), im_tip, n == 1) {
-        actions.push(ContactsAction::Im(sel[0]));
+    if side_button(ui, p, aurora_i18n::tr!("status-im-call"), im_tip, n == 1 || (n > 1 && all_online)) {
+        actions.push(im_or_conference(sel));
     }
     // a voice call with one friend, a voice conference with several
     let call_tip = if !world.calls.voice_enabled {
@@ -1259,7 +1406,17 @@ fn friend_buttons(ui: &mut egui::Ui, p: &Palette, world: &World, st: &mut Contac
             actions.push(ContactsAction::OfferTeleport(*id));
         }
     }
-    side_button(ui, p, aurora_i18n::tr!("ui-contacts-map"), soon, false);
+    // onMapButtonClicked / refreshUI: one friend who lets us see them on
+    // the map (is_agent_mappable), and no RLVa @showworldmap.
+    if side_button(
+        ui,
+        p,
+        aurora_i18n::tr!("ui-contacts-map"),
+        aurora_i18n::tr!("ui-contacts-map-help"),
+        n == 1 && world.social.can_map_friend(sel[0]) && !world.rlva.has("showworldmap"),
+    ) {
+        context::request(ui.ctx(), CtxAction::ShowOnMap(sel[0]));
+    }
     if side_button(
         ui,
         p,
@@ -1531,7 +1688,6 @@ fn group_buttons(ui: &mut egui::Ui, p: &Palette, world: &mut World, st: &mut Con
     let sel = st.group_sel.unwrap_or_default();
     let real = !sel.is_nil();
     let powers = world.groups.group(&sel).map(|g| g.powers).unwrap_or(0);
-    let soon = aurora_i18n::tr!("ui-contacts-coming-soon-in-aurora");
     if side_button(
         ui,
         p,
@@ -1576,8 +1732,35 @@ fn group_buttons(ui: &mut egui::Ui, p: &Palette, world: &mut World, st: &mut Con
     {
         super::group_profile::request_create(ui.ctx());
     }
-    side_button(ui, p, aurora_i18n::tr!("ui-contacts-search"), soon, false);
-    side_button(ui, p, aurora_i18n::tr!("ui-contacts-invite"), soon, false);
+    // onGroupSearchButtonClicked: LLGroupActions::search, Search on Groups.
+    if side_button(
+        ui,
+        p,
+        aurora_i18n::tr!("ui-contacts-search"),
+        aurora_i18n::tr!("ui-contacts-search-groups-help"),
+        true,
+    ) {
+        actions.push(ContactsAction::SearchGroups);
+    }
+    // onGroupInviteButtonClicked / updateGroupButtons: a group where we hold
+    // GP_MEMBER_INVITE (LLFloaterGroupInvite::showForGroup).
+    if side_button(
+        ui,
+        p,
+        aurora_i18n::tr!("ui-contacts-invite"),
+        aurora_i18n::tr!("ui-contacts-invite-help"),
+        real && powers & aurora_net::groups::powers::MEMBER_INVITE != 0,
+    ) {
+        actions.push(ContactsAction::GroupInvite(sel));
+    }
+}
+
+/// One resident, an IM; several, a text conference (startConference).
+fn im_or_conference(ids: &[Uuid]) -> ContactsAction {
+    match ids {
+        [one] => ContactsAction::Im(*one),
+        _ => ContactsAction::Conference(ids.to_vec()),
+    }
 }
 
 // ------------------------------------------------------------- contact sets
@@ -1692,8 +1875,7 @@ fn sets_tab(
                 .clicked()
                     && mutable
                 {
-                    st.rename = choice.clone();
-                    st.config = Some(choice.clone());
+                    st.configure_set(&choice);
                 }
                 if icon_button(ui, p, "plus", aurora_i18n::tr!("ui-contacts-add-a-new-contact-set"), true).clicked() {
                     st.dialog = Some(Dialog::AddSet(aurora_i18n::tr!("ui-contacts-new-contact-set-2").into()));
@@ -1877,13 +2059,15 @@ fn set_buttons(
             actions.push(ContactsAction::Profile(*id));
         }
     }
+    // FSPanelContactSets::onClickStartIM: one resident, an IM; several, a
+    // conference (start_im_btn: any selection).
     let im_tip = if sel.len() > 1 {
-        aurora_i18n::tr!("ui-contacts-multi-person-conference-coming-soon-in-aurora")
+        aurora_i18n::tr!("ui-contacts-conference-friends")
     } else {
         aurora_i18n::tr!("ui-contacts-open-private-conversation-window")
     };
-    if side_button(ui, p, "IM...", im_tip, sel.len() == 1) {
-        actions.push(ContactsAction::Im(sel[0]));
+    if side_button(ui, p, "IM...", im_tip, has_sel) {
+        actions.push(im_or_conference(&sel));
     }
     if side_button(
         ui,
@@ -1936,92 +2120,11 @@ fn set_buttons(
     }
 }
 
-/// FSFloaterContactSetConfiguration: name, color, sorting and appearance.
-/// Legacy list options live in the contact table's own Options menu.
-fn set_config_window(ctx: &egui::Context, p: &Palette, world: &mut World, st: &mut ContactsUi) {
-    let Some(set) = st.config.clone() else {
-        return;
-    };
-    let Some(cfg) = world.contact_sets.set(&set).cloned() else {
-        st.config = None;
-        return;
-    };
-    let mut open = true;
-    widgets::Floater::new(
-        "contact_set_config",
-        aurora_i18n::tr!("ui-contacts-configure", set = set.to_string()),
-        ctx.content_rect().center() - Vec2::new(160.0, 140.0),
-        Vec2::new(430.0, 650.0),
-    )
-    .show(ctx, p, &mut open, |ui| {
-        ui.horizontal(|ui| {
-            ui.add(egui::TextEdit::singleline(&mut st.rename).desired_width(200.0));
-            if widgets::flat_button(ui, p, aurora_i18n::tr!("common-rename")).clicked() {
-                let new = st.rename.trim().to_owned();
-                if new != set {
-                    if world.contact_sets.rename_set(&set, &new) {
-                        st.config = Some(new.clone());
-                        if st.set_choice.as_deref() == Some(set.as_str()) {
-                            st.set_choice = Some(new);
-                        }
-                    } else {
-                        world.system_message(aurora_i18n::tr!(
-                            "ui-contacts-cannot-rename-contact-set-to-the-new-name-is",
-                            set = set.to_string(),
-                            new = new.to_string()
-                        ));
-                    }
-                }
-            }
-        });
-        ui.add_space(4.0);
-        ui.horizontal(|ui| {
-            if let Some(c) = set_color_button(ui, p, "set_color", cfg.color) {
-                world.contact_sets.set_color(&set, c);
-            }
-            ui.label(RichText::new(aurora_i18n::tr!("common-color")).size(12.5).color(p.ink));
-        });
-        visuals::preview(ui, p, world, &set);
-        egui::ScrollArea::vertical()
-            .max_height((ctx.content_rect().height() - 360.0).clamp(180.0, 420.0))
-            .show(ui, |ui| {
-                let mut sort = cfg.sort_by_online;
-                if widgets::switch_labeled(ui, p, &mut sort, aurora_i18n::tr!("ui-contacts-sort-by-online-status")).changed() {
-                    world.contact_sets.set_sort_by_online(&set, sort);
-                }
-                let mut apart = cfg.separate_chats;
-                if widgets::switch_labeled(ui, p, &mut apart, aurora_i18n::tr!("ui-contacts-separate-chats"))
-                    .on_hover_text(aurora_i18n::tr!("ui-contacts-separate-chats-tip"))
-                    .changed()
-                {
-                    world.contact_sets.set_separate_chats(&set, apart);
-                }
-                visuals::editor(ui, p, world, &set, &cfg.visuals);
-                widgets::divider(ui, p);
-                ui.label(
-                    RichText::new(aurora_i18n::tr!("ui-contacts-all-contact-sets"))
-                        .size(12.5)
-                        .strong()
-                        .color(p.ink),
-                );
-                ui.horizontal(|ui| {
-                    if let Some(c) = set_color_button(ui, p, "default_color", world.contact_sets.default_color) {
-                        world.contact_sets.set_default_color(c);
-                    }
-                    ui.label(RichText::new(aurora_i18n::tr!("ui-contacts-default-color")).size(12.5).color(p.ink));
-                });
-            });
-    });
-    if !open {
-        st.config = None;
-    }
-}
-
 // ------------------------------------------------------------------ dialogs
 
 /// Swatch of a contact set's color (linear, straight alpha, as egui's
 /// color button edited it): the new color when it changed.
-fn set_color_button(ui: &mut egui::Ui, p: &Palette, id: &str, color: [f32; 4]) -> Option<[f32; 4]> {
+pub(super) fn set_color_button(ui: &mut egui::Ui, p: &Palette, id: &str, color: [f32; 4]) -> Option<[f32; 4]> {
     let [r, g, b, a] = color;
     let mut srgba = Color32::from(egui::Rgba::from_rgba_unmultiplied(r, g, b, a)).to_srgba_unmultiplied();
     let changed = widgets::color_button(ui, p, id, &mut srgba, true).changed();
@@ -2335,6 +2438,12 @@ mod tests {
         assert_eq!(sel, vec![id(2), id(4)]);
         click_select(&mut sel, &mut anchor, &order, id(5), none);
         assert_eq!(sel, vec![id(5)]);
+    }
+
+    #[test]
+    fn one_resident_gets_an_im_and_several_a_conference() {
+        assert!(matches!(im_or_conference(&[id(1)]), ContactsAction::Im(one) if one == id(1)));
+        assert!(matches!(im_or_conference(&[id(1), id(2)]), ContactsAction::Conference(ids) if ids == vec![id(1), id(2)]));
     }
 
     #[test]

@@ -104,6 +104,17 @@ impl App {
         if let Some(group) = state.take_group_refresh() {
             self.world.group_data.request_members(group);
         }
+        if let Some(id) = state.take_profile_want() {
+            self.world.want_profile(id);
+        }
+        if self
+            .portal_ask
+            .as_ref()
+            .is_some_and(|ask| state.crossable(&self.world, ask.owner, ask.portal.id).is_none())
+        {
+            // Closed, expired, muted or left out meanwhile: nothing to answer.
+            self.portal_ask = None;
+        }
         let mut input = self.input;
         if self.camera.free().is_none() && !self.joystick.active {
             self.joystick.motion.apply_avatar(&mut input);
@@ -135,16 +146,13 @@ impl App {
             self.send(command);
         }
         if let Some((creator, portal)) = crossed {
-            // Ordinary location teleports retain RLVa, maturity, map lookup,
-            // cancellation and simulator access checks (LLAgent::teleportViaLocation).
-            let journey = Journey::new(&self.world, creator, &portal, now);
-            let look_at = Vec3::new(portal.yaw.cos(), portal.yaw.sin(), 0.0);
-            self.teleport_to_location_looking(portal.destination, Vec3::from(portal.position), look_at);
-            if self.world.teleporting {
-                self.portal_journey = Some(journey);
-            } else if let Some(ask) = self.suitcase_ask.as_mut() {
-                // held for the Hypergrid question: the journey goes with it
-                ask.portal = Some(journey);
+            if !self.world.portals.ask_before_crossing(&self.world, creator, portal.id) {
+                self.cross_portal(creator, portal, now);
+            } else if self.portal_ask.is_none()
+                && let Some(entry) = self.world.portals.crossable(&self.world, creator, portal.id)
+            {
+                // One question per portal; the walk through is consumed.
+                self.portal_ask = Some(ui::portals::CrossingAsk::new(&self.world, entry, portal));
             }
         }
         self.update_place_portal();
@@ -265,6 +273,55 @@ impl App {
                 self.portal_ui.notice = Some(refusal.message().into());
             }
             self.world.portals = state;
+        }
+    }
+
+    fn cross_portal(&mut self, creator: uuid::Uuid, portal: Portal, now: Instant) {
+        // Ordinary location teleports retain RLVa, maturity, map lookup,
+        // cancellation and simulator access checks (LLAgent::teleportViaLocation).
+        let journey = Journey::new(&self.world, creator, &portal, now);
+        let look_at = Vec3::new(portal.yaw.cos(), portal.yaw.sin(), 0.0);
+        self.teleport_to_location_looking(portal.destination, Vec3::from(portal.position), look_at);
+        if self.world.teleporting {
+            self.portal_journey = Some(journey);
+        } else if let Some(ask) = self.suitcase_ask.as_mut() {
+            // held for the Hypergrid question: the journey goes with it
+            ask.portal = Some(journey);
+        }
+    }
+
+    /// The question before a non-friend's portal is first crossed. Go checks
+    /// again that it can still be crossed, then travels like a crossing.
+    pub(super) fn portal_crossing_question(&mut self, ctx: &egui::Context, p: &Palette) {
+        let Some(ask) = &self.portal_ask else { return };
+        let Some(go) = ui::portals::crossing_confirm(ctx, p, ask) else {
+            return;
+        };
+        let Some(ask) = self.portal_ask.take() else { return };
+        if !go
+            || self.world.teleporting
+            || !ask.portal.live(unix_time())
+            || self.world.portals.crossable(&self.world, ask.owner, ask.portal.id).is_none()
+        {
+            return;
+        }
+        self.world.portals.confirm(ask.owner, ask.portal.id);
+        self.cross_portal(ask.owner, ask.portal, Instant::now());
+    }
+
+    /// The setting, or the one an `AURORA_DEMO_PORTALS` scenario tests (never
+    /// saved). The earlier scenarios show a non-friend's portal.
+    pub(super) fn portal_sources(&self) -> crate::world::portals::Sources {
+        use crate::world::portals::Sources;
+        if !self.demo {
+            return self.settings.portal_sources;
+        }
+        match std::env::var("AURORA_DEMO_PORTALS").as_deref() {
+            Ok("stranger") => Sources::Everyone,
+            Ok("stranger-groups") => Sources::FriendsAndGroups,
+            Ok("stranger-hidden") => Sources::Friends,
+            Ok(mode) if mode == "friends" || mode.starts_with("private-") || mode.starts_with("return") => Sources::Everyone,
+            _ => self.settings.portal_sources,
         }
     }
 

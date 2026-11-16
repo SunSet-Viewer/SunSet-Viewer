@@ -602,7 +602,7 @@ fn build_mode(inv: &Inventory, id: Uuid, st: &InventoryUi, prefs: &InventoryPref
                         "sun-filled",
                         aurora_i18n::tr!("common-apply-to-myself-only"),
                         single && !it.asset_id.is_nil(),
-                        InvAction::Environment(it.asset_id, it.flags),
+                        InvAction::Environment(it.asset_id, it.flags, it.id),
                     );
                 }
             }
@@ -867,7 +867,7 @@ fn build_mode(inv: &Inventory, id: Uuid, st: &InventoryUi, prefs: &InventoryPref
         .filter(|it| !trash && super::context::exposes_asset_uuid(it.asset_type))
         .or_else(|| all.then_some(&placeholder))
     {
-        let asset = super::context::copyable_asset_uuid(inv, it);
+        let asset = super::context::copyable_asset_uuid(inv, it, facts.god);
         c.add(
             "asset-uuid",
             &organize,

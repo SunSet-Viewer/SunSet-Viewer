@@ -208,7 +208,31 @@ inlined functions included, to functions and source lines. It then:
   duplicate; otherwise renames the issue `Crash: <kind> in <function>` and
   sets the Bug type.
 
-No label is needed: the signature lives in a hidden comment of the body. A
+  - adds the `crash-triaged` label to the issue it signed.
+
+A GPU loss (`GPU device lost`, `GPU device lost at startup`) or an
+`Unexpected shutdown` is signed differently, since its stack shows the
+driver or the last state seen, not the cause. Its signature is the card
+family from the GPU row (`NVIDIA RTX 30`, `AMD RX 9000`, `AMD integrated`,
+`Intel Arc`, `Apple M2`, with ` laptop` for a laptop chip) and the system
+(Windows, macOS, Linux). A GPU loss adds the work the card had in hand
+(`hang`, `fault`, `at startup`, from the "GPU work at the loss" row). An
+unexpected shutdown adds how it ended (system restarted, viewer and
+watcher stopped together, ended from outside, or the exit code) and the
+window (never shown, not answering, answering). The version, the driver
+and the model inside the family stay out, so the reports of one group
+land on one issue, renamed for example
+`Crash: GPU device lost, NVIDIA RTX 30, hang (Windows)`. The comment of
+each duplicate on it also gives its risk factors (the settings that were
+on), so what tells the reports of a group apart stays visible.
+
+The signature lives in a hidden comment, the last line of the triage
+section. An open issue is a reference only when it carries the
+`crash-triaged` label (the workflow or a maintainer sets it; a reporter
+cannot) and that line of its own triage section has the same signature: a
+`crash-signature` comment written anywhere else in a body is not read. An
+issue signed before the label existed becomes a reference again once
+"Run workflow" triages it again. A
 closed issue is not a reference: a crash that comes back after its fix
 opens a new issue. "Run workflow" with an issue number triages it again,
 for example once the symbols of its version are published. Locally, on a
