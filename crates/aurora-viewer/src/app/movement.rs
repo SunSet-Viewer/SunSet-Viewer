@@ -65,6 +65,13 @@ impl App {
                     Arc::new(crate::scene::anim::BoundAnim::bind(animation.clone(), &rig)),
                 );
             }
+            self.scene.anims.insert(
+                crate::movement::strokes::DASH_LOCAL_ID,
+                Arc::new(crate::scene::anim::BoundAnim::bind(
+                    crate::movement::strokes::dash_animation().clone(),
+                    &rig,
+                )),
+            );
         }
         let prefs = self.settings.movements.entry(self.world.agent_id).or_default();
         if self.settings.movement_dash.enabled && self.settings.movement_dash.speed_multiplier > 1.05 {
@@ -475,7 +482,28 @@ impl App {
             }
             self.scene.water_impact(impact);
         }
-        self.scene.movement_preview = None;
+        let dash_running = self.settings.movement_dash.enabled
+            && self.settings.movement_dash.speed_multiplier > 1.05
+            && !frame.seated
+            && !frame.flying
+            && !frame.suspended
+            && frame.on_ground
+            && (input.forward || input.back || input.strafe_left || input.strafe_right);
+        self.scene.movement_preview = if dash_running {
+            let prev = self
+                .scene
+                .movement_preview
+                .as_ref()
+                .filter(|p| p.id == crate::movement::strokes::DASH_LOCAL_ID);
+            Some(crate::world::PlayingAnimation::from_signal(
+                crate::movement::strokes::DASH_LOCAL_ID,
+                1,
+                now,
+                prev,
+            ))
+        } else {
+            None
+        };
         self.bridge_runtime.motion = self.movement_runtime.water_jump.observer(height).unwrap_or(step.motion);
         if cannonball {
             self.world.agent.flying = false;

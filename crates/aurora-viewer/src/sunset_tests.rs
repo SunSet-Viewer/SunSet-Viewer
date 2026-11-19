@@ -1009,3 +1009,19 @@ fn test_migrate_legacy_aurora_profile_and_media_plugins_non_destructive() {
 
     let _ = std::fs::remove_dir_all(&root);
 }
+
+#[test]
+fn test_sunset_dash_animation_loads_and_loops_at_priority_4() {
+    let anim = crate::movement::strokes::dash_animation();
+    assert_eq!(
+        anim.base_priority, 4,
+        "Animação de Dash deve ter prioridade 4 para sobrepor corrida/AO padrão"
+    );
+    assert!(anim.looping, "Animação de Dash deve estar em loop");
+    assert!((anim.duration - 0.40).abs() < 1e-4, "Duração do ciclo de Dash deve ser 0.40s");
+    assert!((anim.loop_out - anim.duration).abs() < 1e-5);
+    assert!(!anim.joints.is_empty(), "Animação de Dash deve possuir juntas animadas");
+    let pelvis = anim.joints.iter().find(|j| j.joint_name == "mPelvis").expect("mPelvis track");
+    assert!(pelvis.pos_keys.is_empty(), "mPelvis não deve conter pos_keys no viewer");
+    assert!(!pelvis.rot_keys.is_empty(), "mPelvis deve inclinar o tronco no Dash");
+}

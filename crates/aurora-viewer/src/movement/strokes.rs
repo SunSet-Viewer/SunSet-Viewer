@@ -36,6 +36,9 @@ pub fn from_bvh(bytes: &[u8], skeleton: &aurora_assets::Skeleton) -> Result<Anim
 }
 
 static PACK: std::sync::OnceLock<[Animation; 6]> = std::sync::OnceLock::new();
+static DASH_ANIM: std::sync::OnceLock<Animation> = std::sync::OnceLock::new();
+pub const DASH_LOCAL_ID: uuid::Uuid = uuid::Uuid::from_u128(0xA0_5610);
+const DASH_SOURCE: &[u8] = include_bytes!("../../assets/animations/locomotion/sunset-dash.bvh");
 const SOURCES: [&[u8]; 6] = [
     include_bytes!("../../assets/animations/swimming/breaststroke.bvh"),
     include_bytes!("../../assets/animations/swimming/backstroke.bvh"),
@@ -45,9 +48,19 @@ const SOURCES: [&[u8]; 6] = [
     include_bytes!("../../assets/animations/swimming/dive.bvh"),
 ];
 
+/// Animação nativa de corrida/dash em alta velocidade do SunSet Viewer.
+pub fn dash_animation() -> &'static Animation {
+    DASH_ANIM.get_or_init(|| {
+        let skeleton = aurora_assets::Skeleton::parse(include_bytes!("../../assets/character/avatar_skeleton.xml"))
+            .expect("validated bundled skeleton");
+        from_bvh(DASH_SOURCE, &skeleton).expect("validated bundled SunSet dash BVH")
+    })
+}
+
 /// Prewarmed by App's background workers. These are embedded, validated build
 /// inputs; a broken bundled asset is an internal invariant, covered by tests.
 pub fn pack() -> &'static [Animation; 6] {
+    let _ = dash_animation();
     PACK.get_or_init(|| {
         let skeleton = aurora_assets::Skeleton::parse(include_bytes!("../../assets/character/avatar_skeleton.xml"))
             .expect("validated bundled skeleton");
