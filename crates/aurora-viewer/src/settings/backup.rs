@@ -10,7 +10,8 @@
 //! PC as it is; a restore applies at once instead of quitting the viewer;
 //! nothing of the login goes in it (the Legacy Viewer copies bin_conf.dat,
 //! the saved credentials), nor what belongs to this PC (window, folders,
-//! audio devices, machine id): a restore keeps this PC's values of those.
+//! audio devices, machine id, the user's GIF service keys): a restore keeps
+//! this PC's values of those.
 
 use super::Settings;
 use serde::{Deserialize, Serialize};
@@ -28,6 +29,8 @@ const VERSION: u32 = 1;
 const THIS_PC: &[&str] = &[
     "username",
     "remember_username",
+    // the proxies of this PC's network (Preferences › Network › Proxy)
+    "proxy",
     "last_login",
     "remember_password",
     "grid",
@@ -41,12 +44,15 @@ const THIS_PC: &[&str] = &[
     "window_maximized",
     "cache_location",
     "chat_log_location",
+    // a file of this PC (Preferences › Language and updates)
+    "custom_language_file",
 ];
 /// The same inside `audio`: the devices of this PC.
 const THIS_PC_AUDIO: &[&str] = &["output_device", "input_device"];
-/// The same inside `gifs`: personal API keys.
+/// The same inside `gifs`: the user's own service keys, and this viewer's
+/// random id. A backup file is carried around and shared; keys are not.
 const THIS_PC_GIFS: &[&str] = &["giphy_key", "klipy_key", "customer_id"];
-/// Nested setting sections whose values belong to this PC.
+/// The nested sections that hold settings of this PC, and those settings.
 const THIS_PC_NESTED: &[(&str, &[&str])] = &[("audio", THIS_PC_AUDIO), ("gifs", THIS_PC_GIFS)];
 
 /// Whether the path of a setting (`gifs.giphy_key`) names a setting of the
@@ -54,6 +60,8 @@ const THIS_PC_NESTED: &[(&str, &[&str])] = &[("audio", THIS_PC_AUDIO), ("gifs", 
 pub(super) fn is_this_pc(key: &str) -> bool {
     match key.split_once('.') {
         None => THIS_PC.contains(&key),
+        // a section of THIS_PC is this PC's with all its settings
+        Some((section, _)) if THIS_PC.contains(&section) => true,
         Some((section, inner)) => THIS_PC_NESTED.iter().any(|(name, keys)| *name == section && keys.contains(&inner)),
     }
 }
@@ -112,9 +120,11 @@ impl Backup {
             for key in THIS_PC {
                 map.remove(*key);
             }
-            if let Some(Value::Object(audio)) = map.get_mut("audio") {
-                for key in THIS_PC_AUDIO {
-                    audio.remove(*key);
+            for (section, keys) in THIS_PC_NESTED {
+                if let Some(Value::Object(inner)) = map.get_mut(*section) {
+                    for key in *keys {
+                        inner.remove(*key);
+                    }
                 }
             }
         }
@@ -284,8 +294,12 @@ impl Settings {
         self.window_maximized = current.window_maximized;
         self.cache_location = current.cache_location.clone();
         self.chat_log_location = current.chat_log_location.clone();
+        self.custom_language_file = current.custom_language_file.clone();
         self.audio.output_device = current.audio.output_device.clone();
         self.audio.input_device = current.audio.input_device.clone();
+        self.gifs.giphy_key = current.gifs.giphy_key.clone();
+        self.gifs.klipy_key = current.gifs.klipy_key.clone();
+        self.gifs.customer_id = current.gifs.customer_id.clone();
         self.mfa_hash = current.mfa_hash.clone();
         self.debug = current.debug;
         // a newer build's own values are not the backup's to drop
@@ -327,6 +341,9 @@ mod tests {
         };
         s.audio.output_device = "Speakers".into();
         s.audio.input_device = "Microphone".into();
+        s.gifs.giphy_key = "giphy-key-of-this-pc".into();
+        s.gifs.klipy_key = "klipy-key-of-this-pc".into();
+        s.gifs.customer_id = "id-of-this-pc".into();
         s
     }
 
@@ -342,12 +359,20 @@ mod tests {
             "D:\\\\logs",
             "Speakers",
             "Microphone",
+            "giphy-key-of-this-pc",
+            "klipy-key-of-this-pc",
+            "id-of-this-pc",
         ] {
             assert!(!text.contains(value), "{value} written in the backup");
         }
         let settings = backup.settings.as_ref().unwrap();
         for key in THIS_PC {
             assert!(settings.get(*key).is_none(), "{key} written in the backup");
+        }
+        for (section, keys) in THIS_PC_NESTED {
+            for key in *keys {
+                assert!(settings[section].get(*key).is_none(), "{section}.{key} written in the backup");
+            }
         }
     }
 
@@ -358,8 +383,10 @@ mod tests {
         for key in THIS_PC {
             assert!(saved.get(*key).is_some(), "{key} is not a setting");
         }
-        for key in THIS_PC_AUDIO {
-            assert!(saved["audio"].get(*key).is_some(), "audio.{key} is not a setting");
+        for (section, keys) in THIS_PC_NESTED {
+            for key in *keys {
+                assert!(saved[section].get(*key).is_some(), "{section}.{key} is not a setting");
+            }
         }
     }
 
@@ -371,18 +398,24 @@ mod tests {
         other.colors.chat_direct = [1, 2, 3, 255];
         other.window_width = 640;
         other.audio.output_device = "Elsewhere".into();
+        other.gifs.giphy_key = "giphy-key-elsewhere".into();
+        other.gifs.rating = crate::gif_search::Rating::Strict;
         let backup = Backup::parse(&Backup::new(&other, Some("layout".into())).to_bytes().unwrap()).unwrap();
         let current = this_pc();
         let restored = backup.settings(&current).unwrap();
         assert_eq!(restored.draw_distance, 256.0);
         assert_eq!(restored.vsync, other.vsync);
         assert_eq!(restored.colors.chat_direct, [1, 2, 3, 255]);
+        // the rest of the GIF settings are the backup's
+        assert_eq!(restored.gifs.rating, other.gifs.rating);
         let (restored, current) = (serde_json::to_value(&restored).unwrap(), serde_json::to_value(&current).unwrap());
         for key in THIS_PC {
             assert_eq!(restored[key], current[key], "{key} not kept");
         }
-        for key in THIS_PC_AUDIO {
-            assert_eq!(restored["audio"][key], current["audio"][key], "audio.{key} not kept");
+        for (section, keys) in THIS_PC_NESTED {
+            for key in *keys {
+                assert_eq!(restored[section][key], current[section][key], "{section}.{key} not kept");
+            }
         }
         assert_eq!(backup.layout(), Some("layout"));
     }

@@ -39,7 +39,7 @@ kernelbase id=0123456789ABCDEF0123456789ABCDEF1 code=6712ABCD3f0000
 # 3000: std::panicking frame; PUBLIC 5000: a function without FUNC record.
 $sym = @'
 MODULE windows x86_64 FEDCBA9876543210FEDCBA98765432101 aurora_viewer.pdb
-INFO CODE_ID 6700000Ac5e0000 SunSet-Viewer.exe
+INFO CODE_ID 6700000Ac5e0000 aurora-viewer.exe
 FILE 0 D:\a\Aurora-Viewer\Aurora-Viewer\crates\aurora-render\src\draw.rs
 FILE 1 D:\a\Aurora-Viewer\Aurora-Viewer\crates\aurora-render\src\cull.rs
 FILE 2 /rustc/0123abcd/library\std\src\panicking.rs
@@ -141,6 +141,37 @@ try {
     Assert-Triage ((@($bareSig.Frames)[0]) -eq "unsymbolized $id" -and $bareSig.Id -ne $sig.Id) 'Without symbols the signature must name the build.'
     Assert-Triage ($null -eq (Get-TriageTitle $r $bareSig)) 'Without symbols the title stays as the viewer wrote it.'
 
+    # A thread of another program's DLL, with no frame of the viewer (#3006,
+    # #2361): signed by that module's offsets and its own debug id, whatever
+    # the viewer's build.
+    $hookStack = @('00 osmimhk64+0x40835', '01 osmimhk64+0x3eed3', '02 osmimhk64+0x77c42', '03 osmimhk64+0x71d1c', '04 kernel32+0x2dda7', '05 ntdll+0x7ee4c')
+    $hookId = '55CE45CBC86A47389529E1ABEDFC1BE61'
+    $hookReport = (New-Report 'Native exception 0xC0000005' $hookStack) -replace '(kernelbase id=\S+ code=\S+)', "`$1`nosmimhk64 id=$hookId code=69A5F5AA11d000"
+    $hook = Read-CrashReport $hookReport
+    $hookSig = Get-CrashSignature $hook (Get-SymbolizedFrames $hook $symFile)
+    Assert-Triage ((@($hookSig.Frames) -join '|') -eq 'osmimhk64+0x40835|osmimhk64+0x3eed3|osmimhk64+0x77c42') "Unexpected foreign module signature frames: $(@($hookSig.Frames) -join '|')"
+    Assert-Triage ((Get-TriageTitle $hook $hookSig) -eq 'Crash: native exception 0xC0000005 in osmimhk64+0x40835') 'A foreign module crash is titled by its place.'
+    $otherBuild = Read-CrashReport ($hookReport -replace $id, '00112233445566778899AABBCCDDEEFF1')
+    Assert-Triage ((Get-CrashSignature $otherBuild (Get-SymbolizedFrames $otherBuild $null)).Id -eq $hookSig.Id) 'The same DLL crash under another viewer build must be the same crash.'
+    $otherDll = Read-CrashReport ($hookReport -replace $hookId, '11111111111111111111111111111111A')
+    Assert-Triage ((Get-CrashSignature $otherDll (Get-SymbolizedFrames $otherDll $null)).Id -ne $hookSig.Id) 'Another version of the DLL is another crash.'
+    $otherPlace = Read-CrashReport ($hookReport -replace '0x40835', '0x41000')
+    Assert-Triage ((Get-CrashSignature $otherPlace (Get-SymbolizedFrames $otherPlace $null)).Id -ne $hookSig.Id) 'Another place in the DLL is another crash, even on the same build.'
+    $codeOnlyReport = $hookReport -replace " id=$hookId", ''
+    $codeOnly = Read-CrashReport $codeOnlyReport
+    $codeSig = Get-CrashSignature $codeOnly (Get-SymbolizedFrames $codeOnly $null)
+    Assert-Triage (-not $codeSig.UnidentifiedModule) 'A module with a code ID can be deduplicated.'
+    $otherCode = Read-CrashReport ($codeOnlyReport -replace '69A5F5AA11d000', '69A5F5AB11d000')
+    Assert-Triage ((Get-CrashSignature $otherCode (Get-SymbolizedFrames $otherCode $null)).Id -ne $codeSig.Id) 'Distinct code IDs must keep the reports apart.'
+    $unknown = Read-CrashReport ($codeOnlyReport -replace 'osmimhk64 code=69A5F5AA11d000', 'osmimhk64')
+    $unknownFrames = Get-SymbolizedFrames $unknown $null
+    $unknownSig = Get-CrashSignature $unknown $unknownFrames
+    Assert-Triage $unknownSig.UnidentifiedModule 'A module without a debug or code ID needs manual triage.'
+    Assert-Triage (-not (Get-TriageSignature (Format-TriageSection $unknownFrames '' $unknownSig))) 'An unknown module must not become a reference for automatic duplicate closure.'
+    # Only system frames: still the viewer build's signature, as before.
+    $systemOnly = Read-CrashReport (New-Report 'Native exception 0xC0000005' @('00 kernelbase+0x1234', '01 ntdll+0x7ee4c'))
+    Assert-Triage ((@((Get-CrashSignature $systemOnly (Get-SymbolizedFrames $systemOnly $null)).Frames)[0]) -eq "unsymbolized $id") 'A stack of system frames alone keeps the build signature.'
+
     # The section: added once, replaced on a new run, the report kept.
     $section = Format-TriageSection $frames 'Aurora-Viewer-v0.8.0-windows-x64-symbols.zip' $sig
     $body = Merge-TriageSection $native $section
@@ -149,17 +180,33 @@ try {
     Assert-Triage (([regex]::Matches($again, [regex]::Escape($TriageStart))).Count -eq 1 -and -not $again.Contains($sig.Id)) 'A new run must replace the section.'
     Assert-Triage ((Read-CrashReport $body).Frames.Count -eq 5) 'The added section must not be read as the report.'
 
-    # Duplicates: the lowest other open issue with the same signature.
+    # The signature is read from the triage's own section only.
+    Assert-Triage ((Get-TriageSignature $body) -eq $sig.Id) 'The section must give its signature.'
+    Assert-Triage ((Get-TriageSignature ($body.Replace("`n", "`r`n"))) -eq $sig.Id) 'A body saved with CRLF must give its signature.'
+    $typed = "Any issue`n<!-- crash-signature: $($sig.Id) -->`n"
+    Assert-Triage ($null -eq (Get-TriageSignature $typed)) 'A marker outside a triage section must not count.'
+    $inReport = Merge-TriageSection ($native + "`n<!-- crash-signature: $($sig.Id) -->`n") (Format-TriageSection $bare $null $bareSig)
+    Assert-Triage ((Get-TriageSignature $inReport) -eq $bareSig.Id) 'A marker in the report must not count, only the triage one.'
+    # A section already in a new report (a lone end marker before it, or a
+    # whole fake one) is replaced by the triage, not kept next to it.
+    $fake = "$TriageEnd`n$TriageStart`n<!-- crash-signature: $($sig.Id) -->`n$TriageEnd"
+    $forged = Merge-TriageSection ($native + "`n" + $fake) (Format-TriageSection $bare $null $bareSig)
+    Assert-Triage ((Get-TriageSignature $forged) -eq $bareSig.Id -and -not $forged.Contains($sig.Id)) 'A section written in the report must be replaced.'
+    $unclosed = "$TriageStart`n<!-- crash-signature: $($sig.Id) -->`n"
+    Assert-Triage ($null -eq (Get-TriageSignature ($native + $unclosed))) 'A section without its end must not count.'
+
+    # Duplicates: the lowest other open issue the triage signed with the
+    # same signature.
+    $signed = @($TriagedLabel, 'world')
     $issues = @(
-        @{ Number = 30; Body = $body },
-        @{ Number = 12; Body = $body },
-        @{ Number = 40; Body = $body },
-        @{ Number = 5; Body = $native },
-        @{ Number = 6; Body = $null })
+        @{ Number = 30; Body = $body; Labels = $signed },
+        @{ Number = 12; Body = $body; Labels = $signed },
+        @{ Number = 40; Body = $body; Labels = $signed },
+        @{ Number = 5; Body = $native; Labels = $signed },
+        @{ Number = 6; Body = $null; Labels = $signed })
     Assert-Triage ((Find-DuplicateIssue $issues $sig.Id 40) -eq 12) 'The first open issue must be the reference.'
     Assert-Triage ($null -eq (Find-DuplicateIssue $issues $sig.Id 12 | Where-Object { $_ -lt 12 })) 'The reference itself has no earlier duplicate.'
     Assert-Triage ($null -eq (Find-DuplicateIssue $issues 'ffffffffffffffff' 40)) 'Another signature is a new crash.'
-
     # Not signed by the triage: never a reference, even with the same body.
     $unsigned = @(
         @{ Number = 2; Body = $body; Labels = @('world') },
@@ -225,7 +272,6 @@ try {
     $restart = Read-CrashReport (New-Report 'Unexpected shutdown' @() '| End of session | not seen: Windows started again right after (system crash, power loss or forced restart) |')
     Assert-Triage ((Get-ReportSignature $restart @()).Frames[2] -eq 'system restarted') 'A restart of the system has its own group.'
     Assert-Triage ((Get-ReportSignature $restart @()).Id -ne $shutdownSig.Id -and $shutdownSig.Id -ne $lostSig.Id) 'Each way of ending is its own group.'
-
     Write-Host 'Crash triage tests passed.'
 }
 finally {

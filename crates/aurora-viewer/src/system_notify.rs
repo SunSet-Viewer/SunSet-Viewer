@@ -316,7 +316,7 @@ mod win {
     use windows::core::{HSTRING, IInspectable, PCWSTR, Ref};
 
     /// The application's identity for Windows' notifications.
-    const AUMID: &str = "Aurora.Viewer";
+    const AUMID: &str = "SunSet.Viewer";
     /// Notifications kept alive for their click handler.
     const KEEP: usize = 32;
 

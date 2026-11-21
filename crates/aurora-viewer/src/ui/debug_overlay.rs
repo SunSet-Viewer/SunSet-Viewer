@@ -284,7 +284,7 @@ pub fn draw(
                     lines.painter.circle_stroke(at, 8.0, Stroke::new(1.8, RED));
                 }
                 let top = hitbox.position + hitbox.rotation * Vec3::new(0.0, 0.0, hitbox.size.z * 0.5 + 0.18);
-                let name = super::minimap::avatar_name(world, &hitbox.avatar);
+                let name = super::minimap::avatar_name(world, &hitbox.avatar, crate::settings::MiniAvatarNameFormat::DisplayAndLegacy);
                 let dist = hitbox.position.distance(eye);
                 lines.label(
                     top,

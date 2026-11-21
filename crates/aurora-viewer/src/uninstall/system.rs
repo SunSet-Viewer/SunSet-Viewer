@@ -85,7 +85,7 @@ impl System for DryRun {
     }
 
     fn notification_id(&self) -> Option<String> {
-        cfg!(windows).then(|| r"HKEY_CURRENT_USER\Software\Classes\AppUserModelId\Aurora.Viewer".to_owned())
+        cfg!(windows).then(|| r"HKEY_CURRENT_USER\Software\Classes\AppUserModelId\SunSet.Viewer".to_owned())
     }
 
     fn remove_notification_id(&mut self) -> Result<(), String> {

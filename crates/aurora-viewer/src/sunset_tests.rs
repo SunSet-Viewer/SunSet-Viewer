@@ -195,8 +195,12 @@ fn test_combat_settings_and_preferences_page_presence() {
         );
     }
 
-    // Validação da contagem de páginas de Preferências incluindo Combat (24 do upstream v0.9.10 + Combat do SunSet = 25)
-    assert_eq!(Page::ALL.len(), 25, "Page::ALL deve conter exatamente 25 páginas");
+    // Validação da contagem de páginas de Preferências incluindo Combat (25 do upstream v0.9.12 + Combat do SunSet = 26)
+    assert_eq!(Page::ALL.len(), 26, "Page::ALL deve conter exatamente 26 páginas");
+    assert!(
+        Page::ALL.contains(&Page::GameControls),
+        "Page::GameControls deve estar registrada em Page::ALL"
+    );
     assert!(Page::ALL.contains(&Page::Combat), "Page::Combat deve estar registrada em Page::ALL");
     assert_eq!(Page::Combat.key(), "combat");
     assert!(!Page::Combat.tabs().is_empty(), "Page::Combat deve possuir abas registradas");
@@ -394,11 +398,11 @@ fn test_ci_cd_workflows_and_build_scripts_integrity() {
 
 #[test]
 fn test_aurora_v096_final_features_integrated_without_regression() {
-    // 1. Pacotes de LUT embutidos (Czar Fenris: 20 + Nanner Pudding: 45 = 65 LUTs)
+    // 1. Pacotes de LUT embutidos (Czar Fenris: 20 + Nanner Pudding: 45 + JuicyBomb: 30 = 95 LUTs)
     let packs = crate::snapshot::lut_packs::packs();
-    assert_eq!(packs.len(), 2, "Devem existir 2 pacotes de LUT embutidos");
+    assert_eq!(packs.len(), 3, "Devem existir 3 pacotes de LUT embutidos");
     let total_luts: usize = packs.iter().map(|p| p.tables.len()).sum();
-    assert_eq!(total_luts, 65, "Devem existir 65 LUTs embutidos no total");
+    assert_eq!(total_luts, 95, "Devem existir 95 LUTs embutidos no total");
 
     // 2. Tipos de renderização (Advanced › Rendering types)
     let mut hidden = crate::scene::render_types::Hidden::default();
@@ -667,6 +671,7 @@ fn test_combat_auto_head_aim_mouselook_locks_and_raycasts_head() {
         edit_tracking: None,
         eye_offset: None,
         follow_joint_offset: None,
+        head_offset: None,
         draw_distance: settings.draw_distance,
         region_width: 256.0,
         aspect: 1.0,
@@ -738,6 +743,7 @@ fn test_combat_auto_aim_shot_cycle_five_head_one_chest_no_arm() {
         edit_tracking: None,
         eye_offset: None,
         follow_joint_offset: None,
+        head_offset: None,
         draw_distance: settings.draw_distance,
         region_width: 256.0,
         aspect: 1.0,
@@ -944,10 +950,17 @@ fn test_sunset_user_data_dirs_isolated_from_official_aurora() {
     let config_root = crate::settings::default_config_root();
     let cache_root = crate::settings::default_cache_root();
     let logs_dir = crate::logging::logs_dir();
+    let local_data = crate::settings::project_dirs()
+        .expect("sunset ProjectDirs")
+        .data_local_dir()
+        .to_path_buf();
+    let plugins_dir = local_data.join("media-plugins");
+    let ffmpeg_dir = local_data.join("ffmpeg");
+    let blender_dir = crate::blender_live::token::folder().expect("blender token dir");
     let legacy = crate::settings::legacy_aurora_project_dirs().expect("legacy aurora ProjectDirs");
 
     assert_eq!(crate::cache_location::ROOT_NAME, "SunSetViewerCache");
-    for path in [&config_root, &cache_root, &logs_dir] {
+    for path in [&config_root, &cache_root, &logs_dir, &plugins_dir, &ffmpeg_dir, &blender_dir] {
         let components: Vec<String> = path.components().map(|c| c.as_os_str().to_string_lossy().into_owned()).collect();
         assert!(
             components.iter().any(|c| c.eq_ignore_ascii_case("SunSetViewer"))
@@ -1024,4 +1037,61 @@ fn test_sunset_dash_animation_loads_and_loops_at_priority_4() {
     let pelvis = anim.joints.iter().find(|j| j.joint_name == "mPelvis").expect("mPelvis track");
     assert!(pelvis.pos_keys.is_empty(), "mPelvis não deve conter pos_keys no viewer");
     assert!(!pelvis.rot_keys.is_empty(), "mPelvis deve inclinar o tronco no Dash");
+}
+
+#[test]
+fn test_combat_auto_aim_remains_hidden_and_sanitized_off() {
+    const {
+        assert!(
+            !crate::settings::COMBAT_AUTO_AIM_ENABLED,
+            "COMBAT_AUTO_AIM_ENABLED deve permanecer false enquanto a função estiver oculta"
+        );
+    }
+    let mut s = Settings::default();
+    s.combat.auto_head_aim = true;
+    s.combat.mouselook_target_cycle = true;
+    let s = s.sanitized();
+    assert!(!s.combat.auto_head_aim, "auto_head_aim deve ser forçado false quando oculto");
+    assert!(
+        !s.combat.mouselook_target_cycle,
+        "mouselook_target_cycle deve ser forçado false quando oculto"
+    );
+}
+
+#[test]
+fn test_disable_glass_preserves_dark_and_light_sunset_palettes() {
+    struct ResetGlass(bool);
+    impl Drop for ResetGlass {
+        fn drop(&mut self) {
+            crate::disable_glass::set(self.0);
+        }
+    }
+    let _guard = ResetGlass(crate::disable_glass::current());
+
+    let (_, dark_spec) = crate::skin_presets::find_scheme("sunset", "sunset_default");
+    let (_, light_spec) = crate::skin_presets::find_scheme("sunset", "lilac_light");
+    let dark_theme = (dark_spec.build_theme)();
+    let light_theme = (light_spec.build_theme)();
+
+    assert!(!dark_theme.skin_palette().is_light());
+    assert!(light_theme.skin_palette().is_light());
+
+    crate::disable_glass::set(true);
+    let dark_pal = dark_theme.palette();
+    let light_pal = light_theme.palette();
+    assert_eq!(dark_pal.panel_alpha, 255);
+    assert_eq!(light_pal.panel_alpha, 255);
+    assert!(!dark_pal.is_light());
+    assert!(light_pal.is_light());
+    assert!(!dark_pal.high_contrast && !light_pal.high_contrast);
+}
+
+#[test]
+fn test_all_fifteen_languages_bundled_with_native_portuguese_and_spanish() {
+    let codes: HashSet<&str> = aurora_i18n::SOURCES.iter().map(|&(code, _)| code).collect();
+    for expected in [
+        "en", "pt-BR", "es", "fr", "ja", "de", "it", "nb", "pl", "pt-PT", "ru", "tr", "uk", "zh-Hans", "zh-Hant",
+    ] {
+        assert!(codes.contains(expected), "Idioma {expected} deve estar em SOURCES");
+    }
 }

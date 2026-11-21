@@ -122,23 +122,23 @@ licenses, and the upstream relationship are documented in
     </td>
     <td width="50%" valign="top">
       <h3>🚀 100x Movement, Instant Dash & 8,192m Draw Distance</h3>
-      Up to <b>100x</b> avatar speed multiplier (Bridge v1.42), Instant Dash with Mouselook shortcuts (<a href="docs/MOVEMENT_DASH.md">guide</a>), and extended draw distance up to <b>8,192m</b> (<code>dd 5000+</code>) with SpeedRez (<a href="docs/DRAW_DISTANCE.md">guide</a>).
+      Up to <b>100x</b> avatar speed multiplier (Bridge v1.44), Instant Dash with Mouselook shortcuts (<a href="docs/MOVEMENT_DASH.md">guide</a>), and extended draw distance up to <b>8,192m</b> (<code>dd 5000+</code>) with SpeedRez (<a href="docs/DRAW_DISTANCE.md">guide</a>).
     </td>
   </tr>
   <tr>
     <td valign="top">
-      <h3>🇧🇷 🇪🇸 100% Native pt-BR & Spanish Localization</h3>
-      Comprehensive localization across 13,100+ interface strings in <b>Brazilian Portuguese (<code>pt-BR</code>)</b> and <b>Spanish (<code>es</code>)</b>, adopting authentic Second Life terminology with zero missing keys.
+      <h3>🇧🇷 🇪🇸 Native pt-BR & Spanish + 15 Total Languages</h3>
+      100% parity across interface strings in <b>Brazilian Portuguese (<code>pt-BR</code>)</b> and <b>Spanish (<code>es</code>)</b> using authentic Second Life terminology, alongside 13 additional bundled languages.
     </td>
     <td valign="top">
-      <h3>⚡ AMD FSR 3.1 & Independent Auto-Updates</h3>
-      Native FidelityFX Super Resolution 3.1 with WGSL compute shaders, plus one-click background updates with SHA-256 verification and rollback protection.
+      <h3>⚡ Isolated Profiles, AMD FSR 3.1 & Auto-Updates</h3>
+      Dedicated AppData directories (<code>SunSet\SunSetViewer</code>) with non-destructive first-run migration, FidelityFX Super Resolution 3.1, and one-click background updates with SHA-256 verification and rollback protection.
     </td>
   </tr>
   <tr>
     <td valign="top">
-      <h3>🎨 Skins, SunSet Themes & Firestorm Palettes</h3>
-      Instant live skin switching (no restart) in <b>Preferences › Appearance › Skin</b>: exact <code>Aurora (Default)</code>, 7 original <b>SunSet</b> schemes (Twilight, Rose, Rose Pastel Light, Violet, Purple, Lilac, Lilac Light) and 22 classic <b>Firestorm</b> colour schemes (<a href="docs/SKINS_E_TEMAS.md">guide</a>).
+      <h3>🎨 Skins, SunSet Themes & Classic Palettes</h3>
+      Instant live skin switching (no restart) in <b>Preferences › Appearance › Skin</b>: exact <code>Aurora (Default)</code>, 7 original <b>SunSet</b> schemes (Twilight, Rose, Rose Pastel Light, Violet, Purple, Lilac, Lilac Light) and 22 classic Legacy Viewer colour schemes (<a href="docs/SKINS_E_TEMAS.md">guide</a>).
     </td>
     <td valign="top">
       <h3>✨ Full UI, Light Mode & Typed-Text Theming</h3>
@@ -147,76 +147,37 @@ licenses, and the upstream relationship are documented in
   </tr>
 </table>
 
-### New in 0.9.8 (Aurora 0.9.6 Base + SunSet Exclusive Features) <img src="docs/readme/pill-new.svg" alt="New" height="18" align="absmiddle">
+### New in Aurora 0.9.11–0.9.12 Base <img src="docs/readme/pill-new.svg" alt="New" height="18" align="absmiddle">
 
 <table>
   <tr>
     <td width="50%" valign="top">
-      <h3>🌌 Tycho-2 Milky Way & Alpha Depth Sorting</h3>
-      True-to-life Milky Way from the Tycho-2 catalogue and view-depth sorting for nonrigged transparent faces in HUDs and world space.
+      <h3>A complete Director</h3>
+      Ready-made shots, renders up to 4K, films with their sound, montages
+      of several tracks, the photo looks and LUTs (including Czar Fenris,
+      Nanner Pudding, and JuicyBomb packs), and move and turn handles on
+      the cameras — with one-click ffmpeg download.
     </td>
     <td width="50%" valign="top">
-      <h3>📐 4m Land Grid Snapping & Multi-Parcel Joins</h3>
-      Land tool snaps selections to the 4m parcel grid and unifies Join eligibility and verification across multiple parcels.
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" valign="top">
-      <h3>Region Tracker, like the Legacy Viewer</h3>
-      Watch a list of regions from World › Region tracker or the map's
-      Track region: whether each one is up and how many avatars are there,
-      without opening the map.
-    </td>
-    <td width="50%" valign="top">
-      <h3>Find your contacts in the world</h3>
-      A contact set can mark its members with a small circle or diamond,
-      seen through walls and held at the screen's edge when they are out of
-      view. Off by default, chosen set by set.
+      <h3>Gaming mode</h3>
+      SunSet steps back while you play a game: the world stops drawing
+      and gives the video memory and RAM back, while chat, sounds and
+      notifications keep working. Coming back to the window ends it.
     </td>
   </tr>
   <tr>
     <td valign="top">
-      <h3>Emojis and chat</h3>
-      A row of your recent emojis by the chat field, favourite emojis if
-      you want them, recent GIFs in the picker, Alt+Enter for ((OOC)) chat,
-      and Request teleport next to Offer teleport.
+      <h3>360° pictures and better photos</h3>
+      Take a 360° picture and view it as a panorama, keep the camera's
+      tilt in presets, let you and others look at the camera, apply World
+      Filters in real time, and tune shadows and ambient occlusion in the viewfinder.
     </td>
     <td valign="top">
-      <h3>Your avatar, your view</h3>
-      Import an appearance XML into the shape and clothing editors, hide
-      the face lights other avatars wear, hide every name tag in one click,
-      and keep avatar tips with world tooltips off.
-    </td>
-  </tr>
-</table>
-
-<table>
-  <tr>
-    <td width="50%" valign="top">
-      <h3>Region Tracker, like the Legacy Viewer</h3>
-      Watch a list of regions from World › Region tracker or the map's
-      Track region: whether each one is up and how many avatars are there,
-      without opening the map.
-    </td>
-    <td width="50%" valign="top">
-      <h3>Find your contacts in the world</h3>
-      A contact set can mark its members with a small circle or diamond,
-      seen through walls and held at the screen's edge when they are out of
-      view. Off by default, chosen set by set.
-    </td>
-  </tr>
-  <tr>
-    <td valign="top">
-      <h3>Emojis and chat</h3>
-      A row of your recent emojis by the chat field, favourite emojis if
-      you want them, recent GIFs in the picker, Alt+Enter for ((OOC)) chat,
-      and Request teleport next to Offer teleport.
-    </td>
-    <td valign="top">
-      <h3>Your avatar, your view</h3>
-      Import an appearance XML into the shape and clothing editors, hide
-      the face lights other avatars wear, hide every name tag in one click,
-      and keep avatar tips with world tooltips off.
+      <h3>More like the Legacy Viewer</h3>
+      Game Controls, cross-device IM history sync, the Omnifilter, the pose
+      stand, Favorite wearables, a target frame rate (Autotune), proxy settings,
+      script sync with outside editors, saved poses from the Legacy Viewer and
+      Alchemy, and the missing interface sounds.
     </td>
   </tr>
 </table>
@@ -449,8 +410,8 @@ are planned or in progress: they are not in the viewer yet.
   whole-pose actions. Save poses to a library, export them as BVH or import
   them as an animation, with Ctrl+Z / Ctrl+Y as you go. The pose is seen by
   you only ([details](docs/POSER.md)).
-- **An IK workbench**: reusable pose projects that keep chosen bones on their
-  targets, with contacts that compatible viewers apply to nearby avatars
+- **An IK workbench**: pose your own skeleton bone by bone, with IK chains,
+  limb holds and animation layers, as a base for the animation creator
   ([details](docs/IK_EDIT.md)).
 - **Build tools that stay out of the way**: a compact editor you can arrange
   yourself, larger material previews for Blinn-Phong and PBR, a live preview
@@ -490,7 +451,9 @@ are planned or in progress: they are not in the viewer yet.
 - **Borderless fullscreen**: Alt+Enter fills the screen without a title bar
   or borders, at once and without a restart, and gives the window back
   exactly as it was (Preferences › Graphics).
-- **In English, Spanish, French and Japanese (日本語)**: the whole interface follows
+- **In fifteen languages** (English, Brazilian Portuguese, Spanish, French,
+  Japanese, German, Italian, European Portuguese, Polish, Russian, Ukrainian,
+  Turkish, Norwegian Bokmål, Simplified and Traditional Chinese): the interface follows
   your system language or your choice, applied at once. Japanese uses Second
   Life's official Japanese terms (インベントリ, 区画, フレンド…), Japanese
   interface fonts and Japanese dates ([details](#language)).
@@ -526,8 +489,9 @@ are planned or in progress: they are not in the viewer yet.
 - **Write with ease**: a spell checker with suggestions in the chat bars,
   conversations and notecards, auto-replace (`brb`…) if you like, `@` to
   mention someone in the conversation, names completed as you type, and `/`
-  in nearby chat to find and play a gesture. Ctrl+Shift+Enter starts a new
-  line, and pasted paragraphs keep their shape. Arabic and Hebrew read right
+  in nearby chat to find and play a gesture. Shift+Enter starts a new
+  line, and pasted paragraphs keep their shape; the chat's keys can be
+  changed in Preferences › Controls › Shortcuts. Arabic and Hebrew read right
   to left, in name tags, bubbles, floating text and conversations. A long
   IM goes out as several messages instead of being cut off.
 - **Messages that matter, in front of you**: a message an estate manager
@@ -624,7 +588,7 @@ are planned or in progress: they are not in the viewer yet.
   credits.
 - **Made for every eye**: an Accessibility page gathers the settings that
   help (interface scale, text size up to twice the normal size, reduce
-  motion, sounds…), with a button on the login screen. A high-contrast palette, the OpenDyslexic font, and
+  motion, sounds…), with a button on the login screen. A high-contrast palette, a setting that turns off the glass, the OpenDyslexic font, and
   volume sliders that follow your ear are a click away, and the chat can
   have a text size of its own.
 - **Your colours**: pick the accent, window background and text colours in
@@ -641,7 +605,7 @@ are planned or in progress: they are not in the viewer yet.
   downloads it in the background, checks it against its published hash,
   installs it and restarts your session, and rolls back if anything goes
   wrong. Before you agree, it tells you whether your cache and settings are
-  kept. On Linux and macOS it shows the new release instead
+  kept. On macOS it shows the new release instead
   ([details](docs/UPDATES.md)).
 
 ### Distinctive Features
@@ -659,10 +623,9 @@ are planned or in progress: they are not in the viewer yet.
 - **Portals to walk through**: open a portal to a place, drop a landmark
   into the world, or drag a place there from Favorites, Places, the teleport
   history or search results, and walk, run or fly through it to teleport.
-  A portal opens where you may build, like rezzing an object. Other SunSet
-  users see it too: your friends by default, everyone if you choose, and a
-  portal that appears on someone never pulls them in. The portal back home
-  is yours alone on land where you may not build.
+  A portal opens where you may build, like rezzing an object, and only you
+  see it; a portal that opens on you never pulls you in. The way back opens
+  behind you when you arrive.
 - **Just your parcel, if you like**: hide what stands outside the current
   parcel, everywhere or only on the parcels you list, with exceptions that
   stay visible and options for neighbouring parcels of the same owner or
@@ -758,7 +721,7 @@ frame on your own PC.
   to the body/HUD.
 - **Posing** — a [poser](docs/POSER.md) for yourself, your animesh and
   consenting nearby avatars, with a pose library, BVH export and animation
-  import; an [IK workbench](docs/IK_EDIT.md) with shared contact profiles.
+  import; an [IK workbench](docs/IK_EDIT.md) for local skeleton posing.
 - **World** — prims, sculpts, mesh with LOD, classic and PBR terrain, EEP environment,
   sky, water and day-cycle editors, experience environments, world sounds
   with occlusion, headphone HRTF and room reverb (experimental), parcel
@@ -766,8 +729,8 @@ frame on your own PC.
   on prims, with the media plugins pack, downloaded once you agree; an area search
   for the objects rezzed around you, with filters and sortable results;
   a Sound Explorer with local previews, source camera and sound blocking;
-  walk-through portals shared with other SunSet users, with friend/group
-  access and protection against portals appearing on top of someone;
+  walk-through portals of your own, with a way back and protection against
+  a portal opening on top of you;
   parcel content isolation, a grid status window, and a live particle
   editor; OpenSim grids and the Hypergrid, with a grid manager, avatars
   baked by the viewer where the grid does not bake, large regions, and
@@ -813,17 +776,17 @@ frame on your own PC.
   tools, folder colours, outfit backups to JSON, dedicated Marketplace and
   listings windows, compact import launcher and per-type editors; sound
   waveform previews, trimming, gain and splitting.
-- **Interface** — in English, Brazilian Portuguese, Spanish, French and Japanese; flat SunSet theme, Inter font, Tabler icons, glass island bars,
+- **Interface** — in fifteen languages, flat SunSet theme, Inter font, Tabler icons, glass island bars,
   customizable bottom and side toolbars, classic layout options, SunSet
   search and Places windows, mini-map, world map, preferences and debug
   overlays; an immersive mode that keeps only the chat; project team and
   Linden Lab marks; double-click walk / run / teleport and content-rating controls
   for places and teleport offers; an Accessibility page, a high-contrast
-  palette, custom interface colours, text up to twice the size and the
+  palette, a setting that turns off the glass, custom interface colours, text up to twice the size and the
   OpenDyslexic font.
-- **Windows updates** — release checks, cancellable verified downloads,
-  installation and restart with rollback. The prompt explains whether cache
-  and settings will be preserved, migrated or reset.
+- **Updates in place** (Windows and Linux) — release checks, cancellable
+  verified downloads, installation and restart with rollback. The prompt
+  explains whether cache and settings will be preserved, migrated or reset.
 
 Voice calls, photo uploads, environment saving and several group / region
 operations are implemented and tested in the offline demo, but still need
@@ -837,8 +800,6 @@ completed work from features awaiting that validation.
 
 - Depth exports and 360° snapshots.
 - Automatic updates on macOS (the viewer points to the new release).
-- Automatic installation of updates on Linux (the viewer points to the
-  new release instead).
 
 Voice is WebRTC only; Vivox is not supported.
 
@@ -877,20 +838,27 @@ Manager) and, when you tick it, a 30-day MFA authorization.
 
 ### Language
 
-The interface is available in English, Brazilian Portuguese (Português do Brasil),
-Spanish (Español), French and Japanese (日本語): system language detection, a choice saved in Preferences
-and applied at once. The Brazilian Portuguese and Spanish translations cover 100% of interface
-strings (13,100+ keys) using authentic, community-reviewed Second Life terms
-("Em uso", "Desanexar de você", "Sempre correr"). Japanese translation covers every
-message with official Second Life Japanese terms, drawing with Japanese interface fonts
-and writing dates the Japanese way. Fluent catalogues make it possible to add a
+The viewer ships English, Brazilian Portuguese (Português (Brasil)), Spanish
+(Español), French, Japanese (日本語), Simplified Chinese (简体中文), Traditional
+Chinese (繁體中文), Russian (Русский), German (Deutsch), Italian (Italiano),
+Polish (Polski), Turkish (Türkçe), European Portuguese (Português (Portugal)),
+Norwegian Bokmål (Norsk bokmål) and Ukrainian (Українська). It detects the
+system language by default, and a choice saved in Preferences applies at once.
+The Brazilian Portuguese and Spanish translations cover 100% of interface
+strings using authentic, community-reviewed Second Life terms ("Em uso",
+"Desanexar de você", "Sempre correr"). The Japanese translation covers every
+message with official Second Life Japanese terms, draws with Japanese interface
+fonts (Meiryo UI, Yu Gothic UI or MS UI Gothic) and writes dates the Japanese
+way. The other languages use the Second Life terms of the Legacy Viewer's
+interface in that language, and Chinese draws with the system's Chinese fonts
+(Microsoft YaHei or Microsoft JhengHei on Windows). Fluent catalogues make it
+possible to add a
 language; see [the translation guide](docs/TRANSLATING.md).
 
-The viewer first follows the language saved in **Preferences › Interface ›
-Language**, then the system's if "System language" is selected. English is
-the fallback. The change applies at once; the "Language visible to scripts"
-setting is on by default, like the Legacy Viewer. The translations are in
-`crates/aurora-i18n/locales/`.
+Find the language picker and the custom Fluent file option in
+**Preferences › Language and updates**. Untranslated messages appear in
+English. The "Language visible to scripts" setting is on by default, like
+the Legacy Viewer. The translations are in `crates/aurora-i18n/locales/`.
 
 ### Frame limiter
 
@@ -1164,8 +1132,9 @@ an "Open folder" button: quit SunSet Viewer, then delete them and the viewer.
 
 ## Build
 
-Requirements: Windows 10/11, [Rust](https://rustup.rs) (stable, selected
-automatically by `rust-toolchain.toml`), a GPU with Vulkan support. On Linux,
+Requirements: Windows 10/11, [Rust](https://rustup.rs) (rustup installs by
+itself the version that `rust-toolchain.toml` names), a GPU with Vulkan
+support. On Linux,
 see [Installing on Linux](docs/LINUX.md#building-from-source); on macOS,
 [Installing on macOS](docs/MACOS.md#building-from-source).
 
@@ -1350,10 +1319,7 @@ its own task in its own git worktree:
 - [docs/BRANDING.md](docs/BRANDING.md) — palette, logos, icons and UI rules
 - [docs/TESTING.md](docs/TESTING.md) — test switches (demo scenarios,
   captures, diagnostics) and profiling
-- [docs/HAND_CONTACTS.md](docs/HAND_CONTACTS.md) — local motorcycle wrist
-  contact prototype and the creator's LSL script
-- [docs/IK_EDIT.md](docs/IK_EDIT.md) — frozen-pose skeleton editor, target-prim
-  offsets and general bone-contact authoring for LSL
+- [docs/IK_EDIT.md](docs/IK_EDIT.md) — frozen-pose skeleton editor
 
 Pull requests follow the [pull request template](.github/pull_request_template.md):
 a check lists what a description is missing, and maintainers review a PR
@@ -1369,6 +1335,11 @@ Behaviour follows the Legacy Viewer: its sources are expected next to the reposi
 
 Questions and ideas are welcome in the
 [GitHub issue tracker](https://github.com/SunSet-Viewer/SunSet-Viewer/issues).
+
+## Security
+
+Found a vulnerability? Please report it privately, not in a public issue:
+[SECURITY.md](SECURITY.md) explains how, and what happens next.
 
 ## Privacy
 

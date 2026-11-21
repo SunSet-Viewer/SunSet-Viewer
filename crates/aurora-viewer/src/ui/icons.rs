@@ -61,6 +61,8 @@ const OUTLINE: &[(&str, &[u8])] = svg_list!(
     "chevrons-right",
     "chevrons-up",
     "circle-minus",
+    "cloud-rain",
+    "cloud-storm",
     "code",
     "code-asterisk",
     "code-off",
@@ -91,6 +93,7 @@ const OUTLINE: &[(&str, &[u8])] = svg_list!(
     "focus-2",
     "focus-centered",
     "fingerprint",
+    "flip-horizontal",
     "gavel",
     "gif",
     "grid-3x3",
@@ -105,6 +108,7 @@ const OUTLINE: &[(&str, &[u8])] = svg_list!(
     "heart-rate-monitor",
     "history",
     "home-check",
+    "ice-skating",
     "id-off",
     "inbox",
     "indent-decrease",
@@ -220,6 +224,7 @@ const OUTLINE: &[(&str, &[u8])] = svg_list!(
     "wand",
     "wave-sine",
     "wifi-off",
+    "wind",
     "world-search",
     "x",
 );
@@ -287,6 +292,7 @@ const FILLED: &[(&str, &[u8])] = svg_list!(
     "cloud-data-connection",
     "code-circle",
     "coin",
+    "columns-2",
     "compass",
     "confetti",
     "copy",
@@ -294,9 +300,11 @@ const FILLED: &[(&str, &[u8])] = svg_list!(
     "current-location",
     "dashboard",
     "database",
+    "device-cctv",
     "device-desktop",
     "device-floppy",
     "device-gamepad",
+    "device-gamepad-2",
     "device-vision-pro",
     "credit-card",
     "device-speaker",
@@ -347,6 +355,7 @@ const FILLED: &[(&str, &[u8])] = svg_list!(
     "layout-align-middle",
     "layout-align-right",
     "layout-align-top",
+    "layout-board-split",
     "layout-bottombar",
     "layout-dashboard",
     "layout-sidebar-left-collapse",
@@ -381,6 +390,7 @@ const FILLED: &[(&str, &[u8])] = svg_list!(
     "luau",
     "mountain",
     "mouse",
+    "navigation",
     "paint",
     "palette",
     "panorama-horizontal",
@@ -491,6 +501,7 @@ const FILLED: &[(&str, &[u8])] = svg_list!(
     "ticket",
     "toggle-right",
     "trash",
+    "trash-x",
     "umbrella",
     "user",
     "video",
@@ -503,6 +514,9 @@ const FILLED: &[(&str, &[u8])] = svg_list!(
 
 /// Brand SVGs (white wolf silhouette of assets/branding/), drawn untinted or tinted.
 const BRAND_SVGS: &[(&str, &[u8])] = &[("wolf", include_bytes!("../../../../assets/branding/sunset-logo-white.svg"))];
+
+/// Extra Tabler SVGs kept in the repo root for SunSet pages.
+const SUNSET_SVGS: &[(&str, &[u8])] = &[("swords", include_bytes!("../../../../assets/tabler-icons/outline/swords.svg"))];
 
 /// Raster images kept as PNG (brand logo).
 const PNGS: &[(&str, &[u8])] = &[("phoenix_18", include_bytes!("../../assets/icons/phoenix_18.png"))];
@@ -780,7 +794,13 @@ pub(crate) fn inventory_link_name(base: &str) -> &'static str {
 
 /// Whether `name` is an embedded icon or one of the skin's aliases.
 pub(crate) fn embedded(name: &str) -> bool {
-    OUTLINE.iter().chain(FILLED).chain(INVENTORY_LINKS).any(|(n, _)| *n == name) || ALIASES.iter().any(|(alias, _)| *alias == name)
+    OUTLINE
+        .iter()
+        .chain(FILLED)
+        .chain(SUNSET_SVGS)
+        .chain(INVENTORY_LINKS)
+        .any(|(n, _)| *n == name)
+        || ALIASES.iter().any(|(alias, _)| *alias == name)
 }
 
 /// Raster size of SVG icons (crisp up to ~2x UI scale at 24 px).
@@ -876,7 +896,7 @@ impl Icons {
     pub fn load(ctx: &egui::Context, override_dir: Option<&std::path::Path>) -> Icons {
         let mut map: HashMap<String, egui::TextureHandle> = HashMap::new();
         let opts = egui::TextureOptions::LINEAR;
-        for (name, bytes) in OUTLINE.iter().chain(FILLED) {
+        for (name, bytes) in OUTLINE.iter().chain(FILLED).chain(SUNSET_SVGS) {
             match rasterize_svg(bytes, RASTER_PX) {
                 Some(ci) => {
                     map.insert((*name).to_owned(), ctx.load_texture(*name, ci, opts));
@@ -945,7 +965,7 @@ mod tests {
 
     #[test]
     fn every_embedded_svg_rasterizes() {
-        for (name, bytes) in OUTLINE.iter().chain(FILLED) {
+        for (name, bytes) in OUTLINE.iter().chain(FILLED).chain(SUNSET_SVGS) {
             let ci = rasterize_svg(bytes, 32).unwrap_or_else(|| panic!("{name} failed"));
             assert!(ci.pixels.iter().any(|p| p.a() > 0), "{name} is empty");
         }

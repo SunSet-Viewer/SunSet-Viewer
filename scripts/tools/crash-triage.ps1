@@ -6,6 +6,10 @@
 $CrashMarker = '<!-- aurora-crash v1 -->'
 $TriageStart = '<!-- crash-triage:start -->'
 $TriageEnd = '<!-- crash-triage:end -->'
+# Set by the triage on each issue it signed (scripts/crash-triage.ps1). Only
+# a maintainer or the workflow can set a label: an issue without it is no
+# reference, whatever its body says.
+$TriagedLabel = 'crash-triaged'
 # The viewer's own module, the one whose symbols each release publishes.
 $OwnModule = 'aurora_viewer'
 
@@ -330,7 +334,13 @@ function Get-GroupKeys($Report) {
 <#
     The crash's signature: its kind and its first three meaningful frames,
     by function name (stable across versions while the code stays). Without
-    symbols, the module offsets of this exact build.
+    symbols, the module offsets of this exact build. A stack with no frame
+    of the viewer at all (a thread of another program's DLL loaded in the
+    process) is signed by that module's first three offsets and its own
+    debug id instead: the same DLL crashing at the same place is one crash
+    whatever the viewer's version, and two such crashes of one build are no
+    longer one only because they share the build (#3006 and #2361, the same
+    osmimhk64+0x40835 under two versions, were kept apart).
 #>
 function Get-CrashSignature($Report, $Frames) {
     $kind = 'panic'
@@ -350,15 +360,37 @@ function Get-CrashSignature($Report, $Frames) {
             if ($keys.Count -ge 3) { break }
         }
     }
-    else {
-        $id = ''
-        if ($Report.Modules.ContainsKey($OwnModule)) { $id = $Report.Modules[$OwnModule].Id }
-        $keys = @("unsymbolized $id") + @($Report.Frames | Where-Object { $_.Module -eq $OwnModule } | Select-Object -First 3 | ForEach-Object { $_.Text })
+    $text = $null
+    $unidentifiedModule = $false
+    if (-not $resolved.Count) {
+        $own = @($Report.Frames | Where-Object { $_.Module -eq $OwnModule } | Select-Object -First 3 | ForEach-Object { $_.Text })
+        $foreign = @($Report.Frames | Where-Object { $_.Module -and $_.Text -notmatch $IgnoredFrame } | Select-Object -First 1)
+        if (-not $own.Count -and $foreign.Count) {
+            $module = $foreign[0].Module
+            $keys = @($Report.Frames | Where-Object { $_.Module -eq $module } | Select-Object -First 3 | ForEach-Object { $_.Text })
+            $identity = $Report.Modules[$module]
+            if ($identity.Id) {
+                $text = "$kind|$($keys -join '|')|$module $($identity.Id)"
+            }
+            elseif ($identity.Code) {
+                $text = "$kind|$($keys -join '|')|$module code $($identity.Code.ToUpperInvariant())"
+            }
+            else {
+                # The same offsets can belong to different builds of this
+                # library. Keep the stack for triage without closing a report.
+                $unidentifiedModule = $true
+            }
+        }
+        else {
+            $id = ''
+            if ($Report.Modules.ContainsKey($OwnModule)) { $id = $Report.Modules[$OwnModule].Id }
+            $keys = @("unsymbolized $id") + $own
+        }
     }
-    $text = "$kind|$($keys -join '|')"
+    if (-not $text) { $text = "$kind|$($keys -join '|')" }
     $sha = [Security.Cryptography.SHA256]::Create()
     $hash = $sha.ComputeHash([Text.Encoding]::UTF8.GetBytes($text))
-    @{ Id = (-join ($hash[0..7] | ForEach-Object { $_.ToString('x2') })); Frames = $keys }
+    @{ Id = (-join ($hash[0..7] | ForEach-Object { $_.ToString('x2') })); Frames = $keys; UnidentifiedModule = $unidentifiedModule }
 }
 
 <#
@@ -415,25 +447,56 @@ function Format-TriageSection($Frames, [string]$SymbolsName, $Signature) {
         $lines += ''
     }
     $lines += "Signature ``$($Signature.Id)``: $(@($Signature.Frames) -join ' > ')"
-    $lines += "<!-- crash-signature: $($Signature.Id) -->"
+    if ($Signature.UnidentifiedModule) {
+        $lines += 'The crashed module has no debug or code ID. Check duplicates manually.'
+    }
+    else {
+        $lines += "<!-- crash-signature: $($Signature.Id) -->"
+    }
     $lines += $TriageEnd
     $lines -join "`n"
 }
 
+# The triage section of a body: from the first start marker to the next end
+# marker. Its start and length, or $null.
+function Find-TriageSection([string]$Body) {
+    if (-not $Body) { return $null }
+    $start = $Body.IndexOf($TriageStart)
+    if ($start -lt 0) { return $null }
+    $end = $Body.IndexOf($TriageEnd, $start)
+    if ($end -lt 0) { return $null }
+    @{ Start = $start; Length = $end + $TriageEnd.Length - $start }
+}
+
 # Replaces an earlier triage section (re-run, new symbols) instead of adding one.
 function Merge-TriageSection([string]$Body, [string]$Section) {
-    $start = $Body.IndexOf($TriageStart)
-    $end = $Body.IndexOf($TriageEnd)
-    if ($start -ge 0 -and $end -gt $start) {
-        return $Body.Substring(0, $start) + $Section + $Body.Substring($end + $TriageEnd.Length)
+    $found = Find-TriageSection $Body
+    if ($found) {
+        return $Body.Substring(0, $found.Start) + $Section + $Body.Substring($found.Start + $found.Length)
     }
     $Body.TrimEnd() + "`n`n" + $Section + "`n"
 }
 
-# The first open issue (lowest number) with the same signature, other than this one.
+<#
+    The signature the triage wrote in a body: the marker on the line just
+    before the end of the triage section, where Format-TriageSection puts it
+    and where Merge-TriageSection replaces it. A marker anywhere else (in the
+    report, or typed by anyone) is not read.
+#>
+function Get-TriageSignature([string]$Body) {
+    $found = Find-TriageSection $Body
+    if (-not $found) { return $null }
+    $section = $Body.Substring($found.Start, $found.Length - $TriageEnd.Length)
+    if ($section -match '(?:^|\n)<!-- crash-signature: ([0-9a-f]{16}) -->\r?\n$') { return $Matches[1] }
+    $null
+}
+
+# The first open issue (lowest number) the triage signed with the same
+# signature, other than this one. Each issue: Number, Body, Labels (names).
 function Find-DuplicateIssue($Issues, [string]$SignatureId, [int]$Self) {
-    $marker = "<!-- crash-signature: $SignatureId -->"
-    $same = @($Issues | Where-Object { $_.Number -ne $Self -and $_.Body -and $_.Body.Contains($marker) } | Sort-Object Number)
+    $same = @($Issues | Where-Object {
+            $_.Number -ne $Self -and @($_.Labels) -contains $TriagedLabel -and (Get-TriageSignature $_.Body) -eq $SignatureId
+        } | Sort-Object Number)
     if ($same.Count) { return [int]$same[0].Number }
     $null
 }

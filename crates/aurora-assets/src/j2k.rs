@@ -753,9 +753,7 @@ pub fn decode_j2k_timed(data: &[u8], discard: u8) -> Result<(DecodedImage, Decod
         return Err(AssetError::Unsupported(format!("JPEG2000 with {} components", info.components)));
     }
     let reduce = discard.min(info.levels);
-
     let siz = check_decode_memory(cs, reduce)?;
-
     // (a tile-part can never need more than about twice the raw pixels)
     let plausible = (info.width as usize * info.height as usize * usize::from(info.components)).saturating_mul(2) + (1 << 16);
     let bounded = bound_tile_parts(cs, plausible);
@@ -1210,7 +1208,6 @@ mod tests {
         assert_eq!(be32(&bounded, sot + 6), Some(0));
         let _ = decode_j2k(cs, 0);
     }
-
     /// The header fields a synthetic codestream is built from.
     #[derive(Clone)]
     struct Layout {
