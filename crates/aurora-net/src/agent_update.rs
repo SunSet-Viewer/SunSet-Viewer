@@ -23,9 +23,6 @@ const CAMERA_MOVE: f32 = 0.01;
 /// CAMERA_AT_THRESHOLD: 0.2 × RADIANS_PER_DEGREE, Firestorm's constant being
 /// π / 360; compared with the length of the difference of the at axes.
 const CAMERA_TURN: f32 = 0.2 * std::f32::consts::PI / 360.0;
-/// Tighter angular threshold used when Mouselook combat auto-aim is actively
-/// tracking a target (~0.014° ≈ 2.5 cm at 100 m), keeping `MIN_PERIOD`.
-const COMBAT_CAMERA_TURN: f32 = 0.00025;
 /// MIN_HEAD_ROT_QDOT (about 2.5°, also used for the body) and
 /// MAX_HEAD_ROT_QDOT (about 0.5°): a head rotation between the two is sent
 /// once it has waited long enough, the threshold growing from the first to
@@ -40,22 +37,12 @@ impl AgentControls {
     /// here only beyond its far threshold: the band below is a matter of
     /// time, see [`AgentUpdateRule`].
     pub fn update_worthy(&self, prev: &AgentControls) -> bool {
-        self.update_worthy_with_turn(prev, CAMERA_TURN)
-    }
-
-    /// Fine-aim variant of [`Self::update_worthy`] for active Mouselook
-    /// target tracking.
-    pub fn combat_update_worthy(&self, prev: &AgentControls) -> bool {
-        self.update_worthy_with_turn(prev, COMBAT_CAMERA_TURN)
-    }
-
-    fn update_worthy_with_turn(&self, prev: &AgentControls, camera_turn: f32) -> bool {
         self.control_flags != prev.control_flags
             || self.alt_or_ctrl != prev.alt_or_ctrl
             || self.state != prev.state
             || self.flags != prev.flags
             || self.camera_center.distance(prev.camera_center) > CAMERA_MOVE
-            || (self.camera_at - prev.camera_at).length() > camera_turn
+            || (self.camera_at - prev.camera_at).length() > CAMERA_TURN
             || self.body_rotation.dot(prev.body_rotation).abs() < ROTATION_FAR
             || self.head_rotation.dot(prev.head_rotation).abs() < ROTATION_FAR
     }
@@ -91,14 +78,7 @@ impl AgentUpdateRule {
     }
 
     /// Whether `c` must be sent at `now`. A yes records it as sent.
-    #[cfg(test)]
     pub(crate) fn should_send(&mut self, c: &AgentControls, now: Instant) -> bool {
-        self.should_send_with_turn(c, now, false)
-    }
-
-    /// Fine-aim variant of [`Self::should_send`]: when `fine_aim` is true,
-    /// camera direction uses `COMBAT_CAMERA_TURN` while keeping `MIN_PERIOD`.
-    pub(crate) fn should_send_with_turn(&mut self, c: &AgentControls, now: Instant, fine_aim: bool) -> bool {
         let since = now.saturating_duration_since(self.last_send);
         // "any change in control_flags should be sent ASAP"
         let flags_changed = c.control_flags != self.last.control_flags;
@@ -106,8 +86,7 @@ impl AgentUpdateRule {
         if !force && since < MIN_PERIOD {
             return false;
         }
-        let camera_turn = if fine_aim { COMBAT_CAMERA_TURN } else { CAMERA_TURN };
-        let send = force || since > MAX_PERIOD || self.follow_up || self.moved(c, since, camera_turn);
+        let send = force || since > MAX_PERIOD || self.follow_up || self.moved(c, since);
         if send {
             self.follow_up = flags_changed;
             self.forced = false;
@@ -117,12 +96,12 @@ impl AgentUpdateRule {
         send
     }
 
-    fn moved(&self, c: &AgentControls, since: Duration, camera_turn: f32) -> bool {
+    fn moved(&self, c: &AgentControls, since: Duration) -> bool {
         let last = &self.last;
         if c.state != last.state
             || c.flags != last.flags
             || c.camera_center.distance(last.camera_center) > CAMERA_MOVE
-            || (c.camera_at - last.camera_at).length() > camera_turn
+            || (c.camera_at - last.camera_at).length() > CAMERA_TURN
             || c.body_rotation.dot(last.body_rotation).abs() < ROTATION_FAR
         {
             return true;
@@ -411,17 +390,5 @@ mod tests {
             .update_worthy(&prev)
         );
         assert!(!AgentControls { far: 512.0, ..prev }.update_worthy(&prev));
-    }
-
-    #[test]
-    fn combat_fine_aim_triggers_smaller_camera_turns_but_keeps_min_period() {
-        let (mut rule, now) = rule();
-        let tiny_turn = AgentControls {
-            camera_at: Vec3::new(1.0, 0.001, 0.0).normalize(),
-            ..Default::default()
-        };
-        assert!(!rule.should_send(&tiny_turn, now + MIN_PERIOD));
-        assert!(!rule.should_send_with_turn(&tiny_turn, now + ms(4), true));
-        assert!(rule.should_send_with_turn(&tiny_turn, now + MIN_PERIOD, true));
     }
 }

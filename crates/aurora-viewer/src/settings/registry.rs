@@ -122,10 +122,7 @@ impl Locks {
 
 /// Whether the setting is kept out of the list, whatever its value.
 fn hidden(key: &str) -> bool {
-    HIDDEN.contains(&key)
-        || super::backup::is_this_pc(key)
-        || (!super::COMBAT_AUTO_AIM_ENABLED
-            && (key.starts_with("combat.auto_") || key.starts_with("combat.friendly_fire_") || key == "combat.mouselook_target_cycle"))
+    HIDDEN.contains(&key) || super::backup::is_this_pc(key)
 }
 
 /// A UUID anywhere in `text`: 8-4-4-4-12 hexadecimal digits.

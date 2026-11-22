@@ -504,32 +504,7 @@ pub struct DebugView {
     pub hidden_types: crate::scene::render_types::Hidden,
 }
 
-/// Compile-time switch exposing Mouselook auto-aim and anti-friendly-fire
-/// UI, shortcuts, settings entries, and runtime behavior. Flip to `true` and
-/// rebuild to ship the feature publicly.
-pub const COMBAT_AUTO_AIM_ENABLED: bool = false;
-
-fn combat_auto_aim_hidden<T>(_: &T) -> bool {
-    !COMBAT_AUTO_AIM_ENABLED
-}
-
-pub const DEFAULT_COMBAT_AUTO_AIM_RANGE: f32 = 100.0;
-pub const DEFAULT_COMBAT_HOLD_INTERVAL_MS: u32 = 110;
-pub const DEFAULT_COMBAT_LEAD_COMPENSATION: f32 = 1.0;
-pub const DEFAULT_COMBAT_FRIENDLY_FIRE_COLOR: Rgba = hex(0x818CF8);
-
-/// Region alternation strategy for Mouselook combat auto-aim.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]
-#[serde(rename_all = "snake_case")]
-pub enum CombatAimMode {
-    /// Alternates 5 head shots then 1 chest shot (never arms).
-    #[default]
-    HeadAndBody,
-    /// Keeps aim locked continuously on the head hitbox region.
-    HeadOnly,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 #[serde(default)]
 pub struct CombatSettings {
     pub local_hit_detection: bool,
@@ -538,56 +513,6 @@ pub struct CombatSettings {
     pub scene_objects_block_rays: bool,
     /// Draw the screen-center combat ray and its nearest hit.
     pub show_raycast: bool,
-    /// Lock Mouselook aim onto the selected target's head/body hitbox region.
-    #[serde(skip_serializing_if = "combat_auto_aim_hidden")]
-    pub auto_head_aim: bool,
-    /// Auto-aim region mode (`HeadAndBody` or `HeadOnly`).
-    #[serde(skip_serializing_if = "combat_auto_aim_hidden")]
-    pub auto_aim_mode: CombatAimMode,
-    /// Step interval in milliseconds while holding left-click in Mouselook.
-    #[serde(skip_serializing_if = "combat_auto_aim_hidden")]
-    pub auto_aim_hold_interval_ms: u32,
-    /// Motion lead multiplier scaled by live network ping (`1.0` = default RTT).
-    #[serde(skip_serializing_if = "combat_auto_aim_hidden")]
-    pub auto_aim_lead_compensation: f32,
-    /// Allow the target-cycle shortcut (`Q` by default) to select and cycle
-    /// nearby targets in Mouselook.
-    #[serde(skip_serializing_if = "combat_auto_aim_hidden")]
-    pub mouselook_target_cycle: bool,
-    /// Maximum target selection and tracking radius in meters (default 100 m).
-    #[serde(skip_serializing_if = "combat_auto_aim_hidden")]
-    pub auto_aim_range: f32,
-    /// Exclude allied avatars matching `friendly_fire_preset` (when set and
-    /// present) or `friendly_fire_color` from auto-aim and target cycling.
-    #[serde(skip_serializing_if = "combat_auto_aim_hidden")]
-    pub friendly_fire_protection: bool,
-    /// Optional Contact Set preset name whose members are treated as allies.
-    #[serde(skip_serializing_if = "combat_auto_aim_hidden")]
-    pub friendly_fire_preset: Option<String>,
-    /// Predefined hitbox color excluded from targeting when no Contact Set
-    /// preset is active.
-    #[serde(skip_serializing_if = "combat_auto_aim_hidden")]
-    pub friendly_fire_color: Rgba,
-}
-
-impl Default for CombatSettings {
-    fn default() -> Self {
-        Self {
-            local_hit_detection: false,
-            show_hitboxes: false,
-            scene_objects_block_rays: false,
-            show_raycast: false,
-            auto_head_aim: false,
-            auto_aim_mode: CombatAimMode::HeadAndBody,
-            auto_aim_hold_interval_ms: DEFAULT_COMBAT_HOLD_INTERVAL_MS,
-            auto_aim_lead_compensation: DEFAULT_COMBAT_LEAD_COMPENSATION,
-            mouselook_target_cycle: false,
-            auto_aim_range: DEFAULT_COMBAT_AUTO_AIM_RANGE,
-            friendly_fire_protection: true,
-            friendly_fire_preset: None,
-            friendly_fire_color: DEFAULT_COMBAT_FRIENDLY_FIRE_COLOR,
-        }
-    }
 }
 
 impl DebugView {
@@ -3587,29 +3512,6 @@ impl Settings {
         self.camera = std::mem::take(&mut self.camera).sanitized();
         crate::camera::presets::sanitize(&mut self.camera_shots);
         self.camera_views.sanitize();
-        if !COMBAT_AUTO_AIM_ENABLED {
-            self.combat.auto_head_aim = false;
-            self.combat.mouselook_target_cycle = false;
-        }
-        self.combat.auto_aim_range = if self.combat.auto_aim_range.is_finite() && self.combat.auto_aim_range > 0.0 {
-            self.combat.auto_aim_range.clamp(10.0, 200.0)
-        } else {
-            DEFAULT_COMBAT_AUTO_AIM_RANGE
-        };
-        self.combat.auto_aim_hold_interval_ms = if self.combat.auto_aim_hold_interval_ms == 0 {
-            DEFAULT_COMBAT_HOLD_INTERVAL_MS
-        } else {
-            self.combat.auto_aim_hold_interval_ms.clamp(50, 400)
-        };
-        self.combat.auto_aim_lead_compensation = if self.combat.auto_aim_lead_compensation.is_finite() {
-            self.combat.auto_aim_lead_compensation.clamp(0.0, 2.0)
-        } else {
-            DEFAULT_COMBAT_LEAD_COMPENSATION
-        };
-        self.combat.friendly_fire_preset = self.combat.friendly_fire_preset.take().and_then(|s| {
-            let trimmed = s.trim().to_owned();
-            (!trimmed.is_empty()).then_some(trimmed)
-        });
         if self.settings_version < 5 {
             // new defaults: no vsync, no frame cap (the old "0 = screen rate,
             // 1 = unlimited" setting becomes a switch + value)

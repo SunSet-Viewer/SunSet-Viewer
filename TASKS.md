@@ -1,6 +1,6 @@
 # SunSet Viewer — task tracking
 - ✅ SunSet AppData, Blender LiveMesh, FFmpeg & Notification Isolation (`org.SunSet.SunSetViewer` / `SunSetViewerCache` / `SunSet.Viewer` AUMID): keeps settings, accounts, cache, logs, Blender tokens and media packs strictly separate from official Aurora Viewer installations on the same PC, with non-destructive first-launch profile/plugin migration.
-- ✅ Local avatar hitboxes & combat raycast (SunSet features): oriented bounding boxes, raycast scene-occlusion detection, floating-text fade controls, and `COMBAT_AUTO_AIM_ENABLED = false` gate.
+- ✅ Local avatar hitboxes & combat raycast (SunSet features): oriented bounding boxes, raycast scene-occlusion detection, and floating-text fade controls.
 - ✅ Avatar marks & individual colors (SunSet features): individual avatar color overrides with highest priority over contact sets.
 - ✅ Movement & Instant Dash (SunSet features): up to 100x speed multiplier, bridge v1.44, Mouselook shortcuts E and middle mouse.
 - ✅ Extended Draw Distance (SunSet features): up to 8192m and `dd` command.

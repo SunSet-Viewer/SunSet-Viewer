@@ -334,9 +334,6 @@ struct Session<'a> {
     /// Control flags of the last `NetCommand::AgentControls`.
     control_flags: u32,
     one_shot: u32,
-    /// Whether the most recent viewer control update asked for fine Mouselook
-    /// combat aim thresholds so periodic ticks don't drop micro-turns.
-    fine_aim: bool,
     /// "No agent updates" already reported for this CompleteAgentMovement.
     cam_warned: bool,
     /// AgentUpdate's `Far`, from the draw distance of the viewer's controls
@@ -568,7 +565,6 @@ pub(crate) async fn run_session(sh: &Shared, req: LoginRequest, cmd_rx: &mut mps
         agent_update: AgentUpdateRule::new(Instant::now()),
         control_flags: 0,
         one_shot: 0,
-        fine_aim: false,
         cam_warned: false,
         far: FarStep::new(Instant::now()),
         refuse_neighbours: false,
@@ -1658,16 +1654,15 @@ impl Session<'_> {
     fn maybe_send_agent_update(&mut self, now: Instant) {
         let mut c = *self.sh.controls.lock();
         c.control_flags = self.control_flags;
-        self.send_agent_update_if_due(c, now, self.fine_aim);
+        self.send_agent_update_if_due(c, now);
     }
 
     /// Controls handed over by the viewer because they changed enough to
     /// leave now (`NetCommand::AgentControls`).
-    fn on_agent_controls(&mut self, c: AgentControls, fine_aim: bool) {
+    fn on_agent_controls(&mut self, c: AgentControls) {
         self.control_flags = c.control_flags;
-        self.fine_aim = fine_aim;
         if self.agent_moved && self.logout_started.is_none() {
-            self.send_agent_update_if_due(c, Instant::now(), fine_aim);
+            self.send_agent_update_if_due(c, Instant::now());
         }
     }
 
@@ -1694,10 +1689,10 @@ impl Session<'_> {
         self.send_main(&m, false);
     }
 
-    fn send_agent_update_if_due(&mut self, mut c: AgentControls, now: Instant, fine_aim: bool) {
+    fn send_agent_update_if_due(&mut self, mut c: AgentControls, now: Instant) {
         c.control_flags = crate::script_controls::mask_left_button(c.control_flags | self.one_shot, c.alt_or_ctrl);
         let flags_changed = c.control_flags != self.agent_update.sent_flags();
-        if self.agent_update.should_send_with_turn(&c, now, fine_aim) {
+        if self.agent_update.should_send(&c, now) {
             self.sh.stats.agent_update_sent(flags_changed);
             let mut m = AgentUpdate::default();
             let a = &mut m.agent_data;
@@ -3212,8 +3207,7 @@ impl Session<'_> {
                     self.maybe_send_agent_update(Instant::now());
                 }
             }
-            NetCommand::AgentControls(c) => self.on_agent_controls(c, false),
-            NetCommand::CombatAgentControls(c) => self.on_agent_controls(c, true),
+            NetCommand::AgentControls(c) => self.on_agent_controls(c),
             NetCommand::ClearObjectCache => self.object_cache.clear(),
             NetCommand::Build(b) => self.on_build(b),
             // handled by on_social_command
@@ -7102,7 +7096,6 @@ mod event_queue_tests {
             agent_update: AgentUpdateRule::new(Instant::now()),
             control_flags: 0,
             one_shot: 0,
-            fine_aim: false,
             cam_warned: false,
             far: FarStep::new(Instant::now()),
             refuse_neighbours: false,
@@ -7458,7 +7451,6 @@ mod script_dialog_tests {
             agent_update: AgentUpdateRule::new(Instant::now()),
             control_flags: 0,
             one_shot: 0,
-            fine_aim: false,
             cam_warned: false,
             far: FarStep::new(Instant::now()),
             refuse_neighbours: false,
@@ -7587,13 +7579,10 @@ mod script_dialog_tests {
         sock.writable().await.expect("socket ready");
         let far_sent = |session: &mut Session<'_>| {
             session.agent_update.force();
-            session.on_agent_controls(
-                AgentControls {
-                    far: 290.0,
-                    ..Default::default()
-                },
-                false,
-            );
+            session.on_agent_controls(AgentControls {
+                far: 290.0,
+                ..Default::default()
+            });
         };
         async fn next_far(sim: &UdpSocket) -> f32 {
             let mut datagram = [0; 1500];
@@ -7611,64 +7600,6 @@ mod script_dialog_tests {
         session.far.movement_complete(true, Instant::now());
         far_sent(&mut session);
         assert_eq!(next_far(&main).await, 145.0);
-    }
-
-    #[tokio::test]
-    async fn combat_fine_aim_tick_preserves_threshold_and_one_shot_flushes_at_once() {
-        let sock = Arc::new(UdpSocket::bind("127.0.0.1:0").await.expect("viewer socket"));
-        let main = UdpSocket::bind("127.0.0.1:0").await.expect("simulator");
-        let main_addr = main.local_addr().expect("simulator address");
-        let (events, _received) = crossbeam_channel::unbounded();
-        let sh = test_shared(events);
-        let mut session = test_session(&sh, sock.clone(), [(main_addr, Sim::new(main_addr, 10))].into(), main_addr);
-        session.agent_moved = true;
-        sock.writable().await.expect("socket ready");
-
-        async fn recv_update(sim: &UdpSocket) -> msgs::AgentUpdate {
-            let mut datagram = [0; 1500];
-            let (size, _) = tokio::time::timeout(Duration::from_secs(1), sim.recv_from(&mut datagram))
-                .await
-                .expect("AgentUpdate packet")
-                .expect("datagram");
-            parse_packet(&datagram[..size]).expect("packet").decode().expect("AgentUpdate")
-        }
-
-        let t0 = Instant::now();
-        let initial = AgentControls {
-            camera_at: Vec3::X,
-            ..Default::default()
-        };
-        *sh.controls.lock() = initial;
-        session.agent_update.force();
-        session.send_agent_update_if_due(initial, t0, true);
-        let first = recv_update(&main).await;
-        assert_eq!(first.agent_data.camera_at_axis, Vec3::X);
-
-        // A fine-aim micro-turn suppressed by MIN_PERIOD (e.g. 4 ms) must still flush
-        // on the next periodic tick (`maybe_send_agent_update`) without waiting 1 s.
-        let micro_at = Vec3::new(1.0, 0.0005, 0.0).normalize();
-        let micro = AgentControls {
-            camera_at: micro_at,
-            ..Default::default()
-        };
-        *sh.controls.lock() = micro;
-        session.fine_aim = true;
-        session.send_agent_update_if_due(micro, t0 + Duration::from_millis(4), true);
-        assert!(
-            tokio::time::timeout(Duration::from_millis(30), main.recv_from(&mut [0; 1500]))
-                .await
-                .is_err(),
-            "micro-turn inside MIN_PERIOD must wait for MIN_PERIOD"
-        );
-        session.maybe_send_agent_update(t0 + Duration::from_millis(25));
-        let ticked = recv_update(&main).await;
-        assert!((ticked.agent_data.camera_at_axis - micro_at).length() < 1e-5);
-
-        // OneShotControl (e.g. ML_LBUTTON_DOWN) when stationary must flush immediately
-        // instead of stalling until the 25 ms tick.
-        session.on_command(NetCommand::OneShotControl(crate::control::ML_LBUTTON_DOWN));
-        let fired = recv_update(&main).await;
-        assert_ne!(fired.agent_data.control_flags & crate::control::ML_LBUTTON_DOWN, 0);
     }
 
     /// The next LogoutRequest the simulator receives, past the other packets

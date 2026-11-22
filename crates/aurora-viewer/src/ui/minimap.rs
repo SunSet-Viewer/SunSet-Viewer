@@ -734,11 +734,6 @@ pub fn avatar_hitbox_color(world: &World, marks: Option<&std::collections::HashM
 }
 
 impl MiniMap {
-    /// Manual radar/hitbox colour marks keyed by avatar UUID.
-    pub(crate) fn marks(&self) -> &HashMap<Uuid, Color32> {
-        &self.marks
-    }
-
     /// The floater (Ctrl+Shift+M).
     #[allow(clippy::too_many_arguments)]
     pub fn window(

@@ -349,7 +349,6 @@ mod tests {
             agent_update: AgentUpdateRule::new(Instant::now()),
             control_flags: 0,
             one_shot: 0,
-            fine_aim: false,
             cam_warned: false,
             far: FarStep::new(Instant::now()),
             refuse_neighbours: false,

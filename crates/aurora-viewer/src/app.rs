@@ -468,11 +468,6 @@ pub struct App {
     /// Throttle of the "sky frame" log line.
     sky_log: crate::world::env::SkyLog,
     camera: Camera,
-    combat_target: Option<uuid::Uuid>,
-    combat_shot_count: u32,
-    combat_shot_pending: bool,
-    combat_trigger_held: bool,
-    combat_hold_next_step: Option<Instant>,
     avatar_studio: crate::avatar_studio::Studio,
     studio_transition: crate::avatar_studio::Transition,
     studio_photo_session: Option<crate::avatar_studio::PhotoSession>,
@@ -1886,11 +1881,6 @@ impl App {
             probes: Default::default(),
             sky_log: Default::default(),
             camera: Camera::default(),
-            combat_target: None,
-            combat_shot_count: 0,
-            combat_shot_pending: false,
-            combat_trigger_held: false,
-            combat_hold_next_step: None,
             avatar_studio: Default::default(),
             studio_transition: Default::default(),
             studio_photo_session: None,
@@ -3702,7 +3692,6 @@ impl App {
             self.scene.clear(&mut g.renderer);
         }
         self.world.reset();
-        self.clear_combat_target();
         // the next session's network starts with the neighbours allowed
         self.neighbours_refused = false;
         // the transcripts shown belong to the account that leaves
@@ -4829,197 +4818,6 @@ impl App {
         self.set_mouselook_grab(ml);
     }
 
-    fn combat_aim_origin(&self) -> Vec3 {
-        if self.camera.mouselook() {
-            let eye_offset = self
-                .camera
-                .needs_animated_eyes(&self.world.agent, &self.settings.camera)
-                .then(|| self.scene.eyes_offset(&self.world, &self.world.agent_id))
-                .flatten();
-            self.camera
-                .mouselook_eye_position(&self.world.agent, &self.settings.camera, eye_offset)
-        } else {
-            self.world.agent.position
-        }
-    }
-
-    pub(crate) fn combat_hold_interval(&self) -> Duration {
-        Duration::from_millis(u64::from(self.settings.combat.auto_aim_hold_interval_ms.clamp(50, 400)))
-    }
-
-    pub(crate) fn combat_lead_seconds(&self) -> f32 {
-        let ping_ms = self.net.stats.ping_ms.load(std::sync::atomic::Ordering::Relaxed);
-        crate::scene::combat::combat_lead_seconds(ping_ms, self.settings.combat.auto_aim_lead_compensation)
-    }
-
-    fn reset_combat_shot_cycle(&mut self) {
-        self.combat_shot_count = 0;
-        self.combat_shot_pending = false;
-        self.combat_hold_next_step = self.combat_trigger_held.then(|| Instant::now() + self.combat_hold_interval());
-    }
-
-    fn clear_combat_hold_state(&mut self) {
-        self.combat_trigger_held = false;
-        self.combat_shot_pending = false;
-        self.combat_hold_next_step = None;
-    }
-
-    fn clear_combat_target(&mut self) {
-        self.combat_target = None;
-        self.combat_shot_count = 0;
-        self.combat_shot_pending = false;
-        self.combat_hold_next_step = None;
-    }
-
-    fn advance_combat_hold_shots(&mut self, now: Instant) {
-        let mouselook = self.camera.mouselook();
-        let active = crate::settings::COMBAT_AUTO_AIM_ENABLED
-            && self.settings.combat.auto_head_aim
-            && self.combat_target.is_some()
-            && mouselook
-            && !self.alt
-            && !self.ctrl;
-        if !crate::settings::COMBAT_AUTO_AIM_ENABLED || !mouselook || !self.settings.combat.auto_head_aim {
-            self.clear_combat_hold_state();
-        }
-        let interval = self.combat_hold_interval();
-        advance_combat_hold_timer(
-            self.combat_trigger_held,
-            active,
-            &mut self.combat_hold_next_step,
-            &mut self.combat_shot_count,
-            &mut self.combat_shot_pending,
-            now,
-            interval,
-        );
-    }
-
-    fn cycle_combat_target(&mut self) {
-        let now = Instant::now();
-        let origin = self.combat_aim_origin();
-        let range = self.settings.combat.auto_aim_range;
-        let previous = self.combat_target;
-        let filter = crate::scene::combat::CombatTargetFilter::from_settings(&self.settings.combat, Some(self.minimap_ui.marks()));
-        self.combat_target = self
-            .scene
-            .cycle_combat_target_with_filter(&self.world, origin, range, self.combat_target, &filter, now);
-        if self.combat_target != previous || self.combat_target.is_none() {
-            self.reset_combat_shot_cycle();
-        }
-    }
-
-    fn toggle_auto_head_aim(&mut self) {
-        if !crate::settings::COMBAT_AUTO_AIM_ENABLED {
-            self.settings.combat.auto_head_aim = false;
-            self.clear_combat_target();
-            self.clear_combat_hold_state();
-            return;
-        }
-        self.settings.combat.auto_head_aim = !self.settings.combat.auto_head_aim;
-        if self.settings.combat.auto_head_aim {
-            self.reset_combat_shot_cycle();
-            if self.combat_target.is_none() {
-                self.cycle_combat_target();
-            }
-        } else {
-            self.clear_combat_target();
-            self.clear_combat_hold_state();
-        }
-        if !self.demo {
-            self.settings.save();
-        }
-    }
-
-    fn resolve_combat_hitbox(&mut self, pose_now: Instant, eye_offset: Option<Vec3>) -> Option<crate::scene::combat::AvatarHitbox> {
-        if !crate::settings::COMBAT_AUTO_AIM_ENABLED || !self.settings.combat.auto_head_aim {
-            self.clear_combat_target();
-            self.clear_combat_hold_state();
-            return None;
-        }
-        let origin = if self.camera.mouselook() {
-            self.camera
-                .mouselook_eye_position(&self.world.agent, &self.settings.camera, eye_offset)
-        } else {
-            self.world.agent.position
-        };
-        let range = self.settings.combat.auto_aim_range;
-        if let Some(target_id) = self.combat_target {
-            let filter = crate::scene::combat::CombatTargetFilter::from_settings(&self.settings.combat, Some(self.minimap_ui.marks()));
-            if let Some(hitbox) = self
-                .scene
-                .combat_target_hitbox_with_filter(&self.world, target_id, origin, range, &filter, pose_now)
-            {
-                return Some(hitbox);
-            }
-        }
-        self.clear_combat_target();
-        let hitbox = {
-            let filter = crate::scene::combat::CombatTargetFilter::from_settings(&self.settings.combat, Some(self.minimap_ui.marks()));
-            self.scene
-                .cycle_combat_target_with_filter(&self.world, origin, range, None, &filter, pose_now)
-                .and_then(|target_id| {
-                    self.scene
-                        .combat_target_hitbox_with_filter(&self.world, target_id, origin, range, &filter, pose_now)
-                })
-        }?;
-        self.combat_target = Some(hitbox.avatar);
-        self.reset_combat_shot_cycle();
-        Some(hitbox)
-    }
-
-    fn aim_at_combat_hitbox(&mut self, hitbox: &crate::scene::combat::AvatarHitbox, pose_now: Instant, eye_offset: Option<Vec3>) {
-        if self.in_world() && self.camera.mouselook() {
-            let lead_s = self.combat_lead_seconds();
-            let aim_point = self.scene.avatar_combat_aim_point_with_lead(
-                &self.world,
-                hitbox,
-                self.combat_shot_count,
-                self.settings.combat.auto_aim_mode,
-                lead_s,
-                pose_now,
-            );
-            self.camera
-                .aim_mouselook_at(&mut self.world, aim_point, &self.settings.camera, pose_now, eye_offset);
-        }
-    }
-
-    /// Ensures Mouselook aim and `NetClient::controls` are locked onto the
-    /// active target right before `OneShotControl` fires on LMB press.
-    pub(super) fn sync_combat_press_aim(&mut self) {
-        if !crate::settings::COMBAT_AUTO_AIM_ENABLED
-            || self.alt
-            || self.ctrl
-            || !self.settings.combat.auto_head_aim
-            || !self.in_world()
-            || !self.camera.mouselook()
-        {
-            return;
-        }
-        let now = Instant::now();
-        let eye_offset = self.scene.eyes_offset(&self.world, &self.world.agent_id);
-        if let Some(hitbox) = self.resolve_combat_hitbox(now, eye_offset) {
-            self.aim_at_combat_hitbox(&hitbox, now, eye_offset);
-            let prev = *self.net.controls.lock();
-            let current = self.world.agent.controls(&self.input, &self.camera, self.settings.draw_distance);
-            let payload = aurora_net::AgentControls {
-                control_flags: (prev.control_flags & !control::MOUSELOOK) | (current.control_flags & control::MOUSELOOK),
-                state: prev.state,
-                flags: prev.flags,
-                alt_or_ctrl: prev.alt_or_ctrl,
-                ..current
-            };
-            self.net.set_combat_controls(payload);
-        }
-    }
-
-    fn update_combat_auto_aim(&mut self, pose_now: Instant, real_now: Instant, eye_offset: Option<Vec3>) {
-        let hitbox = self.resolve_combat_hitbox(pose_now, eye_offset);
-        self.advance_combat_hold_shots(real_now);
-        if let Some(hitbox) = hitbox {
-            self.aim_at_combat_hitbox(&hitbox, pose_now, eye_offset);
-        }
-    }
-
     /// Mouse motion: mouselook, camera drags (steering, Alt), right drag orbit.
     fn camera_mouse_delta(&mut self, dx: f32, dy: f32) {
         if self.studio_transition.busy() {
@@ -5072,10 +4870,7 @@ impl App {
         let s = self.settings.mouse_sensitivity;
         if self.camera.mouselook() {
             // Alt held: the grab tool has the free cursor, the view stays;
-            // active auto head-aim holds the lock instead of fighting hand jitter.
-            let auto_locked =
-                crate::settings::COMBAT_AUTO_AIM_ENABLED && self.settings.combat.auto_head_aim && self.combat_target.is_some();
-            if !self.alt_cursor.free() && !auto_locked {
+            if !self.alt_cursor.free() {
                 self.camera.look(dx, dy, s, &mut self.world.agent);
             }
         } else if self.mouse_mode == MouseMode::Orbit {
@@ -5642,15 +5437,6 @@ impl App {
             Action::PassWall => self.pass_wall(),
             Action::SitGround => self.sit_stand_shortcut(),
             Action::Mouselook => self.toggle_mouselook(),
-            Action::ToggleAutoHeadAim => self.toggle_auto_head_aim(),
-            Action::CombatNextTarget => {
-                if crate::settings::COMBAT_AUTO_AIM_ENABLED
-                    && self.settings.combat.auto_head_aim
-                    && self.settings.combat.mouselook_target_cycle
-                {
-                    self.cycle_combat_target();
-                }
-            }
             Action::CameraControls => self.request_controls(false, true),
             Action::LensZoomIn | Action::LensZoomOut | Action::LensZoomDefault => {
                 if self.world.rlva.camera_owner().is_none() {
@@ -11318,7 +11104,6 @@ impl App {
         self.update_thunder();
         let mut late_camera_frame = None;
         let mut late_controls = None;
-        let mut deferred_aim = false;
         if self.in_world() {
             self.update_sounds();
             self.update_attention();
@@ -11410,29 +11195,21 @@ impl App {
                 draw_distance: self.settings.draw_distance,
                 region_width: self.world.main().map_or(256.0, |r| r.heightmap.size_x as f32),
             };
-            deferred_aim = crate::settings::COMBAT_AUTO_AIM_ENABLED && self.camera.mouselook() && self.settings.combat.auto_head_aim;
-            if deferred_aim {
-                // Evaluate mouselook auto-aim and camera update once per frame in Pass 2
-                // after `scene.update_poses` refreshes target skeletons and own `eyes_offset`.
+            let deferred_eyes = frame.edit_tracking.is_some()
+                || self.camera.needs_animated_eyes(&self.world.agent, &self.settings.camera)
+                || self.camera.needs_animated_joint(&self.settings.camera);
+            if deferred_eyes {
+                // Evaluate the focused edit selection after the local drag,
+                // and first-person eyes after this frame's animation.
                 late_camera_frame = Some(frame);
             } else {
-                self.update_combat_auto_aim(frame.now, now, frame.eye_offset);
-                let deferred_eyes = frame.edit_tracking.is_some()
-                    || self.camera.needs_animated_eyes(&self.world.agent, &self.settings.camera)
-                    || self.camera.needs_animated_joint(&self.settings.camera);
-                if deferred_eyes {
-                    // Evaluate the focused edit selection after the local drag,
-                    // and first-person eyes after this frame's animation.
-                    late_camera_frame = Some(frame);
+                if self.vr_camera.is_some() {
+                    self.camera
+                        .update_vr(&mut self.world, &self.settings.camera, &frame, self.vr_rig_yaw);
+                    self.vr_counter_body_motion();
                 } else {
-                    if self.vr_camera.is_some() {
-                        self.camera
-                            .update_vr(&mut self.world, &self.settings.camera, &frame, self.vr_rig_yaw);
-                        self.vr_counter_body_motion();
-                    } else {
-                        self.camera.update(&mut self.world, &self.settings.camera, &frame);
-                        self.director_aim();
-                    }
+                    self.camera.update(&mut self.world, &self.settings.camera, &frame);
+                    self.director_aim();
                 }
             }
             if self.demo
@@ -11455,10 +11232,8 @@ impl App {
             }
             self.revoke_on_sit();
             self.trace_own_motion();
-            if !deferred_aim {
-                self.update_pointing();
-                self.update_look_at(w as f32, h as f32);
-            }
+            self.update_pointing();
+            self.update_look_at(w as f32, h as f32);
             let mut c = self.studio_agent_controls();
             if self.vr_mode.is_some() && self.world.agent.is_sitting() {
                 // Vehicle scripts need the original digital turn controls,
@@ -11532,7 +11307,7 @@ impl App {
             if !self.world.agent.flying && self.world.rlva.has("jump") {
                 c.control_flags &= !control::UP_POS;
             }
-            if late_camera_frame.is_some() && (self.camera.needs_animated_eyes(&self.world.agent, &self.settings.camera) || deferred_aim) {
+            if late_camera_frame.is_some() && self.camera.needs_animated_eyes(&self.world.agent, &self.settings.camera) {
                 late_controls = Some(c);
             } else {
                 self.net.set_controls(c);
@@ -12020,13 +11795,9 @@ impl App {
                     .and_then(|joint| self.scene.joint_offset(&self.world, &self.world.agent_id, joint.rig_name()));
                 if !frozen
                     && (self.camera.needs_animated_eyes(&self.world.agent, &self.settings.camera)
-                        || self.camera.needs_animated_joint(&self.settings.camera)
-                        || deferred_aim)
+                        || self.camera.needs_animated_joint(&self.settings.camera))
                 {
                     frame.now = now;
-                }
-                if deferred_aim {
-                    self.update_combat_auto_aim(frame.now, now, frame.eye_offset);
                 }
                 if self.vr_camera.is_some() {
                     self.camera
@@ -12035,10 +11806,6 @@ impl App {
                 } else {
                     self.camera.update(&mut self.world, &self.settings.camera, &frame);
                     self.director_aim();
-                }
-                if deferred_aim {
-                    self.update_pointing();
-                    self.update_look_at(w as f32, h as f32);
                 }
                 if let Some(controls) = late_controls {
                     // AgentUpdate must describe the displayed eye and aim,
@@ -12051,15 +11818,7 @@ impl App {
                         alt_or_ctrl: controls.alt_or_ctrl,
                         ..current
                     };
-                    if crate::settings::COMBAT_AUTO_AIM_ENABLED
-                        && self.combat_target.is_some()
-                        && self.camera.mouselook()
-                        && self.settings.combat.auto_head_aim
-                    {
-                        self.net.set_combat_controls(payload);
-                    } else {
-                        self.net.set_controls(payload);
-                    }
+                    self.net.set_controls(payload);
                 }
             }
             // a turn made on purpose leaves with the controls just handed over
@@ -17948,17 +17707,6 @@ impl App {
         self.options_ui.joystick = self.joystick.snapshot.clone();
         self.options_ui.game_control = crate::game_control::View::of(&self.game_control.engine);
         self.options_ui.flycam_active = self.joystick.active;
-        self.options_ui.contact_set_presets = self
-            .world
-            .contact_sets
-            .set_names()
-            .into_iter()
-            .filter_map(|name| {
-                let set = self.world.contact_sets.set(&name)?;
-                let col = crate::ui::colors::set_color(set.color);
-                Some((name, [col.r(), col.g(), col.b(), 255]))
-            })
-            .collect();
         let before_camera = self.settings.camera.clone();
         let mut res = ui::options::show(ctx, p, &self.skin.icons, &mut self.settings, &mut self.options_ui, &mut open);
         if res.show_contacts_tab_on {
@@ -19358,9 +19106,6 @@ impl App {
                     self.camera.position,
                     &self.settings.debug,
                     &self.settings.combat,
-                    self.combat_target,
-                    self.combat_shot_count,
-                    self.net.stats.ping_ms.load(std::sync::atomic::Ordering::Relaxed),
                     &self.minimap_ui,
                     self.settings.debug.probes.then(|| self.probes.debug_list()),
                     &self.lod_infos,
@@ -25683,37 +25428,6 @@ pub fn restart_with_vr(mode: crate::camera::VrView) {
         Ok(_) => log::info!("restarting into VR"),
         Err(e) => log::warn!("restart into VR failed: {e}"),
     }
-}
-
-/// Advances auto-aim burst step `shot_count` at steady `interval` ticks while
-/// left mouse button is held down in Mouselook; clears `shot_pending` on the
-/// first timed tick so releasing after a burst never double-advances.
-pub(crate) fn advance_combat_hold_timer(
-    trigger_held: bool,
-    auto_aim_active: bool,
-    next_step: &mut Option<Instant>,
-    shot_count: &mut u32,
-    shot_pending: &mut bool,
-    now: Instant,
-    interval: Duration,
-) {
-    if !trigger_held || !auto_aim_active {
-        *next_step = None;
-        return;
-    }
-    let Some(scheduled) = *next_step else {
-        *next_step = Some(now + interval);
-        return;
-    };
-    if now < scheduled {
-        return;
-    }
-    // Advance at most one step per rendered frame so a frame hitch never
-    // bursts multiple steps and skips the single `Chest` step.
-    *shot_count = shot_count.wrapping_add(1);
-    *shot_pending = false;
-    let next = scheduled + interval;
-    *next_step = Some(if now >= next { now + interval } else { next });
 }
 
 #[cfg(test)]

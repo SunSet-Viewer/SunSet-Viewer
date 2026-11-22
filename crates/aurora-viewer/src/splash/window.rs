@@ -181,7 +181,7 @@ impl Splash {
                     ui.add(egui::Image::new(logo).fit_to_exact_size(Vec2::splat(LOGO)));
                 }
                 ui.add_space(8.0);
-                ui.label(RichText::new("Aurora Viewer").size(19.0).strong().color(p.ink));
+                ui.label(RichText::new("SunSet Viewer").size(19.0).strong().color(p.ink));
                 ui.label(RichText::new(&self.version).size(11.0).color(p.muted_dim));
                 ui.add_space(18.0);
                 ui.allocate_ui(Vec2::new(BAR, 30.0), |ui| {

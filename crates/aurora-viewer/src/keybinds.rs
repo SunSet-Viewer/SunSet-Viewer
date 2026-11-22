@@ -544,10 +544,6 @@ pub enum Action {
     EnvSunset,
     EnvMidnight,
     EnvShared,
-    /// Toggle combat automatic head-aim in Mouselook.
-    ToggleAutoHeadAim,
-    /// Select or cycle the nearest combat target within range (`Q` by default).
-    CombatNextTarget,
     /// The chat fields' own shortcuts (`ui/chat/shortcuts.rs`), read there
     /// from the field's key events and never by the world (`is_chat`). The
     /// Legacy Viewer hard-codes them (FSFloaterIM::handleKeyHere,
@@ -666,13 +662,10 @@ pub fn sections() -> &'static Vec<(&'static str, Vec<(Action, &'static str)>)> {
                     (Action::SitGround, aurora_i18n::tr!("keybinds-sit-ground-stand")),
                 ],
             ),
-            (aurora_i18n::tr!("common-camera"), {
-                let mut actions = vec![(Action::Mouselook, aurora_i18n::tr!("common-mouselook"))];
-                if crate::settings::COMBAT_AUTO_AIM_ENABLED {
-                    actions.push((Action::ToggleAutoHeadAim, aurora_i18n::tr!("keybinds-combat-toggle-auto-aim")));
-                    actions.push((Action::CombatNextTarget, aurora_i18n::tr!("keybinds-combat-next-target")));
-                }
-                actions.extend([
+            (
+                aurora_i18n::tr!("common-camera"),
+                vec![
+                    (Action::Mouselook, aurora_i18n::tr!("common-mouselook")),
                     (Action::ResetCamera, aurora_i18n::tr!("keybinds-return-to-avatar")),
                     (Action::ResetCameraAngles, aurora_i18n::tr!("keybinds-reset-camera-angles")),
                     (Action::FocusSelection, aurora_i18n::tr!("keybinds-focus-selection")),
@@ -695,9 +688,8 @@ pub fn sections() -> &'static Vec<(&'static str, Vec<(Action, &'static str)>)> {
                     (Action::CamPanDown, aurora_i18n::tr!("keybinds-pan-view-down")),
                     (Action::CamRollLeft, aurora_i18n::tr!("controls-roll-left")),
                     (Action::CamRollRight, aurora_i18n::tr!("controls-roll-right")),
-                ]);
-                actions
-            }),
+                ],
+            ),
             (
                 aurora_i18n::tr!("common-communication"),
                 vec![
@@ -880,7 +872,6 @@ fn walks(a: Action) -> bool {
             | Action::StrafeRight
             | Action::Up
             | Action::Down
-            | Action::CombatNextTarget
     )
 }
 
@@ -909,7 +900,7 @@ impl KeyBindings {
     /// The default table, every shortcut letter at its US QWERTY place.
     fn us_places([forward, back, left, right]: [KeyCode; 4]) -> Self {
         use KeyCode as K;
-        let mut defaults: Vec<(Action, [Option<Binding>; 2])> = vec![
+        let defaults: Vec<(Action, [Option<Binding>; 2])> = vec![
             (Action::Forward, [k(K::ArrowUp), k(forward)]),
             (Action::Back, [k(K::ArrowDown), k(back)]),
             (Action::Left, [k(K::ArrowLeft), k(left)]),
@@ -1149,10 +1140,6 @@ impl KeyBindings {
                 [kmod(K::Tab, true, true), kalt(K::ArrowUp, false, false)],
             ),
         ];
-        if crate::settings::COMBAT_AUTO_AIM_ENABLED {
-            defaults.push((Action::ToggleAutoHeadAim, [None, None]));
-            defaults.push((Action::CombatNextTarget, [k(K::KeyQ), None]));
-        }
         KeyBindings { map: defaults }
     }
 }
@@ -1544,10 +1531,7 @@ impl KeyBindings {
         }
         let defaults = KeyBindings::default();
         let mut seen = HashSet::new();
-        self.map.retain(|(a, _)| {
-            seen.insert(*a)
-                && (crate::settings::COMBAT_AUTO_AIM_ENABLED || !matches!(a, Action::ToggleAutoHeadAim | Action::CombatNextTarget))
-        });
+        self.map.retain(|(a, _)| seen.insert(*a));
         for (a, mut b) in defaults.map {
             if !self.map.iter().any(|(x, _)| *x == a) {
                 // a new action's default key may already be the user's own
@@ -1693,11 +1677,8 @@ impl KeyBindings {
     /// Action triggered by a press: an exact modifier match wins, then a
     /// binding without modifiers when neither Ctrl nor Alt is held.
     pub fn triggered(&self, input: &Input, m: Mods) -> Option<Action> {
-        let enabled =
-            |a: Action| crate::settings::COMBAT_AUTO_AIM_ENABLED || !matches!(a, Action::ToggleAutoHeadAim | Action::CombatNextTarget);
         let exact = self.map.iter().find(|(a, bs)| {
             !is_held(*a)
-                && enabled(*a)
                 && !is_chat(*a)
                 && bs
                     .iter()
@@ -1712,12 +1693,7 @@ impl KeyBindings {
         }
         self.map
             .iter()
-            .find(|(a, bs)| {
-                !is_held(*a)
-                    && enabled(*a)
-                    && !is_chat(*a)
-                    && bs.iter().flatten().any(|b| &b.input == input && !b.ctrl && !b.alt && !b.shift)
-            })
+            .find(|(a, bs)| !is_held(*a) && !is_chat(*a) && bs.iter().flatten().any(|b| &b.input == input && !b.ctrl && !b.alt && !b.shift))
             .map(|(a, _)| *a)
     }
 
@@ -3042,34 +3018,5 @@ mod passage_tests {
         };
         assert!(keys.pass_wall_triggered(&Input::key(KeyCode::KeyJ), ctrl));
         assert!(!keys.pass_wall_triggered(&Input::key(KeyCode::KeyE), ctrl));
-    }
-
-    #[test]
-    fn combat_auto_aim_keybinds_preserve_physical_q_and_avoid_left() {
-        for layout in [
-            layout::KeyboardLayout::wasd(),
-            layout::KeyboardLayout::zqsd(),
-            layout::KeyboardLayout::belgian(),
-            layout::KeyboardLayout::qwertz(),
-        ] {
-            let kb = KeyBindings::for_layout(&layout);
-            if crate::settings::COMBAT_AUTO_AIM_ENABLED {
-                assert_eq!(kb.get(Action::CombatNextTarget), [k(KeyCode::KeyQ), None]);
-                assert_eq!(kb.get(Action::ToggleAutoHeadAim), [None, None]);
-                assert_ne!(
-                    kb.get(Action::CombatNextTarget)[0],
-                    kb.get(Action::Left)[1],
-                    "CombatNextTarget must not collide with physical Left walk key"
-                );
-            } else {
-                assert_eq!(kb.get(Action::CombatNextTarget), [None, None]);
-                assert_eq!(kb.get(Action::ToggleAutoHeadAim), [None, None]);
-                assert_ne!(
-                    kb.triggered(&Input::key(KeyCode::KeyQ), Mods::default()),
-                    Some(Action::CombatNextTarget),
-                    "CombatNextTarget must stay disabled when feature flag is off"
-                );
-            }
-        }
     }
 }

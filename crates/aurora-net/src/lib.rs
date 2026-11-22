@@ -284,7 +284,7 @@ impl NetClient {
                     // without exposing a login session or inventory bucket in diagnostics.
                     NetCommand::OfferInventory { .. } | NetCommand::CheckInventoryOffer { .. } => {}
                     // (the offline demo moves its agent every frame)
-                    NetCommand::AgentControls(_) | NetCommand::CombatAgentControls(_) | NetCommand::ForceAgentUpdate => {}
+                    NetCommand::AgentControls(_) | NetCommand::ForceAgentUpdate => {}
                     other => log::debug!("ignoring command while offline: {other:?}"),
                 }
             }
@@ -365,16 +365,6 @@ impl NetClient {
     /// of `send_agent_update` since the last hand-over (the session then
     /// applies its limit of 125 updates a second).
     pub fn set_controls(&self, c: AgentControls) {
-        self.push_controls(c, false);
-    }
-
-    /// Fine-aim variant of [`Self::set_controls`] for active Mouselook combat
-    /// auto-aim tracking.
-    pub fn set_combat_controls(&self, c: AgentControls) {
-        self.push_controls(c, true);
-    }
-
-    fn push_controls(&self, c: AgentControls, fine_aim: bool) {
         let flags_changed = {
             let mut controls = self.controls.lock();
             let changed = c.control_flags != controls.control_flags;
@@ -383,19 +373,9 @@ impl NetClient {
             changed
         };
         let mut pushed = self.pushed_controls.lock();
-        let worthy = if fine_aim {
-            c.combat_update_worthy(&pushed)
-        } else {
-            c.update_worthy(&pushed)
-        };
-        if flags_changed || worthy {
+        if flags_changed || c.update_worthy(&pushed) {
             *pushed = c;
-            let cmd = if fine_aim {
-                NetCommand::CombatAgentControls(c)
-            } else {
-                NetCommand::AgentControls(c)
-            };
-            self.send(cmd);
+            self.send(NetCommand::AgentControls(c));
         }
     }
 

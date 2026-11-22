@@ -436,7 +436,6 @@ pub struct OptionsUi {
     pub game_control_calibration: Option<pages::game_controls::Calibration>,
     pub vr_default_resolution: Option<[u32; 2]>,
     pub flycam_active: bool,
-    pub contact_set_presets: Vec<(String, crate::settings::Rgba)>,
     pub anti_spam_blocks: Vec<(crate::world::anti_spam::Queue, uuid::Uuid, String)>,
     pub anti_spam_version: u64,
     /// The page shown and its tab.

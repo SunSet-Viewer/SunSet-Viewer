@@ -1852,10 +1852,6 @@ pub enum NetCommand {
     /// Every change of the control flags comes through here, in order: a
     /// key tapped between two ticks of the session is not lost.
     AgentControls(AgentControls),
-    /// Fine-aim combat controls sent while Mouselook auto-aim is locked onto
-    /// a target, lowering the angular send deadband while preserving the
-    /// simulator's 125 Hz rate cap.
-    CombatAgentControls(AgentControls),
     /// Send the controls of this frame now, even if nothing moved past the
     /// thresholds (`send_agent_update(true, …)`, force_send): a turn the
     /// viewer made on purpose, such as the Compass's 1° (LLAgent::resetAxes

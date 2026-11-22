@@ -682,12 +682,12 @@ impl Finishing {
     }
 }
 
-/// The folder the films go to: `<Videos>/Aurora Viewer`, or the photos'
+/// The folder the films go to: `<Videos>/SunSet Viewer`, or the photos'
 /// folder when the system has no videos folder.
 pub fn default_folder() -> PathBuf {
     directories::UserDirs::new()
         .and_then(|dirs| dirs.video_dir().map(Path::to_path_buf))
-        .map_or_else(crate::snapshot::default_folder, |videos| videos.join("Aurora Viewer"))
+        .map_or_else(crate::snapshot::default_folder, |videos| videos.join("SunSet Viewer"))
 }
 
 /// A file of `folder` no film has yet, named after `stamp` (the date and

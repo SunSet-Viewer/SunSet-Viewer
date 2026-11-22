@@ -58,17 +58,6 @@ impl App {
     /// Left press in mouselook.
     pub(super) fn mouselook_press(&mut self) {
         let gun = Gun::of(self.world.script_controls.left_button_grabbed(true));
-        if crate::settings::COMBAT_AUTO_AIM_ENABLED && !self.alt && !self.ctrl && self.settings.combat.auto_head_aim {
-            if self.combat_target.is_some() && self.combat_shot_pending {
-                self.combat_shot_count = self.combat_shot_count.wrapping_add(1);
-            }
-            self.sync_combat_press_aim();
-            self.combat_trigger_held = true;
-            self.combat_hold_next_step = Some(std::time::Instant::now() + self.combat_hold_interval());
-            if self.combat_target.is_some() {
-                self.combat_shot_pending = true;
-            }
-        }
         self.script_click_down(gun.bits());
         if gun == Gun::Grab {
             // Alt held: the grab tool picks under the free cursor
@@ -87,15 +76,6 @@ impl App {
     pub(super) fn script_click_up(&mut self) {
         if let Some(up) = self.script_clicks.up.take() {
             self.send(NetCommand::OneShotControl(up));
-        }
-        self.combat_trigger_held = false;
-        self.combat_hold_next_step = None;
-        if std::mem::take(&mut self.combat_shot_pending)
-            && crate::settings::COMBAT_AUTO_AIM_ENABLED
-            && self.settings.combat.auto_head_aim
-            && self.combat_target.is_some()
-        {
-            self.combat_shot_count = self.combat_shot_count.wrapping_add(1);
         }
     }
 
