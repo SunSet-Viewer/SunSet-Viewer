@@ -26,6 +26,10 @@ Une ligne vide commence un nouveau paragraphe.
 
 # Actualités d'Aurora Viewer
 
+## 2026-11-21 — SunSet Viewer v0.9.12 : Synchronisation Aurora v0.9.12, Phototools, 95 LUTs et 15 Langues
+La version v0.9.12 synchronise l'ensemble des nouveautés et correctifs d'Aurora v0.9.11 et v0.9.12, ajoutant la fenêtre Phototools, les filtres du monde avec 95 LUTs intégrés (dont JuicyBomb), le cache local d'avatars, l'audio depuis la caméra ou l'avatar, la recherche-remplacement dans les notes et 15 langues incluses. Toutes les fonctions exclusives de SunSet restent préservées : vue à 8192 m, Dash 100x, hitboxes 3D, couleurs d'avatars, thèmes SunSet, isolation complète des données dans SunSet\SunSetViewer et traductions pt-BR et es affinées.
+[En savoir plus](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.12)
+
 ## 2026-11-16 — SunSet Viewer v0.9.11 : Synchronisation Aurora v0.9.10, Avatar Studio, Caméra Réalisateur et Correctifs
 La version v0.9.11 synchronise l'ensemble des correctifs et nouveautés officielles d'Aurora v0.9.10, apportant l'Avatar Studio pour des portraits propres avec éclairage studio, la Caméra Réalisateur avec trajectoires cinématiques, la météo personnalisée par parcelle et le support des joysticks 6 axes. Toutes les fonctionnalités exclusives de SunSet restent préservées : distance d'affichage de 8192 m, Dash instantané, hitboxes 3D, couleurs d'avatars personnalisées, 6 thèmes visuels et isolation totale des données.
 [En savoir plus](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.11)

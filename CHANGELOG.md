@@ -4,6 +4,22 @@ Todas as mudanças notáveis, novidades e correções de bugs do projeto **SunSe
 
 ---
 
+## [0.9.12] — 2026-11-21
+
+### 🔄 Sincronização Upstream Completa: Aurora v0.9.11 & v0.9.12
+- **Phototools & Filtros de Mundo (95 LUTs)**: Nova janela **Phototools** com abas *Environment* e *General*, além de filtros de mundo e 95 LUTs nativos integrados (incluindo o pacote JuicyBomb).
+- **Renderização, Áudio e Avatares**: Cache local de avatares durante o carregamento da região, escolha de origem do áudio e mídia pela câmera ou pelo avatar, nuvens volumétricas sem bordas em silhuetas, suavização em camadas com oclusão de ambiente, correções na redução de LOD de malha, glTF com rigging e importação de poses Alchemy.
+- **Inventário, Chat e Permissões**: Busca e substituição no editor de notecards, edição de permissões de conteúdo para objetos aninhados, ordenação A–Z nas listas de ambiente, seleção de fontes do sistema por teclado e correções em links de trajes (HTTP 400), teleporte com classificação de conteúdo, gestos e relógio do grid.
+- **15 Idiomas Embutidos & Segurança**: Ampliação para 15 idiomas empacotados no cliente e integração das correções de segurança e estabilidade de rede/mídia/LLSD do upstream.
+
+### 🛡️ Preservação Integral dos Recursos Exclusivos SunSet Viewer
+- **Combate SunSet**: Aba **Combate** com ícone de espadas cruzadas, hitboxes 3D até 128 m, diagnósticos de raycast local, bloqueio por objetos do cenário e desvanecimento suave de textos flutuantes.
+- **Alcance 8192 m & Dash 100×**: Draw distance progressivo até 8192 m com SpeedRez e comando `/dd`, aliado à movimentação 100× e Dash nativo (`Bridge v1.44` / `sunset-dash.bvh`).
+- **Temas, Marcadores e Isolamento de Dados**: Cores individuais para avatares, famílias de skins SunSet (escuras e claras) e esquemas clássicos, além do isolamento completo em `%APPDATA%\SunSet\SunSetViewer`, `%LOCALAPPDATA%\SunSet\SunSetViewer`, `SunSetViewerCache`, token do Blender Live e AUMID `SunSet.Viewer`.
+- **Paridade e Ajustes `pt-BR` / `es`**: Catálogos com **15.173 chaves** em paridade com o inglês e correções de terminologia, atalhos de busca LSL, controles de gamepad, identidade do splash (`SunSet Viewer`) e unicidade em português e espanhol.
+
+---
+
 ## [0.9.11] — 2026-11-16
 
 ### 🔄 Sincronização Upstream Completa: Aurora v0.9.10
