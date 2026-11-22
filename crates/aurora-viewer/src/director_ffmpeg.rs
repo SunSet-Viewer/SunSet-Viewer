@@ -17,6 +17,7 @@ use std::path::PathBuf;
 /// `%NAME%` replaced by the variable's value (as Windows writes the
 /// folders of a PATH kept in the registry); a name without a value, or a
 /// lone `%`, stays as it is.
+#[cfg(any(windows, test))]
 pub fn expand(text: &str, var: impl Fn(&str) -> Option<String>) -> String {
     let mut out = String::with_capacity(text.len());
     let mut rest = text;
