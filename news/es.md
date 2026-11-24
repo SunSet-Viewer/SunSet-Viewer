@@ -23,6 +23,10 @@ Una línea en blanco inicia un nuevo párrafo.
 
 # Noticias de SunSet Viewer
 
+## 2026-11-24 — SunSet Viewer v0.9.13: Aurora v0.9.13, Ray Tracing, Curvatura y Textos 192 m
+La versión v0.9.13 sincroniza todas las novedades y correcciones de Aurora v0.9.13, incorporando Ray Tracing por hardware y sombras suaves, Curvatura del planeta, Mini AO, entornos guardados por parcela, ventanas acoplables, catálogo de efectos en Foto, mejoras de Blender Live y posición de cámara. Todas las funciones exclusivas de SunSet siguen intactas: Combate con hitboxes 3D, colores individuales de avatar, alcance de 8192 m, Dash 100x, temas SunSet, perfiles aislados y textos flotantes ampliados a 128 m de distancia + 64 m de rango.
+[Leer más](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.13)
+
 ## 2026-11-21 — SunSet Viewer v0.9.12: Sincronización Aurora v0.9.12, Phototools, 95 LUTs y 15 Idiomas
 La versión v0.9.12 sincroniza todas las novedades y correcciones de Aurora v0.9.11 y v0.9.12, incorporando la ventana Phototools, filtros de mundo con 95 LUTs (incluido el paquete JuicyBomb), caché local de avatares, sonido desde la cámara o el avatar, buscar y reemplazar en notas, permisos en lote y 15 idiomas integrados. Todas las funciones exclusivas de SunSet siguen intactas: 8192 m de alcance, Dash 100x, Combate con hitboxes 3D, colores de avatar, temas SunSet, perfiles aislados en SunSet\SunSetViewer y mejoras en español y portugués.
 [Leer más](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.12)

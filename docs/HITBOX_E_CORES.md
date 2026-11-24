@@ -1,5 +1,9 @@
 # Hitboxes 3D, Alcance do Meter de Combate e Cores Individuais de Avatares — SunSet Viewer
 
+> [!IMPORTANT]
+> **Política Permanente de Precedência (SunSet vs. Aurora Upstream):**
+> O sistema de **Hitboxes 3D, Aba Combate, Raycast Local e Cores Individuais de Avatares** do **SunSet Viewer** é exclusivo e tem **precedência absoluta** sobre qualquer implementação de hitbox do **Aurora Viewer** (incluindo o overlay `O10` / `PR #4050` do Dev Toolbox e quaisquer atualizações futuras do Aurora). Em todas as sincronizações futuras com o Aurora, os updates de hitbox do Aurora **NÃO devem ser adotados** e a implementação do SunSet **NÃO deve ser substituída**, salvo confirmação explícita e expressa do mantenedor/dono do projeto (Adriano Severino). Consulte [`docs/UPSTREAM_SYNC_POLICY.md`](UPSTREAM_SYNC_POLICY.md).
+
 O **SunSet Viewer** conta com um sistema de caixas de colisão 3D (**Hitboxes**), controle de distância do **Texto Flutuante / Meter de Combate (`llSetText`)** e marcação visual individual de avatares com suporte a cores personalizadas, projetado tanto para combate competitivo (PVP/RP) quanto para identificação tática rápida no Second Life.
 
 ---
@@ -40,11 +44,11 @@ Para enxergar o *meter* de oponentes e aliados a longas distâncias, ajuste as d
 
 - **Distância de esmaecimento do texto flutuante (`floating_text_fade_distance`)**: Distância em metros na qual o texto flutuante / *meter* começa a desaparecer gradualmente.
   - **Valor padrão**: `8.0 m` (idêntico ao padrão do Legacy Viewer).
-  - **Intervalo do controle deslizante**: `0.0 m` a `64.0 m`.
+  - **Intervalo do controle deslizante**: `0.0 m` a `128.0 m`.
 - **Alcance de esmaecimento do texto flutuante (`floating_text_fade_range`)**: Distância adicional em metros que o texto leva para ir de 100% visível até ficar invisível.
   - **Valor padrão**: `4.0 m` (idêntico ao padrão do Legacy Viewer, resultando em `12.0 m` totais por padrão).
-  - **Intervalo do controle deslizante**: `0.25 m` a `32.0 m`.
-- **Alcance máximo combinado em combate**: Configurando `64.0 m` + `32.0 m`, o *meter* de combate permanece visível a até **`96.0 metros`** de distância.
+  - **Intervalo do controle deslizante**: `0.25 m` a `64.0 m`.
+- **Alcance máximo combinado em combate**: Configurando `128.0 m` + `64.0 m`, o *meter* de combate permanece visível a até **`192.0 metros`** de distância.
 
 ### Onde Configurar:
 1. **Preferências › Combate** › grupo **`Opções de texto flutuante`**

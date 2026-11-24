@@ -111,14 +111,9 @@ licenses, and the upstream relationship are documented in
   </tr>
 </table>
 
-### SunSet Highlights <img src="docs/readme/pill-new.svg" alt="New" height="18" align="absmiddle">
-
-<table>
-  <tr>
-    <td width="50%" valign="top">
       <h3>⚔️ Integrated 3D Combat, Meter Range & Custom Hitbox Colors</h3>
       Built-in real-time combat system (<code>scene::combat</code>) featuring screen-center raycasting,
-      high-precision avatar hitboxes, scene occlusion filtering, configurable floating text / combat meter fade distance (<code>8m + 4m</code> default, up to <code>96m</code>), and individual avatar marker colors (<a href="docs/HITBOX_E_CORES.md">guide</a>).
+      high-precision avatar hitboxes, scene occlusion filtering, configurable floating text / combat meter fade distance (<code>8m + 4m</code> default, up to <code>192m</code>), and individual avatar marker colors (<a href="docs/HITBOX_E_CORES.md">guide</a>).
     </td>
     <td width="50%" valign="top">
       <h3>🚀 100x Movement, Instant Dash & 8,192m Draw Distance</h3>
@@ -147,37 +142,27 @@ licenses, and the upstream relationship are documented in
   </tr>
 </table>
 
-### New in Aurora 0.9.11–0.9.12 Base <img src="docs/readme/pill-new.svg" alt="New" height="18" align="absmiddle">
+### New in Aurora 0.9.12–0.9.13 Base <img src="docs/readme/pill-new.svg" alt="New" height="18" align="absmiddle">
 
 <table>
   <tr>
     <td width="50%" valign="top">
-      <h3>A complete Director</h3>
-      Ready-made shots, renders up to 4K, films with their sound, montages
-      of several tracks, the photo looks and LUTs (including Czar Fenris,
-      Nanner Pudding, and JuicyBomb packs), and move and turn handles on
-      the cameras — with one-click ffmpeg download.
+      <h3>Ray Tracing (Deluxe RT) & Aurora-J2K</h3>
+      Experimental ray-traced shadows, indirect light GI probes and reflections (<code>Deluxe (RT)</code>), plus fast native Rust JPEG 2000 texture decoding (<code>aurora-j2k</code>) and optional planet curvature.
     </td>
     <td width="50%" valign="top">
-      <h3>Gaming mode</h3>
-      SunSet steps back while you play a game: the world stops drawing
-      and gives the video memory and RAM back, while chat, sounds and
-      notifications keep working. Coming back to the window ends it.
+      <h3>Fifteen languages & Detachable Windows</h3>
+      15 bundled languages, detachable interface windows outside the main viewer frame, Phototools Light and DoF/Glow tabs, redesigned photo filters catalogue, and LiveMesh / Mini AO windows.
     </td>
   </tr>
   <tr>
     <td valign="top">
-      <h3>360° pictures and better photos</h3>
-      Take a 360° picture and view it as a panorama, keep the camera's
-      tilt in presets, let you and others look at the camera, apply World
-      Filters in real time, and tune shadows and ambient occlusion in the viewfinder.
+      <h3>A complete Director, 360° & World Looks</h3>
+      Ready-made shots, renders up to 4K, films with sound, 95 built-in LUTs (Czar Fenris, Nanner Pudding, JuicyBomb), parcel environments, and soft sun shadows.
     </td>
     <td valign="top">
-      <h3>More like the Legacy Viewer</h3>
-      Game Controls, cross-device IM history sync, the Omnifilter, the pose
-      stand, Favorite wearables, a target frame rate (Autotune), proxy settings,
-      script sync with outside editors, saved poses from the Legacy Viewer and
-      Alchemy, and the missing interface sounds.
+      <h3>Faster arrivals, richer inventory & RLVa</h3>
+      Local avatar caching, gallery view, find and replace in notecards/scripts, Game Controls, cross-device IM history sync, shared image limits, and full RLVa parity.
     </td>
   </tr>
 </table>
@@ -256,8 +241,10 @@ are planned or in progress: they are not in the viewer yet.
   fences and hair stay solid in the distance, and textures load as finely as
   you expect close to the camera.
 - **Graphics levels matched to your machine**, chosen at first launch: GTAO
-  from Medium up, contact shadows from High, screen-space indirect light
-  (experimental) in Deluxe with a 192 m draw distance; per-section resets
+  from Medium up, contact shadows from High, and Deluxe (RT): High with the
+  sun's and the lamps' shadows and the indirect light ray-traced, on the
+  cards with ray queries, at a ray tracing quality of your choice (Low,
+  Medium, High) that keeps every traced effect on; per-section resets
   when you want to start over. Save your own settings as named graphics
   profiles and switch between them from Preferences or the FPS counter.
 - **HDR, or the older look**: the Legacy Viewer's HDR and Emissive switch,
@@ -701,8 +688,12 @@ frame on your own PC.
   PBR and legacy materials, shadows, GTAO ambient occlusion with specular
   occlusion, sun contact shadows, specular anti-aliasing, reflection probes,
   water, glow, particles, rainbows, 22° halos and depth of field;
-  screen-space indirect light, GPU occlusion and enhanced water effects (all
-  experimental), graphics presets and per-section resets; headset viewing
+  ray-traced sun and local light shadows and indirect light (the Deluxe
+  (RT) graphics level, on the cards with ray queries; the shadow maps
+  elsewhere); screen-space indirect light,
+  GPU occlusion, enhanced water effects and ray-traced indirect light and
+  reflections (all experimental),
+  graphics presets and per-section resets; headset viewing
   through OpenXR (experimental, view only).
 - **Avatars** — skeleton and Bento animations blended like the Legacy Viewer,
   server bakes, rigged mesh, complexity limits, impostors and look-at;

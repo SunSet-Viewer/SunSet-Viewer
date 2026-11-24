@@ -24,7 +24,11 @@ Une ligne vide commence un nouveau paragraphe.
 - Mode d'emploi complet : HUMANS.md, « Publier une actualité ».
 -->
 
-# Actualités d'Aurora Viewer
+# Actualités de SunSet Viewer
+
+## 2026-11-24 — SunSet Viewer v0.9.13 : Aurora v0.9.13, Ray Tracing, Mini AO et Textes 192 m
+La version v0.9.13 intègre les nouveautés et correctifs d'Aurora v0.9.13 : Ray Tracing matériel et ombres douces, courbure planétaire, Mini AO, environnements sauvegardés par parcelle, fenêtres détachables, catalogue d'effets Photo, aperçu Blender Live et réglage exact de la caméra. Toutes les fonctions exclusives de SunSet restent préservées : onglet Combat avec hitboxes 3D, couleurs individuelles d'avatar, vue à 8192 m, Dash 100x, thèmes SunSet, profils isolés et textes flottants étendus à 128 m + 64 m de fondu.
+[En savoir plus](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.13)
 
 ## 2026-11-21 — SunSet Viewer v0.9.12 : Synchronisation Aurora v0.9.12, Phototools, 95 LUTs et 15 Langues
 La version v0.9.12 synchronise l'ensemble des nouveautés et correctifs d'Aurora v0.9.11 et v0.9.12, ajoutant la fenêtre Phototools, les filtres du monde avec 95 LUTs intégrés (dont JuicyBomb), le cache local d'avatars, l'audio depuis la caméra ou l'avatar, la recherche-remplacement dans les notes et 15 langues incluses. Toutes les fonctions exclusives de SunSet restent préservées : vue à 8192 m, Dash 100x, hitboxes 3D, couleurs d'avatars, thèmes SunSet, isolation complète des données dans SunSet\SunSetViewer et traductions pt-BR et es affinées.

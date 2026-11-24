@@ -537,9 +537,9 @@ fn test_floating_text_fade_settings_sanitized_and_extended_combat_range() {
     assert_eq!(nan_reset.floating_text_fade_distance, DEFAULT_FLOATING_TEXT_FADE_DISTANCE);
     assert_eq!(nan_reset.floating_text_fade_range, DEFAULT_FLOATING_TEXT_FADE_RANGE);
 
-    assert_eq!(crate::ui::hud::floating_text_fade(60.0, &clamped), Some(1.0));
-    assert!(crate::ui::hud::floating_text_fade(95.0, &clamped).is_some());
-    assert_eq!(crate::ui::hud::floating_text_fade(96.0, &clamped), None);
+    assert_eq!(crate::ui::hud::floating_text_fade(128.0, &clamped), Some(1.0));
+    assert!(crate::ui::hud::floating_text_fade(191.0, &clamped).is_some());
+    assert_eq!(crate::ui::hud::floating_text_fade(192.0, &clamped), None);
 }
 
 #[test]
@@ -672,4 +672,98 @@ fn test_all_fifteen_languages_bundled_with_native_portuguese_and_spanish() {
     ] {
         assert!(codes.contains(expected), "Idioma {expected} deve estar em SOURCES");
     }
+}
+
+// ============================================================================
+// 10. Proteção Contínua contra Regressões em Sincronizações Upstream Aurora
+// ============================================================================
+
+#[test]
+fn test_aurora_upstream_hitbox_o10_is_excluded() {
+    assert!(
+        crate::dev_toolbox::tools::find("O10").is_none(),
+        "Dev Toolbox O10 (Aurora PR #4050 hitbox) não deve existir no SunSet Viewer"
+    );
+    assert!(
+        !crate::dev_toolbox::tools::all().any(|t| t.id == "O10"),
+        "Ferramenta O10 não deve estar listada em dev_toolbox::tools::all()"
+    );
+    for &(code, content) in aurora_i18n::SOURCES {
+        assert!(
+            !content.lines().any(|l| l.starts_with("dev-toolbox-o10")),
+            "Chave dev-toolbox-o10 deve permanecer excluída do catálogo {code}"
+        );
+    }
+    assert!(
+        Page::ALL.contains(&Page::Combat),
+        "Aba exclusiva de Combate do SunSet deve continuar ativa no lugar do O10"
+    );
+    assert!(
+        !crate::settings::DebugView::default().any_overlay(),
+        "Nenhum overlay de debug deve iniciar habilitado por padrão"
+    );
+}
+
+#[test]
+fn test_avatar_marker_color_context_menu_and_precedence_preserved() {
+    let mut world = World::new(Arc::new(AvatarLibrary::load()));
+    let id = Uuid::from_u128(0xABCD_1234);
+    let fallback = Color32::from_rgb(120, 120, 120); // theme-guard: content — test fallback color
+    assert_eq!(crate::ui::colors::resident_name(&world, &id, fallback), fallback);
+
+    let custom = Color32::from_rgb(230, 40, 40); // theme-guard: content — test avatar mark color
+    world.avatar_marks.insert(id, custom);
+    assert_eq!(
+        crate::ui::colors::resident_name(&world, &id, fallback),
+        crate::interface_colors::on_panel(custom),
+        "Cor individual (Marcar cor) deve ter precedência nas placas de nome e listas"
+    );
+
+    world.avatar_marks.remove(&id);
+    assert_eq!(
+        crate::ui::colors::resident_name(&world, &id, fallback),
+        fallback,
+        "Remover a cor individual deve restaurar a cor padrão do residente"
+    );
+
+    let mut settings = Settings::default();
+    settings.avatar_marks.insert(id, [230, 40, 40, 255]);
+    let json = serde_json::to_string(&settings).expect("Settings serializa avatar_marks");
+    let roundtrip: Settings = serde_json::from_str(&json).expect("Settings desserializa avatar_marks");
+    assert_eq!(roundtrip.avatar_marks.get(&id), Some(&[230, 40, 40, 255]));
+
+    for lang in ["en", "pt-BR", "es"] {
+        let (_, content) = aurora_i18n::SOURCES
+            .iter()
+            .find(|&&(code, _)| code == lang)
+            .expect("catálogo obrigatório presente");
+        for key in [
+            "ui-context-marker-color",
+            "ui-context-custom-color",
+            "ui-minimap-clear-marker",
+            "ui-minimap-clear-all-markers",
+        ] {
+            assert!(
+                content.lines().any(|l| l.starts_with(key)),
+                "Chave do menu Marcar cor '{key}' ausente em {lang}.ftl"
+            );
+        }
+    }
+}
+
+#[test]
+fn test_sunset_updater_feed_points_to_sunset_repo() {
+    assert!(
+        aurora_updater::feed::RELEASES.contains("SunSet-Viewer/SunSet-Viewer"),
+        "Feed de releases do updater deve apontar para SunSet-Viewer/SunSet-Viewer"
+    );
+    assert!(
+        aurora_updater::feed::RELEASE_PAGE.contains("SunSet-Viewer/SunSet-Viewer"),
+        "Página de releases do updater deve apontar para SunSet-Viewer/SunSet-Viewer"
+    );
+    assert_eq!(aurora_updater::feed::SUNSET_POLICY, "sunset-update-policy.json");
+    assert!(
+        !aurora_updater::feed::RELEASES.contains("Aurora-Viewer/Aurora-Viewer"),
+        "Updater do SunSet não deve consultar releases do repositório Aurora-Viewer"
+    );
 }

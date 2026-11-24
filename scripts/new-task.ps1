@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Creates the work folder of a task: a git worktree on its own branch,
     next to the repository (..\work\<task>), with its own target\. Its
@@ -9,7 +9,7 @@
     it (PR merged, or no build for -IdleDays days): the code stays, only
     the build goes; a task that resumes rebuilds. A task with no build for
     -TrimHours hours only loses its incremental\ folders, three quarters
-    of a target\ (5 to 20 GB): its next build recompiles Aurora's own
+    of a target\ (5 to 20 GB): its next build recompiles SunSet's own
     crates, the dependencies stay.
 
 .EXAMPLE
@@ -31,9 +31,11 @@ $dir = Join-Path $p.Work $slug
 if (Test-Path $dir) { throw "The folder $dir already exists (task in progress?)." }
 
 # Free the build folders of the other tasks that no longer need them. The
-# last build is when Cargo last wrote into a deps\ or incremental\ folder.
-# Before the whole target\ goes, an idle task first loses its incremental
-# cache: it only speeds up the next small rebuild of that same task.
+# last build is Get-LastBuildTime (common.ps1). Before the whole target\
+# goes, an idle task first loses its incremental cache: it only speeds up
+# the next small rebuild of that same task. The trim leaves the date of the
+# last build in a marker, so that the next run still counts from that build.
+# A target whose last build cannot be dated is kept: "unknown" is not idle.
 if (Test-Path -LiteralPath $p.Work) {
     foreach ($t in Get-ChildItem -LiteralPath $p.Work -Directory -Force) {
         $target = Join-Path $t.FullName 'target'
@@ -44,10 +46,12 @@ if (Test-Path -LiteralPath $p.Work) {
         if ($LASTEXITCODE -eq 0 -and (gh pr view $b.Trim() --json state --jq .state 2>$null) -eq 'MERGED') {
             $why = 'PR merged'
         } else {
-            $last = Get-ChildItem -LiteralPath $target -Directory -Force | ForEach-Object {
-                Get-Item -LiteralPath (Join-Path $_.FullName 'deps'), (Join-Path $_.FullName 'incremental') -Force -ErrorAction SilentlyContinue
-            } | Sort-Object LastWriteTime -Descending | Select-Object -First 1
-            $idleHours = if ($last) { ((Get-Date) - $last.LastWriteTime).TotalHours } else { [double]::MaxValue }
+            $last = Get-LastBuildTime $target
+            if (-not $last) {
+                Write-Host "$($t.Name): target kept (date of its last build unknown)." -ForegroundColor DarkGray
+                continue
+            }
+            $idleHours = ((Get-Date) - $last).TotalHours
             if ($idleHours -ge $IdleDays * 24) {
                 $why = "no build for $([math]::Floor($idleHours / 24)) days"
             } elseif ($idleHours -ge $TrimHours) {
@@ -64,6 +68,7 @@ if (Test-Path -LiteralPath $p.Work) {
                 Write-Host "$($t.Name): target freed ($why)." -ForegroundColor DarkGray
             }
         } else {
+            Set-LastBuildMarker $target $last
             foreach ($d in $trim) { Remove-Item -LiteralPath $d -Recurse -Force -ErrorAction SilentlyContinue }
             if ($trim | Where-Object { Test-Path -LiteralPath $_ }) {
                 Write-Warning "$($t.Name): incremental cache not fully deleted (locked file?)."
@@ -86,12 +91,15 @@ Invoke-Checked 'git worktree add' { git -C $p.Main worktree add -b $branch $dir 
 New-Item -ItemType Directory -Force -Path (Join-Path $dir '.scratch') | Out-Null
 # the first build of the task takes the dependencies from the shared cache
 Sync-BuildCache
+# and finds its Rust version installed: two tasks whose first builds both
+# install it at the same moment would break it (common.ps1)
+Install-RustVersion $dir
 
 Write-Host ""
 Write-Host "Task ready:" -ForegroundColor Green
 Write-Host "  folder  $dir"
 Write-Host "  branch  $branch (from $base)"
 Write-Host ""
-Write-Host "Test:   `$env:AURORA_DEMO='1'; cargo run -p aurora-viewer -- --title `"Test $slug`""
+Write-Host "Test:   `$env:AURORA_DEMO='1'; cargo run -p aurora-viewer --bin SunSet-Viewer -- --title `"Test $slug`""
 Write-Host "Check:  ./scripts/check.ps1"
 Write-Host "Finish: ./scripts/end-task.ps1 -Name $slug (after the PR is merged)"

@@ -286,6 +286,8 @@ keybinds-render-water = レンダリングタイプ：水
 keybinds-render-objects = レンダリングタイプ：オブジェクト
 keybinds-render-grass = レンダリングタイプ：草
 keybinds-render-clouds = レンダリングタイプ：雲
+render-features-menu = レンダリング機能
+render-features-ui = ＵＩ
 owned-land-title = 所有地
 linden-home-menu = リンデンホーム…
 owned-land-refresh = リフレッシュ
@@ -339,6 +341,7 @@ toolbar-clear = すべてクリア
 toolbar-confirm-restore = デフォルトのボタンとツールバーを復元しますか？この操作は元に戻せません。
 toolbar-confirm-clear = すべてのボタンをこのウィンドウに戻し、ツールバーを空にしますか？この操作は元に戻せません。
 toolbar-command-profile = プロフィール
+toolbar-command-ao-mini = ミニＡＯ
 toolbar-command-landmark-here = ランドマークを作成
 toolbar-command-environments = 自然環境の設定
 toolbar-command-radar = レーダー
@@ -357,6 +360,8 @@ toolbar-command-quickprefs = 簡易設定
 toolbar-command-web-browser = Webブラウザ
 toolbar-command-chat-bar = チャットバー
 toolbar-command-area-search = エリアサーチ
+
+# Area Search (issue #930).
 area-search-hint = オブジェクト、説明、所有者、制作者、ＵＵＩＤを検索…
 area-search-refresh = リフレッシュ
 area-search-parcel = 今いる区画のみ
@@ -383,6 +388,7 @@ area-search-empty = これらのフィルタに一致するオブジェクトは
 area-search-sit = 座る
 area-search-filter-mine = 自分のオブジェクトを絞り込む
 area-search-clear-selection = 選択をクリア
+
 toolbar-command-debug-settings = デバッグ設定
 toolbar-command-statistics = 統計
 toolbar-command-sound-explorer = サウンドエクスプローラー
@@ -446,6 +452,7 @@ pose-stand-arms-upward-legs-together = 腕を上に上げ、足を揃える
 toolbar-command-snapshot-to-disk = スナップショットをディスクに保存する
 toolbar-command-photo-roll = フォトロール
 toolbar-command-director = ディレクター
+# Director — capture and animations
 director-capture = 手持ちの経路
 director-capture-start = 自分の動きを記録
 director-capture-start-tip = 撮影したいようにカメラを動かしてください（Altカメラ、フリーカメラ、フライカム）。視点を毎秒２０回記録し、「停止」で動かした速さのままキーフレームにします。
@@ -645,6 +652,7 @@ director-track-saved = 保存しました：{ $name }
 director-track-loaded = 読み込みました：{ $name }
 director-track-failed = 経路のファイルを使用できません：{ $why }
 director-track-bad-name = 先に経路の名前を入力してください。
+# Director — shots
 director-shots = カメラワーク
 director-shot = 種類
 director-shot-orbit = 周回
@@ -714,6 +722,7 @@ director-key-dolly-zoom-tip = このキーフレームまでの間、前方の�
 director-key-travel = ターゲットと一緒に移動
 director-key-travel-tip = このキーフレームは、置かれた場所にとどまらず、ターゲットが動いてもターゲットとの位置関係を保ちます（ワールドの方向に沿って）。「更新」で今の視点から置き直します。
 director-key-travel-none = このキーフレームはターゲットを注視していません。先に固定のターゲットを設定してください。
+# Director — montage and tracks
 director-zoom-in-tip = タイムラインを拡大します（Ctrl＋マウスホイール）。
 director-zoom-out-tip = 縮小します（Ctrl＋マウスホイール）。経路全体がすでに表示されているときは使えません。
 director-zoom-fit-tip = 経路全体を表示します。すでに表示されているときは使えません。
@@ -794,6 +803,7 @@ director-ffmpeg-pack-download = ダウンロード
 director-ffmpeg-pack-progress = { $done }／{ $total }ＭＢ
 director-ffmpeg-pack-preparing = 検証してインストールしています…
 director-ffmpeg-pack-failed = ダウンロードに失敗したか、ファイルが想定と異なりました。何もインストールされていません。
+# Director — render, fades and titles
 director-output-live = ライブ
 director-output-render = レンダリング
 director-output-more = その他のオプション
@@ -1015,6 +1025,7 @@ login-accounts-password-needed = パスワードを入力してください
 login-accounts-forget-password = パスワードを忘れる
 login-accounts-remove = アカウントを削除
 login-accounts-confirm = これは{ $name }にのみ影響します。よろしいですか？
+
 import-title = アセットのインポート
 import-entry-point = インポートの表示方法
 import-entry-point-help = インポートのショートカット（既定はCtrl+U）と「ビルド > インポート」で開く画面を選びます。クイックインポートバーからアップロードウィンドウも開けます。
@@ -1159,6 +1170,7 @@ import-preview-aurora = Aurora 3D
 import-no-map = なし
 keybinds-import-files = アップロードウィンドウを開く
 keybinds-hide-interface = インターフェースの表示／非表示
+keybinds-ui-feature = インターフェース全体の表示／非表示（レンダリング機能 › ＵＩ）
 keybinds-teleport-home = ホームにテレポート
 keybinds-show-huds = ＨＵＤの表示／非表示
 keybinds-reset-camera-angles = カメラアングルをリセット
@@ -1232,7 +1244,6 @@ import-mesh = メッシュ
 import-bulk = 複数
 import-choose-files = ファイルを追加…
 import-loading = ファイルを読み込んでいます…
-import-limit-bulk-1k = テクスチャを1024 pxに制限
 import-files = ファイル
 import-destination = 目的地
 import-no-folder = 利用できるフォルダがありません
@@ -1293,7 +1304,12 @@ import-preview-degenerate-edges = 縮退三角形のエッジ
 import-degenerate-physics = 物理形状の修正が必要です。衝突判定には小さすぎる、細すぎる、または潰れた三角形が{ $count }個あります。
 import-physics-convex-repair = 衝突判定用の凸包を作成
 import-physics-convex-help = 凸包は衝突形状を近似するため、開口部を塞ぐ場合があります。表示用のLODは変わりません。見積もりを依頼する前に物理形状のプレビューを確認してください。
-import-max-size = サイズを1024 × 1024に制限
+import-image-size-limit = 画像の最大サイズ
+import-image-size-single = この画像の最大サイズ
+import-image-size-inherit = 共通設定（{ $size } px）
+import-image-size-pixels = { $size } px
+import-image-size-inherit-help = 「共通設定」は画面下部のインポートボタンの横にある上限を使用します。現在の値は括弧内に表示されます。選択した上限を超える画像は自動的に縮小されます。
+import-image-size-global-help = インポートする画像の最大サイズです。画像とマテリアルの個別設定が優先されます。上限を超える画像は自動的に縮小されます。
 import-texture-size = アップロードサイズ：{ $width }×{ $height }px
 import-lossless = 可逆圧縮
 import-strip-alpha = ほぼ不透明なアルファチャンネルを削除
@@ -1335,6 +1351,7 @@ import-preview-male-upper = 男性の上半身
 import-preview-male-lower = 男性の下半身
 import-preview-skirt = スカート
 import-preview-sculpt = スカルプトプリム
+
 inventory-move-to = 移動先…
 inventory-move-filter = フォルダを名前で絞り込む…
 inventory-move-selection-name = 「{ $name }」を移動
@@ -1407,6 +1424,9 @@ inventory-folder-empty = フォルダは空です。
 inventory-column-modified = 更新日
 inventory-pill-link = リンク
 inventory-pill-protected = ロック中
+inventory-search-no-copy = コピー不可
+inventory-search-no-modify = 編集不可
+inventory-search-no-transfer = 再販・譲渡不可
 inventory-take-off = 脱ぐ
 inventory-more-actions = その他の操作
 inventory-profile = プロフィール
@@ -1679,7 +1699,7 @@ notecard-markdown-demo =
 
     > 埋め込まれたアイテムはノートカードの一部のままです。
 
-    { "[" }SunSet Viewer](https://github.com/SunSet-Viewer/SunSet-Viewer)
+    { "[" }Auroraビューア](https://aurora-viewer.org)
 
     ```text
     プレーンなコードブロック
@@ -1975,6 +1995,9 @@ language-item-count = { $count ->
     [one] { $count }項目
    *[other] { $count }項目
     }
+
+# Viewer interface and notifications
+
 ui-inventory-failed = { "　（失敗）" }
 cmdline-dice-exploded = { "　^-- 爆発" }
 cmdline-dice-penetrated = { "　^-- 貫通" }
@@ -2121,9 +2144,9 @@ ui-options-chat-text-size-hint = 近くのチャットと会話のメッセー�
 ui-options-chat-beyond-range = チャット範囲外の明るさ
 ui-options-chat-beyond-range-hint = チャット範囲（20 m）より遠くにいる住人やオブジェクトの発言（シャウトなど）を、この明るさで表示します。1 で他の行と同じ明るさになり、値を下げるほど暗くなります。既定値は Legacy Viewer と同じ 0.8 です。
 ui-options-chat-keep-focus = 送信後もチャットバーをアクティブにしておく
-ui-options-chat-keep-focus-hint = Enterで送信し、バーは次のメッセージの入力待ちになります。空のバーでEnterを押すか、他の場所をクリックすると移動操作に戻ります。送信後は、会話ウィンドウの近くのチャットも同じように動作します。
+ui-options-chat-keep-focus-hint = Enterで送信し、空のバーでEnterを押しても次のメッセージの入力待ちのままです。Escキーかワールド内のクリックで移動操作に戻ります。
 ui-options-chat-enter-toggles = 会話でEnterを押すと入力を切り替える
-ui-options-chat-enter-toggles-hint = チャットバーと同じように、会話ウィンドウ（近くのチャット、IM、グループチャット）でも空の欄でEnterを押すと移動操作に戻ります。ワールドからEnterを押すと再び入力できます。
+ui-options-chat-enter-toggles-hint = 会話ウィンドウ（近くのチャット、IM、グループチャット）で空の欄でEnterを押すと移動操作に戻ります。ワールドからEnterを押すと再び入力できます。
 ui-options-chat-enter-last-field = Enterで最後に使ったチャット欄に戻る
 ui-options-chat-enter-last-field-hint = ワールドからEnterを押すと、常にチャットバーではなく、最後に使った（クリックした、または発言した）チャット欄（近く、グループ、IM）のウィンドウが開いていればそこに戻ります。オフのとき、またはそのウィンドウが閉じているときは、チャットバーを使います。
 ui-options-gesture-autocomplete = 近くのチャットでジェスチャーを補完
@@ -2286,6 +2309,10 @@ ui-options-blend-order-full = 最高
 ui-options-blend-order-stochastic = 確率的
 ui-options-colored-sky-ambient = 空の環境光をカラーに
 ui-options-colored-sky-ambient-help = 最初のPBRビューアのように、空の環境光の色をそのままの強さで使います。リニアやHDRの空で灰色になる柔らかい環境光の代わりになり、暖色や色付きの空で室内が再び色づきます。クラシックな空はどちらでも色を保ち、少し明るくなるだけです。Legacy Viewerとは異なる表示になります
+ui-options-planet-curvature = 惑星の曲率
+ui-options-planet-curvature-help = 世界を丸い惑星の上に描きます。海は目の高さまで続かず、本物の水平線で遠ざかり、その下に空が見えます。変わるのは表示だけで、リージョン、物理、他の人の見え方は平らなままです。地球の場合、描画距離内での下がり幅は数センチで、遠くの海で分かります。Legacy Viewerとは異なる表示になります
+ui-options-planet-radius = 惑星の半径
+ui-options-planet-radius-help = 描く惑星の半径（キロメートル）。地球は6,371 kmで、高さ10 mからは海が約11 km先で終わります。小さい惑星ほど水平線が近くなります
 ui-profile-preview-with-links = リンク付きでプレビュー
 build-land-flatten = 平坦にする
 common-appearance = 外観
@@ -2692,6 +2719,7 @@ ui-login-grid-link-text = Aurora の外から開いたリンクが、別のグ�
 ui-login-grid-link-switch = グリッドを変更
 ui-login-grid-link-add = グリッド管理に追加…
 ui-login-grid-link-add-hint = httpでしか応答しないグリッドにはリンクから接続できません。グリッド管理で一度追加してから、もう一度リンクを開いてください。
+
 grids-manage = グリッドの管理
 grids-remove-question = { $name }をグリッドのリストから削除してもよろしいですか？
 grids-list = グリッド
@@ -2725,6 +2753,7 @@ grids-error-network = グリッド情報を取得できませんでした。手�
 grids-error-size = グリッド情報のレスポンスが大きすぎます。
 grids-error-protected = Second LifeとAditiは組み込みのグリッドで、置き換えることはできません。
 grids-error-cross-grid = この行き先は別のグリッドにあります。ハイパーグリッドの移動にはOpenSimのセッションが必要です。
+
 common-others = 他人
 common-other-commands = その他のコマンド
 ui-options-to-blocked-people = ブロックした人へ：
@@ -3094,6 +3123,10 @@ inventory-demo-nested-folder = レベル{ $level }
 inventory-demo-destination = テスト用の移動先
 keybinds-middle-click = 中クリック
 ui-options-camera-click-my-avatar-keep-camera = 自分のアバターをクリック：カメラを維持
+ui-options-camera-frame-while-posing = ポーズ中にアバターをフレームに収める
+ui-options-camera-frame-while-posing-tip = ポーザーを開くとアバター全体が映り、関節をクリックするとカメラがその関節に近づきます。関節をドラッグしてもカメラは動きません。
+ui-options-camera-still-while-posing = ポーズ中はカメラを固定する
+ui-options-camera-still-while-posing-tip = ポーズ中は、カメラがアバターや注視点、体の部位を追わなくなり、歩いてもリセットされません。オービット、ズーム、パン、プリセットはそのまま使えます。
 ui-login-second-life-client-rust-vulkan = Second Lifeクライアント・Rust・Vulkan
 ui-login-second-life-client-rust-metal = Second Lifeクライアント・Rust・Metal
 build-ui-general-click-to = クリック時の動作：
@@ -3127,6 +3160,7 @@ ui-chat-applink-classified-tip = このクラシファイド広告を表示
 ui-chat-applink-event-tip = このイベントの詳細を表示
 ui-chat-applink-chat-tip = 指定されたチャンネルでこのメッセージを送信
 ui-chat-applink-search-tip = 検索を開く
+ui-chat-applink-preferences-tip = 環境設定でこの設定を開きます
 ui-chat-applink-blocked-tip = この操作はこのリンクからは許可されていません
 ui-chat-applink-unsupported-tip = このリンクはサポートされていません
 ui-chat-applink-unsupported-label = サポートされていないリンク
@@ -3258,6 +3292,8 @@ ui-options-script-errors-in-chat = 近くのチャットにエラーを表示す
 ui-options-script-errors-in-chat-hint = あなたのオブジェクトのスクリプトエラーは、近くのチャットに警告マークとともに赤色で表示されます。スクリプトデバッグウィンドウには記録されますが、ウィンドウは開きません。オフにすると、エラーごとにウィンドウが開きます。エラーはあなただけが見ることができます。
 ui-options-script-errors-to-channel = エラーを次のチャットチャンネルにも送信する
 ui-options-script-errors-to-channel-hint = 各スクリプトエラーは、それをリッスンするスクリプトに対して、下記のチャンネルで「オブジェクト：エラー」として通知されます。頻度は最大で毎秒数件までです。
+ui-options-group-emotes = エモートを発言者のメッセージとまとめる
+ui-options-group-emotes-hint = エモート（「/me 手を振る」）を独自の見出しで始めず、発言者が直前または直後に言ったメッセージと同じ見出しの下に表示します。Aurora スタイルで有効です。
 ui-options-compact-automated-chat = 人以外からのメッセージをコンパクトに表示
 ui-options-compact-automated-chat-hint = オブジェクトやスクリプトの発言、ビューアーの通知を種類ごとのアイコン付きの小さな行で表示します。人のメッセージだけが通常のサイズになります。これらは未読に数えられず、通知（キーワード音、点滅、システム通知）も発生しません。通知されるのは人のメッセージだけです。
 ui-options-compact-im-system-lines = 会話のシステム行もコンパクトに表示
@@ -3301,6 +3337,8 @@ appearance-editor-camera = カメラ
 ui-options-appearance-camera-hint = 体型やレイヤーを編集するとき、選択した部位にカメラを自動で合わせます。無効にすると現在の構図を保ちます。回転、ズーム、パンは引き続き使用できます。
 ui-options-customize-animation = Ａポーズ
 ui-options-customize-animation-hint = 体型やレイヤーを編集すると、アバターが立ち上がりＡポーズのアニメーションを再生します。無効にすると、現在のポーズとアニメーションを保ちます。
+ui-options-bento-idle = Bento の待機アニメーションを修正
+ui-options-bento-idle-hint = 優先度 0 の Bento アニメーションを他のすべての下で再生し、アニメーションの後に手、口、翼、尻尾が固まったままにならず自然なポーズに戻ります。他の人にもそのように見えます
 ui-options-typing-in-name-tags = 名前タグに入力中を表示
 ui-options-typing-in-name-tags-hint = 近くのチャットに入力中の住人の名前タグに、その状態を表示します。
 ui-options-typing-chevron = 「入力中」の前に山括弧を表示
@@ -3375,6 +3413,9 @@ common-copy-slurl = Slurlをコピー
 inventory-landmark-location-unknown = このランドマークの場所を解決できませんでした。後でもう一度お試しください。
 ui-options-commands-copy-camera = カメラをコピー
 build-ui-general-copy-object-keys-shift-all-parts = オブジェクトキーをコピー（Shift：すべてのパーツ）
+build-ui-copied-object-uuids = { $count ->
+   *[other] オブジェクトのＵＵＩＤをコピーしました
+    }
 ui-options-commands-copy-camera-position-to-clipboard = カメラ位置をクリップボードにコピー
 build-ui-tools-copy-selection = 選択をコピー
 common-copy-slurl-2 = SLurlをコピー
@@ -3422,7 +3463,6 @@ ui-sound-object-creation = オブジェクトの作成
 session-inventory-upload-creation-denied-invalid-type-size-or-upload-count = 作成できませんでした：タイプ、サイズ、またはアップロード数が無効です。
 ui-contacts-create = 作成
 build-ui-tools-create-ctrl-4 = 作成（Ctrl＋4）
-ui-bars-create-prims-ctrl-4 = プリムを作成（Ctrl＋4）
 ui-places-create-folder = フォルダを作成
 ui-inventory-context-create-folder-from-selection = 選択したアイテムからフォルダを作成
 common-create-favorite = お気に入りを作成
@@ -3609,6 +3649,7 @@ ui-options-show-own-tag = 自分の名前タグを表示
 ui-options-show-own-tag-help = 下の２つの設定が両方ともオフの間は、他の名前タグと一緒に非表示になります（レガシービューアで名前タグを「非表示」にした場合と同じです）。
 ui-options-show-friend-tags = フレンドの名前タグを表示
 ui-options-show-other-tags = 他の住人の名前タグを表示
+# Quick preferences: the name tags row (AvatarNameTagMode)
 quickprefs-name-tags-off = 非表示
 quickprefs-name-tags-on = 表示
 quickprefs-name-tags-brief = 一時的に表示
@@ -3669,7 +3710,6 @@ common-double-sided = 両面
 ui-minimap-double-click = ダブルクリック
 ui-inventory-controls-double-click-add-objects = ダブルクリック：オブジェクトを追加
 ui-inventory-controls-double-click-add-clothes = ダブルクリック：服装を追加
-ui-profile-double-click-group-chat = ダブルクリック：グループチャット
 ui-minimap-double-click-to-open-the-map = ダブルクリックしてマップを開く
 ui-minimap-double-click-to-teleport = ダブルクリックしてテレポート
 build-ui-floaters-double-click-a-group = グループをダブルクリックしてください。
@@ -4026,7 +4066,7 @@ rlva-selftest-title = ＲＬＶａセルフテスト
 rlva-selftest-confirm-title = ＲＬＶａセルフテストを実行しますか？
 rlva-selftest-confirm-intro = この開発用ツールは、ログイン中のグリッドであなたのアバターを使ってＲＬＶａを確認します。テスト用アバターの使用をお勧めします。
 rlva-selftest-confirm-inventory = フォルダ「#RLV/~AuroraSelfTest」（#RLVがない場合は#RLVも）を作成し、ライブラリのオブジェクトのコピー６個とリンク１個を入れます。インベントリ内の名前変更、移動、削除は一切行いません。
-rlva-selftest-confirm-wear = テスト用オブジェクトを後ろ右足（Hind Right Foot）、後ろ左足（Hind Left Foot）、尾の先端（Tail Tip）に装着し、そのうち２個に小さな中継スクリプトを書き込みます。この３か所に装着しているものは取り外されることがあります。
+rlva-selftest-confirm-wear = テスト用オブジェクトを後ろ右足（Right Hind Foot）、後ろ左足（Left Hind Foot）、尾の先端（Tail Tip）に装着し、そのうち２個に小さな中継スクリプトを書き込みます。この３か所に装着しているものは取り外されることがあります。
 rlva-selftest-confirm-rules = ＲＬＶａコマンドはこれらのオブジェクトからのみ、専用チャンネルで発行し、制限された操作を試します。下のチェックボックスをオンにしない限り、アバターの移動、着席、テレポート、インワールドでのRezや編集は行いません。チャット、メッセージの送信、支払いは決して行いません。
 rlva-selftest-confirm-end = 終了時には、失敗した場合や停止した場合も、すべての制限を解除してテスト用オブジェクトを取り外します。フォルダは次回の実行のために残ります。
 rlva-selftest-phase2 = インワールドのケースも実行
@@ -4195,6 +4235,7 @@ ui-options-input-used-for-voice = ボイスに使用する入力
 ui-environment-sky-environment = 空の環境
 ui-environment-water-environment = 水の環境
 build-ui-features-convex-hull = 凸包
+build-ui-features-physics-none-root-hint = 物理形状「なし」はリンクセットの子プリムだけに使えます。ルートプリムや単独のプリムは「プリム」または「凸包」のままです。
 common-environment = 環境
 ui-environment-shared-environment = 共有環境
 ui-options-shared-environment-region-parcel-eep-day-cycle = 共有環境＝リージョン／区画のＥＥＰデイサイクル
@@ -4271,7 +4312,7 @@ voice-controls-title-group = グループ「{ $group }」とのコール
 voice-controls-title-adhoc = 会議コール
 voice-controls-title-p2p = { $name }とのコール
 voice-controls-no-one-near = 近くにボイスを有効にしている人はいません。
-voice-controls-blocked-nearby = RLVの制限により、近くのアバターの存在を確認できません。
+voice-controls-blocked-nearby = ＲＬＶの制限により、近くにいるアバターの存在を確認できません。
 voice-controls-invited = 招待中
 voice-controls-left = 退出済み
 voice-controls-muted-by-moderator = モデレーターによりミュート中
@@ -4557,6 +4598,10 @@ app-outfit-hd-unknown = HD写真のアップロード結果が不明です：再
 app-outfit-hd-refused = サーバーがHD写真を拒否しました。
 ui-appearance-batch-title = アウトフィットのポートレート
 ui-appearance-batch-choose = 撮影するアウトフィット
+ui-appearance-batch-choose-folder = { $folder } で撮影するアウトフィット
+ui-appearance-batch-all = すべてのアウトフィット
+ui-appearance-batch-chosen = { $total } 件中 { $chosen } 件
+ui-appearance-batch-select-missing = 画像なしのみ
 ui-appearance-batch-none = 撮影できるあなたのアウトフィットがありません。
 ui-appearance-batch-progress = { $count } 枚中 { $index } 枚目を撮影中…
 ui-appearance-batch-paused = 一時停止中 — { $count } 枚中 { $index } 枚目
@@ -5029,6 +5074,7 @@ outfits-the-outfit-was-sent-but-could-not-be-read = アウトフィットを送�
 world-appearance-the-current-outfit-cannot-be-deleted = 現在のアウトフィットは削除できません。
 world-appearance-the-outfit-exceeds-the-38-attachment-limit = アウトフィットの装着アイテム数が上限の38個を超えています。
 world-appearance-the-outfit-exceeds-the-limit-of-60-layers-per = アウトフィットの衣類タイプごとのレイヤー数が上限の60を超えています。
+world-appearance-clothing-layers-full = 衣類レイヤーは上限の60枚に達しています。このアイテムを着用する前に、レイヤーを1枚外してください。
 common-boreal-lagoon = ボレアル・ラグーン
 demo-place-aurora-lagoon = Auroraラグーン
 demo-place-aurora-lagoon-boreal-lagoon = Auroraラグーン、ボレアル・ラグーン
@@ -5221,6 +5267,12 @@ ui-inventory-dialogs-no-copy-will-leave = { $count ->
    *[other] コピー不可のアイテム{ $number }個がインベントリからなくなります。
 }
 ui-inventory-dialogs-items-will-be-moved-to-trash = アイテムをごみ箱に移動します。
+ui-inventory-dialogs-detach-and-delete = 取り外して削除
+ui-inventory-dialogs-detach-and-delete-body = 一部のアイテムはアバターが着用中です。取り外してからごみ箱に移動します。
+ui-inventory-delete-detach-cannot = 着用中のアイテムを取り外して削除できなくなりました。
+ui-inventory-delete-detach-refused = このアイテムは取り外して削除できません。
+ui-inventory-delete-detach-busy = 別のインベントリの変更を処理中です。完了してからもう一度お試しください。
+ui-inventory-delete-detach-timeout = 着用中のアイテムを取り外せなかったため、それらは削除されませんでした。
 ui-environment-sunrise = 日の出
 ui-bars-sunrise = 日の出
 build-ui-tools-link = リンク
@@ -5496,19 +5548,18 @@ inventory-operations-change-sent-but-could-not-read-it-back-reload = 変更を�
 build-ui-tools-linked-edit = リンク編集
 ui-appearance-unsaved-changes = 未保存の変更
 common-edit = 編集
+common-modify = 修正
 build-ui-tools-edit-ctrl-3 = 編集（Ctrl＋3）
 ui-place-details-edit-this-landmark = このランドマークを編集
 ui-appearance-edit-this-outfit = このアウトフィットを編集
 ui-appearance-show-current-outfit = リストに現在のアウトフィットを表示
 ui-appearance-current-outfit-not-in-my-outfits = 現在のアウトフィットは「自分のアウトフィット」に保存されていません
-ui-bars-edit-objects-ctrl-3 = オブジェクトを編集（Ctrl＋3）
 build-ui-tools-edit-parcel = 区画を編集
 ui-context-edit-shape = シェイプを編集
 ui-context-export-shape-xml = シェイプをＸＭＬでエクスポート
 ui-context-edit-outfit = アウトフィットを編集
 ui-context-edit-pbr-material = ＰＢＲマテリアルを編集
 ui-context-edit-land = 土地を編集
-ui-bars-edit-land-ctrl-5 = 土地を編集（Ctrl＋5）
 ui-land-options-edit-land = 土地を編集：
 build-ui-tools-edit-selected-land = 選択した土地を編集
 ui-profile-edit-text = テキストを編集
@@ -5639,6 +5690,10 @@ common-name = 名前
 common-name-2 = 名前：
 ui-appearance-name-a-z = 名前：A→Z
 ui-appearance-name-z-a = 名前：Z→A
+ui-appearance-date-newest-first = 日付：新しい順
+ui-appearance-date-oldest-first = 日付：古い順
+ui-appearance-favorites-to-top = お気に入りを上に
+ui-appearance-images-to-top = 画像ありを上に
 ui-people-name = 名前 [{ $value0 }]
 ui-display-name-current-name = { "現在の名前：" }{ $value0 }{ "　（" }{ $value1 }）
 common-display-name = 表示名
@@ -5761,6 +5816,33 @@ ui-options-screen-indirect-light = 間接光（ＧＴＡＯ）
 ui-options-screen-indirect-intensity = 間接光の強さ
 ui-options-screen-indirect-intensity-help = 周囲の表面が跳ね返す光の量：1が物理的な反射で、高くすると色がより強く出ます
 ui-options-screen-indirect-light-help = 周囲の表面で跳ね返った光（照らされた壁がその横の床に色を付ける）を、変わらないＧＴＡＯのオクルージョンの上に加えます。グラフィックカードで約0.1ミリ秒増加します
+ui-options-ray-tracing = レイトレーシング
+ui-options-ray-traced-shadows = 太陽の影のレイトレーシング
+ui-options-ray-traced-shadows-help = 太陽と月の影を、シャドウマップから読む代わりに光線ごとにトレースします。物が接する部分でも、どの距離でも正確です。影と、レイトレーシング対応のグラフィックカードが必要で、グラフィックカードの負荷が増えます
+ui-options-ray-traced-lights = ローカルライトの影
+ui-options-ray-traced-lights-help = 周囲の点光源（ランプ、ろうそく）の影を付けます。オフでは点光源は影を落としません。「プロジェクターの影」がオンのときは、プロジェクターの影もシャドウマップの代わりにトレースします。レイトレーシングの設定の中で最も負荷が高いため、内蔵グラフィックスではオフのままをおすすめします
+ui-options-rt-quality = レイトレーシングの品質
+ui-options-rt-quality-help = トレースする効果はすべて有効のままです。低い設定ではサンプル数を減らし、間接光を粗いグリッドでトレースするため、性能の低いグラフィックカードでもフレームレートが上がります。「高」はデラックス（RT）と同じ完全な画質です。設定を選ぶと、影を落とすライトの数も変わります
+ui-options-rt-sun-softness = 太陽の影の柔らかさ
+ui-options-rt-sun-softness-help = トレースした太陽の影の縁の柔らかさです。1 は実際の太陽、0 はくっきりした縁で、大きくするほどかすんだ太陽のようになります
+ui-options-rt-lamp-softness = ローカルライトの影の柔らかさ
+ui-options-rt-lamp-softness-help = トレースしたランプの影の縁の柔らかさです。1 は各ランプの大きさに合わせ、0 はくっきりした縁になります
+ui-options-rt-shadow-lamps = 影を落とすライトの数
+ui-options-rt-shadow-lamps-help = 近くのライトのうち、トレースした影を落とす数です。それ以外のライトも照らしますが、影は付きません。少ないほどグラフィックカードの負荷が下がります
+ui-options-ray-traced-indirect = 間接光のレイトレーシング
+ui-options-ray-traced-indirect-help = 周囲の表面で跳ね返った光を、画面に映っていない部分も含めてトレースし、ＧＴＡＯの間接光の代わりに使います
+ui-options-gi-probes = グローバルイルミネーションのプローブ
+ui-options-gi-probes-help = シーン全体に置いたプローブが、何度も跳ね返った光と見えている空を保持します。閉じた部屋は暗いまま、光は角の向こうにも回り込みます。グラフィックカードで約０．８ミリ秒かかります
+ui-options-ray-traced-reflections = 反射のレイトレーシング
+ui-options-ray-traced-reflections-help = 画面に映っていないものの反射を、スクリーンスペース反射の代わりに描きます。スクリーンスペース反射がオンである必要があります
+ui-options-ray-tracing-unsupported = このグラフィックカードまたはドライバはレイトレーシングに対応していません
+ui-options-ray-tracing-vr = ＶＲ用に開始したセッションでは利用できません
+ui-options-tab-ray-tracing = レイトレーシング
+ui-options-deluxe-rt-warning-title = デラックス (RT) をオンにしますか？
+ui-options-deluxe-rt-warning-text = デラックス (RT) は、影と間接光をグラフィックスカードのレイトレーシングで描く「高」です。ハードウェアレイトレーシング対応のカード（NVIDIA RTX、AMD Radeon RX 6000 以降、Intel Arc）と最新のドライバーが必要で、「高」よりはるかに負荷がかかります。ミドルクラスのカードでは、混雑した場所でフレームレートが大きく下がることがあります。レイトレーシングはまだテスト中です。画像がおかしい、またはビューアーが重くなった場合は「高」に戻してください。設定は「レイトレーシング」タブにあります。
+ui-options-deluxe-rt-warning-turn-on = オンにする
+ui-options-ray-tracing-needs-shadows = 影が必要です
+ui-options-ray-tracing-needs-ssr = スクリーンスペース反射が必要です
 ui-perf-ambient-occlusion-reflections-water-mirrors-probes-screen-space-reflections = アンビエントオクルージョン、反射（水面、ミラー、プローブ）、スクリーンスペース反射
 build-ui-texture-occlude-water = 水面を遮蔽
 build-ui-floaters-occlude-water = 水面を遮蔽
@@ -5872,6 +5954,7 @@ ui-chat-participants = 参加者（{ $n }）
 ui-chat-search-or-start = 検索または開始…
 ui-chat-contacts-sub = フレンドとコンタクトセット
 ui-chat-contacts-friends-sub = オンラインのフレンド{ $online }
+ui-chat-contacts-groups-sub = グループ{ $count }
 ui-chat-in-earshot = 聞こえる範囲に{ $n }人
 ui-chat-head-in-earshot = { $n ->
     [one] 聞こえる範囲に{ $n }人
@@ -6139,7 +6222,6 @@ ui-minimap-near = 近く
 common-profile = プロフィール
 ui-context-object-profile = オブジェクトのプロフィール
 ui-appearance-items-object-profile = オブジェクトのプロフィール
-ui-profile-group-profile-coming-soon = グループのプロフィール（近日対応）
 common-place-profile = 場所のプロフィール
 common-profile-2 = プロフィール…
 ui-bars-profile = プロフィール…
@@ -6245,7 +6327,7 @@ ui-options-preset-potato = ポテト
 ui-options-preset-low = 低
 ui-options-preset-medium = 中
 ui-options-preset-high = 高
-ui-options-preset-deluxe = デラックス
+ui-options-preset-deluxe = デラックス (RT)
 ui-options-preset-custom = カスタム
 ui-options-preset-mac-mid-high = 中高（この Mac におすすめ）
 graphics-saved-title = 保存済みグラフィックプロファイル
@@ -6266,6 +6348,13 @@ ui-options-projector-shadow-limit = 影付きプロジェクター数
 ui-options-projector-shadow-limit-help = 同時に影を描画するプロジェクターの上限（1～16）。増やすほどGPU処理時間とビデオメモリ使用量が増えます。
 ui-options-contact-shadows = 接触影
 ui-options-contact-shadows-help = 物が接する部分（地面の足、表面に置かれた物、折り目）に、シャドウマップでは粗すぎて表せない鋭い太陽の影を付けます。グラフィックカードの負荷が少し増えます
+ui-options-soft-shadows = ソフトシャドウ
+ui-options-soft-shadows-help = 影を落とす物と影の距離が離れるほど、太陽の影の縁が現実のように柔らかくなります。高いポールの影は先端ほどぼやけ、足元の影は鮮明なままです。実験的な機能で、デフォルトではオフです。グラフィックカードの負荷が1ミリ秒に満たない程度増えます
+ui-options-shadow-softness = 影のやわらかさ
+ui-options-shadow-softness-help = ソフトシャドウでの光源の大きさです。1は見かけの幅が2.3度の光源で、2はその倍の大きさで影がさらに柔らかくなります（実際の太陽は約0.2）。0は大きさのない光源で、プロジェクターの影も含め、影は従来のままです
+ui-options-shadow-softness-needs-soft = 使うにはソフトシャドウをオンにしてください
+ui-options-shadow-intensity = 影の濃さ
+ui-options-shadow-intensity-help = 太陽の影の暗さです。1は通常の濃さで、小さくすると影に入る光が増えます
 ui-options-when-i-am-away = 一時退席中：
 ui-options-when-the-window-is-not-in-the-foreground-the = ウィンドウが前面にないとき、ビューアは速度を落としてシステムリソースを解放します。デフォルトで有効
 ui-options-glow-amount-instead-of-the-image-red-glow-10 = 画像の代わりにグローの量（赤 = グロー × 10、緑 = × 2）
@@ -6286,6 +6375,8 @@ ui-bars-editable-shortcuts-preferences-shortcuts = 編集可能なショート�
 link-trust-shortened-link-the-real-destination-is-hidden = 短縮リンク：本当の行き先が隠されています。
 demo-root-touch = ルート：タッチ
 build-ui-contents-refresh = リフレッシュ
+build-ui-contents-filters = 中身のフィルター
+build-ui-contents-next-owner-permissions = 次の所有者の権限
 build-contents-create-failed = オブジェクト内にアイテムを作成できませんでした：{ $message }
 build-ui-tools-random = ランダム
 keybinds-zoom-camera-in = カメラをズームイン
@@ -6513,6 +6604,9 @@ controls-shot-name = このカメラ位置の名前
 controls-shot-save = 保存
 controls-shot-save-tip = カメラ位置を保存
 controls-shot-delete = 削除
+controls-position-tip = カメラの位置：アバターの後ろでカメラが止まる位置を正確に設定します
+camera-position-hint = アバターからの距離（メートル）：Ｘは前、Ｙは左、Ｚは上。Ctrl＋ホイールでカメラを上げ、Shift＋ホイールで注視点を上げます。
+camera-position-save = カメラ位置として保存…
 camera-presets = カメラのプリセット
 camera-presets-tip = カメラのプリセット：ショットを保存して再利用
 camera-presets-none = プリセットはまだありません：ショットを構図に収めて、下で保存してください。
@@ -6618,6 +6712,13 @@ ui-inventory-recent-set-period = 期間を指定
 ui-inventory-recent-note-period = 最新：直近{ $days }日{ $hours }時間。
 ui-land-general-reclaim-land = 土地を取り戻す
 common-collapse = 折りたたむ
+common-window-outside = ビューアのウィンドウの外に出す
+common-window-inside = ビューアのウィンドウ内に戻す
+common-window-rename-name = ダブルクリックで名前を変更
+common-carry-hint = クリックでここにドロップ、Escで取り消し
+common-window-paused-photo = 写真モード中は一時停止
+common-window-paused-director = ディレクターの再生中は一時停止
+common-window-paused-interface = インターフェースがオフの間は一時停止
 common-compact-view = 簡易表示
 common-full-view = 全体表示
 ui-inventory-controls-collapse-displayed-folders = 表示中のフォルダを折りたたむ
@@ -6991,6 +7092,9 @@ ui-options-sound-reverb = 周囲の残響
 ui-options-sound-reverb-help = ワールドのサウンドが、いる場所に合わせて響きます。小さな部屋では短く、大きなホールでは長く、屋外ではほとんど響きません。インターフェースのサウンド、ボイスチャット、音楽、メディアは響きません。オフにすると、レガシービューアと同じように、すべてのサウンドが響かずに再生されます。
 ui-inventory-dialogs-ease-out-s = { "イーズアウト：" }{ $value0 }{ "秒" }
 ui-options-audio-output = オーディオ出力
+ui-options-voice-output = ボイス出力
+ui-options-voice-output-used-for-voice-chat = ボイスチャットに使用します。ワールドのサウンド、音楽、メディアにはオーディオ出力を使用します
+ui-options-same-as-audio-output = オーディオ出力と同じ
 ui-options-commands-output-to-a-channel = チャンネルに出力
 ui-places-do-you-really-want-to-teleport-to = { "本当に「" }{ $name }{ "」にテレポートしてもよろしいですか？" }
 build-ui-tools-lift-ctrl = 持ち上げる（Ctrl）
@@ -7413,6 +7517,8 @@ ui-options-modified-reset-text = 変更したすべての設定がデフォル�
 ui-options-modified-reset = 変更済み：クリックでデフォルト値に戻す
 ui-options-open-page = ページを開く
 ui-options-go-to-setting = この設定に移動
+ui-options-copy-setting-link = 設定へのリンクをコピー
+ui-options-setting-unavailable = この設定は利用できません。
 ui-options-show-related = 関連する{ $count }件の設定を表示
 ui-options-hide-related = 関連する{ $count }件の設定を非表示
 ui-options-section-world = ワールドと描画
@@ -7520,6 +7626,7 @@ ui-options-privacy-policy-open = 読む
 ui-options-bars = バー
 ui-options-at-startup = 起動時
 ui-options-no-system-font = なし（同梱フォント）
+ui-options-system-fonts-searching = 検索中…
 ui-options-system-font-help = 同梱フォントの代わりに、このコンピュータにインストールされたフォントを使用
 ui-options-preview = プレビュー
 ui-options-skin-folder = スキンのフォルダ
@@ -7802,6 +7909,8 @@ demo-chat-range-stage = ステージのアナウンサー
 demo-chat-range-object-far = 奥のステージで抽選会が始まります！
 demo-chat-range-kiosk = 案内端末
 demo-chat-range-object-near = タッチするとノートカードを渡します。
+demo-emotes-nova = /me 噴水のそばにベンチを置く
+demo-emotes-orion = ここから見ると素敵！
 demo-chat-bubbles-whisper = ねえ、屋上庭園はもう開いてるよ
 demo-object-chat-greeter = 広場の案内係
 demo-object-chat-welcome = 広場へようこそ！タッチすると今週のイベントのノートカードを差し上げます。
@@ -7866,6 +7975,7 @@ ui-options-magenta-where-a-light-reaches-a-pixel-the-sort-missed = ライトが�
 ui-options-sort-of-the-reflection-probes = 反射プローブの並べ替え
 ui-options-magenta-where-a-probe-covers-a-pixel-the-sort-missed = プローブがピクセルを覆っているのに、そのピクセル用に並べ替えられたプローブに含まれていない部分をマゼンタで表示：１つもないはずです
 ui-context-show-in-inventory = インベントリに表示
+ui-context-show-in-inventory-none = このオブジェクトと完全に同じ名前のオブジェクトはインベントリにありません。
 ui-place-details-show-the-corresponding-location-on-the-map = 対応する場所をマップに表示
 common-view-conversation-history = 会話の履歴を表示
 common-view-profile = プロフィールを表示
@@ -8010,6 +8120,9 @@ photo-light-time = 写真の時刻
 photo-light-time-current = 現在
 photo-light-exposure = 露光
 photo-light-exposure-reset = 初期設定の露出に戻す
+photo-light-shadow-softness = 影のやわらかさ
+photo-light-shadow-intensity = 影の濃さ
+photo-light-shadow-reset = 環境設定の値に戻す
 photo-light-pause-clouds = 雲を止める
 photo-light-pause-clouds-hint = 静止した空にします。セッションの間、解除するまで続きます。
 photo-light-attached = 装着されたライト
@@ -8128,7 +8241,6 @@ photo-looks = フィルタ
 photo-looks-tip = フィルタ：写真の見た目をリアルタイムで表示
 photo-look-none = フィルタなし
 photo-look-strength = 強度
-photo-look-compare = 施行前／施行後
 photo-look-compare-tip = 線の左側はそのままのシーン、右側はフィルタ適用後です。線をドラッグして動かせます
 photo-look-before = 施行前
 photo-look-after = 施行後
@@ -8162,24 +8274,47 @@ photo-look-spotlight = スポットライト
 photo-look-the-matrix = マトリックス
 photo-look-toy-camera = トイカメラ
 photo-look-video = ビデオ
-photo-looks-replace = 選択したものを置き換え
-photo-looks-add = 上に追加
-photo-looks-stack = 有効なルック（{ $count }）
-photo-looks-empty = ルックはまだありません：下から選択してください。
-photo-looks-on-tip = このルックを描画（オフ：リストに残すが描画しない）
-photo-looks-choose-tip = 設定を表示。リストでクリックすると置き換えます
-photo-looks-remove = このルックを外す
-photo-looks-up = 上へ移動（先に描画）
-photo-looks-down = 下へ移動（後に描画）
+photo-looks-replace = 置き換え
+photo-looks-empty = エフェクトはまだありません。下のフィルタにポインタを合わせて試し、クリックするかここへドラッグしてください。
 photo-looks-settings = { $name }の設定
+photo-looks-active = 有効
+photo-looks-count = { $count }／{ $max }
+photo-looks-expand-all = すべて展開
+photo-looks-collapse-all = すべて折りたたむ
+photo-looks-hint = 上から順に適用されます。カードをドラッグするか、カード上でAlt＋↑↓を押すと並べ替えられます。カードを右クリックすると外せます。
+photo-looks-right-click-out = 右クリック：有効なエフェクトから外す
+photo-looks-drop = ここにエフェクトをドラッグするか、下から選んでクリック
+photo-looks-full = { $max }／{ $max }：１つ外すか、「置き換え」をオンにして入れ替えてください。
+photo-looks-catalogue = エフェクトカタログ
+photo-looks-catalogue-tip = エフェクトにポインタを合わせると写真で試せます。クリックで追加、または有効なエフェクトの間へドラッグします
+photo-looks-catalogue-fold = カタログの表示／非表示
+photo-looks-replace-tip = 置き換え：カタログでクリックすると、新しく追加せずに選択中のカードを入れ替えます
+photo-looks-replacing = クリックで{ $name }を入れ替え
+photo-looks-done = 完了
+photo-looks-take-out-zone = ここにドロップして外す
+photo-looks-hide = { $name }を非表示（位置はそのまま）
+photo-looks-show = { $name }を表示
+photo-looks-more = その他の操作
+photo-looks-move-up = 上へ移動
+photo-looks-move-down = 下へ移動
+photo-looks-replace-one = 置き換え…
+photo-looks-take-out = 外す
+photo-looks-not-in-360-tag = ３６０°非対応
+photo-looks-all = すべて
+photo-looks-favorites = お気に入り：星を付けたすべてのエフェクト
+photo-looks-favorites-empty = お気に入りはまだありません。エフェクトにポインタを合わせて星をクリックすると、そのリストの先頭とここに表示されます。
+photo-looks-favorite = お気に入りに追加
+photo-looks-unfavorite = お気に入りから削除
+photo-looks-card = { $name }、{ $count }件中{ $place }番目。Alt＋矢印キーで移動します。
 photo-looks-reset = デフォルト値
-photo-looks-legacy-note = レガシービューアのフィルタには、レガシービューアと同様に強さ以外の設定はありません。
+photo-looks-legacy-note = レガシービューアのフィルタには追加の設定はありません。
 photo-looks-lut-note = ＬＵＴはそのまま適用されます：設定できるのは強さのみです。
 photo-knob-amount = 量
 photo-knob-grain-size = 粒子のサイズ
 photo-knob-contrast = コントラスト
 photo-knob-grain = 粒子
-photo-knob-strength = 強度
+photo-knob-toning = 調色
+photo-knob-local-contrast = ローカルコントラスト
 photo-knob-shadows = 影
 photo-knob-lights = 光源
 photo-knob-middle = 中間調
@@ -8501,6 +8636,7 @@ photo-vf-help-free-camera = フリーカメラ：移動キー、右ボタンを�
 photo-vf-hints = 操作の一覧
 photo-vf-shown = 表示中
 photo-vf-hidden-one = 非表示
+photo-vf-keep-framing = 構図を保持
 photo-vf-dial-focal = 焦点距離
 photo-vf-dial-aperture = 絞り
 photo-vf-dial-exposure = 露光
@@ -8902,6 +9038,7 @@ world-region-message-title = { $name }さんからのリージョンメッセー
 world-region-message-line = { $name }さんからのリージョンメッセージ：{ $message }
 app-was-unblocked-because-you-sent-them-an-im = { $name }{ "にＩＭを送信したため、ブロックが解除されました。" }
 ui-contacts-is-already-your-friend = { $name }{ "はすでにフレンドです。" }
+# { $ending } is the agreement of the French participle: nothing in English
 ui-appearance-not-worn = { $name }は着用されていません{ $ending ->
        *[other] { "" }
     }
@@ -8962,7 +9099,7 @@ common-for-sale = 販売対象：
 ui-land-general-for-sale-to = 販売先：
 ui-profile-coming-soon = 近日対応
 ui-profile-aurora-my-profile = マイプロフィール
-ui-profile-aurora-help = 住人のプロフィール：その人について、その人とできること、そしてお気に入りの場所、クラシファイド広告、ファーストライフ、Webプロフィール、あなたのメモ。初期設定 › Aurora › プロフィールでレガシービューアのウィンドウに戻せます。
+ui-profile-aurora-help = 住人のプロフィール：その人について、その人とできること、そしてピック、クラシファイド広告、ファーストライフ、Webプロフィール、あなたのメモ。初期設定 › Aurora › プロフィールでレガシービューアのウィンドウに戻せます。
 ui-profile-aurora-conversation = 会話
 ui-profile-aurora-call = コール
 ui-profile-aurora-add-friend = フレンドに追加
@@ -8993,7 +9130,7 @@ ui-profile-aurora-their-map = この人をマップで探す
 ui-profile-aurora-their-objects = この人のオブジェクトを修正、削除、取得
 ui-profile-aurora-received-tip = { $right }：{ $state }
 ui-profile-aurora-tab-profile = プロフィール
-ui-profile-aurora-tab-picks = お気に入りの場所
+ui-profile-aurora-tab-picks = ピック
 ui-profile-aurora-tab-classifieds = クラシファイド広告
 ui-profile-aurora-tab-first-life = ファーストライフ
 ui-profile-aurora-tab-web = Web
@@ -9026,12 +9163,9 @@ ui-profile-aurora-unsaved = 保存されていない変更（{ $parts }）
 ui-profile-aurora-part-bio = 自己紹介
 ui-profile-aurora-part-first-life = ファーストライフ
 ui-profile-aurora-part-notes = メモ
-ui-profile-aurora-part-places = { $count ->
-    [one] { $count }件の場所
-   *[other] { $count }件の場所
-    }
+ui-profile-aurora-part-places = { $count }件のピック
 ui-profile-aurora-part-classified = クラシファイド広告
-ui-profile-aurora-snapshot = 場所の画像
+ui-profile-aurora-snapshot = 画像
 ui-profile-aurora-teleport = テレポート
 ui-profile-aurora-description = 説明
 ui-profile-aurora-category = カテゴリ
@@ -9047,11 +9181,11 @@ ui-profile-aurora-copy-slurl = Slurlをコピー
 ui-profile-aurora-here = ここでの自分の位置
 ui-profile-aurora-add-here = 現在地を追加
 ui-profile-aurora-picks-count = { $limit }件中{ $count }件（アカウントの上限）
-ui-profile-aurora-picks-empty = お気に入りの場所はまだありません
-ui-profile-aurora-picks-empty-text = { $name }は場所を共有していません。
-ui-profile-aurora-picks-empty-own = お気に入りの場所を共有しましょう
-ui-profile-aurora-picks-empty-own-text = 他の住人があなたのプロフィールで見て、ワンクリックでテレポートできます。
-ui-profile-aurora-delete-pick = 場所「{ $name }」を削除しますか？
+ui-profile-aurora-picks-empty = まだピックはありません
+ui-profile-aurora-picks-empty-text = { $name }はピックを公開していません。
+ui-profile-aurora-picks-empty-own = 大切なものを紹介しましょう
+ui-profile-aurora-picks-empty-own-text = お気に入りの場所や人、大切にしていることをピックで紹介できます。
+ui-profile-aurora-delete-pick = ピック「{ $name }」を削除しますか？
 ui-profile-aurora-classifieds-empty = クラシファイド広告なし
 ui-profile-aurora-classifieds-empty-text = { $name }はクラシファイド広告を掲載していません。
 ui-profile-aurora-classifieds-empty-own = 場所やサービスを宣伝しましょう
@@ -9373,6 +9507,8 @@ cli-help = { "SunSetビューア\u000A\u000A使い方：aurora-viewer [--title <
 demo-media-page = { "data:text/html;charset=utf-8,<html><body style='margin:0;height:100vh;background:linear-gradient(135deg,%232a1f4a,%230f6d6d);color:white;font:56px sans-serif;text-align:center'><h1 style='margin:40px 0 10px'>Auroraメディア</h1><p id='t' style='font-size:90px;margin:10px'>--</p><button onclick=\"document.body.style.background='%237a3b9c';this.textContent='クリックされました！'\" style='font-size:48px;padding:10px 40px'>クリック</button><br><input placeholder='ここに記入' style='font-size:44px;margin-top:30px;width:70%'><script>setInterval(function(){document.getElementById('t').textContent=new Date().toLocaleTimeString()},250)</script></body></html>" }
 demo-nearby-media-page-cinema = { "data:text/html;charset=utf-8,<html><head><title>広場の映画館</title></head><body style='margin:0;height:100vh;background:%23402060;color:white;font:64px sans-serif;text-align:center'><h1 style='margin-top:180px'>映画館</h1></body></html>" }
 demo-nearby-media-page-next-door = { "data:text/html;charset=utf-8,<html><head><title>隣の区画</title></head><body style='margin:0;height:100vh;background:%23205040;color:white;font:64px sans-serif;text-align:center'><h1 style='margin-top:180px'>隣の区画</h1></body></html>" }
+
+# Secondary labels and status messages
 status-none-touch-touch = NONE／TOUCH：タッチ
 status-close = × 閉じる
 status-back = « 戻る
@@ -9430,6 +9566,8 @@ status-other = （その他）
 status-none-2 = （なし）
 status-cmd-x-y-z-name = cmd <x, y, z> | 名前
 status-jeans-substance-textures-and-accessories-in = JEANS_SUBSTANCE‐元のフォルダにあるテクスチャとアクセサリー
+
+# Counts use Fluent plural rules
 contents-count = { $count ->
     [0] 中身（アイテムなし）
     [one] 中身（{ $count }個のアイテム）
@@ -9909,6 +10047,8 @@ monitor-media-face = メディアの面・{ $what }
 monitor-media-search = 検索ページ
 monitor-media-marketplace = マーケットプレイス
 monitor-media-profile = プロフィールのWebページ
+
+# Independent crash recovery window
 crash-title = SunSetビューア‐クラッシュレポート
 crash-heading = SunSetビューアが予期せず停止しました
 crash-explanation = セッションは終了しました。以下の詳細が問題の特定に役立つ場合があります。
@@ -9957,6 +10097,7 @@ crash-report-actual = SunSetビューアが予期せず停止しました。
 crash-report-reason = クラッシュの種類
 crash-report-exit-code = プロセスの終了コード
 bug-log-native = ネイティブ例外
+## Viewer update
 update-demo-badge = プレビュー・デモ用のバージョン
 update-title = アップデートがあります
 update-downloading-title = アップデートをダウンロードしています
@@ -10091,6 +10232,7 @@ inventory-permissions-allowed = 許可
 inventory-permissions-denied = 不可
 inventory-permissions-detail = { $right }：{ $state }
 inventory-permissions-unavailable = 元のアイテムの権限は利用できません（壊れているか、読み込まれていないリンク）。
+
 script-menu-file = ファイル
 script-menu-edit = 編集
 script-menu-help = ヘルプ
@@ -10111,6 +10253,7 @@ script-search-query = 検索
 script-search-replacement = 置き換え
 script-search-insensitive = 大文字と小文字を区別しない
 script-search-up = 上方向に検索
+script-search-whole-words = 単語全体のみ
 script-search-find = 検索
 script-search-replace = 置き換え
 script-search-replace-all = すべて置き換え
@@ -10188,6 +10331,7 @@ script-color-compound = 複合定数
 script-color-control = 制御フロー
 script-color-preprocessor = プリプロセッサ
 script-color-variable = 変数
+
 script-preproc-processing = スクリプトを前処理しています…
 script-preproc-failed = 前処理に失敗しました。ソースは保持されています。
 script-preproc-expression = プリプロセッサの条件に無効な整数式があります。
@@ -10201,9 +10345,11 @@ script-preproc-include-no-transfer = インクルードするスクリプトは�
 script-preproc-include-timeout = インクルードするスクリプトの読み込みがタイムアウトしました。
 script-preproc-cancelled = 前処理がキャンセルされました。
 script-preproc-lsl-extension = switch文または遅延リストの構文が無効です。
+
 script-debug-title = スクリプトのデバッグ
 script-debug-all = 全てのオブジェクト
 script-debug-clear = クリア
+
 script-help-forward = 次へ
 replace-button = このプリムを置き換え
 replace-button-short = 置換
@@ -10277,6 +10423,8 @@ replace-timeout = サーバーが30秒以内に「{ $stage }」を確認しま�
 replace-restored-after-error = { $reason }元の構成とスクリプトの状態を復元しました。一時的なコピーはインベントリに保持されています。
 replace-stopped-before-unlink = { $reason }リンクは解除されていません。元のスクリプトの状態を復元し、一時的なコピーはインベントリに保持されています。
 replace-recovery-incomplete = 復元が不完全です：{ $reason }シーン内のパーツと、停止したままのスクリプトを確認してください。
+
+# Compact build workspace
 build-compact-title = ビルド
 build-workspace-title = 建築
 build-workspace-object = オブジェクト
@@ -10297,7 +10445,9 @@ build-compact-summary-details = －{ $capacity }　{ $counts }
 build-compact-link-action = リンク
 build-compact-unlink-action = リンク解除
 build-compact-link-value = リンク{ $number }
-build-compact-face-value = 面{ $number }
+build-face-button = 面{ $number }：選択中のすべてのプリムでこの面を選択。Shift＋クリックで追加／解除。
+build-face-invert = 選択した面を反転
+build-face-all = すべての面を選択
 build-compact-move = 移動
 build-compact-rotate = 回転（Ctrl）
 build-compact-stretch = 引き延ばす (Ctrl＋Shift)
@@ -10429,13 +10579,17 @@ build-compact-copy-hint = Shift＋ドラッグ：コピー
 build-compact-create-hint = クリック：作成
 build-compact-land-hint = 長押し：ペイント
 build-compact-drag-hint = ワールド内でドラッグ
+
+# Compact build inspector, C3
 build-c3-remaining = 利用可能{ $remaining }
 build-c3-emission-options = 放射とオプション
 build-c3-maps-tints = マップと色合い
 build-c3-texture-transform = テクスチャの変形
 build-c3-material-assigned = ＰＢＲマテリアルを適用済み
 build-c3-choose = 選択…
+
 workspace-inventory-selected = { $count }個を選択中
+
 workspace-land-identity = 識別情報と所有権
 workspace-land-sale = 販売と情報
 workspace-land-actions = 区画の操作
@@ -10445,6 +10599,7 @@ workspace-outfit-items =
         [one] { $count }個のアイテム
        *[other] { $count }個のアイテム
     }
+
 ui-inventory-received-purchases = 受け取ったアイテム
 ui-inventory-no-received-purchases = 受け取ったアイテムはまだありません。
 import-local-settings = メッシュの読み込み設定
@@ -10455,6 +10610,7 @@ ui-context-save-backup = バックアップ
 ui-context-save-collada = Collada
 ui-context-save-obj = OBJ
 ui-context-remove-from-display-exceptions = 表示の例外から削除する
+
 script-color-hint = 色の可能性があります：クリックでカラーピッカーを開きます。
 script-edit-line-comment = 行コメントを切り替え（Ctrl＋KまたはCtrl＋/）
 script-edit-block-comment = ブロックコメントを切り替え（Ctrl＋Shift＋K）
@@ -10538,7 +10694,9 @@ people-view-sort-options = 表示／並べ替えのオプション
 people-filter-by-name = 名前で絞り込む…
 people-edit-contact-hold = マウスの左ボタンを長押しするとコンタクトの設定を編集します。
 people-show-contact-sheet = コンタクトの詳細を表示
+people-show-group-sheet = グループの詳細を表示
 people-contact-details-empty = 表示するコンタクトはありません
+people-group-details-empty = 表示するグループはありません
 people-view-rich = リッチな行
 people-view-compact = コンパクト（１人につき１行、大人数向け）
 people-alerts-options = 警告とオプション
@@ -10598,6 +10756,7 @@ people-groups-count-unlimited = { $count ->
 people-groups-none = アクティブなグループなし
 people-groups-none-sub = 名前の上にタイトルを表示しない
 people-groups-active-tag = 有効
+people-groups-deactivate = 無効化
 people-groups-active = アクティブなグループ
 people-groups-member = メンバー
 people-groups-title = タイトル：{ $title }
@@ -10670,6 +10829,10 @@ radar-col-seen-short = 最終確認
 radar-col-range-short = 距離
 ui-options-camera-reset-all = カメラをリセット
 ui-options-camera-reset-all-tip = このページのすべての設定をデフォルトに戻します：後方ビュー、カメラの位置と注視点、視野角、距離、平滑化、制限、マウスルック。
+ui-chat-close-all-ims = すべての IM 会話を閉じる
+ui-chat-close-all-ims-question = すべての IM 会話を閉じて通話を終了しますか？
+ui-chat-confirm-close-all-ims = すべての IM 会話を閉じる前に確認する
+ui-chat-confirm-close-all-ims-help = 音声通話中の会話があるときは、すべての IM 会話を閉じる前に確認します。
 ui-chat-close-conversation = 会話を終える
 ui-chat-close-conversation-leave = 会話を閉じる（セッションから退出）
 ui-chat-snooze = スヌーズ
@@ -10803,6 +10966,10 @@ ui-options-aurora-controls = カメラと移動の操作
 ui-options-aurora-controls-help = カメラと移動のウィンドウ。
 ui-options-aurora-controls-aurora = SunSet
 ui-options-aurora-controls-classic = クラシックなウィンドウ（レガシー）
+ui-options-aurora-controls-compact = コンパクトなカメラ操作
+ui-options-aurora-controls-compact-help = 操作ウィンドウをカメラのコンパクト表示（ジョイスティック、ズーム、傾き）で開きます。タイトルバーのボタンでコンパクトと全体表示を切り替えると、この設定も変わります。クラシックなウィンドウでは、代わりにレガシービューアの小さなカメラウィンドウで開きます。
+ui-options-aurora-controls-compact-movement = コンパクトな移動操作
+ui-options-aurora-controls-compact-movement-help = 操作ウィンドウの移動タブをコンパクト表示（移動ボタンと歩く・走る・飛ぶ）で開きます。タイトルバーのボタンでコンパクトと全体表示を切り替えると、この設定も変わります。
 ui-options-aurora-restart-alert = 再起動の警告
 ui-options-aurora-restart-alert-help = カウントダウン付きのカード、またはレガシービューアの中央に表示される黄色いボックス。
 ui-options-aurora-restart-card = カード
@@ -12233,7 +12400,7 @@ ui-group-notices-saved = 保存済み
 ui-group-notices-attachment = 添付物
 ui-group-notices-subject = 件名
 ui-group-notices-message = メッセージ…
-ui-group-notices-drop = インベントリからアイテムをドラッグ（コピー＋譲渡可）
+ui-group-notices-drop = インベントリ、お気に入り、場所からアイテムまたはランドマークをドラッグ（コピー・譲渡可）
 ui-group-notices-not-attachable = このアイテムは添付できません：コピー可能かつ譲渡可能で、着用していないものである必要があります。
 ui-group-notices-remove-attachment = 添付を削除
 ui-group-notices-send = { $count ->
@@ -12437,6 +12604,8 @@ group-ability-experience-admin = 体験の管理者
 group-ability-experience-admin-help = この能力を持つ役割のメンバーは、体験のメタデータを編集できます。
 group-ability-experience-contributor = 体験の貢献者
 group-ability-experience-contributor-help = この能力を持つ役割のメンバーは、体験にスクリプトを提供できます。
+
+## Buying L$
 currency-title = L$ の購入
 currency-region-helper = このリージョンは独自の通貨サービス（{ $host }）を使っています。ここでの購入はあなたとそのサービスとの取引で、そのサービスにはセッション（求められた場合はパスワードも）が送られます。信頼できる場合のみ購入してください。
 currency-service = 通貨サービス: { $host }
@@ -12518,6 +12687,8 @@ currency-confirm-password = パスワードを再入力してＯＫをクリッ�
 currency-bought = { "お支払いありがとうございます！\u000A\u000A処理が完了するとL$の残高が更新されます。処理に２０分以上かかった場合、取引はキャンセルされる場合があります。その場合、購入金額は米ドル残高に入金されます。\u000A\u000A支払いの状況は、アカウントの取引履歴ページで確認できます。" }
 demo-currency-refused = L$購入サービスの拒否をシミュレートしました（デモ）。
 demo-pay-message = コンサートをありがとう ✨
+
+## Buying land
 buy-land-title = 土地の購入
 buy-land-help = 選択した土地を購入します：購入によって何が起こるか、不動産の約款、そして購入。
 buy-land-purchase = 購入
@@ -12589,6 +12760,7 @@ demo-buy-land-plan-annual = プレミアム、米ドル99.00／年、毎年請�
 demo-buy-land-land-use-up = 毎月の土地使用料を米ドル15.00／月に増やします。
 demo-buy-land-land-use-same = 土地使用料は変わりません。
 demo-buy-land-bought = 土地の購入をシミュレートしました：区画はあなたのものです（デモ）。
+
 import-permissions-tab = 権限
 import-permissions-help = これらの設定は、アップロードするテクスチャ、サウンド、アニメーション、マテリアル、メッシュに適用されます。
 import-permissions-sharing = 共有
@@ -12606,6 +12778,8 @@ import-lod-retained = { $percent }％を保持
 import-mesh-account-denied = このアカウントはメッシュのアップロードを許可されていません。
 import-fix-errors-before-upload = アップロードの前にファイルのエラーを修正してください。
 import-price-pending = この種類のアセットのアップロード料金は利用できません。
+
+# Gesture manager and editor
 gesture-title = ジェスチャー
 gesture-trigger = トリガー
 gesture-key = キー
@@ -12741,6 +12915,8 @@ gesture-builtin-wink-hollywood = ウィンク（ハリウッド）
 gesture-builtin-express-worry = 心配する
 gesture-builtin-yes-happy = 笑顔で頷く
 gesture-builtin-yes-head = はい
+
+# Shape editor
 shape-title = シェイプを編集
 shape-less = 少なく
 shape-more = 多く
@@ -13031,6 +13207,8 @@ shape-param-880-max = アップ
 shape-param-11001-label = ホバー
 shape-param-11001-min = 低く
 shape-param-11001-max = 高く
+
+# Physics wearable editor (LLPanelEditWearable, panel_edit_physics.xml)
 physics-title = 物理効果を編集
 physics-help = 動いたときの胸、お腹、お尻の弾みや揺れを設定し、アバターで確認してから、物理効果のレイヤーをインベントリに保存します。
 physics-group-breasts-bounce = 胸の弾み
@@ -13073,6 +13251,8 @@ physics-other-editor = 先に開いているエディタの変更を保存また
 physics-new-name = 新しい物理効果
 physics-creating = 物理効果のレイヤーを作成しています…
 physics-demo-name = Aurora物理効果
+
+# Compact texture and material library
 texture-library-title = ライブラリ
 resource-preview-fit = ウィンドウに合わせる
 resource-preview-custom-ratio = カスタムの比率
@@ -13135,16 +13315,21 @@ texture-library-demo-oak = 天然オーク
 texture-library-demo-marble = カラカッタ大理石
 texture-library-demo-brass = ブラッシュド真鍮
 texture-library-demo-linen = 天然リネン
+
 texture-library-demo-sources = デモ用マテリアル
 texture-library-folder-error = 一部のフォルダを読み込めませんでした。
 texture-library-manage = インベントリで整理
 texture-library-content-hint = フォルダ名は慣例です：サポートされているすべての種類は、Aurora Libraryのどこにでも保存できます。
 texture-library-demo-polished = 研磨
+
 texture-library-click-hint = クリックすると、編集モードで選択した面に適用します。
 texture-library-no-copy-multiple = コピー不可のテクスチャやマテリアルは、一度に１つのオブジェクトにしか適用できません。
 texture-library-wait-selection = オブジェクトの中身を読み込んでいます。読み込みが終わったら、もう一度リソースをクリックしてください。
+
 texture-library-material-drag = ドラッグ
 texture-library-material-drag-hint = このハンドルを面にドラッグするとマテリアルを適用します。プレビュー自体をドラッグすると回転します。
+
+# Object editor presentation
 build-compact-general = 一般
 build-compact-select-face = 面を選択
 build-compact-grab = 移動
@@ -13185,6 +13370,7 @@ voice-show-self = 自分のボイスのビジュアライザを表示
 voice-show-dot = アバターの上にボイスのドットを表示
 voice-show-in-calls = 通話中もワールドのインジケーターとリップシンクを表示
 voice-show-conversation = 会話タブにボイスの状態を表示
+
 movelock-title = 位置のロック
 movement-title = 移動の強化（試験的）
 movement-running = 走行を強化
@@ -13323,6 +13509,7 @@ bridge-request-http = シミュレーターがブリッジのリクエストを�
 bridge-request-gone = リージョンの変更によりブリッジのアドレスが変わりました。再接続しています。
 bridge-request-response = ブリッジが読み取れない、または不完全な状態を返しました。再試行しています。
 bridge-request-sequence = ブリッジのレスポンスが送信したコマンドと一致しません。再試行しています。
+
 ao-design-title = ＡＯのレイアウト検討
 ao-design-help = 現在のネイティブＡＯウィンドウと、２つの移動のレイアウトを比較します。既存のＡＯの操作は同じウィンドウとウィジェットを使います。
 ao-design-current = 現在のウィンドウ
@@ -13338,11 +13525,15 @@ ao-design-session = オフラインのプロトタイプ。移動の値は一時
 ao-design-movement-help = 各移動の補助は独立しています。ＡＯの有効化でアニメーションの再生を制御します。
 ao-design-animation-help = 水泳アニメーションは、ＡＯの水泳の状態でインベントリのリストを使って選択します。
 ao-design-passage = プレビューのみ：ここで障害物の通り抜けのリクエストが送信されます。
+
+# Integrated AO movement tab.
 ao-tab-animations = アニメーション
 ao-tab-movement = 移動（試験的）
 ao-movement-help = 移動の補助は、ＡＯの他のアニメーションとは独立して設定します。
 movement-pass-enable = 障害物の通り抜け
 movement-fly-help = ×１では通常の飛行のままです。×５まで上げると速く飛べます。
+
+# Authenticated read-only Aurora bridge queries.
 radar-opt-bridge = Auroraブリッジで不明な高度を補正
 bridge-script-info-loading = Auroraブリッジでスクリプトの情報を取得しています…
 bridge-script-info-region = スクリプトの情報は、現在いるリージョンのオブジェクトについてのみ利用できます。
@@ -13379,7 +13570,14 @@ bridge-object-info-result =
     あなたの現在位置：{ $observer }
 bridge-query-timeout = ブリッジが要求した情報を時間内に返しませんでした。再試行してください。
 bridge-query-interrupted = リージョンまたはブリッジの接続の変更により、情報のリクエストが中断されました。再試行してください。
-ao-bootstrap-interrupted = #Aurora に未完了のＡＯのインポートがすでにあります。再試行する前にインベントリで確認してください。
+ao-import-unfinished-retry = #Aurora/{ $folder }に未完了のＡＯのインポートがすでにあります。再試行する前に、ＡＯウィンドウの復旧通知を使用してください。
+ao-unfinished-import = #Aurora/{ $folder }に未完了のＡＯのインポートがあります（{ $count }セット）。
+ao-finish-import = インポートを完了
+ao-show-in-inventory = インベントリで表示
+ao-duplicate-native = 別の#Aurora/{ $folder }フォルダに{ $count }セットあります。現在のＡＯフォルダに統合しますか？
+ao-native-already-exists = Aurora ＡＯフォルダはすでにあります。再度移行せず、ＡＯウィンドウで選択してください。
+
+# Guided AO editor
 ao-states = 状態
 ao-combine = 組み合わせ…
 ao-combine-title = アニメーションを組み合わせる
@@ -13428,6 +13626,8 @@ movement-run-speed = 走行速度
 movement-flight-speed = 飛行速度
 ao-combine-group-choice = 複数のアニメーションを同時に再生
 ao-combine-track-choice = 独立したサイクルを追加
+
+# Construction inspector and resource picker
 numeric-increase = 増やす
 numeric-decrease = 減らす
 build-status-no-mod = 修正不可
@@ -13439,8 +13639,11 @@ picker-inventory-tab = インベントリ
 picker-local-tab = ローカル
 picker-aurora-tab = Auroraライブラリ
 picker-empty-library = Auroraライブラリは空です。
+
 build-link-pending = リンクを要求しました‐シミュレーターを待っています。
 build-link-unconfirmed = シミュレーターがリンクを確認しませんでした。
+
+# Local visual water
 water-effects-title = 水面
 water-effects-enabled = 強化された水面のエフェクト
 water-effects-help = リージョンの水面のローカルなエフェクトです。オブジェクトとアバターはシミュレーターの物理のままです。
@@ -13454,10 +13657,15 @@ water-effects-interactions = オブジェクトとアバターの波紋／航跡
 water-effects-caustics = 水中のコースティクス
 water-effects-splashes = 水しぶき
 water-effects-bubbles = 水中の泡
+
 water-effects-medium = 中
+
 water-effects-absorption = 深さによる色と水中のフォグ
 water-effects-fresnel = 視野角に応じた反射
+
 water-effects-wet-ground = 岸沿いの濡れた地面
+
+# Unified inventory library type filter
 texture-library-animations = アニメーション
 texture-library-sounds = サウンド
 texture-library-notecards = ノートカード
@@ -13467,6 +13675,8 @@ texture-library-types-all = すべての種類
 texture-library-types-none = 種類をクリア
 texture-library-types-count = { $count }種類
 texture-library-open-hint = ダブルクリックで開く。オブジェクトの中身にドラッグ、またはCtrl＋ドラッグでオブジェクトに。
+
+# Import inspector layout and actual model diagnostics.
 import-preview-settings = プレビューのオプション
 import-section-avatar = アバター
 import-section-journal = ジャーナル
@@ -13495,9 +13705,14 @@ import-log-loaded = { $models ->
 import-log-calculating = モデルのデータを計算しています。
 import-log-lod-ready = ＬｏＤ{ $level }：{ $triangles }個の三角形を準備しました。
 import-log-model-detail = { $model }個のモデル、ＬｏＤ{ $level }：{ $vertices }個の頂点、{ $faces }個の面。
+
 import-collision-analyze = 分析
 import-collision-analyzing = 分析中…
+
 import-fill-mode = 塗りつぶしモード
+
+# Local skeletal authoring
+# Local photo poser
 poser-title = ポーザー
 poser-new-name = 新しいポーズ
 poser-local-hint = アバターをローカルでポーズさせます。ループする.animを保存するか、インポートのプレビューを準備します。
@@ -13711,6 +13926,7 @@ poser-face = 顔
 poser-hands = 手
 poser-misc = その他のボーン
 poser-search = ボーンを検索…
+poser-face-position-drag = ドラッグすると 1 ピクセルにつき 0.1 mm ずつ関節が移動します。クリックすると位置を入力できます。
 poser-position = ローカルの位置（ｍ）
 poser-rotation = ローカルの回転角（度）
 poser-markers = ジョイントのマーカーとギズモを表示
@@ -13796,6 +14012,7 @@ poser-part-tail = 尻尾
 poser-other-none = 装着中のメッシュはこれらのボーンを使っていません。
 poser-other-inner = 体の内側のボーン（背骨・股・頭蓋骨）は大きいウィンドウ⤢にあります。
 poser-more-people = ほか{ $count }人
+
 ik-edit-title = ＩＫ編集
 ik-edit-gizmo-hint = 矢印／平面をドラッグして移動します。Ctrlで回転リング、Shiftで点を自由にドラッグ。Alt：カメラ。
 ik-edit-move = 移動
@@ -13833,10 +14050,14 @@ ik-edit-reset-bone = このボーンをリセット
 ik-edit-reset-all = ポーズをリセット
 ik-edit-error = 目標との距離：{ $distance }㎜。チェーンを調整するか、直接移動を使ってください。
 ik-edit-root = ＩＫチェーンのルート
+
 ik-edit-enable-limbs = 各手足を有効にする
 ik-edit-enabled = この拘束を適用
 ik-edit-weight = 目標の強さ
+
+
 ik-edit-copy-config = 完全なＩＫスクリプトをコピー
+
 ik-edit-set-body = 胴体／頭
 ik-edit-set-spine = 拡張された背骨
 ik-edit-set-face = 顔
@@ -13852,6 +14073,7 @@ ik-edit-visibility-hint = コントロールの表示／非表示のみです。
 ik-edit-show-all = すべて
 ik-edit-show-none = なし
 ik-edit-body-preset = 人間
+
 ik-edit-tab-pose = ポーズ
 ik-edit-tab-animations = アニメーション
 ik-edit-tab-visible = ディスプレイ
@@ -13870,6 +14092,8 @@ ik-edit-animation-inventory-hint = アニメーションフォルダがここに
 ik-edit-animation-frame = フレーム（30fps）
 ik-edit-animation-demo-first = 頭を回す
 ik-edit-animation-demo-second = 頭を傾ける
+
+
 anim-edit-title = アニメーションエディター
 anim-edit-new-name = 新しいアニメーション
 anim-edit-imported-name = インポートしたアニメーション
@@ -13942,11 +14166,20 @@ anim-picker-hands = 手
 anim-picker-face = 顔
 anim-picker-right = 右
 anim-picker-left = 左
+
+
 ik-edit-selected = 選択したボーン：{ $bone }
 ik-edit-options = オプション
+
+
 ao-underwater-swimming = 水中を泳ぐ
 ao-underwater-swimming-fallback = ここにアニメーションが割り当てられるまで、水面を泳ぐリストを使います。
+
 ao-quick-manager = 設定
+ao-mini-title = ミニＡＯ
+ao-now-playing = { $state }：{ $name }
+ao-now-playing-none = { $state }：アニメーション未選択
+ao-quick-pin = ミニＡＯウィンドウを開く
 ao-quick-previous = 前のアニメーション（{ $state }）
 ao-quick-next = 次のアニメーション（{ $state }）
 ao-quick-cycle = 自動的に切り替え（{ $state }、{ $seconds }秒ごと）
@@ -13956,6 +14189,8 @@ ao-category-ground = 地上
 ao-category-jumping = ジャンプ
 ao-category-flight = 飛ぶ
 ao-category-water = 泳ぐ
+
+# Experimental received inventory filing.
 received-filing-title = 受け取ったアイテム
 received-filing-enabled = 新しく届いたものを送信者ごとに整理
 received-filing-help = 新しいアイテムとフォルダを #Aurora/Received items/<レガシー名> に整理し、種類ごとの通常の保存先より優先します。スクリプトからの配送はオブジェクトの所有者を使います。オフライン中の配送はログイン後に整理されます。空になった送信者のフォルダはゴミ箱に移動します。既存のアイテムはそのままです。
@@ -14020,39 +14255,14 @@ anti-spam-blocked-burst = { $count ->
     [one] スパム対策により、このセッションの間{ $count }件の送信元をブロックしました（{ $kinds }）。ブロックは「初期設定」＞「保護」＞「スパム対策」で管理できます。
    *[other] スパム対策により、このセッションの間{ $count }件の送信元をブロックしました（{ $kinds }）。ブロックは「初期設定」＞「保護」＞「スパム対策」で管理できます。
 }
+
+# IK Edit animation layers
 ik-profile-drag-animation = ドラッグで並べ替え
 ik-project-replace-animation = 見つからないアニメーションを置き換え（フレームと順番は維持）
+
 rlva-title = ＲＬＶａ‐スクリプトによる制限
-rlva-anonym-a-resident = ある住人
-rlva-anonym-this-resident = この住人
-rlva-anonym-that-resident = その住人
-rlva-anonym-an-individual = ある個人
-rlva-anonym-this-individual = この個人
-rlva-anonym-that-individual = その個人
-rlva-anonym-a-person = ある人
-rlva-anonym-this-person = この人
-rlva-anonym-that-person = その人
-rlva-anonym-a-stranger = 見知らぬ人
-rlva-anonym-this-stranger = この見知らぬ人
-rlva-anonym-that-stranger = その見知らぬ人
-rlva-anonym-a-being = ある存在
-rlva-anonym-this-being = この存在
-rlva-anonym-that-being = その存在
-rlva-anonym-an-agent = あるエージェント
-rlva-anonym-this-agent = このエージェント
-rlva-anonym-that-agent = そのエージェント
-rlva-anonym-a-soul = ある魂
-rlva-anonym-this-soul = この魂
-rlva-anonym-that-soul = その魂
-rlva-anonym-somebody = 誰か
-rlva-anonym-some-people = ある人々
-rlva-anonym-someone = 何者か
-rlva-anonym-mysterious-one = 謎めいた者
-rlva-anonym-an-unknown-being = 未知の存在
-rlva-anonym-unidentified-one = 正体不明の者
-rlva-anonym-an-unknown-person = 未知の人物
-rlva-hidden-region = （非表示のリージョン）
-rlva-hidden-parcel = （非表示の区画）
+rlva-hidden-region = （リージョン非表示）
+rlva-hidden-parcel = （区画非表示）
 rlva-enable = ＲＬＶａを有効にする
 rlva-enable-hint = RestrainedLoveのコマンドで、オブジェクトがビューアの操作を制御できるようにします。ロックされたセッションでは、最後の位置でのログインが必要になる場合があります。デフォルトで無効。
 rlva-session-hint = ＲＬＶａをオフにすると、すべての制限がすぐに解除され、次回ログイン時の制約も消去されます。
@@ -14067,11 +14277,7 @@ rlva-im-query-title = ＲＬＶａの制限を共有しますか？
 rlva-im-query-body = { $name }が、有効なスクリプトによる制限または例外のリストを求めています。この情報をプライベートメッセージで送信してもよいですか？
 rlva-im-share-once = 今回だけ共有
 rlva-im-share-always = 共有して記憶
-rlva-im-denied = 相手は有効なＲＬＶａの制限の共有を拒否しました。
-rlva-im-list-suffix = （有効な例外のリストを見るには @except を使用してください。）
-rlva-im-no-restriction = 相手は @startim の制限を受けていません。
-rlva-im-ended-remote = 相手側の会話は終了しました。
-rlva-im-ended-local = { $name }が @stopim で会話をリモートで閉じました。
+rlva-im-ended-local = { $name }さんは、ＩＭによる会話を@stopimで終了しました。
 rlva-shared-wear = ポイント名のない共有オブジェクトを着用
 rlva-auto-rename = 着用時に共有の装着物に名前を付ける
 rlva-shared-offers = #RLVへのインベントリの贈り物を許可
@@ -14148,13 +14354,10 @@ rlva-compatibility-hint = creator:<UUID> または name:<正規表現> のエン
 rlva-env-locks-hint = スクリプトが個人的な光源の操作にロックを追加・削除できるようにします。レガシービューアと同様に、環境の強制コマンドは引き続き利用できます。
 rlva-temp-controllers = 一時的なＲＬＶａの装着物を許可
 rlva-temp-controllers-hint = あらゆる出所の一時的な装着物がＲＬＶａのコマンドを発行できるようにします。体験の装着物は最低レーティングとブロックリストにも従います。
-rlva-im-blocked-receive = *** ＩＭはあなたのビューアによってブロックされました
-rlva-im-blocked-send = *** ＩＭは送信者のビューアによってブロックされました
-rlva-im-blocked-receive-remote = メッセージを送った住人は現在、あなたのインスタントメッセージを読めない状態です。後でもう一度お試しください。
-rlva-im-blocked-teleport-remote = その住人は現在、受け入れられない状態です。後でもう一度お試しください。
-rlva-blocked-script-dialog = ＲＬＶａの制限により、スクリプトによるダイアログやテキストボックスは表示できません。
+rlva-im-blocked-receive = ※ＩＭはビューアによってブロックされています。
+rlva-blocked-script-dialog = ＲＬＶの制限により、スクリプトによるダイアログやテキストボックスは表示できません。
 rlva-blocked-autopilot = ＲＬＶａの制限により、オートパイロットは使用できません。
-rlva-blocked-nearby = ＲＬＶａの制限により、近くにいるアバターの存在を確認できません。
+rlva-blocked-nearby = ＲＬＶの制限により、近くにいるアバターの存在を確認できません。
 rlva-hidden-generic = （非表示）
 rlva-experience-maturity = コントローラーの体験の最低レーティング
 rlva-experience-maturity-hint = 「なし」はすべての体験のコントローラーを拒否します。デフォルトはModerateとAdultの体験を受け付けます。
@@ -14172,6 +14375,24 @@ rlva-hide-layers-hint = 外せない衣類のレイヤーを存在しないも�
 rlva-add-prefix = 追加用のフォルダの接頭辞
 rlva-replace-prefix = 置き換え用のフォルダの接頭辞
 rlva-prefix-hint = このテキストで始まるフォルダのスクリプトによる着用モードを上書きします。空欄で無効。.name のような隠しフォルダの接頭辞は無視されます。
+rlva-tools-retained = ログイン完了まで保留
+rlva-read-at-login = 変更は次回のログインから有効になります。
+rlva-debug-commands-chat = 各コマンドはオブジェクト名で周辺チャットにも 1 行表示されます（実行されたもの、失敗したものとその理由、ログイン完了を待つもの）。
+rlva-blocked-start-im = ＲＬＶの制限により、{ $recipient }とのＩＭセッションを開始できません。
+rlva-blocked-start-conference = ＲＬＶの制限により、[RECIPIENT]と会話することができません。
+# RLVa privacy parity: names
+rlva-anonym-waiting = （待機中）
+rlva-anonym-unknown = （不明）
+rlva-blocked-teleport = ＲＬＶの制限により、テレポートできません。
+rlva-blocked-permission-attach = ＲＬＶの制限により、「{ $object }」の着用が拒否されました。
+rlva-blocked-permission-teleport = ＲＬＶの制限により、「{ $object }」によるテレポート操作は拒否されました。
+rlva-blocked-view-notecard = ＲＬＶａの制限により、ノートカードを開くことができません。
+rlva-blocked-view-script = ＲＬＶａの制限により、スクリプトを開くことができません。
+rlva-blocked-view-texture = ＲＬＶａの制限により、テクスチャを開くことができません。
+rlva-debug-explicit-point = インベントリのアイテムとフォルダのアタッチポイント名を無視する
+rlva-debug-explicit-point-hint = アタッチポイントがロックされている間、「着用」と「追加」はオブジェクトを、その名前やフォルダ名が示すポイントではなく既定のポイントに送ります（未完成）。
+
+# Contact-set visual overrides (#408)
 contact-visual-priority = 優先度{ $total }中{ $rank }
 contact-visual-higher = 優先度を上げる
 contact-visual-lower = 優先度を下げる
@@ -14306,6 +14527,8 @@ quick-sort-skip = スキップ
 quick-sort-done-title = 全員を確認しました
 quick-sort-done = { $total }人中{ $placed }人をセットに追加しました。残りは「セットなし」のままです。
 quick-sort-again = 最初からやり直す
+
+# Personal construction layout
 build-layout-settings = ビルド設定
 build-layout-ruler = 定規の設定
 build-layout-distances = 距離の制限
@@ -14313,6 +14536,16 @@ build-ui-floaters-limit-select-distance = 選択距離を制限（ｍ）
 build-ui-floaters-limit-drag-distance = ドラッグできる制限距離（ｍ）
 build-layout-handles = ハンドルを編集
 build-ui-floaters-handle-size = 大きさ（％）
+build-layout-clicks = オブジェクトのクリック
+build-ui-floaters-shift-click = Shift＋クリック
+build-ui-floaters-ctrl-click = Ctrl＋クリック
+build-ui-floaters-click-object = オブジェクトを追加／解除
+build-ui-floaters-click-face = 面を選択
+build-ui-floaters-clicks-hint = 編集ツールで、「揃える」以外のとき。Ctrl＋Shift＋クリックで、クリックした面を追加／解除。
+build-ui-floaters-ctrl-right-click = Ctrl＋右クリック
+build-ui-floaters-right-click-menu = メニューを開く
+build-ui-floaters-right-click-edit = オブジェクトを編集
+build-ui-floaters-double-click-linked = プリムをダブルクリック：「リンクされた部分を編集」を切り替え
 build-layout-hidden = 非表示のオプション
 build-layout-organize = オプションを整理…
 build-layout-finish = 整理を終了
@@ -14332,17 +14565,27 @@ build-layout-loading = 設定を読み込んでいます…
 build-layout-drop-hidden = ここにドロップして非表示
 build-layout-drop-here = ここにドロップ
 build-layout-drag-hint = ドラッグして移動し、強調表示された場所にドロップします。
+build-layout-button-icon = アイコン
+build-layout-button-label = ラベル
+build-layout-button-both = アイコンとラベル
+build-detach-shown = 別ウィンドウで表示中：クリックで隠します。そのウィンドウをタイトルでビルドウィンドウにドラッグすると元に戻ります。
+build-detach-hidden = 別ウィンドウ（非表示）：クリックで表示します。
 build-layout-export = エクスポート
-build-material-surface = 表面
-build-material-relief-reflection = 凹凸と反射
-build-material-lighting = 光への反応
-build-material-placement = テクスチャの配置
+
+# Compact material layout
 build-material-diffuse-tint = 拡散色の色合い
 build-material-specular-tint = 鏡面反射の色合い
 build-material-base-tint = ベースの色合い
 build-material-emissive-tint = 放射の色合い
 build-material-tint-needs-specular = この色合いを編集するには鏡面反射マップを適用してください。
 build-material-tint-needs-pbr = これらの色合いを編集するには、選択したすべての面にＰＢＲマテリアルを適用してください。
+build-material-save-as = マテリアルに名前を付けて保存
+build-material-save-name = インベントリに保存する新しいマテリアルの名前：
+build-material-new-material = 新しいマテリアル
+build-material-save-not-allowed = 保存するには、選択したすべての面にＰＢＲマテリアルがあり、オブジェクトのコピー権限と修正権限があり、インベントリにコピー権限と修正権限のあるそのマテリアルが必要です。
+build-material-saved = マテリアル「{ $name }」をインベントリに保存しました。
+build-material-save-failed = マテリアルをインベントリに保存できませんでした。
+
 blender-live-title = LiveMesh
 blender-live-invalid-source = ライブオブジェクトの識別子が無効か、重複しています。
 blender-live-connection = 接続
@@ -14453,6 +14696,7 @@ blender-object-rez = Rez
 blender-object-drop = 地面に置く
 blender-object-derez = Rez解除
 blender-live-local-only = このプレビューはあなたにしか見えません。アセットはアップロードされません。このウィンドウを閉じても有効なままで、停止で削除されます。
+
 inventory-menu-new = 新規…
 inventory-menu-demo-group = 自分の操作
 inventory-menu-favorites = お気に入り
@@ -14485,6 +14729,7 @@ inventory-menu-remove-separator = 区切りを削除
 inventory-menu-add-separator = 区切りを追加
 inventory-menu-separator-above = 上に区切りを追加
 inventory-menu-separator-below = 下に区切りを追加
+
 inventory-menu-export-notecard = ノートカードに保存
 inventory-menu-load-notecard = ノートカードから再読み込み
 inventory-menu-notecard-name = インベントリのコンテキストメニュー
@@ -14501,10 +14746,12 @@ inventory-menu-editor-open = 開く／テレポート
 inventory-menu-editor-gesture = ジェスチャーを有効化／無効化
 inventory-menu-editor-protect = フォルダをロック／ロック解除
 inventory-menu-editor-detach = 脱ぐ／取り外す
+
 blender-live-invalid-link = ライブオブジェクトの親子関係が無効です。
 blender-object-root = { $name }（ルート）
 blender-object-child = { $name }‐{ $root }にリンク
 blender-object-child-frame = ルートに対する位置と回転：{ $root }
+
 blender-live-linkset-counts =
     { $objects ->
         [one] { $objects }個のオブジェクト
@@ -14518,6 +14765,66 @@ blender-live-linkset-counts =
     }
 blender-object-linkset = { $name }‐ルート#1・{ $prims }個のプリム
 blender-object-linked-prim = #{ $number }個・{ $name }
+blender-live-tab-place = 配置
+blender-live-tab-avatar = アバター
+blender-live-objects-help = Blenderが送信しているメッシュです。選択すると配置でき、メニューからインポートできます。
+blender-live-more = その他
+blender-live-place = 配置
+blender-live-linked-prims = リンクされたプリムを表示または非表示
+blender-live-tag-rigged = リグ付き
+blender-live-card-rigged = { $triangles ->
+        [one] { $triangles }個の三角形
+       *[other] { $triangles }個の三角形
+    }
+blender-live-card-static = 静的・{ $triangles ->
+        [one] { $triangles }個の三角形
+       *[other] { $triangles }個の三角形
+    }
+blender-live-card-linkset = 静的・{ $prims ->
+        [one] { $prims }個のプリム
+       *[other] { $prims }個のプリム
+    }・{ $triangles ->
+        [one] { $triangles }個の三角形
+       *[other] { $triangles }個の三角形
+    }
+blender-live-triangles = { $triangles ->
+        [one] { $triangles }個の三角形
+       *[other] { $triangles }個の三角形
+    }
+blender-live-place-help = 選択した静的メッシュの場所です。リグ付きメッシュは常にアバターに追従します。
+blender-live-place-none = 配置する静的オブジェクトを選択してください。
+blender-live-where = 場所
+blender-live-transform = 位置、回転、サイズ
+blender-live-size-note = サイズはBlenderから送られる寸法に掛けられるため、Blenderでの後の編集でも保持されます。
+blender-live-avatar-help = リグ付きメッシュ用：シェイプをBlenderに送り、それに合わせてモデリングします。
+blender-live-shape-section = Blender内のシェイプ
+blender-live-import-help = 通常のインポート用にオブジェクトのスナップショットを固定します：確認、料金、そして確定。Blenderでの後の編集は反映されません。
+blender-live-from = 元
+blender-live-plugins-help = Auroraは各Blenderに対応するプラグインをインストールし、以前のものをバックアップし、古いバージョンをインストールすることはありません。
+blender-live-ago-seconds = { $count }秒
+blender-live-ago-minutes = { $count }分
+blender-live-ago-hours = { $count }時間
+blender-live-changed-tip = Blenderでこのオブジェクトが最後に変更されてからの時間
+blender-live-show-all = すべて表示
+blender-live-hide-all = すべて非表示
+blender-live-bend-section = ウェイトを確認
+blender-live-elbows = 肘
+blender-live-knees = 膝
+blender-live-bend-hold = アニメーションの代わりにこのポーズを保持
+blender-live-bend-note = 曲げはあなたのアバター上で、あなたにだけ見えます。アニメーション、他の住人からの見え方、インポートは変わりません。
+blender-live-levels = 詳細レベル
+blender-live-levels-pending = インポートをクリックすると、Blenderが詳細レベルを準備します。
+blender-live-levels-note = 各オブジェクトのLiveMesh設定に基づいてBlenderで準備されます。
+blender-live-quick-look-tip = クイックルック：このオブジェクトを大きく表示
+blender-live-quick-look-drag = ドラッグで回転、ダブルクリックで元の向きに戻ります。
+blender-live-quick-look-changed = { $ago }前にBlenderで変更されました。
+blender-live-quick-look-bend = アバタータブと同じ曲げ：肘 { $elbows }°、膝 { $knees }°
+blender-live-undo = 元に戻す
+blender-live-undo-derez = { $name }をRez解除しました（Blenderのリストには残っています）
+blender-live-undo-detach = { $name }を取り外しました（Blenderのリストには残っています）
+blender-live-undo-drop = { $name }を地面に置きました
+blender-live-undo-attach = { $name }を{ $point }に移動しました
+
 inventory-bulk-permissions = 権限の一括変更
 inventory-bulk-adjust = アイテムの権限を調整
 inventory-bulk-reading = 選択したフォルダとサブフォルダを読み込んでいます…
@@ -14542,6 +14849,17 @@ parcel-visibility-always-visible = 常に表示する区画
 parcel-visibility-always-visible-help = これらの区画は、所有者やグループに関係なく、フィルタ中も表示されたままです。現在の区画を追加するか、土地情報で隣接する区画を選択して、選択した区画を追加してください。エントリを削除すると通常のフィルタのルールに戻ります。
 parcel-visibility-add-selected = 選択した区画を追加
 parcel-visibility-empty = 追加された区画はありません
+parcel-environment-apply-save = この区画で自分だけに適用
+parcel-environment-save = この環境をこの区画に保存します:ここにいるときは毎回この環境に戻ります
+parcel-environment-forget = この区画に保存した環境を削除
+parcel-environment-not-saved = この区画の情報がまだ届いていないため、環境は保存されませんでした。少し待ってからもう一度お試しください。
+parcel-environment-left = 環境を保存する前に区画を離れたため、保存されませんでした。
+parcel-environment-title = 区画に保存した環境
+parcel-environment-help = 区画ごとの自分用の環境です。その区画にいる間はローカル環境の代わりに使われ、離れると元の環境に戻ります。表示されるのは自分だけです。環境ウィンドウ、またはインベントリの環境アイテムのメニューから保存できます。
+parcel-environment-empty = 保存された環境はありません
+parcel-environment-remove-all = すべて削除
+parcel-environment-remove-all-title = 区画ごとに保存した環境をすべて削除しますか？
+parcel-environment-remove-all-text = このグリッドで区画ごとに保存した環境が削除されます。他のグリッドの環境はそのまま残ります。この操作は元に戻せません。
 demo-parcel-visibility-pinned = 常に表示する隣接区画
 demo-parcel-visibility-long = Aurora天文台と北の庭園‐ビジターセンターと展示館
 portal-title = ポータル
@@ -14561,6 +14879,8 @@ portal-destination-hidden = 非表示の行き先
 portal-step-away = 一度離れてから戻ると入れます
 portal-walk-through = 通り抜けるとテレポートします
 ui-appearance-selected-outfits = { $count }個のアウトフィットを選択しています
+
+# Spell checker and auto-replace (#675)
 spelling-add-to-dictionary = 辞書に追加
 spelling-glossary = Second Lifeの用語集
 spelling-ignore = 無視に追加
@@ -14609,14 +14929,18 @@ ui-options-auto-replace-keyword-hint = キーワード
 ui-options-auto-replace-replacement-hint = 置換
 ui-options-auto-replace-add-keyword = 追加
 ui-options-auto-replace-save-keyword = 保存
+
 avatar-render-title = アバターの描画設定
 avatar-render-filter = 名前もしくは、ＵＵＩＤで住民を絞り込む
 avatar-render-detail = 完全に描画
 avatar-render-empty = 一致する描画の例外はありません
 avatar-render-always = 常に
 avatar-render-never = 描画しない
+
 scene-menu-huds = ＨＵＤ
+
 scene-menu-baked-textures = アバターのベイク済みテクスチャ
+
 inventory-copy-name = 名前をコピー
 inventory-copy-folder-uuid = フォルダのＵＵＩＤをコピー
 inventory-new-outfit = 新しいアウトフィット
@@ -14672,6 +14996,7 @@ wearable-group-hair-color = 髪の色
 wearable-group-hair-style = ヘアスタイル
 wearable-group-hair-eyebrows = 眉毛
 wearable-group-hair-facial = ひげ
+
 wearable-param-16 = 眉毛の角
 wearable-param-31 = 眉毛のアーチ
 wearable-param-93 = 手袋の長さ
@@ -14777,6 +15102,7 @@ wearable-param-860 = スリット：後ろ
 wearable-param-861 = スリット：左
 wearable-param-862 = スリット：右
 wearable-param-863 = スカートのフィット感
+
 ui-context-freeze-question = { $name }をフリーズしますか？
 ui-context-freeze-detail = 一時的に移動、チャット、ワールドとのやり取りができなくなります。
 ui-context-unfreeze = フリーズ解除
@@ -14795,6 +15121,7 @@ ui-context-estate-ban-all-managed = 管理するすべての不動産
 ui-context-estate-kick-detail = 不動産から退出させます。バンされていなければ戻ってこられます。
 ui-context-estate-teleport-home-detail = ホームにテレポートされ、すぐに戻ってこられます。
 ui-context-estate-ban-detail = 今後は入れなくなります。バンリストはリージョン / 不動産 › アクセスにあります。
+
 scene-object-hidden-person = 非表示の住人
 scene-object-last-owner = 以前の所有者：
 scene-object-created = 作成日：
@@ -14830,6 +15157,8 @@ scene-nav-flags = 修正可：{ $modify }· スクリプト：{ $scripts }
 scene-nav-character-detail = ＣＰＵ：{ $cpu }㎲ · 長さ：{ $length }ｍ · 半径：{ $radius }ｍ
 scene-nav-horizontal = 水平のキャラクター
 scene-nav-vertical = 垂直のキャラクター
+
+# About Aurora Viewer (#1126)
 about-tab-info = 情報
 about-tab-licences = ライセンス
 about-tab-libraries = ライブラリ
@@ -14896,6 +15225,8 @@ world-outfit-folders-too-deep = アウトフィットのフォルダは4階層�
 world-outfit-paste-cannot-be-used-in-outfits = アウトフィットに入れられないアイテムがあります。
 world-outfit-paste-already-in-outfit = すでにこのアウトフィットにあります。
 world-outfit-paste-already-worn = すでに着用しています。
+
+## Build › Edit particles (particle editor)
 object-export-title = 名前を付けて保存
 object-export-format = 形式
 object-export-collada = Collada（.dae）
@@ -14991,6 +15322,7 @@ particle-editor-folder-failed = 新しいスクリプト用のインベントリ
 particle-editor-upload-failed = パーティクルスクリプトを保存できませんでした：{ $reason }
 particle-editor-object-gone = オブジェクトがなくなりました：スクリプトはインベントリに残っています。
 particle-editor-inject-timeout = グリッドが応答しませんでした：スクリプトはオブジェクトに入れられていません。
+
 keybinds-lens-zoom-in = 視野角を狭める
 keybinds-lens-zoom-out = 視野角を広げる
 keybinds-lens-zoom-default = 視野角をリセット
@@ -15009,14 +15341,17 @@ inventory-folder-color-restore = デフォルトに戻す
 inventory-folder-color-private = この色はあなたにだけ表示されます。
 inventory-folder-color-many = { $count }個のフォルダ
 inventory-folder-color-none = 色を付けるフォルダを選択してください。
+
 area-search-group = グループ
 area-search-last-owner = 前のオーナー
 area-search-land-impact = 土地負荷
 area-search-prim-count = プリム数
+
 area-search-search = 検索
 area-search-columns = 列
 area-search-regex = 正規表現を使用
 area-search-regex-error = 正規表現：{ $error }
+
 area-search-required = 次の条件を満たすオブジェクトのみ表示
 area-search-excluded = 次のオブジェクトを除外
 area-search-ranges = 距離と販売価格
@@ -15041,14 +15376,20 @@ area-search-click-media = メディアを開く
 area-search-save-defaults = 既定として保存
 area-search-copy-link = リンクをコピー
 area-search-reset-columns = 列をリセット
+
 area-search-regex-limit = 照合の上限に達しました。正規表現を簡単にしてください。
+
 area-search-reset-all-tip = 検索全体をリセットします。
 area-search-reset-search-tip = 検索欄と正規表現をクリアします。
 area-search-reset-options-tip = フィルターの初期設定に戻します。
 area-search-reset-columns-tip = 既定の列に戻します。
+
 area-search-range-options = 範囲
 area-search-reset-ranges-tip = 距離と販売価格の範囲を既定に戻します。
+
 area-search-results = 結果
+
+# Applied local textures and materials (#1375).
 local-appearance-warning = ローカルテクスチャ・マテリアル：オブジェクト{ $count }個
 local-appearance-pending = 保存済みのローカルプレビュー（待機中）
 local-appearance-details = ローカルテクスチャ：{ $textures }、ローカルマテリアル：{ $materials }
@@ -15059,6 +15400,8 @@ local-appearance-library = ローカルプレビューを開く
 local-appearance-remove = すべてのローカルテクスチャ・マテリアルを解除…
 local-appearance-confirm-title = ローカルテクスチャとマテリアルを解除しますか？
 local-appearance-confirm-body = このアカウントとグリッドで記憶されたオブジェクト（合計{ $count }個）をサーバー上の外観に戻します。現在表示されていないオブジェクトも対象です。解除した適用状態は再接続後に復元されません。ローカルファイル、プレビューライブラリ、メッシュプレビューは保持されます。
+
+# Bulk upload folder plan
 import-folders = フォルダー
 import-choose-folder = フォルダーを追加…
 import-folders-enable = アップロード先を整理
@@ -15079,12 +15422,15 @@ import-folders-failed = フォルダーを作成できませんでした。作�
 import-folders-empty = このフォルダーには一括アップロードできるファイルがありません。
 import-folders-read-failed = 元のフォルダーをすべて読み取れませんでした。アクセス権を確認してから再試行してください。
 import-folders-scan-limit = フォルダー構成が大きすぎるか深すぎます。より小さいフォルダーを選択してください。
+# Created inventory names follow the reference ASCII normalization.
 import-folders-textures = Textures
 import-folders-sounds = Sounds
 import-folders-animations = Animations
 import-folders-materials = Materials
 import-folders-meshes = Meshes
 import-folders-other = Other
+
+# Unified import window
 import-window-title = アップロード
 import-queue = アップロード待ち
 import-queue-empty = 表示するファイルがありません。
@@ -15095,13 +15441,16 @@ import-tab-folder = フォルダープレビュー
 import-tab-permissions = 権限
 import-use-default-folders = 既定のフォルダーを使用
 import-folders-auto-create = アップロードを確定すると、必要な保存先フォルダーが作成されます。
+
 import-include-source-folder = 元のフォルダーを含める
 import-create-folder = フォルダーを作成
 import-create-folder-help = 直接追加したファイルを、選択した保存先の下にある新しいフォルダーにまとめます。フォルダーはインポートの確認後に作成されます。
 import-folder-name = フォルダー名
 import-source-folder-name-help = { $source } のインベントリ内のフォルダー名。コンピューター上のフォルダーは変更されません。
+
 import-local-stage-upload = アップロードに追加（{ $count }）
 import-local-stage-upload-help = 非表示を含むチェック済みファイルのアップロードを準備し、ローカルプレビューは保持します。料金は別途確認します。
+
 vr-view = VR表示
 vr-unavailable = VRを利用できません。OpenXRランタイムとヘッドセットの接続を確認してください。
 vr-restart-title = ヘッドセットが接続されました
@@ -15112,6 +15461,7 @@ ui-options-camera-vr = VR
 ui-options-camera-vr-view-first-person = 一人称
 ui-options-camera-vr-at-start = 起動時にVRを準備
 ui-options-camera-vr-at-start-help = オンにすると、VRボタンですぐにVRに入れます。オフにすると、Auroraは起動時にVRソフトウェアを読み込まず、VRボタンで再起動を案内します。次回の起動から反映されます。
+
 app-vr-leave = { $key } キーでデスクトップモードに戻ります
 god-mode-entering = ゴッドモードに入りました。レベル { $level }
 god-mode-leaving = ゴッドモードを終了しました。レベル { $level }
@@ -15144,6 +15494,7 @@ admin-unfreeze-question = どのメッセージで{ $name }さんのフリーズ
 admin-kick-message = 管理者によってログオフされました。
 admin-freeze-message = フリーズされました。移動もチャットもできません。管理者がインスタントメッセージ（IM）で連絡します。
 admin-unfreeze-message = フリーズが解除されました。
+
 ui-weather-aurora = Aurora の天気
 ui-bars-aurora-weather = Aurora の天気…
 ui-weather-precipitation = 降るもの
@@ -15254,10 +15605,24 @@ ui-weather-now-off = 天気オフ
 ui-weather-precipitation-on-tip = 下の設定どおりに雨や雪が降ります。オフにすると何も降らず、雷も鳴りません
 ui-weather-wind-on-tip = 天気の風が雨や雪を流し、屋外で音が聞こえます。オフにすると無風になります
 ui-weather-wind-follow-region = リージョンの風
+
 picker-pipette-hint = オブジェクトの面をクリックして、インベントリからそのテクスチャまたはマテリアルを選択します。
+
 picker-pipette-no-texture = コピー可能なテクスチャがインベントリにありません。
+
 picker-pipette-no-material = コピー可能なマテリアルがインベントリにありません。
+
 local-texture-preview-hint = ローカルテクスチャ — このコンピューターのファイルのプレビュー。
+
+# Menu commands can be added to or removed from a toolbar.
+toolbar-add-from-menu = ツールバーに追加
+toolbar-remove-from-menu = ツールバーから削除
+# Build › Edit objects, Create prims and Edit land as toolbar buttons (the menu shows their Ctrl+3/4/5 keys apart)
+toolbar-command-build-edit = オブジェクトを編集
+toolbar-command-build-create = プリムを作成
+toolbar-command-build-land = 土地を編集
+
+# ３６０度スナップショットのウィンドウ（LLFloater360Capture, floater_360capture.xml）
 capture-360-quality-preview = プレビュー（高速）
 capture-360-quality-medium = 通常
 capture-360-quality-high = 高
@@ -15270,6 +15635,7 @@ capture-360-saved = { $name }を保存しました
 capture-360-failed = ３６０度画像を作成できませんでした。
 capture-360-save-failed = ３６０度画像を保存できませんでした：{ $error }
 capture-360-save-dialog = ３６０度画像を保存
+
 wearable-favorites-all = 全てのお気に入り
 wearable-favorites-empty = 装着可能な着用物やＨＵＤをドラッグしてリストに追加します。
 wearable-favorites-no-match = アイテムが見つかりませんでした。
@@ -15302,6 +15668,7 @@ wearable-favorites-delete-unloaded =
 wearable-favorites-invalid-name =
     お気に入りの着用物のフォルダ「{ $name }」を作成できませんでした。
     フォルダ名に「/」または「\」を含めることはできません。
+# Conversation log (ui/conversation_log.rs)
 conversation-log-filter = 人物をフィルタ
 conversation-log-actions = 選択した人やグループに対するアクション
 conversation-log-im = IM…
@@ -15328,6 +15695,8 @@ ui-options-chat-logs-clear = 会話の記録をクリア…
 ui-options-chat-logs-clear-title = 会話の記録をクリアしますか？
 ui-options-chat-logs-clear-text = これにより、過去の会話のログ、およびそのファイルのすべてのバックアップが削除されます。会話履歴のテキストは削除されません。
 ui-options-chat-logs-clear-confirm = クリア
+
+# Parcel radio state and stream failures
 music-state-error = 再生できません：{ $reason }
 music-error-web-page = このウェブページにはラジオのストリームがありません
 music-error-playlist = このラジオのプレイリストは再生できません
@@ -15347,6 +15716,7 @@ music-certificate-wrong-name = このラジオのセキュリティ証明書は�
 music-certificate-revoked = このラジオのセキュリティ証明書は失効しています
 music-certificate-other = このラジオのセキュリティ証明書は無効です
 music-certificate-warning = { $reason }。ラジオは再生されますが、接続は安全ではありません。
+# Object linking: LLSelectMgr::linkObjects
 build-link-error-title = オブジェクトをリンクできません
 build-link-downloading = オブジェクト情報をダウンロード中です。しばらく待ってから再度リンクしてください。
 build-link-too-many = { $count } 個のプリムはリンクできません。上限は { $max } 個です。
@@ -15356,6 +15726,8 @@ build-link-owners = リンクするオブジェクトの所有者は同じであ
 build-link-regions = リンクするオブジェクトは同じリージョンにある必要があります。
 build-link-animesh = 選択内容はアニメーションオブジェクトの三角形数の上限を超えています。
 build-link-restricted = 制限により、選択したオブジェクトをリンクできません。
+
+# Debug Settings window (LLFloaterSettingsDebug)
 debug-settings-search = 設定を検索
 debug-settings-changed-only = 変更した設定のみ表示
 debug-settings-none-selected = 一覧から設定を選んでください。
@@ -15375,8 +15747,12 @@ debug-settings-warning-title = 警告
 debug-settings-warning-text = デバッグ設定ウィンドウの使用はサポートされていません。デバッグ設定を変更すると、動作に深刻な影響が出たり、データや機能、サービスへのアクセスを失ったりするおそれがあります。内容を正確に理解していない値は変更しないでください。
 debug-settings-warning-ignore = この警告を今後表示しない
 debug-settings-type-color = 色
+
+# Preferences › Graphics: the trees' detail (RenderTreeLODFactor)
 ui-options-trees = 樹木
 ui-options-trees-hint = 遠くにあるリンデンの樹木の詳細度です（デフォルトは0.5）。0にすると樹木と草は表示されません。
+
+# Preferences › Build (the Legacy Viewer's Build preferences)
 ui-options-about-build = 作成ツールで作ったプリムの初期状態です。
 ui-options-build-new-objects = 新しいオブジェクト
 ui-options-build-new-objects-note = 作成ツールで作ったプリムは、表示された時点でこれらの設定を受け取ります。
@@ -15393,20 +15769,34 @@ ui-options-build-show-beams = 選択ビームを表示
 ui-options-build-show-beams-hint = 自分と他のアバターのビーム（編集・つかむ・譲渡のとき）。表示しなくても送信はされます。
 ui-options-build-beam-color = ビームの色
 ui-options-build-beam-color-hint = 自分のビームの色。他の人にもこの色で見えます。
+
+
+
+# Preferences › Protections: large surface protection (RenderVolumeSAProtection)
 large-surface-title = 大きな表面
 large-surface-enable = 表面積が極端に大きいオブジェクトを隠す
 large-surface-enable-hint = グラフィックカードに過負荷をかけるために作られたオブジェクトから保護します。下の合計を超えると、表面積が最も大きいプリムとスカルプトは描画されません。正当なオブジェクトが隠れることもあります。
 large-surface-frame-max = 描画する表面積の合計
 large-surface-frame-max-hint = 最も大きいものが隠されるまでに描画する、大きなオブジェクトの表面積です（デフォルトは5,000）。
+
+# Preferences › Graphics: RenderAttachedParticles
 ui-options-attached-particles = 装着物のパーティクル
 ui-options-attached-particles-hint = アバターが装着しているもののパーティクル（きらめき、煙、炎など）を描画します。
+
+# Preferences › Graphics: progressive draw distance (FSRenderFarClipStepping)
 ui-options-draw-distance-stepping = 描画距離を段階的に広げる
 ui-options-draw-distance-stepping-hint = ログイン後と別のリージョンへのテレポート後、描画距離を32mから始めて設定値まで倍々に広げ、近くのものから読み込みます。
+
+# Panorama viewer (ui/panorama.rs)
 panorama-reset = 表示をリセット
 panorama-enlarge = 拡大
 panorama-leave-full = 拡大表示を終了
 panorama-help = ドラッグで見回し、ホイールでズーム、ダブルクリックでリセット。クリックしてから、矢印キーで見回し、+ / - でズームします。
+
+# Texture preview: look into a 2:1 texture as a panorama
 resource-preview-360 = ３６０°
+
+# Photo window: the 360° format
 photo-format-360 = ３６０°
 photo-not-in-360 = ３６０°画像では使えません。
 photo-360-inventory-size = パノラマ：{ $width } × { $height }（最大のテクスチャ）
@@ -15414,9 +15804,11 @@ photo-360-output = パノラマ：{ $width } × { $height }
 photo-360-format = JPEG · ３６０°
 photo-360-placeholder = シャッターを押すと、ここにパノラマが表示されます。
 photo-looks-not-in-360 = ３６０°画像には適用されません。色調フィルターのみ適用されます。
+# macOS Window menu (mac_window_menu.rs)
 app-mac-window-menu = ウインドウ
 app-mac-minimize = 最小化
 app-mac-enter-full-screen = フルスクリーンにする
+
 vr-preferences-title = VR
 vr-preferences-about = ヘッドセットの移動、快適性、描画。
 vr-mode-flycam = フライカム
@@ -15431,11 +15823,17 @@ vr-resolution = VRの片目の解像度
 vr-resolution-help = 自動選択ではヘッドセットの推奨サイズを各辺最大1600ピクセルとデバイスの制限に合わせて表示します。変更を適用するにはビューアを再起動してください。
 vr-resolution-unavailable = ヘッドセットを利用できません
 vr-custom = カスタム
+
 joystick-linux-layout = Linuxのボタン配置
+
 joystick-linux-layout-help = XとYが逆の場合は入力ドライバーの配置を選択してください。コントローラースタイルはラベルを変更します。
+
 joystick-layout-positional = 位置に基づく
+
 joystick-layout-auto = 自動
 joystick-layout-xinput = XInput
+
+# Preferences › Network › Proxy, and its login messages (aurora-proxy)
 proxy-socks-invalid-host = SOCKS 5 プロキシのアドレスまたはポートが無効です。初期設定 › ネットワークとキャッシュ › プロキシを確認してください。
 proxy-socks-host-connect-failed = SOCKS 5 プロキシサーバーに接続できませんでした。
 proxy-socks-connect-error = SOCKS 5 プロキシが接続を拒否しました。TCP チャンネルを開けませんでした。
@@ -15494,6 +15892,7 @@ ui-options-proxy-direct-media-warning = メディアはプロキシを迂回し�
 ui-options-proxy-direct-media-confirm-title = プロキシを使わずにメディアを再生しますか？
 ui-options-proxy-direct-media-confirm-text = 動画と、HTTP プロキシの対象外の Web ページはプロキシを経由しません。このコンピュータから直接接続するため、区画やオブジェクトのメディアを設定した人に実際の IP アドレスが見えます。その他の通信はすべてプロキシを経由したままです。変更はビューアの再起動後に有効になります。
 ui-options-proxy-direct-media-confirm = メディアを直接再生する
+
 game-control-title = ゲームコントロール
 game-control-about = モードごとにゲームコントローラーの入力をアクションに割り当て、リージョンのスクリプトに送信します。
 game-control-tab-actions = アクションの割り当て
@@ -15639,17 +16038,34 @@ game-control-action-truck-right = トラック →
 game-control-action-boom-up = ブーム ↑
 game-control-action-boom-down = ブーム ↓
 game-control-action-escape = ESC
+
 picker-local-newest = 追加順（新しい順）
 picker-local-name = 名前順
+
 phototools-environment-settings = 環境設定
 phototools-quick-environments = クイック環境
 phototools-environment-presets = 環境プリセット
 phototools-general-render = 一般描画設定
 phototools-render-options = 描画オプション
+
 ui-bars-clouds-paused = 雲を停止中
 ui-bars-clouds-paused-tip = このセッションでは雲を止めています。クリックで再開します。
+phototools-tab-dof-glow = 被写界深度とグロー
+phototools-lights-shadows = ライトと影の設定
+phototools-ambient-occlusion = アンビエントオクルージョンの設定
+phototools-dof = 被写界深度の設定
+phototools-tone-mapping = HDRトーンマッピングの設定
+phototools-glow = グローの設定
+phototools-photo-banner = フォトウィンドウを開いています。フォトウィンドウにもある行は写真に反映されます。被写界深度は次の写真にも保持され、ライト、露出、影、アンビエントオクルージョン、装着ライトはフォトウィンドウを閉じるまで有効です。
+phototools-photo-boost = フォト品質が引き上げられています。グラフィックの行には引き上げた値が表示され、そこでの変更はあなた自身の設定として保持されます。
+phototools-photo-focus-help = クリック: ワールドで最後にクリックした点。ポインター: ポインターの下の点。手動: 指定した距離。
+phototools-photo-distance-help = 手動フォーカス時にレンズがピントを合わせる距離です。
+phototools-director-lens = ディレクターのウィンドウが開いている間は、下の設定よりもディレクターのレンズが表示されます。
+phototools-view-angle-viewfinder = 視野角はファインダーが管理しています。ファインダーを閉じると元の値に戻ります。
+ui-options-dof-show-focus-point = フォーカス点を表示
+ui-options-dof-show-focus-point-help = レンズがピントを合わせている点に小さな十字を表示します。自由なときは黄色、ロック中は赤です。
 
-# SunSet Viewer exclusive features
+# SunSet Viewer exclusive keys
 movement-dash-title = 移動 & ダッシュ
 movement-dash-enabled = システム有効
 movement-dash-disabled = システム無効

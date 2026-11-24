@@ -286,6 +286,8 @@ keybinds-render-water = Rendering type: Water
 keybinds-render-objects = Rendering type: Objects
 keybinds-render-grass = Rendering type: Grass
 keybinds-render-clouds = Rendering type: Clouds
+render-features-menu = Rendering features
+render-features-ui = UI
 owned-land-title = My land
 linden-home-menu = My Linden Home…
 owned-land-refresh = Refresh
@@ -339,6 +341,7 @@ toolbar-clear = Clear all
 toolbar-confirm-restore = Restore your default buttons and toolbars? This cannot be undone.
 toolbar-confirm-clear = Return every button to this window and leave your toolbars empty? This cannot be undone.
 toolbar-command-profile = Profile
+toolbar-command-ao-mini = Mini AO
 toolbar-command-landmark-here = Create landmark
 toolbar-command-environments = Environments
 toolbar-command-radar = Radar
@@ -357,6 +360,8 @@ toolbar-command-quickprefs = Quick preferences
 toolbar-command-web-browser = Web browser
 toolbar-command-chat-bar = Chat bar
 toolbar-command-area-search = Area search
+
+# Area Search (issue #930).
 area-search-hint = Search objects, descriptions, owners, creators or UUIDs…
 area-search-refresh = Refresh
 area-search-parcel = Current parcel only
@@ -383,6 +388,7 @@ area-search-empty = No objects match these filters.
 area-search-sit = Sit
 area-search-filter-mine = Filter my objects
 area-search-clear-selection = Clear selection
+
 toolbar-command-debug-settings = Debug settings
 toolbar-command-statistics = Statistics
 toolbar-command-sound-explorer = Sound explorer
@@ -446,6 +452,7 @@ pose-stand-arms-upward-legs-together = Arms upward, Legs together
 toolbar-command-snapshot-to-disk = Snapshot to disk
 toolbar-command-photo-roll = Photo roll
 toolbar-command-director = Director
+# Director — capture and animations
 director-capture = Path by hand
 director-capture-start = Record my path
 director-capture-start-tip = Fly the camera as you want it filmed (alt-camera, free camera or flycam): the view is kept twenty times a second, and Stop turns it into keyframes at the pace you flew.
@@ -660,6 +667,7 @@ director-track-saved = Saved: { $name }
 director-track-loaded = Loaded: { $name }
 director-track-failed = The track's file could not be used: { $why }
 director-track-bad-name = Give the track a name first.
+# Director — shots
 director-shots = Shots
 director-shot = Shot
 director-shot-orbit = Orbit
@@ -729,6 +737,7 @@ director-key-dolly-zoom-tip = On the way to this keyframe, the lens changes with
 director-key-travel = Travel with its target
 director-key-travel-tip = This keyframe keeps its place next to its target as the target moves (along the world's directions), instead of staying where it was laid. Update lays it again from the current view.
 director-key-travel-none = This keyframe looks at no target: give it the lock's target first.
+# Director — montage and tracks
 director-zoom-in-tip = Zoom in on the timeline (Ctrl + mouse wheel)
 director-zoom-out-tip = Zoom out (Ctrl + mouse wheel). Unavailable: the whole track is already shown.
 director-zoom-fit-tip = Show the whole track. Unavailable: it is already shown.
@@ -815,6 +824,7 @@ director-ffmpeg-pack-download = Download
 director-ffmpeg-pack-progress = { $done } of { $total } MB
 director-ffmpeg-pack-preparing = Checking and installing…
 director-ffmpeg-pack-failed = The download failed or the file was not the one expected: nothing was installed.
+# Director — render, fades and titles
 director-output-live = Live
 director-output-render = Render
 director-output-more = More options
@@ -1036,6 +1046,7 @@ login-accounts-password-needed = Enter your password
 login-accounts-forget-password = Forget password
 login-accounts-remove = Remove account
 login-accounts-confirm = This affects only { $name }. Confirm?
+
 import-title = Import assets
 import-entry-point = Open imports with
 import-entry-point-help = Choose what the Import shortcut (Ctrl+U by default) and Build > Import open. The quick import bar also opens the full upload window.
@@ -1180,6 +1191,7 @@ import-preview-aurora = Aurora 3D
 import-no-map = None
 keybinds-import-files = Open the import window
 keybinds-hide-interface = Hide / show the interface
+keybinds-ui-feature = Show / hide the whole interface (Rendering features › UI)
 keybinds-teleport-home = Teleport home
 keybinds-show-huds = Show / hide HUDs
 keybinds-reset-camera-angles = Reset camera angles
@@ -1253,7 +1265,6 @@ import-mesh = Mesh
 import-bulk = Multiple
 import-choose-files = Add files…
 import-loading = Reading files…
-import-limit-bulk-1k = Limit textures to 1024 px
 import-files = Files
 import-destination = Destination
 import-no-folder = No folder available
@@ -1317,7 +1328,12 @@ import-degenerate-physics = { $count ->
     }
 import-physics-convex-repair = Create convex collision hulls
 import-physics-convex-help = Convex hulls approximate the collision shape and may fill openings. Visual LODs stay unchanged. Check the physics preview before requesting a quote.
-import-max-size = Limit size to 1024 × 1024
+import-image-size-limit = Maximum image size
+import-image-size-single = Maximum image size
+import-image-size-inherit = Global setting ({ $size } px)
+import-image-size-pixels = { $size } px
+import-image-size-inherit-help = Global setting follows the limit beside Import at the bottom. Its current value appears in parentheses. Larger images are automatically reduced to the selected limit.
+import-image-size-global-help = Maximum image size for imports. Individual image and material choices take priority. Larger images are reduced automatically.
 import-texture-size = Upload size: { $width } × { $height } px
 import-lossless = Lossless compression
 import-strip-alpha = Remove the almost opaque alpha channel
@@ -1359,6 +1375,7 @@ import-preview-male-upper = Male upper body
 import-preview-male-lower = Male lower body
 import-preview-skirt = Skirt
 import-preview-sculpt = Sculpted prim
+
 inventory-move-to = Move to…
 inventory-move-filter = Filter folders by name…
 inventory-move-selection-name = Move “{ $name }”
@@ -1431,6 +1448,9 @@ inventory-folder-empty = Folder is empty.
 inventory-column-modified = Modified
 inventory-pill-link = Link
 inventory-pill-protected = Locked
+inventory-search-no-copy = no copy
+inventory-search-no-modify = no modify
+inventory-search-no-transfer = no transfer
 inventory-take-off = Take off
 inventory-more-actions = More actions
 inventory-profile = Profile
@@ -1703,7 +1723,7 @@ notecard-markdown-demo =
 
     > Embedded items remain part of the notecard.
 
-    { "[" }SunSet Viewer](https://github.com/SunSet-Viewer/SunSet-Viewer)
+    { "[" }Aurora Viewer](https://aurora-viewer.org)
 
     ```text
     A plain code block
@@ -2005,6 +2025,9 @@ language-item-count = { $count ->
     [one] { $count } item
    *[other] { $count } items
     }
+
+# Viewer interface and notifications
+
 ui-inventory-failed = { "  (failed)" }
 cmdline-dice-exploded = { "  ^-- Exploded" }
 cmdline-dice-penetrated = { "  ^-- Penetrated" }
@@ -2160,9 +2183,9 @@ ui-options-chat-text-size-hint = Size of the messages in the nearby chat and the
 ui-options-chat-beyond-range = Brightness beyond chat range
 ui-options-chat-beyond-range-hint = Lines from residents and objects farther than chat range (20 m), heard through a shout for example, are drawn at this brightness: 1 keeps them as bright as the others, lower values dim them more. 0.8 by default, as in the Legacy Viewer.
 ui-options-chat-keep-focus = Keep the chat bar active after sending
-ui-options-chat-keep-focus-hint = Enter sends and the bar stays ready for the next message; Enter on an empty bar or a click elsewhere returns to moving. After a message, the nearby chat of the Conversations window follows it too.
+ui-options-chat-keep-focus-hint = Enter sends and the bar stays ready for the next message, even Enter on an empty bar. Escape or a click in the world returns to moving.
 ui-options-chat-enter-toggles = Enter toggles typing in conversations
-ui-options-chat-enter-toggles-hint = Enter on an empty field returns to moving in the Conversations window too (nearby chat, IMs and group chats), as it does in the chat bar; Enter from the world starts typing again.
+ui-options-chat-enter-toggles-hint = Enter on an empty field returns to moving in the Conversations window (nearby chat, IMs and group chats). Enter from the world starts typing again.
 ui-options-chat-enter-last-field = Enter returns to the last chat field used
 ui-options-chat-enter-last-field-hint = From the world, Enter goes back to the chat field you last used (clicked into or talked in), nearby, a group or an IM, when its window is open, instead of always the chat bar. Off, or with that window closed, Enter uses the chat bar.
 ui-options-gesture-autocomplete = Complete gestures in nearby chat
@@ -2325,6 +2348,10 @@ ui-options-blend-order-full = Full
 ui-options-blend-order-stochastic = Stochastic
 ui-options-colored-sky-ambient = Colored sky ambient
 ui-options-colored-sky-ambient-help = Lights with the sky's ambient color at full strength, as the first PBR viewers did, instead of a softened ambient that linear and HDR skies turn grey: warm or tinted skies color the interiors again. Classic skies keep their color either way and only get a little brighter. Differs from the Legacy Viewer
+ui-options-planet-curvature = Planet curvature
+ui-options-planet-curvature-help = Draws the world on a round planet: open water falls away to a real horizon instead of running out to eye level, with the sky below it. Only the view changes: regions, physics and what others see stay flat. On the Earth the drop within the draw distance is a few centimetres; it shows on the far sea. Differs from the Legacy Viewer
+ui-options-planet-radius = Planet radius
+ui-options-planet-radius-help = The radius of the planet drawn, in kilometres. The Earth's is 6,371 km: from 10 m up, the sea ends about 11 km away. A smaller planet brings the horizon closer
 ui-profile-preview-with-links = Preview with links
 build-land-flatten = Flatten
 common-appearance = Appearance
@@ -2564,8 +2591,8 @@ app-graphics-start-memory-full =
     The graphics card has no video memory left for SunSet Viewer: another program holds it.
 
     What to try:
-    • close the programs that use the graphics card (another viewer, a game, a video or 3D editor), then start SunSet Viewer again;
-    • on a laptop with two graphics cards, check which one SunSet Viewer runs on.
+    • close the programs that use the graphics card (another viewer, a game, a video or 3D editor), then start Aurora Viewer again;
+    • on a laptop with two graphics cards, check which one Aurora Viewer runs on.
 
     The log of this start: { $log }
 app-graphics-start-failed-title = SunSet Viewer cannot start
@@ -2731,6 +2758,7 @@ ui-login-grid-link-text = A link opened from outside Aurora asks to log in to an
 ui-login-grid-link-switch = Switch grid
 ui-login-grid-link-add = Add in the grid manager…
 ui-login-grid-link-add-hint = A grid that only answers over http is not reached from a link: add it once in the grid manager, then open the link again.
+
 grids-manage = Manage grids
 grids-remove-question = Remove { $name } from the grid list?
 grids-list = Grids
@@ -2764,6 +2792,7 @@ grids-error-network = Grid information could not be retrieved. You can enter it 
 grids-error-size = The grid information response is too large.
 grids-error-protected = Second Life and Aditi are built-in grids and cannot be replaced.
 grids-error-cross-grid = This destination is on another grid. Hypergrid travel requires an OpenSim session.
+
 common-others = Others
 common-other-commands = Other commands
 ui-options-to-blocked-people = To blocked people:
@@ -3133,6 +3162,10 @@ inventory-demo-nested-folder = Level { $level }
 inventory-demo-destination = Test destination
 keybinds-middle-click = Middle click
 ui-options-camera-click-my-avatar-keep-camera = Click my avatar: keep camera
+ui-options-camera-frame-while-posing = Frame the avatar while posing
+ui-options-camera-frame-while-posing-tip = Opening the poser frames the avatar, and clicking a joint brings the camera closer to it. Dragging a joint never moves the camera.
+ui-options-camera-still-while-posing = Keep the camera still while posing
+ui-options-camera-still-while-posing-tip = While you pose, the camera stops following the avatar, its focus and its body parts, and walking does not reset it. Orbit, zoom, pan and presets still work.
 ui-login-second-life-client-rust-vulkan = Second Life client  ·  Rust  ·  Vulkan
 ui-login-second-life-client-rust-metal = Second Life client  ·  Rust  ·  Metal
 build-ui-general-click-to = Click to:
@@ -3166,6 +3199,7 @@ ui-chat-applink-classified-tip = View this classified ad
 ui-chat-applink-event-tip = View this event's details
 ui-chat-applink-chat-tip = Send this message on the specified channel
 ui-chat-applink-search-tip = Open search
+ui-chat-applink-preferences-tip = Open this setting in Preferences
 ui-chat-applink-blocked-tip = This action is not allowed from this link
 ui-chat-applink-unsupported-tip = This link is not supported
 ui-chat-applink-unsupported-label = Unsupported link
@@ -3298,6 +3332,8 @@ ui-options-script-errors-in-chat-hint = Your objects' script errors show in the 
 ui-options-script-errors-to-channel = Also say them on a chat channel
 ui-options-script-errors-to-channel-hint = Each script error is also said on the channel below, as "Object: error", for a script that listens to it. A few per second at most.
 ui-options-script-errors-channel-hint = Any channel, negative ones included. 0 is the public chat: everyone near you hears them.
+ui-options-group-emotes = Group emotes with the sender's messages
+ui-options-group-emotes-hint = An emote ("/me waves") goes under the same header as the messages its sender said just before or after, instead of opening its own. Aurora style.
 ui-options-compact-automated-chat = Compact messages that do not come from a person
 ui-options-compact-automated-chat-hint = What objects and scripts say, and the viewer's notices, take one small row with an icon of their kind; only people's messages keep their full size. They no longer count as unread nor alert you (keyword sound, flash, system notification): only people's messages do.
 ui-options-compact-im-system-lines = Compact the conversations' system lines too
@@ -3341,6 +3377,8 @@ appearance-editor-camera = Camera
 ui-options-appearance-camera-hint = Automatically frame the edited body part when editing your shape or a layer. Off, keep your framing; orbit, zoom and pan still work.
 ui-options-customize-animation = A-Pose
 ui-options-customize-animation-hint = Editing your shape or a layer stands your avatar up and plays the A-pose animation. Off, your avatar keeps its pose and animations.
+ui-options-bento-idle = Fix Bento idle animation
+ui-options-bento-idle-hint = Plays a priority 0 Bento animation under all the others, so hands, mouth, wings and tail go back to a natural pose instead of staying stuck after an animation; others see it too
 ui-options-typing-in-name-tags = Show typing in name tags
 ui-options-typing-in-name-tags-hint = The name tag of a resident who types in the nearby chat says so.
 ui-options-typing-chevron = Chevron before "is typing"
@@ -3415,6 +3453,10 @@ common-copy-slurl = Copy SLurl
 inventory-landmark-location-unknown = This landmark's location could not be resolved. Please try again later.
 ui-options-commands-copy-camera = Copy camera
 build-ui-general-copy-object-keys-shift-all-parts = Copy object keys (Shift: all parts)
+build-ui-copied-object-uuids = { $count ->
+    [one] Object UUID copied
+   *[other] Object UUIDs copied
+    }
 ui-options-commands-copy-camera-position-to-clipboard = Copy camera position to clipboard
 build-ui-tools-copy-selection = Copy selection
 common-copy-slurl-2 = Copy SLurl
@@ -3462,7 +3504,6 @@ ui-sound-object-creation = Object creation
 session-inventory-upload-creation-denied-invalid-type-size-or-upload-count = Creation denied: invalid type, size or upload count.
 ui-contacts-create = Create
 build-ui-tools-create-ctrl-4 = Create (Ctrl+4)
-ui-bars-create-prims-ctrl-4 = Create prims (Ctrl+4)
 ui-places-create-folder = Create folder
 ui-inventory-context-create-folder-from-selection = Create folder from selection
 common-create-favorite = Create favorite
@@ -3649,6 +3690,7 @@ ui-options-show-own-tag = Show my name tag
 ui-options-show-own-tag-help = Hidden with the others while both switches below are off, as with Avatar Name Tags on Off in the Legacy Viewer.
 ui-options-show-friend-tags = Show friends' name tags
 ui-options-show-other-tags = Show other residents' name tags
+# Quick preferences: the name tags row (AvatarNameTagMode)
 quickprefs-name-tags-off = Off
 quickprefs-name-tags-on = On
 quickprefs-name-tags-brief = Briefly
@@ -3709,7 +3751,6 @@ common-double-sided = Double-sided
 ui-minimap-double-click = Double-click
 ui-inventory-controls-double-click-add-objects = Double-click: add objects
 ui-inventory-controls-double-click-add-clothes = Double-click: add clothes
-ui-profile-double-click-group-chat = Double-click: group chat
 ui-minimap-double-click-to-open-the-map = Double-click to open the map
 ui-minimap-double-click-to-teleport = Double-click to teleport
 build-ui-floaters-double-click-a-group = Double-click a group.
@@ -4072,7 +4113,7 @@ rlva-selftest-title = RLVa self-test
 rlva-selftest-confirm-title = Run the RLVa self-test?
 rlva-selftest-confirm-intro = This development tool checks RLVa with your avatar, on the grid you are logged in to. A test avatar is recommended.
 rlva-selftest-confirm-inventory = It creates the folder #RLV/~AuroraSelfTest (and #RLV if you have none), with six copies of a Library object and one link in it. It renames, moves and deletes nothing in your inventory.
-rlva-selftest-confirm-wear = It wears its objects on Hind Right Foot, Hind Left Foot and Tail Tip, and writes a small relay script in two of them. What you wear on these three points may be taken off.
+rlva-selftest-confirm-wear = It wears its objects on Right Hind Foot, Left Hind Foot and Tail Tip, and writes a small relay script in two of them. What you wear on these three points may be taken off.
 rlva-selftest-confirm-rules = It issues RLVa commands through these objects only, on a private channel, and tries the restricted actions. Unless you tick the box below, it does not move the avatar, sit, teleport, rez or edit anything in-world. It never chats, sends a message or pays.
 rlva-selftest-confirm-end = At the end, also after a failure or Stop, it releases every restriction and takes its objects off. The folder stays for the next run.
 rlva-selftest-phase2 = Also run the in-world cases
@@ -4241,6 +4282,7 @@ ui-options-input-used-for-voice = Input used for voice
 ui-environment-sky-environment = Sky environment
 ui-environment-water-environment = Water environment
 build-ui-features-convex-hull = Convex hull
+build-ui-features-physics-none-root-hint = Only the child prims of a linkset can use the physics shape None: the root prim, or a prim on its own, keeps Prim or Convex hull.
 common-environment = Environment
 ui-environment-shared-environment = Shared environment
 ui-options-shared-environment-region-parcel-eep-day-cycle = Shared environment = region / parcel EEP day cycle
@@ -4606,6 +4648,10 @@ app-outfit-hd-unknown = The HD picture's upload outcome is unknown: check the ou
 app-outfit-hd-refused = The server refused the HD picture.
 ui-appearance-batch-title = Outfit portraits
 ui-appearance-batch-choose = Outfits to photograph
+ui-appearance-batch-choose-folder = Outfits to photograph in { $folder }
+ui-appearance-batch-all = All outfits
+ui-appearance-batch-chosen = { $chosen } of { $total }
+ui-appearance-batch-select-missing = Without picture
 ui-appearance-batch-none = None of these outfits is yours to photograph.
 ui-appearance-batch-progress = Photo { $index } of { $count }…
 ui-appearance-batch-paused = Paused — photo { $index } of { $count }
@@ -5081,6 +5127,7 @@ outfits-the-outfit-was-sent-but-could-not-be-read = The outfit was sent, but cou
 world-appearance-the-current-outfit-cannot-be-deleted = The current outfit cannot be deleted.
 world-appearance-the-outfit-exceeds-the-38-attachment-limit = The outfit exceeds the 38-attachment limit.
 world-appearance-the-outfit-exceeds-the-limit-of-60-layers-per = The outfit exceeds the limit of 60 layers per clothing type.
+world-appearance-clothing-layers-full = All 60 clothing layers are in use. Remove a layer before wearing this item.
 common-boreal-lagoon = Boreal Lagoon
 demo-place-aurora-lagoon = Aurora Lagoon
 demo-place-aurora-lagoon-boreal-lagoon = Aurora Lagoon, Boreal Lagoon
@@ -5273,6 +5320,12 @@ ui-inventory-dialogs-no-copy-will-leave = { $count ->
    *[other] { $number } no-copy items will leave your inventory.
 }
 ui-inventory-dialogs-items-will-be-moved-to-trash = Items will be moved to trash.
+ui-inventory-dialogs-detach-and-delete = Detach and Delete
+ui-inventory-dialogs-detach-and-delete-body = Some of these items are worn on your avatar. They will be taken off, then moved to trash.
+ui-inventory-delete-detach-cannot = The worn items can no longer be taken off and deleted.
+ui-inventory-delete-detach-refused = This item cannot be taken off and deleted.
+ui-inventory-delete-detach-busy = Another inventory change is under way. Try again once it is done.
+ui-inventory-delete-detach-timeout = The worn items did not come off, so they were not deleted.
 ui-environment-sunrise = Sunrise
 ui-bars-sunrise = Sunrise
 build-ui-tools-link = Link
@@ -5548,19 +5601,18 @@ inventory-operations-change-sent-but-could-not-read-it-back-reload = Change sent
 build-ui-tools-linked-edit = Linked edit
 ui-appearance-unsaved-changes = Unsaved changes
 common-edit = Edit
+common-modify = Modify
 build-ui-tools-edit-ctrl-3 = Edit (Ctrl+3)
 ui-place-details-edit-this-landmark = Edit this landmark
 ui-appearance-edit-this-outfit = Edit this outfit
 ui-appearance-show-current-outfit = Show the current outfit in the list
 ui-appearance-current-outfit-not-in-my-outfits = The current outfit is not saved in My Outfits
-ui-bars-edit-objects-ctrl-3 = Edit objects (Ctrl+3)
 build-ui-tools-edit-parcel = Edit parcel
 ui-context-edit-shape = Edit shape
 ui-context-export-shape-xml = Export shape XML
 ui-context-edit-outfit = Edit outfit
 ui-context-edit-pbr-material = Edit PBR material
 ui-context-edit-land = Edit land
-ui-bars-edit-land-ctrl-5 = Edit land (Ctrl+5)
 ui-land-options-edit-land = Edit land:
 build-ui-tools-edit-selected-land = Edit selected land
 ui-profile-edit-text = Edit text
@@ -5697,6 +5749,10 @@ common-name = Name
 common-name-2 = Name:
 ui-appearance-name-a-z = Name: A → Z
 ui-appearance-name-z-a = Name: Z → A
+ui-appearance-date-newest-first = Date: newest first
+ui-appearance-date-oldest-first = Date: oldest first
+ui-appearance-favorites-to-top = Favorites to top
+ui-appearance-images-to-top = Images to top
 ui-people-name = Name [{ $value0 }]
 ui-display-name-current-name = { "Current name: " }{ $value0 }{ "  (" }{ $value1 })
 common-display-name = Display name
@@ -5819,6 +5875,33 @@ ui-options-screen-indirect-light = Indirect light (GTAO)
 ui-options-screen-indirect-intensity = Indirect light intensity
 ui-options-screen-indirect-intensity-help = How much light the surfaces around bounce: 1 is a physical bounce, higher shows the colors more
 ui-options-screen-indirect-light-help = Light bounced by the surfaces around (a lit wall colors the floor beside it), added on top of the GTAO occlusion, which stays the same; about a tenth of a millisecond more on the graphics card
+ui-options-ray-tracing = Ray tracing
+ui-options-ray-traced-shadows = Ray-traced sun shadows
+ui-options-ray-traced-shadows-help = The sun's and the moon's shadows traced ray by ray instead of read from the shadow maps: exact where things touch and at any distance. Needs the shadows and a graphics card with ray tracing, and costs more on the graphics card
+ui-options-ray-traced-lights = Local light shadows
+ui-options-ray-traced-lights-help = Shadows from the point lights around (lamps, candles), which cast none otherwise, and from the projectors when Projector shadows is on, in their shadow maps' place. The costliest of the ray tracing options: best left off on integrated graphics
+ui-options-rt-quality = Ray tracing quality
+ui-options-rt-quality-help = Every traced effect stays on: lower levels trace fewer samples and the indirect light on a coarser grid, for more frames per second on a smaller graphics card. High is the full image of Deluxe (RT). Choosing a level also sets the lights that cast shadows
+ui-options-rt-sun-softness = Sun shadow softness
+ui-options-rt-sun-softness-help = How soft the edges of the sun's traced shadows are: 1 is the real sun, 0 sharp edges, more for a hazier sun
+ui-options-rt-lamp-softness = Local light shadow softness
+ui-options-rt-lamp-softness-help = How soft the edges of the lamps' traced shadows are: 1 follows the size of each lamp, 0 sharp edges
+ui-options-rt-shadow-lamps = Lights that cast shadows
+ui-options-rt-shadow-lamps-help = How many of the nearest lights cast traced shadows; the others still light, without shadows. Fewer cost less on the graphics card
+ui-options-ray-traced-indirect = Ray-traced indirect light
+ui-options-ray-traced-indirect-help = Light bounced by the surfaces around, traced beyond what the screen shows, in place of the indirect light of GTAO
+ui-options-gi-probes = Global illumination probes
+ui-options-gi-probes-help = Probes spread through the scene that keep the light of several bounces and the sky they see: closed rooms stay dark, light goes round corners. About 0.8 ms on the graphics card
+ui-options-ray-traced-reflections = Ray-traced reflections
+ui-options-ray-traced-reflections-help = Reflections of what the screen does not show, in place of the screen-space reflections, which must be on
+ui-options-ray-tracing-unsupported = This graphics card or its driver has no ray tracing
+ui-options-ray-tracing-vr = Not available in a session started for VR
+ui-options-tab-ray-tracing = Ray tracing
+ui-options-deluxe-rt-warning-title = Turn on Deluxe (RT)?
+ui-options-deluxe-rt-warning-text = Deluxe (RT) is High with the shadows and the indirect light traced by the graphics card. It needs a card with hardware ray tracing (NVIDIA RTX, AMD Radeon RX 6000 or later, Intel Arc) and an up-to-date driver, and it costs far more than High: on a mid-range card the frame rate can drop a lot in busy places. Ray tracing is still being tested: if the image looks wrong or the viewer slows down, go back to High. The Ray tracing tab holds its settings.
+ui-options-deluxe-rt-warning-turn-on = Turn on
+ui-options-ray-tracing-needs-shadows = Needs the shadows
+ui-options-ray-tracing-needs-ssr = Needs the screen-space reflections
 ui-perf-ambient-occlusion-reflections-water-mirrors-probes-screen-space-reflections = Ambient occlusion, reflections (water, mirrors, probes), screen-space reflections
 build-ui-texture-occlude-water = Occlude water
 build-ui-floaters-occlude-water = Occlude water
@@ -5930,6 +6013,7 @@ ui-chat-participants = Participants ({ $n })
 ui-chat-search-or-start = Search or start…
 ui-chat-contacts-sub = Friends and contact sets
 ui-chat-contacts-friends-sub = Friends · { $online } online
+ui-chat-contacts-groups-sub = Groups · { $count }
 ui-chat-in-earshot = { $n } in earshot
 ui-chat-head-in-earshot = { $n ->
     [one] { $n } person in earshot
@@ -6197,7 +6281,6 @@ ui-minimap-near = Near
 common-profile = Profile
 ui-context-object-profile = Object profile
 ui-appearance-items-object-profile = Object profile
-ui-profile-group-profile-coming-soon = Group profile (coming soon)
 common-place-profile = Place profile
 common-profile-2 = Profile...
 ui-bars-profile = Profile…
@@ -6303,7 +6386,7 @@ ui-options-preset-potato = Potato
 ui-options-preset-low = Low
 ui-options-preset-medium = Medium
 ui-options-preset-high = High
-ui-options-preset-deluxe = Deluxe
+ui-options-preset-deluxe = Deluxe (RT)
 ui-options-preset-custom = Custom
 ui-options-preset-mac-mid-high = Mid-High (recommended for this Mac)
 graphics-saved-title = Saved graphics profiles
@@ -6324,6 +6407,13 @@ ui-options-projector-shadow-limit = Projectors with shadows
 ui-options-projector-shadow-limit-help = Maximum simultaneous projector shadows (1–16). More projectors increase GPU time and video memory use.
 ui-options-contact-shadows = Contact shadows
 ui-options-contact-shadows-help = Sharp sun shadows where things touch (feet on the ground, objects resting on a surface, folds), which the shadow map is too coarse to show. Costs a little on the graphics card
+ui-options-soft-shadows = Soft shadows
+ui-options-soft-shadows-help = Sun shadows with softer edges the farther the object is from what it shadows, like in real life: the shadow of a tall pole blurs towards its tip while a foot stays sharp. Experimental, off by default; costs a fraction of a millisecond on the graphics card
+ui-options-shadow-softness = Shadow softness
+ui-options-shadow-softness-help = The size of the light for the soft shadows: 1 is a light 2.3 degrees across, 2 a larger one that softens shadows twice as much (the real sun is about 0.2), 0 a light with no size: the shadows are as they were before, the projectors' included
+ui-options-shadow-softness-needs-soft = Turn on Soft shadows to use this
+ui-options-shadow-intensity = Shadow intensity
+ui-options-shadow-intensity-help = How dark the sun's shadows are: 1 is the normal darkness, lower lets more light into them
 ui-options-when-i-am-away = When I am away:
 ui-options-when-the-window-is-not-in-the-foreground-the = When the window is not in the foreground, the viewer slows down to free system resources. Enabled by default
 ui-options-glow-amount-instead-of-the-image-red-glow-10 = Glow amount instead of the image (red = glow × 10, green = × 2)
@@ -6344,6 +6434,8 @@ ui-bars-editable-shortcuts-preferences-shortcuts = Editable shortcuts: Preferenc
 link-trust-shortened-link-the-real-destination-is-hidden = Shortened link: the real destination is hidden.
 demo-root-touch = Root: Touch
 build-ui-contents-refresh = Refresh
+build-ui-contents-filters = Contents filters
+build-ui-contents-next-owner-permissions = Next owner's permissions
 build-contents-create-failed = Could not create the item in the object: { $message }
 build-ui-tools-random = Random
 keybinds-zoom-camera-in = Zoom camera in
@@ -6571,6 +6663,9 @@ controls-shot-name = Name of this camera position
 controls-shot-save = Save
 controls-shot-save-tip = Save the camera position
 controls-shot-delete = Delete
+controls-position-tip = Camera position: set where the camera rests behind the avatar, exactly
+camera-position-hint = In meters from the avatar: X forward, Y left, Z up. Ctrl + wheel raises the camera, Shift + wheel the focus point.
+camera-position-save = Save as camera position…
 camera-presets = Camera presets
 camera-presets-tip = Camera presets: save the shot, use it again
 camera-presets-none = No preset yet: frame a shot, then save it below.
@@ -6676,6 +6771,13 @@ ui-inventory-recent-set-period = A set period
 ui-inventory-recent-note-period = Recent: the last { $days } d { $hours } h.
 ui-land-general-reclaim-land = Reclaim land
 common-collapse = Collapse
+common-window-outside = Move outside the viewer's window
+common-window-inside = Bring back into the viewer's window
+common-window-rename-name = Double-click to rename
+common-carry-hint = Click to drop it here, Esc to let go of it
+common-window-paused-photo = Paused while photo mode is open
+common-window-paused-director = Paused while the Director plays
+common-window-paused-interface = Paused while the interface is off
 common-compact-view = Compact view
 common-full-view = Full view
 ui-inventory-controls-collapse-displayed-folders = Collapse displayed folders
@@ -7062,6 +7164,9 @@ ui-options-sound-reverb = Reverb from the surroundings
 ui-options-sound-reverb-help = World sounds echo like the place you are in: briefly in a small room, long in a large hall, hardly at all in the open air. Interface sounds, voice chat, music and media stay dry. Off: every sound is dry, as in the Legacy Viewer
 ui-inventory-dialogs-ease-out-s = { "Ease out: " }{ $value0 }s
 ui-options-audio-output = Audio output
+ui-options-voice-output = Voice output
+ui-options-voice-output-used-for-voice-chat = Used for voice chat; world sound, music and media use Audio output
+ui-options-same-as-audio-output = Same as audio output
 ui-options-commands-output-to-a-channel = Output to a channel
 ui-places-do-you-really-want-to-teleport-to = { "Do you really want to teleport to " }{ $name }?
 build-ui-tools-lift-ctrl = Lift (Ctrl)
@@ -7484,6 +7589,8 @@ ui-options-modified-reset-text = Every setting you changed goes back to its defa
 ui-options-modified-reset = Modified: click to go back to the default value
 ui-options-open-page = Open the page
 ui-options-go-to-setting = Go to this setting
+ui-options-copy-setting-link = Copy link to setting
+ui-options-setting-unavailable = This setting is unavailable.
 ui-options-show-related = Show the { $count } related settings
 ui-options-hide-related = Hide the { $count } related settings
 ui-options-section-world = World and rendering
@@ -7591,6 +7698,7 @@ ui-options-privacy-policy-open = Read
 ui-options-bars = Bars
 ui-options-at-startup = At startup
 ui-options-no-system-font = None (bundled font)
+ui-options-system-fonts-searching = Looking for fonts…
 ui-options-system-font-help = A font installed on this computer, instead of the bundled ones
 ui-options-preview = Preview
 ui-options-skin-folder = Skin folder
@@ -7873,6 +7981,8 @@ demo-chat-range-stage = Stage Announcer
 demo-chat-range-object-far = The raffle draw starts at the far stage!
 demo-chat-range-kiosk = Info Kiosk
 demo-chat-range-object-near = Touch me for a notecard.
+demo-emotes-nova = /me sets a bench down by the fountain
+demo-emotes-orion = Looks great from here!
 demo-chat-bubbles-whisper = Psst, the roof garden is already open
 demo-object-chat-greeter = Plaza Greeter
 demo-object-chat-welcome = Welcome to the plaza! Touch me for a notecard with this week's events.
@@ -7937,6 +8047,7 @@ ui-options-magenta-where-a-light-reaches-a-pixel-the-sort-missed = Magenta where
 ui-options-sort-of-the-reflection-probes = Sort of the reflection probes
 ui-options-magenta-where-a-probe-covers-a-pixel-the-sort-missed = Magenta where a probe covers a pixel without being among those sorted for it: there must be none
 ui-context-show-in-inventory = Show in inventory
+ui-context-show-in-inventory-none = No object in your inventory has exactly this object's name.
 ui-place-details-show-the-corresponding-location-on-the-map = Show the corresponding location on the map
 common-view-conversation-history = View conversation history
 common-view-profile = View profile
@@ -8081,6 +8192,9 @@ photo-light-time = Time of day, for the photo
 photo-light-time-current = Current
 photo-light-exposure = Exposure
 photo-light-exposure-reset = Back to the exposure of Preferences
+photo-light-shadow-softness = Shadow softness
+photo-light-shadow-intensity = Shadow intensity
+photo-light-shadow-reset = Back to the value of Preferences
 photo-light-pause-clouds = Pause the clouds
 photo-light-pause-clouds-hint = For a still sky. The pause lasts the session, until you turn it off.
 photo-light-attached = Worn lights
@@ -8199,7 +8313,6 @@ photo-looks = Filters
 photo-looks-tip = Filters: the photo's look, shown live
 photo-look-none = No filter
 photo-look-strength = Strength
-photo-look-compare = Before / after
 photo-look-compare-tip = The scene as it is left of the line, with the filter on its right; drag the line to move it
 photo-look-before = Before
 photo-look-after = After
@@ -8233,24 +8346,47 @@ photo-look-spotlight = Spotlight
 photo-look-the-matrix = The Matrix
 photo-look-toy-camera = Toy Camera
 photo-look-video = Video
-photo-looks-replace = Replace the chosen one
-photo-looks-add = Add on top
-photo-looks-stack = Active looks ({ $count })
-photo-looks-empty = No look yet: choose one below.
-photo-looks-on-tip = Draw this look (unticked: kept in the list, not drawn)
-photo-looks-choose-tip = Show its settings; a click in the list replaces it
-photo-looks-remove = Take this look out
-photo-looks-up = Move up (drawn earlier)
-photo-looks-down = Move down (drawn later)
+photo-looks-replace = Replace
+photo-looks-empty = No effect yet. Point at a filter below to try it, then click it or drag it here.
 photo-looks-settings = Settings of { $name }
+photo-looks-active = Active
+photo-looks-count = { $count } of { $max }
+photo-looks-expand-all = Expand all
+photo-looks-collapse-all = Collapse all
+photo-looks-hint = Applied from top to bottom. Drag a card to reorder it, or press Alt + ↑ ↓ on it. Right-click a card to take it out.
+photo-looks-right-click-out = Right-click: take it out of the active effects
+photo-looks-drop = Drag an effect here, or click one below
+photo-looks-full = { $max } of { $max }: take one out, or turn on Replace to swap one.
+photo-looks-catalogue = Effects catalogue
+photo-looks-catalogue-tip = Point at an effect to try it on the photo; click it to add it, or drag it among the active ones
+photo-looks-catalogue-fold = Show or hide the catalogue
+photo-looks-replace-tip = Replace: a click in the catalogue swaps the chosen card instead of adding a new one
+photo-looks-replacing = A click swaps { $name }
+photo-looks-done = Done
+photo-looks-take-out-zone = Drop here to take it out
+photo-looks-hide = Hide { $name } (it keeps its place)
+photo-looks-show = Show { $name }
+photo-looks-more = More actions
+photo-looks-move-up = Move up
+photo-looks-move-down = Move down
+photo-looks-replace-one = Replace…
+photo-looks-take-out = Take out
+photo-looks-not-in-360-tag = Not in 360°
+photo-looks-all = All
+photo-looks-favorites = Favourites: every effect you starred
+photo-looks-favorites-empty = No favourite yet. Point at an effect and click its star: it shows first in its list, and here.
+photo-looks-favorite = Add to favourites
+photo-looks-unfavorite = Remove from favourites
+photo-looks-card = { $name }, { $place } of { $count }. Alt + arrow keys move it.
 photo-looks-reset = Default values
-photo-looks-legacy-note = The Legacy Viewer's filters have no settings, as in the Legacy Viewer: only their strength.
+photo-looks-legacy-note = Legacy Viewer filters have no additional settings.
 photo-looks-lut-note = A LUT is applied as it is: only its strength.
 photo-knob-amount = Amount
 photo-knob-grain-size = Grain size
 photo-knob-contrast = Contrast
 photo-knob-grain = Grain
-photo-knob-strength = Strength
+photo-knob-toning = Toning
+photo-knob-local-contrast = Local contrast
 photo-knob-shadows = Shadows
 photo-knob-lights = Lights
 photo-knob-middle = Middle tones
@@ -8578,6 +8714,7 @@ photo-vf-help-free-camera = Free camera: the movement keys, right button held to
 photo-vf-hints = Controls list
 photo-vf-shown = Shown
 photo-vf-hidden-one = Hidden
+photo-vf-keep-framing = Keep the framing
 photo-vf-dial-focal = focal length
 photo-vf-dial-aperture = aperture
 photo-vf-dial-exposure = exposure
@@ -8979,6 +9116,7 @@ world-region-message-title = Region message from { $name }
 world-region-message-line = Region message from { $name }: { $message }
 app-was-unblocked-because-you-sent-them-an-im = { $name }{ " was unblocked because you sent them an IM." }
 ui-contacts-is-already-your-friend = { $name }{ " is already your friend." }
+# { $ending } is the agreement of the French participle: nothing in English
 ui-appearance-not-worn = { $name } not worn{ $ending ->
        *[other] { "" }
     }
@@ -9039,7 +9177,7 @@ common-for-sale = For sale:
 ui-land-general-for-sale-to = For sale to:
 ui-profile-coming-soon = Coming soon
 ui-profile-aurora-my-profile = My profile
-ui-profile-aurora-help = A resident's profile: who they are, what you can do with them, then their favorite places, classifieds, first life, web profile and your notes. Preferences › Aurora › Profiles brings back the Legacy Viewer's window.
+ui-profile-aurora-help = A resident's profile: who they are, what you can do with them, then their picks, classifieds, first life, web profile and your notes. Preferences › Aurora › Profiles brings back the Legacy Viewer's window.
 ui-profile-aurora-conversation = Conversation
 ui-profile-aurora-call = Call
 ui-profile-aurora-add-friend = Add as friend
@@ -9070,7 +9208,7 @@ ui-profile-aurora-their-map = Find them on the map
 ui-profile-aurora-their-objects = Modify, delete or take their objects
 ui-profile-aurora-received-tip = { $right }: { $state }
 ui-profile-aurora-tab-profile = Profile
-ui-profile-aurora-tab-picks = Favorite places
+ui-profile-aurora-tab-picks = Picks
 ui-profile-aurora-tab-classifieds = Classifieds
 ui-profile-aurora-tab-first-life = First life
 ui-profile-aurora-tab-web = Web
@@ -9104,11 +9242,11 @@ ui-profile-aurora-part-bio = bio
 ui-profile-aurora-part-first-life = first life
 ui-profile-aurora-part-notes = notes
 ui-profile-aurora-part-places = { $count ->
-    [one] { $count } place
-   *[other] { $count } places
+    [one] { $count } pick
+   *[other] { $count } picks
     }
 ui-profile-aurora-part-classified = classified
-ui-profile-aurora-snapshot = Picture of the place
+ui-profile-aurora-snapshot = Picture
 ui-profile-aurora-teleport = Teleport
 ui-profile-aurora-description = Description
 ui-profile-aurora-category = Category
@@ -9124,11 +9262,11 @@ ui-profile-aurora-copy-slurl = Copy the SLURL
 ui-profile-aurora-here = My position here
 ui-profile-aurora-add-here = Add the place where I am
 ui-profile-aurora-picks-count = { $count } of { $limit } (account limit)
-ui-profile-aurora-picks-empty = No favorite place yet
-ui-profile-aurora-picks-empty-text = { $name } has not shared any place.
-ui-profile-aurora-picks-empty-own = Share your favorite places
-ui-profile-aurora-picks-empty-own-text = Other residents see them on your profile and teleport there in one click.
-ui-profile-aurora-delete-pick = Delete the place "{ $name }"?
+ui-profile-aurora-picks-empty = No picks yet
+ui-profile-aurora-picks-empty-text = { $name } has not shared any picks.
+ui-profile-aurora-picks-empty-own = Share what matters to you
+ui-profile-aurora-picks-empty-own-text = Use picks to highlight places, people, and things you care about.
+ui-profile-aurora-delete-pick = Delete the pick "{ $name }"?
 ui-profile-aurora-classifieds-empty = No classifieds
 ui-profile-aurora-classifieds-empty-text = { $name } has no classified published.
 ui-profile-aurora-classifieds-empty-own = Make a place or a service known
@@ -9450,6 +9588,8 @@ cli-help = { "SunSet Viewer\u000A\u000AUsage: aurora-viewer [--title <text>] [--
 demo-media-page = { "data:text/html;charset=utf-8,<html><body style='margin:0;height:100vh;background:linear-gradient(135deg,%232a1f4a,%230f6d6d);color:white;font:56px sans-serif;text-align:center'><h1 style='margin:40px 0 10px'>Aurora media</h1><p id='t' style='font-size:90px;margin:10px'>--</p><button onclick=\"document.body.style.background='%237a3b9c';this.textContent='Clicked!'\" style='font-size:48px;padding:10px 40px'>Click</button><br><input placeholder='Type here' style='font-size:44px;margin-top:30px;width:70%'><script>setInterval(function(){document.getElementById('t').textContent=new Date().toLocaleTimeString()},250)</script></body></html>" }
 demo-nearby-media-page-cinema = { "data:text/html;charset=utf-8,<html><head><title>Plaza cinema</title></head><body style='margin:0;height:100vh;background:%23402060;color:white;font:64px sans-serif;text-align:center'><h1 style='margin-top:180px'>Cinema</h1></body></html>" }
 demo-nearby-media-page-next-door = { "data:text/html;charset=utf-8,<html><head><title>Parcel next door</title></head><body style='margin:0;height:100vh;background:%23205040;color:white;font:64px sans-serif;text-align:center'><h1 style='margin-top:180px'>Next door</h1></body></html>" }
+
+# Secondary labels and status messages
 status-none-touch-touch = NONE / TOUCH: touch
 status-close = × Close
 status-back = « Back
@@ -9507,6 +9647,8 @@ status-other = (other)
 status-none-2 = (none)
 status-cmd-x-y-z-name = cmd <x, y, z> | name
 status-jeans-substance-textures-and-accessories-in = JEANS_SUBSTANCE — Textures and accessories in their original folder
+
+# Counts use Fluent plural rules
 contents-count = { $count ->
     [0] Contents (no items)
     [one] Contents ({ $count } item)
@@ -9986,6 +10128,8 @@ monitor-media-face = Media face · { $what }
 monitor-media-search = Search page
 monitor-media-marketplace = Marketplace
 monitor-media-profile = Profile web page
+
+# Independent crash recovery window
 crash-title = SunSet Viewer — Crash report
 crash-heading = SunSet Viewer stopped unexpectedly
 crash-explanation = Your session has ended. The details below can help identify the problem.
@@ -10034,6 +10178,7 @@ crash-report-actual = SunSet Viewer stopped unexpectedly.
 crash-report-reason = Crash type
 crash-report-exit-code = Process exit code
 bug-log-native = native exception
+## Viewer update
 update-demo-badge = PREVIEW · DEMONSTRATION VERSIONS
 update-title = An update is available
 update-downloading-title = Downloading the update
@@ -10168,6 +10313,7 @@ inventory-permissions-allowed = allowed
 inventory-permissions-denied = denied
 inventory-permissions-detail = { $right }: { $state }
 inventory-permissions-unavailable = Original item's permissions unavailable (broken or unloaded link).
+
 script-menu-file = File
 script-menu-edit = Edit
 script-menu-help = Help
@@ -10188,6 +10334,7 @@ script-search-query = Find
 script-search-replacement = Replace
 script-search-insensitive = Case insensitive
 script-search-up = Search upwards
+script-search-whole-words = Whole words
 script-search-find = Find
 script-search-replace = Replace
 script-search-replace-all = Replace all
@@ -10268,6 +10415,7 @@ script-color-compound = Compound constants
 script-color-control = Control flow
 script-color-preprocessor = Preprocessor
 script-color-variable = Variables
+
 script-preproc-processing = Preprocessing script…
 script-preproc-failed = Preprocessing failed. Your source is preserved.
 script-preproc-expression = Invalid integer expression in a preprocessor condition.
@@ -10281,9 +10429,11 @@ script-preproc-include-no-transfer = Include script cannot be transferred, and y
 script-preproc-include-timeout = Loading an include script timed out.
 script-preproc-cancelled = Preprocessing cancelled.
 script-preproc-lsl-extension = Invalid syntax in a switch statement or lazy list.
+
 script-debug-title = Script debug
 script-debug-all = All objects
 script-debug-clear = Clear
+
 script-help-forward = Next
 replace-button = Replace this prim
 replace-button-short = Replace
@@ -10357,6 +10507,8 @@ replace-timeout = The server did not confirm “{ $stage }” within 30 seconds.
 replace-restored-after-error = { $reason } The original configuration and script states were restored. Any temporary copies have been kept in inventory.
 replace-stopped-before-unlink = { $reason } No part was unlinked. Original script states were restored and any temporary copies have been kept in inventory.
 replace-recovery-incomplete = Recovery incomplete: { $reason } Check the parts in the scene and any scripts still stopped.
+
+# Compact build workspace
 build-compact-title = Build
 build-workspace-title = Build
 build-workspace-object = OBJECT
@@ -10383,7 +10535,9 @@ build-compact-summary-details = { " - " }{ $capacity }    { $counts }
 build-compact-link-action = Link
 build-compact-unlink-action = Unlink
 build-compact-link-value = Link { $number }
-build-compact-face-value = Face { $number }
+build-face-button = Face { $number }: select it on every selected prim. Shift+click: add it or take it out.
+build-face-invert = Invert the selected faces
+build-face-all = Select every face
 build-compact-move = Move
 build-compact-rotate = Rotate (Ctrl)
 build-compact-stretch = Stretch (Ctrl+Shift)
@@ -10518,13 +10672,17 @@ build-compact-copy-hint = Shift + drag: copy
 build-compact-create-hint = Click: create
 build-compact-land-hint = Hold: paint
 build-compact-drag-hint = Drag in the world
+
+# Compact build inspector, C3
 build-c3-remaining = { $remaining } available
 build-c3-emission-options = Emission and options
 build-c3-maps-tints = Maps and tints
 build-c3-texture-transform = Texture transforms
 build-c3-material-assigned = PBR material applied
 build-c3-choose = Choose…
+
 workspace-inventory-selected = { $count } selected
+
 workspace-land-identity = Identity and ownership
 workspace-land-sale = Sale and information
 workspace-land-actions = Parcel actions
@@ -10534,6 +10692,7 @@ workspace-outfit-items =
         [one] { $count } item
        *[other] { $count } items
     }
+
 ui-inventory-received-purchases = Received items
 ui-inventory-no-received-purchases = No received items yet.
 import-local-settings = Mesh loading settings
@@ -10544,6 +10703,7 @@ ui-context-save-backup = Backup
 ui-context-save-collada = Collada
 ui-context-save-obj = OBJ
 ui-context-remove-from-display-exceptions = Remove from display exceptions
+
 script-color-hint = Possible color: click to open the color picker.
 script-edit-line-comment = Toggle line comments (Ctrl+K or Ctrl+/)
 script-edit-block-comment = Toggle block comment (Ctrl+Shift+K)
@@ -10631,7 +10791,9 @@ people-view-sort-options = View/sort options
 people-filter-by-name = Filter by name…
 people-edit-contact-hold = Hold the left mouse button to edit contact settings.
 people-show-contact-sheet = Show contact details
+people-show-group-sheet = Show group details
 people-contact-details-empty = No contact to display
+people-group-details-empty = No group to display
 people-view-rich = Rich rows
 people-view-compact = Compact (one line each, for a crowd)
 people-alerts-options = Alerts and options
@@ -10691,6 +10853,7 @@ people-groups-count-unlimited = { $count ->
 people-groups-none = No active group
 people-groups-none-sub = No title shown above your name
 people-groups-active-tag = active
+people-groups-deactivate = Deactivate
 people-groups-active = Active group
 people-groups-member = Member
 people-groups-title = Title: { $title }
@@ -10766,6 +10929,10 @@ radar-col-seen-short = Seen
 radar-col-range-short = Dist.
 ui-options-camera-reset-all = Reset the camera
 ui-options-camera-reset-all-tip = Puts every setting of this page back to its default: rear view, camera position and focus point, viewing angle, distance, smoothing, limits and mouselook.
+ui-chat-close-all-ims = Close all IM conversations
+ui-chat-close-all-ims-question = Close all IM conversations and end the active call?
+ui-chat-confirm-close-all-ims = Confirm before closing all IM conversations
+ui-chat-confirm-close-all-ims-help = Ask before closing all IM conversations when one has an active voice call.
 ui-chat-close-conversation = Close conversation
 ui-chat-close-conversation-leave = Close conversation (leaves the session)
 ui-chat-snooze = Snooze
@@ -10899,6 +11066,10 @@ ui-options-aurora-controls = Camera and movement controls
 ui-options-aurora-controls-help = The Camera and Movement windows.
 ui-options-aurora-controls-aurora = SunSet
 ui-options-aurora-controls-classic = Classic windows (Legacy)
+ui-options-aurora-controls-compact = Compact camera controls
+ui-options-aurora-controls-compact-help = The Controls window opens compact on the camera: its joysticks, zoom and roll. Its title bar button switches between compact and full, and sets this too. With Classic windows, the camera opens in the Legacy Viewer's small camera window instead.
+ui-options-aurora-controls-compact-movement = Compact movement controls
+ui-options-aurora-controls-compact-movement-help = The Controls window's Movement tab opens compact: the movement buttons and walk, run and fly. Its title bar button switches between compact and full, and sets this too.
 ui-options-aurora-restart-alert = Restart alert
 ui-options-aurora-restart-alert-help = A card with a countdown, or the Legacy Viewer's yellow box in the middle.
 ui-options-aurora-restart-card = Card
@@ -12338,7 +12509,7 @@ ui-group-notices-saved = Saved
 ui-group-notices-attachment = Attachment
 ui-group-notices-subject = Subject
 ui-group-notices-message = Message…
-ui-group-notices-drop = Drag an item from the inventory (copy + transfer)
+ui-group-notices-drop = Drag an item or landmark from Inventory, Favorites, or Places (copy + transfer)
 ui-group-notices-not-attachable = This item cannot be attached: it must be copyable and transferable, and not worn.
 ui-group-notices-remove-attachment = Remove the attachment
 ui-group-notices-send = { $count ->
@@ -12542,6 +12713,8 @@ group-ability-experience-admin = Experience Admin
 group-ability-experience-admin-help = Members in a role with this ability can edit the meta-data for an experience.
 group-ability-experience-contributor = Experience Contributor
 group-ability-experience-contributor-help = Members in a role with this ability can contribute scripts for an experience.
+
+## Buying L$
 currency-title = Buy L$
 currency-region-helper = This region uses its own currency service, on { $host }. A purchase made here is between you and that service, which also receives your session (and your password if it asks for one): only buy if you trust it.
 currency-service = Currency service: { $host }
@@ -12623,6 +12796,8 @@ currency-confirm-password = Please re-enter your password and click OK.
 currency-bought = { "Thank you for your payment!\u000A\u000AYour L$ balance will be updated when processing completes. If processing takes more than 20 minutes, your transaction may be canceled. In that case, the purchase amount will be credited to your US$ balance.\u000A\u000AThe status of your payment can be checked on the Transaction History page of your account." }
 demo-currency-refused = Simulated refusal of the L$ purchase service (demo).
 demo-pay-message = Thanks for the concert ✨
+
+## Buying land
 buy-land-title = Buy Land
 buy-land-help = Buy the selected land: what the purchase will do, the estate's covenant, then the purchase.
 buy-land-purchase = Purchase
@@ -12694,6 +12869,7 @@ demo-buy-land-plan-annual = Premium, US$ 99.00/year, billed annually
 demo-buy-land-land-use-up = Increase your monthly land use fees to US$ 15.00/month.
 demo-buy-land-land-use-same = Your land use fees do not change.
 demo-buy-land-bought = Simulated land purchase: the parcel is yours (demo).
+
 import-permissions-tab = Permissions
 import-permissions-help = These settings apply to uploaded textures, sounds, animations, materials and meshes.
 import-permissions-sharing = Sharing
@@ -12711,6 +12887,8 @@ import-lod-retained = { $percent } % retained
 import-mesh-account-denied = This account is not authorized to upload meshes.
 import-fix-errors-before-upload = Fix the file errors before uploading.
 import-price-pending = The upload price is unavailable for this asset type.
+
+# Gesture manager and editor
 gesture-title = Gestures
 gesture-trigger = Trigger
 gesture-key = Key
@@ -12846,6 +13024,8 @@ gesture-builtin-wink-hollywood = Wink (Hollywood)
 gesture-builtin-express-worry = Worry
 gesture-builtin-yes-happy = Yes (Happy)
 gesture-builtin-yes-head = Yes
+
+# Shape editor
 shape-title = Edit Shape
 shape-less = Less
 shape-more = More
@@ -13136,6 +13316,8 @@ shape-param-880-max = Corner Up
 shape-param-11001-label = Hover
 shape-param-11001-min = Lower
 shape-param-11001-max = Higher
+
+# Physics wearable editor (LLPanelEditWearable, panel_edit_physics.xml)
 physics-title = Edit Physics
 physics-help = Set how your breasts, belly and butt bounce and sway as you move, watch your avatar, then save the physics layer to inventory.
 physics-group-breasts-bounce = Breasts bounce
@@ -13178,6 +13360,8 @@ physics-other-editor = Save or discard the changes of the open editor first.
 physics-new-name = New Physics
 physics-creating = Creating a physics layer…
 physics-demo-name = Aurora Physics
+
+# Compact texture and material library
 texture-library-title = Library
 resource-preview-fit = Fit window
 resource-preview-custom-ratio = Custom ratio
@@ -13240,16 +13424,21 @@ texture-library-demo-oak = Natural oak
 texture-library-demo-marble = Calacatta marble
 texture-library-demo-brass = Brushed brass
 texture-library-demo-linen = Natural linen
+
 texture-library-demo-sources = Demo materials
 texture-library-folder-error = Some folders could not be loaded.
 texture-library-manage = Organize in inventory
 texture-library-content-hint = Folder names are conventions: every supported type can be stored anywhere in Aurora Library.
 texture-library-demo-polished = Polished
+
 texture-library-click-hint = Click to apply to the faces selected in Edit mode.
 texture-library-no-copy-multiple = A no-copy texture or material can only be applied to one object at a time.
 texture-library-wait-selection = Loading object contents. Click the resource again once loading has finished.
+
 texture-library-material-drag = Drag
 texture-library-material-drag-hint = Drag this handle onto a face to apply the material. Drag the preview itself to rotate it.
+
+# Object editor presentation
 build-compact-general = General
 build-compact-select-face = Select a face
 build-compact-grab = Move
@@ -13290,6 +13479,7 @@ voice-show-self = Show my own voice visualizer
 voice-show-dot = Show the voice dot above avatars
 voice-show-in-calls = Show world indicators and lip sync during calls
 voice-show-conversation = Show voice state in conversation tabs
+
 movelock-title = Position lock
 movement-title = Movement enhancements (EXPERIMENTAL)
 movement-running = Enhance running
@@ -13428,6 +13618,7 @@ bridge-request-http = The simulator rejected the bridge request (HTTP { $status 
 bridge-request-gone = The bridge's address changed with the region. Reconnecting.
 bridge-request-response = The bridge returned an unreadable or incomplete state. Retrying.
 bridge-request-sequence = The bridge response does not match the command sent. Retrying.
+
 ao-design-title = AO layout study
 ao-design-help = Compare the current native AO window with two movement layouts. Existing AO controls use the same window and widgets.
 ao-design-current = Current window
@@ -13443,11 +13634,15 @@ ao-design-session = Offline prototype. Movement values are temporary; no motor o
 ao-design-movement-help = Each movement aid is independent. AO activation controls animation playback.
 ao-design-animation-help = Swimming animations are selected in the AO swimming states, using its inventory lists.
 ao-design-passage = Preview only: an obstacle-pass request would be sent here.
+
+# Integrated AO movement tab.
 ao-tab-animations = Animations
 ao-tab-movement = Movement (EXPERIMENTAL)
 ao-movement-help = Movement aids are configured independently of the AO’s other animations.
 movement-pass-enable = Obstacle passage
 movement-fly-help = ×1 keeps normal flight. Increase up to ×5 to fly faster.
+
+# Authenticated read-only Aurora bridge queries.
 radar-opt-bridge = Correct missing altitudes with the Aurora bridge
 bridge-script-info-loading = Retrieving script information through the Aurora bridge…
 bridge-script-info-region = Script information is only available for an object in your current region.
@@ -13484,7 +13679,20 @@ bridge-object-info-result =
     Your current position: { $observer }
 bridge-query-timeout = The bridge did not return the requested information in time. Try again.
 bridge-query-interrupted = The information request was interrupted by a region or bridge connection change. Try again.
-ao-bootstrap-interrupted = An unfinished AO import already exists in #Aurora. Review it in inventory before retrying.
+ao-import-unfinished-retry = An unfinished AO import already exists in #Aurora/{ $folder }. Use the recovery notice in the AO window before retrying.
+ao-unfinished-import = { $count ->
+    [one] Unfinished AO import in #Aurora/{ $folder }: { $count } set.
+   *[other] Unfinished AO import in #Aurora/{ $folder }: { $count } sets.
+    }
+ao-finish-import = Finish import
+ao-show-in-inventory = Show in inventory
+ao-duplicate-native = { $count ->
+    [one] Another #Aurora/{ $folder } folder contains { $count } set. Merge it into the active AO folder?
+   *[other] Another #Aurora/{ $folder } folder contains { $count } sets. Merge it into the active AO folder?
+    }
+ao-native-already-exists = A native Aurora AO folder already exists. Choose it in the AO window instead of migrating again.
+
+# Guided AO editor
 ao-states = States
 ao-combine = Combine…
 ao-combine-title = Combine animations
@@ -13533,6 +13741,8 @@ movement-run-speed = Running speed
 movement-flight-speed = Flight speed
 ao-combine-group-choice = Play several animations together
 ao-combine-track-choice = Add an independent cycle
+
+# Construction inspector and resource picker
 numeric-increase = Increase
 numeric-decrease = Decrease
 build-status-no-mod = Not modifiable
@@ -13544,8 +13754,11 @@ picker-inventory-tab = Inventory
 picker-local-tab = Local
 picker-aurora-tab = Aurora Library
 picker-empty-library = Your Aurora Library is empty.
+
 build-link-pending = Link request sent — waiting for the simulator.
 build-link-unconfirmed = Linking was not confirmed by the simulator.
+
+# Local visual water
 water-effects-title = Water
 water-effects-enabled = Enhanced water effects
 water-effects-help = Local water effects for region water. Objects and avatars keep their simulator physics.
@@ -13559,10 +13772,15 @@ water-effects-interactions = Object and avatar ripples / wakes
 water-effects-caustics = Underwater caustics
 water-effects-splashes = Splashes and spray
 water-effects-bubbles = Underwater bubbles
+
 water-effects-medium = Medium
+
 water-effects-absorption = Depth color and underwater haze
 water-effects-fresnel = Reflections with viewing angle
+
 water-effects-wet-ground = Wet ground along the shore
+
+# Unified inventory library type filter
 texture-library-animations = Animations
 texture-library-sounds = Sounds
 texture-library-notecards = Notecards
@@ -13572,6 +13790,8 @@ texture-library-types-all = All types
 texture-library-types-none = Clear types
 texture-library-types-count = { $count } types
 texture-library-open-hint = Double-click to open. Drag into object contents, or Ctrl-drag onto an object.
+
+# Import inspector layout and actual model diagnostics.
 import-preview-settings = Preview options
 import-section-avatar = Avatar
 import-section-journal = Journal
@@ -13600,9 +13820,14 @@ import-log-loaded = { $models ->
 import-log-calculating = Calculating model data.
 import-log-lod-ready = LOD{ $level }: { $triangles } triangles prepared.
 import-log-model-detail = Model { $model }, LOD{ $level }: { $vertices } vertices, { $faces } faces.
+
 import-collision-analyze = Analyze
 import-collision-analyzing = Analyzing…
+
 import-fill-mode = Fill mode
+
+# Local skeletal authoring
+# Local photo poser
 poser-title = Poser
 poser-new-name = New pose
 poser-local-hint = Pose your avatar locally. Save a looping .anim or prepare its import preview.
@@ -13825,6 +14050,7 @@ poser-face = Face
 poser-hands = Hands
 poser-misc = Other bones
 poser-search = Find a bone…
+poser-face-position-drag = Drag to move the joint by 0.1 mm per pixel, or click to type a position.
 poser-position = Local position (metres)
 poser-rotation = Local rotation (degrees)
 poser-markers = Show joint markers and gizmos
@@ -13916,6 +14142,7 @@ poser-more-people = { $count ->
     [one] { $count } more person
    *[other] { $count } more people
     }
+
 ik-edit-title = IK Edit
 ik-edit-gizmo-hint = Drag an arrow/plane to move. Hold Ctrl for rotation rings or Shift to drag a point freely. Alt: camera.
 ik-edit-move = Move
@@ -13953,10 +14180,14 @@ ik-edit-reset-bone = Reset this bone
 ik-edit-reset-all = Reset pose
 ik-edit-error = Target distance: { $distance } mm. Adjust the chain or use direct movement.
 ik-edit-root = IK chain root
+
 ik-edit-enable-limbs = Enable each limb
 ik-edit-enabled = Apply this constraint
 ik-edit-weight = Target strength
+
+
 ik-edit-copy-config = Copy complete IK script
+
 ik-edit-set-body = Torso / head
 ik-edit-set-spine = Extended spine
 ik-edit-set-face = Face
@@ -13972,6 +14203,7 @@ ik-edit-visibility-hint = Hide/show controls only; bindings stay active.
 ik-edit-show-all = All
 ik-edit-show-none = None
 ik-edit-body-preset = Human
+
 ik-edit-tab-pose = Pose
 ik-edit-tab-animations = Animations
 ik-edit-tab-visible = Display
@@ -13990,6 +14222,8 @@ ik-edit-animation-inventory-hint = The Animations folder loads here. Open other 
 ik-edit-animation-frame = Frame (30 fps)
 ik-edit-animation-demo-first = Head turn
 ik-edit-animation-demo-second = Head tilt
+
+
 anim-edit-title = Animation editor
 anim-edit-new-name = New animation
 anim-edit-imported-name = Imported animation
@@ -14062,11 +14296,20 @@ anim-picker-hands = Hands
 anim-picker-face = Face
 anim-picker-right = R
 anim-picker-left = L
+
+
 ik-edit-selected = Selected bone: { $bone }
 ik-edit-options = Options
+
+
 ao-underwater-swimming = Swimming underwater
 ao-underwater-swimming-fallback = Uses the surface swimming list until animations are assigned here.
+
 ao-quick-manager = Settings
+ao-mini-title = Mini AO
+ao-now-playing = { $state }: { $name }
+ao-now-playing-none = { $state }: No animation selected
+ao-quick-pin = Open mini AO window
 ao-quick-previous = Previous animation ({ $state })
 ao-quick-next = Next animation ({ $state })
 ao-quick-cycle = Switch automatically ({ $state }, every { $seconds } s)
@@ -14076,6 +14319,8 @@ ao-category-ground = Ground
 ao-category-jumping = Jumping
 ao-category-flight = Flying
 ao-category-water = Swimming
+
+# Experimental received inventory filing.
 received-filing-title = Received items
 received-filing-enabled = Sort new deliveries by sender
 received-filing-help = File new items and folders in #Aurora/Received items/<legacy name>, overriding the usual destinations by type. Scripted deliveries use the object's owner. Offline deliveries are filed after login. Empty sender folders move to Trash. Existing items stay where they are.
@@ -14140,37 +14385,12 @@ anti-spam-blocked-burst = { $count ->
     [one] { $count } source blocked by the anti-spam for this session ({ $kinds }). Manage blocks in Preferences > Protections > Anti-spam.
    *[other] { $count } sources blocked by the anti-spam for this session ({ $kinds }). Manage blocks in Preferences > Protections > Anti-spam.
 }
+
+# IK Edit animation layers
 ik-profile-drag-animation = Drag to reorder
 ik-project-replace-animation = Replace missing animation (keep its frame and order)
+
 rlva-title = RLVa — Scripted restrictions
-rlva-anonym-a-resident = A resident
-rlva-anonym-this-resident = This resident
-rlva-anonym-that-resident = That resident
-rlva-anonym-an-individual = An individual
-rlva-anonym-this-individual = This individual
-rlva-anonym-that-individual = That individual
-rlva-anonym-a-person = A person
-rlva-anonym-this-person = This person
-rlva-anonym-that-person = That person
-rlva-anonym-a-stranger = A stranger
-rlva-anonym-this-stranger = This stranger
-rlva-anonym-that-stranger = That stranger
-rlva-anonym-a-being = A being
-rlva-anonym-this-being = This being
-rlva-anonym-that-being = That being
-rlva-anonym-an-agent = An agent
-rlva-anonym-this-agent = This agent
-rlva-anonym-that-agent = That agent
-rlva-anonym-a-soul = A soul
-rlva-anonym-this-soul = This soul
-rlva-anonym-that-soul = That soul
-rlva-anonym-somebody = Somebody
-rlva-anonym-some-people = Some people
-rlva-anonym-someone = Someone
-rlva-anonym-mysterious-one = Mysterious one
-rlva-anonym-an-unknown-being = An unknown being
-rlva-anonym-unidentified-one = Unidentified one
-rlva-anonym-an-unknown-person = An unknown person
 rlva-hidden-region = (Hidden region)
 rlva-hidden-parcel = (Hidden parcel)
 rlva-enable = Enable RLVa
@@ -14187,11 +14407,7 @@ rlva-im-query-title = Share RLVa restrictions?
 rlva-im-query-body = { $name } requests a list of your active scripted restrictions or exceptions. Allow this information to be sent in a private message?
 rlva-im-share-once = Share once
 rlva-im-share-always = Share and remember
-rlva-im-denied = The other party declined to share their active RLVa restrictions.
-rlva-im-list-suffix = (Use @except to see the list of active exceptions.)
-rlva-im-no-restriction = The other party is not under a @startim restriction.
-rlva-im-ended-remote = The conversation has been ended for the other party.
-rlva-im-ended-local = { $name } remotely closed the conversation with @stopim.
+rlva-im-ended-local = { $name } has remotely closed the IM conversation with @stopim
 rlva-shared-wear = Wear shared objects without point names
 rlva-auto-rename = Name shared attachments when worn
 rlva-shared-offers = Allow inventory gifts to #RLV
@@ -14269,12 +14485,9 @@ rlva-env-locks-hint = Allow scripts to add and remove locks on personal lighting
 rlva-temp-controllers = Allow temporary RLVa attachments
 rlva-temp-controllers-hint = Allow temporary attachments of any origin to issue RLVa commands. Experience attachments also obey the minimum rating and blocked list.
 rlva-im-blocked-receive = *** IM blocked by your viewer
-rlva-im-blocked-send = *** IM blocked by sender's viewer
-rlva-im-blocked-receive-remote = The Resident you messaged is currently prevented from reading your instant messages at the moment, please try again later.
-rlva-im-blocked-teleport-remote = The Resident is currently prevented from accepting. Please try again later.
-rlva-blocked-script-dialog = Unable to show script dialog or textbox due to RLVa restrictions.
+rlva-blocked-script-dialog = Unable to show script dialog or textbox due to RLV restrictions
 rlva-blocked-autopilot = Unable to use the autopilot due to RLVa restrictions.
-rlva-blocked-nearby = Unable to see the presence of nearby avatars due to RLVa restrictions.
+rlva-blocked-nearby = Unable to see the presence of nearby avatars due to RLV restrictions
 rlva-hidden-generic = (Hidden)
 rlva-experience-maturity = Minimum experience rating for controllers
 rlva-experience-maturity-hint = None rejects every experience controller. The default accepts Moderate and Adult experiences.
@@ -14292,6 +14505,24 @@ rlva-hide-layers-hint = Report a clothing layer as absent when it cannot be remo
 rlva-add-prefix = Folder prefix for adding
 rlva-replace-prefix = Folder prefix for replacing
 rlva-prefix-hint = Override scripted wear mode for folders starting with this text. Empty disables it; hidden-folder prefixes such as .name are ignored.
+rlva-tools-retained = Retained until login
+rlva-read-at-login = Changes take effect at the next login.
+rlva-debug-commands-chat = Each command also gets a line in nearby chat, under the object's name: what it executes, what fails and why, what waits for the login.
+rlva-blocked-start-im = Unable to start IM session with { $recipient } due to RLV restrictions
+rlva-blocked-start-conference = Unable to start conference with [RECIPIENT] due to RLV restrictions
+# RLVa privacy parity: names
+rlva-anonym-waiting = (Loading...)
+rlva-anonym-unknown = (Unknown)
+rlva-blocked-teleport = Unable to initiate teleport due to RLV restrictions
+rlva-blocked-permission-attach = Attempt to attach '{ $object }' was denied due to RLV restrictions
+rlva-blocked-permission-teleport = '{ $object }' was denied permission to teleport you due to RLV restrictions
+rlva-blocked-view-notecard = Unable to open the notecard due to RLVa restrictions.
+rlva-blocked-view-script = Unable to open the script due to RLVa restrictions.
+rlva-blocked-view-texture = Unable to open the texture due to RLVa restrictions.
+rlva-debug-explicit-point = Ignore attachment point names on inventory items and folders
+rlva-debug-explicit-point-hint = While an attachment point is locked, Wear and Add send an object to its default point instead of the point its name or its folder's name gives (incomplete).
+
+# Contact-set visual overrides (#408)
 contact-visual-priority = Priority { $rank } of { $total }
 contact-visual-higher = Raise priority
 contact-visual-lower = Lower priority
@@ -14432,6 +14663,8 @@ quick-sort-skip = Skip
 quick-sort-done-title = Everyone has been seen
 quick-sort-done = { $placed } of { $total } friends were put in a set. The others stay in “Not in a set”.
 quick-sort-again = Start again
+
+# Personal construction layout
 build-layout-settings = Construction settings
 build-layout-ruler = Ruler settings
 build-layout-distances = Distance limits
@@ -14439,6 +14672,16 @@ build-ui-floaters-limit-select-distance = Limit select distance (meters)
 build-ui-floaters-limit-drag-distance = Limit drag distance (meters)
 build-layout-handles = Edit handles
 build-ui-floaters-handle-size = Size (%)
+build-layout-clicks = Clicks on objects
+build-ui-floaters-shift-click = Shift + click
+build-ui-floaters-ctrl-click = Ctrl + click
+build-ui-floaters-click-object = Add or remove the object
+build-ui-floaters-click-face = Select the face
+build-ui-floaters-clicks-hint = With the Edit tool, outside Align. Ctrl + Shift + click adds the clicked face or takes it out.
+build-ui-floaters-ctrl-right-click = Ctrl + right click
+build-ui-floaters-right-click-menu = Open the menu
+build-ui-floaters-right-click-edit = Edit the object
+build-ui-floaters-double-click-linked = Double-click on a prim: switch “Edit linked parts”
 build-layout-hidden = Hidden options
 build-layout-organize = Organize options…
 build-layout-finish = Finish organizing
@@ -14458,17 +14701,27 @@ build-layout-loading = Loading settings…
 build-layout-drop-hidden = Drop here to hide
 build-layout-drop-here = Drop here
 build-layout-drag-hint = Drag to move. Release on a highlighted target.
+build-layout-button-icon = Icon
+build-layout-button-label = Label
+build-layout-button-both = Icon and label
+build-detach-shown = In its own window: click to hide it. Drag that window by its title onto the build window to put it back.
+build-detach-hidden = In its own window, hidden: click to show it.
 build-layout-export = Export
-build-material-surface = Surface
-build-material-relief-reflection = Relief and reflection
-build-material-lighting = Light response
-build-material-placement = Texture placement
+
+# Compact material layout
 build-material-diffuse-tint = Diffuse tint
 build-material-specular-tint = Specular tint
 build-material-base-tint = Base tint
 build-material-emissive-tint = Emissive tint
 build-material-tint-needs-specular = Apply a specular map to edit this tint.
 build-material-tint-needs-pbr = Apply a PBR material to every selected face to edit these tints.
+build-material-save-as = Save material as
+build-material-save-name = Name of the new material in your inventory:
+build-material-new-material = New Material
+build-material-save-not-allowed = Saving needs a PBR material on every selected face, copy and modify rights on the object, and a copy of the material in your inventory with copy and modify rights.
+build-material-saved = Material "{ $name }" saved to your inventory.
+build-material-save-failed = The material could not be saved to your inventory.
+
 blender-live-title = LiveMesh
 blender-live-invalid-source = Invalid or duplicate live object identifier.
 blender-live-connection = Connection
@@ -14579,6 +14832,7 @@ blender-object-rez = Rez
 blender-object-drop = Drop to ground
 blender-object-derez = Derez
 blender-live-local-only = Only you see this preview. No asset upload. Closing this window keeps it active; Stop removes it.
+
 inventory-menu-new = New...
 inventory-menu-demo-group = My actions
 inventory-menu-favorites = Favorites
@@ -14611,6 +14865,7 @@ inventory-menu-remove-separator = Remove separator
 inventory-menu-add-separator = Add separator
 inventory-menu-separator-above = Add separator above
 inventory-menu-separator-below = Add separator below
+
 inventory-menu-export-notecard = Save to a notecard
 inventory-menu-load-notecard = Reload from a notecard
 inventory-menu-notecard-name = Inventory context menu
@@ -14627,10 +14882,12 @@ inventory-menu-editor-open = Open / Teleport
 inventory-menu-editor-gesture = Activate / Deactivate gesture
 inventory-menu-editor-protect = Lock / Unlock folder
 inventory-menu-editor-detach = Take off / Detach
+
 blender-live-invalid-link = Invalid live object parenting.
 blender-object-root = { $name } (root)
 blender-object-child = { $name } — linked to { $root }
 blender-object-child-frame = Position and rotation relative to root: { $root }
+
 blender-live-linkset-counts =
     { $objects ->
         [one] { $objects } object
@@ -14644,6 +14901,66 @@ blender-live-linkset-counts =
     }
 blender-object-linkset = { $name } — root #1 · { $prims } prims
 blender-object-linked-prim = #{ $number } · { $name }
+blender-live-tab-place = Place
+blender-live-tab-avatar = Avatar
+blender-live-objects-help = The meshes Blender is sending. Select one to place it, or import it from its menu.
+blender-live-more = More
+blender-live-place = Place
+blender-live-linked-prims = Show or hide the linked prims
+blender-live-tag-rigged = Rigged
+blender-live-card-rigged = { $triangles ->
+        [one] { $triangles } triangle
+       *[other] { $triangles } triangles
+    }
+blender-live-card-static = Static · { $triangles ->
+        [one] { $triangles } triangle
+       *[other] { $triangles } triangles
+    }
+blender-live-card-linkset = Static · { $prims ->
+        [one] { $prims } prim
+       *[other] { $prims } prims
+    } · { $triangles ->
+        [one] { $triangles } triangle
+       *[other] { $triangles } triangles
+    }
+blender-live-triangles = { $triangles ->
+        [one] { $triangles } triangle
+       *[other] { $triangles } triangles
+    }
+blender-live-place-help = Where the selected static mesh is. Rigged meshes always follow your avatar.
+blender-live-place-none = Select a static object to place it.
+blender-live-where = Where
+blender-live-transform = Position, rotation and size
+blender-live-size-note = Size multiplies what Blender sends, so later edits in Blender keep it.
+blender-live-avatar-help = For rigged meshes: send your shape to Blender to model on it.
+blender-live-shape-section = Your shape in Blender
+blender-live-import-help = Freezes a snapshot of the object for the normal import: review, price, then confirm. Later edits in Blender do not change it.
+blender-live-from = From
+blender-live-plugins-help = Aurora installs the matching plug-in in each Blender, keeps a backup of the previous one and never installs an older version.
+blender-live-ago-seconds = { $count } s
+blender-live-ago-minutes = { $count } min
+blender-live-ago-hours = { $count } h
+blender-live-changed-tip = Time since Blender last changed this object
+blender-live-show-all = Show all
+blender-live-hide-all = Hide all
+blender-live-bend-section = Check the weights
+blender-live-elbows = Elbows
+blender-live-knees = Knees
+blender-live-bend-hold = Hold this pose instead of my animations
+blender-live-bend-note = Only you see the bend, on your avatar. Your animations, other residents' view and the import are unchanged.
+blender-live-levels = Levels of detail
+blender-live-levels-pending = Blender prepares the levels of detail when you click Import.
+blender-live-levels-note = Prepared in Blender from each object's LiveMesh settings.
+blender-live-quick-look-tip = Quick look: see this object larger
+blender-live-quick-look-drag = Drag to turn it, double-click to face it again.
+blender-live-quick-look-changed = Changed in Blender { $ago } ago.
+blender-live-quick-look-bend = Bent as in the Avatar tab: elbows { $elbows }°, knees { $knees }°.
+blender-live-undo = Undo
+blender-live-undo-derez = Derezzed { $name } · still in Blender’s list
+blender-live-undo-detach = Detached { $name } · still in Blender’s list
+blender-live-undo-drop = Dropped { $name } to the ground
+blender-live-undo-attach = Moved { $name } to { $point }
+
 inventory-bulk-permissions = Bulk permissions
 inventory-bulk-adjust = Adjust item permissions
 inventory-bulk-reading = Reading selected folders and subfolders…
@@ -14668,6 +14985,17 @@ parcel-visibility-always-visible = Always-visible parcels
 parcel-visibility-always-visible-help = These parcels remain visible while filtering, regardless of their owner or group. Add the current parcel or select a neighbour in About Land and add the selected parcel. Remove an entry to restore the normal filtering rules.
 parcel-visibility-add-selected = Add selected parcel
 parcel-visibility-empty = No parcels added
+parcel-environment-apply-save = Apply to myself only, for this parcel
+parcel-environment-save = Save this environment for this parcel: it comes back whenever you are here
+parcel-environment-forget = Forget the environment saved for this parcel
+parcel-environment-not-saved = This parcel was not known yet, so its environment was not saved. Try again in a moment.
+parcel-environment-left = You left the parcel before its environment could be saved, so it was not saved.
+parcel-environment-title = Environments saved for parcels
+parcel-environment-help = Your own environment for a parcel: it replaces your local environment while you stand there, and what you had before comes back when you leave. Only you see it. Save one from the Environment window or an environment item's menu in your inventory.
+parcel-environment-empty = No environments saved
+parcel-environment-remove-all = Remove all
+parcel-environment-remove-all-title = Remove every environment saved for a parcel?
+parcel-environment-remove-all-text = The environments you saved for parcels on this grid are removed. Those of your other grids are not touched. This cannot be undone.
 demo-parcel-visibility-pinned = Always-visible neighbour
 demo-parcel-visibility-long = Aurora Observatory and Northern Gardens — Visitor Centre and Exhibition Pavilion
 portal-title = Portals
@@ -14687,6 +15015,8 @@ portal-destination-hidden = Hidden destination
 portal-step-away = Move away, then return to enter
 portal-walk-through = Walk through to teleport
 ui-appearance-selected-outfits = { $count } outfits selected
+
+# Spell checker and auto-replace (#675)
 spelling-add-to-dictionary = Add to Dictionary
 spelling-glossary = Second Life Glossary
 spelling-ignore = Add to Ignore
@@ -14735,14 +15065,18 @@ ui-options-auto-replace-keyword-hint = Keyword
 ui-options-auto-replace-replacement-hint = Replacement
 ui-options-auto-replace-add-keyword = Add
 ui-options-auto-replace-save-keyword = Save
+
 avatar-render-title = Avatar render settings
 avatar-render-filter = Filter residents by name or UUID
 avatar-render-detail = Full detail
 avatar-render-empty = No matching display exceptions
 avatar-render-always = Always
 avatar-render-never = Never
+
 scene-menu-huds = HUDs
+
 scene-menu-baked-textures = Baked avatar textures
+
 inventory-copy-name = Copy name
 inventory-copy-folder-uuid = Copy folder UUID
 inventory-new-outfit = New outfit
@@ -14798,6 +15132,7 @@ wearable-group-hair-color = Hair color
 wearable-group-hair-style = Hairstyle
 wearable-group-hair-eyebrows = Eyebrows
 wearable-group-hair-facial = Facial hair
+
 wearable-param-16 = Eyebrow Points
 wearable-param-31 = Eyebrow Arc
 wearable-param-93 = Glove Length
@@ -14903,6 +15238,7 @@ wearable-param-860 = Slit: Back
 wearable-param-861 = Slit: Left
 wearable-param-862 = Slit: Right
 wearable-param-863 = Skirt Fit
+
 ui-context-freeze-question = Freeze { $name }?
 ui-context-freeze-detail = They will temporarily be unable to move, chat, or interact with the world.
 ui-context-unfreeze = Unfreeze
@@ -14921,6 +15257,7 @@ ui-context-estate-ban-all-managed = All estates you manage
 ui-context-estate-kick-detail = They are removed from the estate. They can come back unless they are banned.
 ui-context-estate-teleport-home-detail = They are teleported to their home location and can come back right away.
 ui-context-estate-ban-detail = They will no longer be allowed in. The ban list is in Region / Estate › Access.
+
 scene-object-hidden-person = Hidden resident
 scene-object-last-owner = Previous owner:
 scene-object-created = Created:
@@ -14956,6 +15293,8 @@ scene-nav-flags = Modifiable: { $modify } · Scripted: { $scripts }
 scene-nav-character-detail = CPU: { $cpu } µs · Length: { $length } m · Radius: { $radius } m
 scene-nav-horizontal = Horizontal character
 scene-nav-vertical = Vertical character
+
+# About Aurora Viewer (#1126)
 about-tab-info = Info
 about-tab-licences = Licenses
 about-tab-libraries = Libraries
@@ -15022,6 +15361,8 @@ world-outfit-folders-too-deep = Outfit folders go no deeper than four levels.
 world-outfit-paste-cannot-be-used-in-outfits = One or more items can't be used inside outfits.
 world-outfit-paste-already-in-outfit = Already in this outfit.
 world-outfit-paste-already-worn = Already worn.
+
+## Build › Edit particles (particle editor)
 object-export-title = Save as
 object-export-format = Format
 object-export-collada = Collada (.dae)
@@ -15120,6 +15461,7 @@ particle-editor-folder-failed = No inventory folder was found for the new script
 particle-editor-upload-failed = The particle script could not be saved: { $reason }
 particle-editor-object-gone = The object is gone: the script stays in your inventory.
 particle-editor-inject-timeout = The grid did not answer: the script was not put into the object.
+
 keybinds-lens-zoom-in = Narrow viewing angle
 keybinds-lens-zoom-out = Widen viewing angle
 keybinds-lens-zoom-default = Reset viewing angle
@@ -15138,14 +15480,17 @@ inventory-folder-color-restore = Restore default
 inventory-folder-color-private = Only you see these colors.
 inventory-folder-color-many = { $count } folders
 inventory-folder-color-none = Select a folder to color it.
+
 area-search-group = Group
 area-search-last-owner = Last owner
 area-search-land-impact = Land impact
 area-search-prim-count = Prim count
+
 area-search-search = Search
 area-search-columns = Columns
 area-search-regex = Use regular expressions
 area-search-regex-error = Regular expression: { $error }
+
 area-search-required = Only list objects that are
 area-search-excluded = Exclude objects that are
 area-search-ranges = Distance and sale price
@@ -15170,14 +15515,20 @@ area-search-click-media = Open media
 area-search-save-defaults = Save as default
 area-search-copy-link = Copy as link
 area-search-reset-columns = Reset columns
+
 area-search-regex-limit = Matching limit exceeded. Simplify the expression.
+
 area-search-reset-all-tip = Reset the entire search.
 area-search-reset-search-tip = Clear search fields and regular expressions.
 area-search-reset-options-tip = Restore original filter options.
 area-search-reset-columns-tip = Restore default columns.
+
 area-search-range-options = Ranges
 area-search-reset-ranges-tip = Restore default distance and sale price ranges.
+
 area-search-results = Results
+
+# Applied local textures and materials (#1375).
 local-appearance-warning = { $count ->
     [one] Local textures / materials: { $count } object
    *[other] Local textures / materials: { $count } objects
@@ -15191,6 +15542,8 @@ local-appearance-library = Open local previews
 local-appearance-remove = Remove all local textures / materials…
 local-appearance-confirm-title = Remove local textures and materials?
 local-appearance-confirm-body = Restore the server appearance for the remembered objects in this account and grid (total: { $count }), including objects currently absent. These applications will no longer be restored after reconnecting. Your local files, preview library and mesh previews are kept.
+
+# Bulk upload folder plan
 import-folders = Folders
 import-choose-folder = Add folder…
 import-folders-enable = Organize upload folders
@@ -15217,6 +15570,8 @@ import-folders-animations = Animations
 import-folders-materials = Materials
 import-folders-meshes = Meshes
 import-folders-other = Other
+
+# Unified import window
 import-window-title = Import
 import-queue = Import queue
 import-queue-empty = No visible files in the queue.
@@ -15227,13 +15582,16 @@ import-tab-folder = Folder preview
 import-tab-permissions = Permissions
 import-use-default-folders = Use default folders
 import-folders-auto-create = Missing destination folders will be created after you confirm the upload.
+
 import-include-source-folder = Include source folder
 import-create-folder = Create folder
 import-create-folder-help = Put files added directly into a new folder under the selected destination. The folder is created after confirming the import.
 import-folder-name = Folder name
 import-source-folder-name-help = Name of the inventory folder for { $source }. The folder on your computer is unchanged.
+
 import-local-stage-upload = Add to upload ({ $count })
 import-local-stage-upload-help = Keep the local previews and prepare uploads of the checked files, including hidden files. Upload fees are confirmed separately.
+
 vr-view = VR view
 vr-unavailable = VR is unavailable. Check that an OpenXR runtime and headset are connected.
 vr-restart-title = Headset connected
@@ -15243,6 +15601,7 @@ vr-restart-confirm = Restart in VR
 ui-options-camera-vr = VR
 ui-options-camera-vr-at-start = Set up VR at startup
 ui-options-camera-vr-at-start-help = The VR button then enters VR at once. Off, Aurora does not load your VR software at startup, and the VR button offers a restart. Applies at the next start.
+
 app-vr-leave = Press { $key } to return to desktop mode
 god-mode-entering = Entering god mode, level { $level }
 god-mode-leaving = Leaving god mode, level { $level }
@@ -15275,6 +15634,7 @@ admin-unfreeze-question = Unfreeze { $name } with what message?
 admin-kick-message = An administrator has logged you off.
 admin-freeze-message = You have been frozen. You cannot move or chat. An administrator will contact you via instant message (IM).
 admin-unfreeze-message = You are no longer frozen.
+
 ui-weather-aurora = Aurora Weather
 ui-bars-aurora-weather = Aurora Weather…
 ui-weather-precipitation = Falling
@@ -15385,10 +15745,24 @@ ui-weather-now-off = Weather off
 ui-weather-precipitation-on-tip = Rain or snow falls as set below; off, nothing falls and there is no thunder
 ui-weather-wind-on-tip = The weather's wind blows the rain and snow and is heard outdoors; off, the air is calm
 ui-weather-wind-follow-region = Region's wind
+
 picker-pipette-hint = Click an object face to select its texture or material from your inventory.
+
 picker-pipette-no-texture = No copyable texture found in your inventory.
+
 picker-pipette-no-material = No copyable material found in your inventory.
+
 local-texture-preview-hint = Local texture — preview from a file on this computer.
+
+# Menu commands can be added to or removed from a toolbar.
+toolbar-add-from-menu = Add to toolbar
+toolbar-remove-from-menu = Remove from toolbar
+# Build › Edit objects, Create prims and Edit land as toolbar buttons (the menu shows their Ctrl+3/4/5 keys apart)
+toolbar-command-build-edit = Edit objects
+toolbar-command-build-create = Create prims
+toolbar-command-build-land = Edit land
+
+# 360° snapshots: a format of the photo window (LLFloater360Capture, app/capture_360.rs)
 capture-360-quality-preview = Preview (fast)
 capture-360-quality-medium = Medium
 capture-360-quality-high = High
@@ -15401,6 +15775,7 @@ capture-360-saved = Saved { $name }
 capture-360-failed = The 360° image could not be made.
 capture-360-save-failed = The 360° image could not be saved: { $error }
 capture-360-save-dialog = Save the 360° image
+
 wearable-favorites-all = All Favorites
 wearable-favorites-empty = Drag wearable items here to add to list.
 wearable-favorites-no-match = No matching items found.
@@ -15433,6 +15808,7 @@ wearable-favorites-delete-unloaded =
 wearable-favorites-invalid-name =
     Could not create Favorite Wearables folder "{ $name }".
     Folder names cannot contain / or \.
+# Conversation log (ui/conversation_log.rs)
 conversation-log-filter = Filter people
 conversation-log-actions = Actions on the selected person or group
 conversation-log-im = IM…
@@ -15459,6 +15835,8 @@ ui-options-chat-logs-clear = Clear conversation log…
 ui-options-chat-logs-clear-title = Clear the conversation log?
 ui-options-chat-logs-clear-text = This will delete the logs of previous conversations, and any backups of that file. The transcripts are not touched.
 ui-options-chat-logs-clear-confirm = Clear
+
+# Parcel radio state and stream failures
 music-state-error = Can't play: { $reason }
 music-error-web-page = This web page offers no radio stream
 music-error-playlist = This radio playlist cannot be played
@@ -15478,6 +15856,7 @@ music-certificate-wrong-name = This radio’s security certificate belongs to an
 music-certificate-revoked = This radio’s security certificate was revoked
 music-certificate-other = This radio’s security certificate is not valid
 music-certificate-warning = { $reason }. The radio plays, but its connection is not secure.
+# Object linking: LLSelectMgr::linkObjects
 build-link-error-title = Unable to link objects
 build-link-downloading = Object information is still downloading. Please wait and try linking again.
 build-link-too-many = Cannot link { $count } prims. The maximum is { $max }.
@@ -15487,6 +15866,8 @@ build-link-owners = The objects must have the same owner to be linked.
 build-link-regions = The objects must be in the same region to be linked.
 build-link-animesh = The selection exceeds the animated object triangle limit.
 build-link-restricted = A restriction prevents linking this selection.
+
+# Debug Settings window (LLFloaterSettingsDebug)
 debug-settings-search = Search settings
 debug-settings-changed-only = Show changed settings only
 debug-settings-none-selected = Choose a setting in the list.
@@ -15506,8 +15887,12 @@ debug-settings-warning-title = Warning
 debug-settings-warning-text = The use of the Debug Settings window is unsupported. Changing debug settings can severely impact your experience and might lead to loss of data, functionality or even access to the service. Please do not change any values without knowing exactly what you are doing.
 debug-settings-warning-ignore = Do not show this warning again
 debug-settings-type-color = Color
+
+# Preferences › Graphics: the trees' detail (RenderTreeLODFactor)
 ui-options-trees = Trees
 ui-options-trees-hint = Detail of Linden trees at a distance (0.5 by default). At 0, trees and grass are not drawn.
+
+# Preferences › Build (the Legacy Viewer's Build preferences)
 ui-options-about-build = What a prim made with the Create tool starts as.
 ui-options-build-new-objects = New objects
 ui-options-build-new-objects-note = A prim made with the Create tool takes these settings when it appears.
@@ -15524,20 +15909,34 @@ ui-options-build-show-beams = Show selection beams
 ui-options-build-show-beams-hint = Yours and the other avatars', while they edit, grab or give something. They are sent either way.
 ui-options-build-beam-color = Beam color
 ui-options-build-beam-color-hint = The color of your beams, as the others see them too.
+
+
+
+# Preferences › Protections: large surface protection (RenderVolumeSAProtection)
 large-surface-title = Large surfaces
 large-surface-enable = Hide objects with a huge surface
 large-surface-enable-hint = Protects your graphics card from objects made to overload it: past the total below, the prims and sculpts with the largest surface are not drawn. May hide some legitimate objects.
 large-surface-frame-max = Total surface drawn
 large-surface-frame-max-hint = The surface of large objects drawn before the largest are hidden (5,000 by default).
+
+# Preferences › Graphics: RenderAttachedParticles
 ui-options-attached-particles = Particles from worn objects
 ui-options-attached-particles-hint = Draw the particles of what avatars wear: sparkles, smoke, fire.
+
+# Preferences › Graphics: progressive draw distance (FSRenderFarClipStepping)
 ui-options-draw-distance-stepping = Progressive draw distance
 ui-options-draw-distance-stepping-hint = After logging in and after a teleport to another region, the draw distance starts at 32 m and doubles back up to yours, so that what is near loads first.
+
+# Panorama viewer (ui/panorama.rs)
 panorama-reset = Reset the view
 panorama-enlarge = Enlarge
 panorama-leave-full = Leave the enlarged view
 panorama-help = Drag to look around, wheel to zoom, double-click to reset. Click it, then arrows to look and + / - to zoom.
+
+# Texture preview: look into a 2:1 texture as a panorama
 resource-preview-360 = 360°
+
+# Photo window: the 360° format
 photo-format-360 = 360°
 photo-not-in-360 = Not in 360° pictures.
 photo-360-inventory-size = Panorama: { $width } × { $height } (the largest texture)
@@ -15545,10 +15944,14 @@ photo-360-output = Panorama: { $width } × { $height }
 photo-360-format = JPEG · 360°
 photo-360-placeholder = Press the shutter: the panorama appears here.
 photo-looks-not-in-360 = Not drawn in a 360° picture: only the color looks are.
+# macOS Window menu (mac_window_menu.rs)
 app-mac-window-menu = Window
 app-mac-minimize = Minimize
 app-mac-enter-full-screen = Enter Full Screen
+
 ui-options-camera-vr-view-first-person = First Person
+
+
 vr-preferences-title = VR
 vr-preferences-about = Headset movement, comfort and rendering.
 vr-mode-flycam = Flycam
@@ -15563,11 +15966,17 @@ vr-resolution = VR resolution per eye
 vr-resolution-help = The automatic choice shows the headset’s suggested dimensions, limited to 1600 per side and runtime/device limits. Restart the viewer to apply changes.
 vr-resolution-unavailable = Headset unavailable
 vr-custom = Custom
+
 joystick-linux-layout = Linux button layout
+
 joystick-linux-layout-help = Choose the input driver layout if X and Y are exchanged. Controller style controls labels.
+
 joystick-layout-positional = Positional
+
 joystick-layout-auto = Automatic
 joystick-layout-xinput = XInput
+
+# Preferences › Network › Proxy, and its login messages (aurora-proxy)
 proxy-socks-invalid-host = Invalid SOCKS 5 proxy address or port. Check Preferences › Network and cache › Proxy.
 proxy-socks-host-connect-failed = Could not connect to the SOCKS 5 proxy server.
 proxy-socks-connect-error = The SOCKS 5 proxy refused the connection: no TCP channel could be opened.
@@ -15626,6 +16035,7 @@ ui-options-proxy-direct-media-warning = Media connects directly, around the prox
 ui-options-proxy-direct-media-confirm-title = Play media without the proxy?
 ui-options-proxy-direct-media-confirm-text = Video, and web pages the HTTP proxy does not cover, do not go through the proxy. They connect directly from this computer, so whoever chose the media of a parcel or an object can see your real IP address. Everything else keeps going through the proxy. This takes effect after you restart the viewer.
 ui-options-proxy-direct-media-confirm = Play media directly
+
 game-control-title = Game Controls
 game-control-about = Map a game controller's inputs to actions in each mode, and send them to scripts in the region.
 game-control-tab-actions = Action Mappings
@@ -15771,17 +16181,34 @@ game-control-action-truck-right = Truck →
 game-control-action-boom-up = Boom ↑
 game-control-action-boom-down = Boom ↓
 game-control-action-escape = ESC
+
 picker-local-newest = Newest first
 picker-local-name = Name A–Z
+
 phototools-environment-settings = Environment settings
 phototools-quick-environments = Quick environments
 phototools-environment-presets = Environment presets
 phototools-general-render = General render settings
 phototools-render-options = Render options
+
 ui-bars-clouds-paused = Clouds paused
 ui-bars-clouds-paused-tip = The clouds are held still for this session. Click to let them move again.
+phototools-tab-dof-glow = DoF & glow
+phototools-lights-shadows = Lights and shadows settings
+phototools-ambient-occlusion = Ambient occlusion settings
+phototools-dof = Depth of field settings
+phototools-tone-mapping = HDR tone mapping settings
+phototools-glow = Glow settings
+phototools-photo-banner = Photo window open: the rows the photo window also has change the photo. The depth of field is kept for your next photos; the light, exposure, shadows, ambient occlusion and worn lights last until the photo window closes.
+phototools-photo-boost = Photo quality is raised: the graphics rows show the raised values, and a change you make there is kept as your own.
+phototools-photo-focus-help = Click: the point last clicked in the world. Pointer: the point under the pointer. Manual: a distance you set.
+phototools-photo-distance-help = The distance the lens focuses at in manual focus.
+phototools-director-lens = The Director's lens is shown while its window is open, over the settings below.
+phototools-view-angle-viewfinder = The viewfinder owns the view angle: yours comes back when it closes.
+ui-options-dof-show-focus-point = Show focus point
+ui-options-dof-show-focus-point-help = A small crosshair on the point the lens focuses on: yellow when it is free, red when it is locked.
 
-# SunSet Viewer exclusive features
+# SunSet Viewer exclusive keys
 movement-dash-title = Movement & Dash
 movement-dash-enabled = System Enabled
 movement-dash-disabled = System Disabled

@@ -30,6 +30,20 @@ pub enum EnvAction {
     Shared,
     /// A time of day preset (1..=4).
     Preset(u8),
+    /// Keep the local environment for the parcel under the agent.
+    SaveParcel,
+    /// Forget what is kept for that parcel.
+    ForgetParcel,
+}
+
+/// What can be done for the parcel under the agent.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
+pub enum ParcelChoice {
+    /// No local environment to keep, or no parcel yet.
+    #[default]
+    Nothing,
+    Save,
+    Saved,
 }
 
 /// LLFloaterEnvironmentAdjust slider scales.
@@ -123,6 +137,8 @@ pub struct EnvironmentUi {
     pub night: Option<NightSkyPick>,
     /// The Aurora Weather window is open (from the Environment window).
     pub weather_open: bool,
+    /// The parcel button (kept by the app).
+    pub parcel_choice: ParcelChoice,
     /// Open this list's drop-down on the next frame (demo captures).
     pub open_list: Option<SettingsKind>,
     /// Type this into an open list's search field (demo captures).
@@ -314,6 +330,27 @@ impl EnvironmentUi {
             ) {
                 out.push(EnvAction::Shared);
             }
+            // the parcel pin beside it: it keeps or forgets this same
+            // sky, water and day cycle for the parcel; greyed while RLVa
+            // holds the environment, like the lists
+            if self.parcel_choice == ParcelChoice::Saved {
+                let forget = ui
+                    .add_enabled_ui(free, |ui| {
+                        widgets::icon_toggle(ui, p, "map-pin-filled", aurora_i18n::tr!("parcel-environment-forget"), true)
+                    })
+                    .inner;
+                if forget && free {
+                    out.push(EnvAction::ForgetParcel);
+                }
+            } else if widgets::icon_button(
+                ui,
+                p,
+                "map-pin-filled",
+                aurora_i18n::tr!("parcel-environment-save"),
+                free && self.parcel_choice == ParcelChoice::Save,
+            ) {
+                out.push(EnvAction::SaveParcel);
+            }
             // Aurora Weather after them ("Aurora" in the aurora gradient):
             // this viewer's own weather, nothing for a region to set
             let Some(open) = weather_open else {
@@ -324,7 +361,7 @@ impl EnvironmentUi {
                 let font = widgets::control_font(ui, 12.0);
                 let label = crate::ui::options::aurora_word(p, aurora_i18n::tr!("ui-weather-aurora"), font, p.ink);
                 if ui
-                    .add(egui::Button::new(label).min_size(Vec2::new(0.0, 20.0)))
+                    .add_enabled(free, egui::Button::new(label).min_size(Vec2::new(0.0, 20.0)))
                     .on_hover_text(aurora_i18n::tr!("ui-weather-window-tip"))
                     .clicked()
                 {

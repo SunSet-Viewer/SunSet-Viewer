@@ -236,14 +236,14 @@ fn floating_text(cx: &mut Cx) {
             tr!("ui-options-floating-text-fade-distance"),
             tr!("ui-options-floating-text-fade-distance-help"),
             &field!(floating_text_fade_distance),
-            0.0..=64.0,
+            0.0..=crate::settings::MAX_FLOATING_TEXT_FADE_DISTANCE,
             " m",
         );
         cx.slider(
             tr!("ui-options-floating-text-fade-range"),
             tr!("ui-options-floating-text-fade-range-help"),
             &field!(floating_text_fade_range),
-            0.25..=32.0,
+            crate::settings::MIN_FLOATING_TEXT_FADE_RANGE..=crate::settings::MAX_FLOATING_TEXT_FADE_RANGE,
             " m",
         );
         cx.toggle(

@@ -26,6 +26,10 @@ An empty line starts a new paragraph.
 
 # SunSet Viewer news
 
+## 2026-11-24 — SunSet Viewer v0.9.13: Aurora v0.9.13 Sync, Ray Tracing, Mini AO & 192 m Text Fade
+Version v0.9.13 merges Aurora v0.9.13 features and fixes, adding hardware Ray Tracing with soft shadows, Planet Curvature, Mini AO, per-parcel saved environments, detachable panels, Photo effects catalogue, Blender Live Quick Look and bend tools, camera position saving, and Bento idle fix. All exclusive SunSet features remain preserved: Combat tab 3D hitboxes, individual avatar marker colors, 8192 m draw distance, 100x Dash, SunSet skins, isolated profiles, and floating-text fade expanded to 128 m distance + 64 m range.
+[Read more](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.13)
+
 ## 2026-11-21 — SunSet Viewer v0.9.12: Aurora v0.9.12 Sync, Phototools, 95 LUTs & 15 Languages
 Version v0.9.12 synchronizes all features and fixes from Aurora v0.9.11 and v0.9.12, adding the Phototools window, world filters with 95 built-in LUTs (including JuicyBomb), local avatar caching, camera or avatar audio origin, find and replace in notecards, nested content permissions, and 15 bundled languages. All exclusive SunSet Viewer features remain preserved: 8192m draw distance, 100x Dash mobility, Combat 3D hitboxes, avatar marker colors, SunSet skins, isolated SunSet\SunSetViewer AppData profiles, and refined pt-BR and es translations.
 [Read more](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.12)
@@ -65,6 +69,16 @@ Version v0.9.4 refines the Brazilian Portuguese experience with more than 114 co
 ## 2026-11-06 — SunSet Viewer v0.9.3: AMD FSR 3.1, SunSet Combat and 100% pt-BR
 SunSet Viewer consolidates its independent release featuring native AMD FSR 3.1 upscaling for smooth performance on any graphics card, full preservation of the custom combat module with raycasts and dedicated hitboxes, autonomous background update checks directly against GitHub Releases, and complete Brazilian Portuguese translation parity.
 [Read more](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.3)
+
+## 2026-11-21 — Aurora 0.9.12: fifteen languages, Game Controls and a look for the world
+Aurora now speaks fifteen languages: German, Spanish, Italian, Polish, Turkish, Russian, Ukrainian, Norwegian, Portuguese and Chinese join English, French and Japanese, built on the community's translations. Game Controls let a game controller drive the avatar, the camera and scripts, like the LL viewer 26.5. Photo looks and LUTs can stay on the world, with 30 new looks by JuicyBomb. Versions before 0.9.12 must update, within 12 hours. The cache is cleared once at the first start and fills again by itself; your settings are kept.
+[Read more](https://github.com/Aurora-Viewer/Aurora-Viewer/releases/tag/v0.9.12)
+
+## 2026-11-21 — Chat, avatars and inventory
+Direct messages sent from another device, the mobile app included, now show up in the conversation. Avatars you have already seen show at once from a local copy while the region sends them. The inventory gets a Gallery view, notecards get find and replace, and the Second camera window keeps your avatar in view. The Aurora Weather window is redesigned and holds every weather setting. A Second Life account can be created from the login screen, and Linux installs its updates in place.
+
+## 2026-11-21 — More like the Legacy Viewer
+The Phototools window, media and sounds heard from the avatar, the microphone closed while muted, permissions set on objects inside objects, Disable glass for accessibility, and RLVa as in the Legacy Viewer. Thanks to anne-skydancer, circuskid, ClifHofmann, dash-sl, Gaalrauch, Glychd, Izusl, KanikaBreed, Marakiinfinity, Memekiller, Nowalski, Odessa-Draekavik, PumpkinSpicePanda, and to the translators 00JackWild00, 1615424277, DDynamic-Evolution, deontodi-ctrl, SmurfCat1234, wolfosbournesl.
 
 ## 2026-11-18 — Aurora 0.9.11: a complete Director, Gaming mode and 360° pictures
 The Director becomes a full machinima tool: ready-made shots, renders up to 4K, films with their sound, montages, the photo looks and LUTs, handles on the cameras, and ffmpeg downloaded in one click. Gaming mode lets Aurora step back while you play: the world stops drawing and gives the video memory and RAM back, while chat and sounds go on. The photo window takes 360° pictures. Versions before 0.9.11 must update, within 12 hours. The cache is cleared once at the first start and fills again by itself; your settings are kept.

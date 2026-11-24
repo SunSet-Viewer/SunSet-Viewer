@@ -4,6 +4,23 @@ Todas as mudanças notáveis, novidades e correções de bugs do projeto **SunSe
 
 ---
 
+## [0.9.13] — 2026-11-24
+
+### 🔄 Sincronização Upstream Completa: Aurora v0.9.13
+- **Ray Tracing, Sombras Suaves & Curvatura Planetária**: Suporte opcional a Ray Tracing por hardware (*Deluxe (RT)* com sombras solares e locais traçadas, luz indireta, sondas GI e reflexos por ray tracing), além de sombras solares suaves e curvatura do planeta configurável em **Preferências › Gráficos**.
+- **Interface, Câmera, Mini AO & Multi-Janelas**: Novo modo compacto para **Mini AO**, janelas e abas destacáveis para fora da janela principal, salvamento de posição exata da câmera (`controls-position`), opções de enquadramento e câmera fixa no posador, seleção independente de **Saída de voz**, correção de animação ociosa Bento e fechamento seguro de conversas de IM com chamada ativa.
+- **Modo Foto, Blender Live & Construção**: Catálogo interativo de efeitos com favoritos no Modo Foto, visualização rápida (*Quick Look*), verificação de pesos de dobra e *Desfazer* no Blender Live, ambientes locais salvos por parcela, barra de faces com inversão/seleção total, salvar material PBR no inventário, filtros de inventário (`sem cópia`, `sem modificação`, `sem transferência`), desanexar e excluir itens vestidos, limite oficial de 60 camadas de roupa e atualizações de decodificação `aurora-j2k` / RLVa.
+
+### 🛡️ Exclusões Permanentes & Preservação dos Recursos SunSet Viewer
+- **Precedência Absoluta do Combate & Hitbox SunSet**: Removido integralmente o overlay `O10` / `DebugView::avatar_hitboxes` introduzido no `Aurora-Viewer#4050` (e seu toque em `#4470`). Permanece exclusivamente a aba **Combate** do SunSet Viewer (`Page::Combat` com ícone de espadas cruzadas, hitboxes 3D até `8192 m` / `128 m+`, raycast local, oclusão por objetos/terreno e presets de cores).
+- **Preservação das Cores Individuais (`Marcar cor`)**: Submenu completo de marcação individual por avatar (9 cores predefinidas + seletor RGB `Cor personalizada...` + limpar individual/todos) preservado com precedência máxima sobre Contact Sets em hitboxes 3D, minimapa, listas de pessoas e placas de nome.
+- **Textos Flutuantes (`llSetText`) Ampliados**: Sliders de alcance máximo e faixa de desvanecimento ampliados de `64 m / 32 m` para **`0–128 m`** (distância) e **`0.25–64 m`** (faixa suave), permitindo visibilidade e desvanecimento até **`192 m`** combinados em **Preferências › Gráficos**.
+- **Alcance 8192 m, Dash 100×, Temas & Isolamento**: Mantidos draw distance até `8192 m` + SpeedRez + `/dd`, movimentação `100×` + Dash nativo (`Bridge v1.44` / `sunset-dash.bvh`), famílias de skins SunSet/Firestorm e isolamento total em `%APPDATA%\SunSet\SunSetViewer` e `%LOCALAPPDATA%\SunSet\SunSetViewer`.
+- **Auto-Updater SunSet & Política Documentada de Sincronização**: Excluído o sistema de chaves Ed25519 do upstream (`PR #4632`), mantendo o updater SHA-256 + HTTPS no repositório `SunSet-Viewer/SunSet-Viewer`. Regras permanentes e testes mecânicos de não-regressão documentados em `AGENTS.md`, `docs/UPSTREAM_SYNC_POLICY.md`, `docs/HITBOX_E_CORES.md` e `sunset_tests.rs`.
+- **Paridade Completa de Traduções**: Catálogos Fluent atualizados com **15.387 chaves** em paridade entre `en`, `pt-BR`, `es`, `fr` e `ja`, sem nenhuma chave `dev-toolbox-o10`.
+
+---
+
 ## [0.9.12] — 2026-11-21
 
 ### 🔄 Sincronização Upstream Completa: Aurora v0.9.11 & v0.9.12

@@ -24,7 +24,11 @@ Aurora Viewer のログイン画面のニュース（日本語）。
 - 詳しい手順：HUMANS.md の「Publishing a news item」。
 -->
 
-# Aurora Viewer のニュース
+# SunSet Viewer のニュース
+
+## 2026-11-24 — SunSet Viewer v0.9.13：Aurora v0.9.13 同期、Ray Tracing、Mini AO、テキスト 192 m
+v0.9.13 は Aurora v0.9.13 の新機能と修正を同期し、ハードウェア Ray Tracing とソフトシャドウ、惑星の曲率、Mini AO、区画ごとの環境保存、ウィンドウ分離、フォト効果カタログ、Blender Live プレビュー、カメラ位置保存に対応しました。SunSet 独自の戦闘タブ・3D ヒットボックス、個別アバター色、8192 m 描画、100 倍ダッシュ、専用スキン、完全データ分離、128 m＋64 m の浮遊テキストフェードはすべて保持されています。
+[詳しく見る](https://github.com/SunSet-Viewer/SunSet-Viewer/releases/tag/v0.9.13)
 
 ## 2026-11-21 — SunSet Viewer v0.9.12：Aurora v0.9.12 同期、Phototools、95 LUT、15 言語対応
 バージョン v0.9.12 では Aurora 公式 v0.9.11 および v0.9.12 のすべての新機能とバグ修正を同期しました。Phototools ウィンドウ、JuicyBomb を含む 95 種の LUT ワールドフィルター、アバターのローカルキャッシュ、カメラ／アバター基準の音声再生、ノートカードの検索・置換、15 言語内蔵に対応しています。SunSet 独自の 8192m 描画距離、100倍ダッシュ、3D ヒットボックス、アバターカラー、専用スキン、SunSet\SunSetViewer への完全データ分離もすべて保持されています。
